@@ -9,7 +9,7 @@ public class HPTest
 {
     private Scene scene;
     private const string sceneName = "HealthAndDamageTestScene";
-    //private Health health;
+    private Health health;
 
     [UnitySetUp]
     public IEnumerator Setup()
@@ -17,7 +17,7 @@ public class HPTest
         yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         scene = SceneManager.GetSceneByName(sceneName);
         SceneManager.SetActiveScene(scene);
-        //health = Object.FindAnyObjectByType<Health>();
+        health = Object.FindAnyObjectByType<Health>();
     }
 
     [UnityTearDown]
