@@ -4,23 +4,24 @@ using UnityEngine.InputSystem;
 
 public class WilmerPlayerController : MonoBehaviour
 {
-    public Transform cameraTransform;
+    [SerializeField] private Transform cameraTransform;
     private Vector3 moveVector;
     private Vector2 lookVector;
     private Vector2 currentRotation;
-    public float moveSpeed;
-    public float sprintSpeed;
-    public float crouchSpeed;
+    
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float sprintSpeed;
+    [SerializeField] private float crouchSpeed;
     private float currentSpeed;
-    public float jumpForce = 5;
-    public float mouseSensitivity;
-    public float stickSensitivity;
+    [SerializeField] private float jumpForce = 5;
+    [SerializeField] private float mouseSensitivity;
+    [SerializeField] private float stickSensitivity;
 
     private Rigidbody rb;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        currentSpeed = moveSpeed;
     }
 
     private void Awake()
@@ -31,15 +32,17 @@ public class WilmerPlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Camera stuff
         currentRotation.y += lookVector.x;
         currentRotation.x -= lookVector.y;
         
         currentRotation.x = Mathf.Clamp(currentRotation.x, -70, 70);
         
         cameraTransform.eulerAngles = currentRotation;
-        //moveVector = Vector3.Project(moveVector, new Vector3(cameraTransform.forward.x, 0 , cameraTransform.forward.z));
+        
+        //Move stuff
         Vector3 rotatedVector = Quaternion.AngleAxis(cameraTransform.eulerAngles.y, Vector3.up) * moveVector;
-        transform.position += rotatedVector * Time.deltaTime * currentSpeed;
+        transform.position += Time.deltaTime * currentSpeed * rotatedVector;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -69,7 +72,7 @@ public class WilmerPlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            rb.AddForce(Vector3.up * 5, ForceMode.VelocityChange);
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
         }
     }
     
