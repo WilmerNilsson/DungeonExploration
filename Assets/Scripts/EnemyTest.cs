@@ -31,4 +31,12 @@ public class EnemyTest : MonoBehaviour
             agent.destination = other.transform.position;
         }
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            agent.ResetPath();
+        }
+    }
 }
