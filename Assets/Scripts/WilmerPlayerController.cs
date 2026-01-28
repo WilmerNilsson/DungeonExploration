@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 public class WilmerPlayerController : MonoBehaviour
 {
     [SerializeField] private Transform cameraTransform;
+    [SerializeField] private GroundCheck groundCheck;
     private Vector3 moveVector;
     private Vector2 lookVector;
     private Vector2 currentRotation;
@@ -72,7 +73,10 @@ public class WilmerPlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
+            if (groundCheck.GetIsGrounded())
+            {
+                rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
+            }
         }
     }
     
