@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GroundCheck : MonoBehaviour
 {
-    private List<GameObject> objects;
+    private List<GameObject> objects = new List<GameObject>();
 
     public bool GetIsGrounded()
     {
