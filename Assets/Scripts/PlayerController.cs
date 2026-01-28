@@ -4,49 +4,89 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] CharacterController characterController;
+    [SerializeField] private Controller controller;
+    [SerializeField] private Transform cameraTransform;
     
-    [SerializeField] float moveSpeed;
+    [SerializeField] private float mouseSensitivity;
+    [SerializeField] private float stickSensitivity;
     
-    [Header("Input Actions")]
-    public InputActionReference moveAction;
-    public InputActionReference sprintAction;
+    private Vector2 lookVector;
+    private float Xrotation;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
-
-    private void OnEnable()
-    {
-        moveAction.action.Enable();
-        sprintAction.action.Enable();
-    }
-
-    private void OnDisable()
-    {
-        moveAction.action.Disable();
-        sprintAction.action.Disable();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move();
+        
     }
 
-    private void Move()
+    public void OnMove(InputAction.CallbackContext context)
     {
-        Vector2 input = moveAction.action.ReadValue<Vector2>();
-        float theta = -transform.rotation.eulerAngles.y * Mathf.PI / 180;
-        float cos = Mathf.Cos(theta);
-        float sin = Mathf.Sin(theta);
-        
-        Vector3 move = new Vector3(input.x * cos - input.y * sin, 0, input.x * sin + input.y * cos) * (input.magnitude * moveSpeed);
+        if (context.performed)
+        {
+            controller.Move(new Vector3(context.ReadValue<Vector2>().x, 0, context.ReadValue<Vector2>().y));
+        }
 
-        if (sprintAction.action.ReadValue<float>() != 0) move *= 2;
-        
-        characterController.Move(move * Time.deltaTime);
+        if (context.canceled)
+        {
+            controller.Move(Vector3.zero);
+        }
+    }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        controller.Jump();
+    }
+    
+    public void OnSprint(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            controller.isSprinting = true;
+        }
+
+        if (context.canceled)
+        {
+            controller.isSprinting = false;
+        }
+    }
+    
+    public void OnCrouch(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            controller.isCrouching = true;
+        }
+
+        if (context.canceled)
+        {
+            controller.isCrouching = true;
+        }
+    }
+    
+    public void OnMouseLook(InputAction.CallbackContext context)
+    {
+        Rotate(context.ReadValue<Vector2>() * mouseSensitivity);
+    }
+    
+    public void OnStickLook(InputAction.CallbackContext context)
+    {
+        Rotate(context.ReadValue<Vector2>() * stickSensitivity);
+    }
+
+    private void Rotate(Vector2 context)
+    {
+        controller.Rotate(context.x);
+        Xrotation -= context.y;
+        Xrotation = Mathf.Clamp(Xrotation, -70, 70);
+        if ((lookVector.y > 0 && cameraTransform.eulerAngles.x > -70) || (lookVector.y < 0 && cameraTransform.eulerAngles.x < 70))
+        {
+            //cameraTransform.Rotate(Vector3.right, lookVector.y);
+        }
+        cameraTransform.localEulerAngles = new Vector3(Xrotation, 0, 0);
     }
 }
