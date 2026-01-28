@@ -7,10 +7,18 @@ public class Health : MonoBehaviour
 {
     [SerializeField] private int health;
     [SerializeField, Min(1)] private int maxHealth = 1;
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+    public event Action<int>? OnTakeDamage;
+    public event Action? OnDeath;
+    /// <summary>
+    /// if health or max health changes this will activate.<br/>
+    /// order is: current health, max health. <br/>
+    /// it is the new values that are given, not the difference in values.
+    /// </summary>
+    public event Action<int, int>? OnChangeHealths;
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 
-    public event Action<int> OnTakeDamage;
-    public event Action OnDeath;
-    public bool Dead { get { return health <= 0; } }
+    public bool Dead { private set; get; } = false;
 
     private void OnDestroy()
     {
@@ -22,6 +30,9 @@ public class Health : MonoBehaviour
     {
         health = maxHealth;
     }
+
+    public int GetHealth() { return health; }
+    public int GetMaxHealth() { return maxHealth; }
 
     public void Kill()
     {
@@ -38,6 +49,8 @@ public class Health : MonoBehaviour
         if(Dead) return false;
 
         health += amount;
+
+        OnChangeHealths?.Invoke(health, maxHealth);
 
         if (health <= 0)
         {
@@ -66,24 +79,15 @@ public class Health : MonoBehaviour
 
         if (Dead || amount <= 0) return false;
 
-        health -= amount;
-
         OnTakeDamage?.Invoke(amount);
 
-        if (health <= 0)
-        {
-            Die();
-        }
+        ChangeHealth(-amount);
 
         return true;
     }
     private void Die()
     {
+        Dead = true;
         OnDeath?.Invoke();
     }
-
-#if UNITY_INCLUDE_TESTS
-    public int GetHealth() { return health; }
-    public int GetMaxHealth() { return maxHealth; }
-#endif
 }
