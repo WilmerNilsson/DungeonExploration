@@ -3,16 +3,8 @@ using UnityEngine;
 
 public class InvMaster : MonoBehaviour
 {
-    public InvMaster GetInvMasterInstance;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public static InvMaster GetInvMasterInstance;
+    [SerializeField, Min(1)] private int collumns = 1;
+    [SerializeField, Min(1)] private int rows = 1;
+    [SerializeField] private RectTransform inventoryGrid;
 }
