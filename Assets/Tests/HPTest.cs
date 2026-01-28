@@ -35,10 +35,28 @@ public class HPTest
         Assert.Less(1, health.GetHealth(), "health too low for testing");
         Assert.IsFalse(health.Dead, "spawned dead");
         int oldHP = health.GetHealth();
+
         health.TakeDamage(1);
         Assert.AreEqual(health.GetHealth()+1, oldHP, "health did not decrement by 1 after taking 1 damage");
         health.TakeDamage(health.GetHealth());
         Assert.AreEqual(health.GetHealth(), 0, "health did not reach 0 after taking a amount of damage equal to current health");
         Assert.IsTrue(health.Dead, "Dead bool is false after reaching 0 health");
+    }
+
+    [UnityTest]
+    public IEnumerator HPAndDamageInterractTest()
+    {
+        yield return null;
+        Assert.AreEqual(health.GetHealth(), health.GetMaxHealth(), "Max hp and currentHp are not equal", this);
+        Assert.Less(1, health.GetHealth(), "health too low for testing");
+        Assert.IsFalse(health.Dead, "spawned dead");
+
+        int oldHP = health.GetHealth();
+
+        SimpleDamage simpleDamage = Object.FindAnyObjectByType<SimpleDamage>();
+        simpleDamage.transform.position = health.transform.position;
+        yield return null;
+
+        Assert.Less(health.GetHealth(), oldHP, "health did not decrement after damage collider was placed over it");
     }
 }
