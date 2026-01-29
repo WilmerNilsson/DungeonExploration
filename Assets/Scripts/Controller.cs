@@ -4,6 +4,7 @@ public class Controller : MonoBehaviour
 {
     [Header("Sub Scripts")]
     [SerializeField] private Movement movement;
+    [SerializeField] private Rotation rotation;
 
     public bool isSprinting;
     public bool isCrouching;
@@ -30,8 +31,8 @@ public class Controller : MonoBehaviour
         movement.Jump();
     }
 
-    public void Rotate(float angle)
+    public void Rotate(Quaternion rotationQuaternion)
     {
-        movement.Rotate(angle);
+        rotation.Rotate(rotationQuaternion);
     }
 }

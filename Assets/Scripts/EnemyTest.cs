@@ -13,6 +13,7 @@ public class EnemyTest : MonoBehaviour
     
     private Vector3 currentTarget;
     private Vector3 oldTarget;
+    private Vector3 realTarget;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -22,15 +23,12 @@ public class EnemyTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (path.corners.Length > 1)
-        {
-            currentTarget = path.corners[1]-transform.position;
-        }
         if (currentTarget != oldTarget)
         {
             oldTarget = currentTarget;
-            controller.Rotate(Vector2.Angle(new Vector2(transform.forward.x,transform.forward.z), new Vector2(currentTarget.x, currentTarget.z)));
-            controller.Move(transform.forward);
+            realTarget = currentTarget - transform.position;
+            controller.Rotate(Quaternion.LookRotation(realTarget));
+            //controller.Move(transform.forward);
         }
     }
 
@@ -45,6 +43,7 @@ public class EnemyTest : MonoBehaviour
             else
             {
                 agent.CalculatePath(other.transform.position, path);
+                currentTarget = path.corners[1];
             }
         }
     }
@@ -67,12 +66,9 @@ public class EnemyTest : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        // Vector3[] nodes = agentMove ? agent.path.corners : path.corners;
-        // Gizmos.color = Color.red;
-        // for (int i = 0; i < nodes.Length-1; i++)
-        // {
-        //     Gizmos.DrawSphere(nodes[i+1], 0.1f);
-        //     Gizmos.DrawLine(nodes[i], nodes[i+1]);
-        // }
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawSphere(currentTarget, 0.1f);
+        Gizmos.DrawLine(transform.position, currentTarget);
     }
 }

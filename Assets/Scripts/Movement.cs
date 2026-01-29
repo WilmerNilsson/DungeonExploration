@@ -29,7 +29,7 @@ public class Movement : MonoBehaviour
         
         if (!IsGrounded()) //In air
         {
-            rb.linearVelocity = new Vector3(Mathf.Clamp(rb.linearVelocity.x + rotatedVector.x * airMoveSpeed, -sprintSpeed, sprintSpeed),
+            rb.linearVelocity = new Vector3(Mathf.Clamp(rb.linearVelocity.x + rotatedVector.x * airMoveSpeed, -currentSpeed, currentSpeed),
                 rb.linearVelocity.y, Mathf.Clamp(rb.linearVelocity.z + rotatedVector.z * airMoveSpeed, -currentSpeed, currentSpeed));
         }
         else
@@ -62,11 +62,6 @@ public class Movement : MonoBehaviour
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
         }
-    }
-
-    public void Rotate(float angle)
-    {
-        transform.Rotate(Vector3.up, angle);
     }
     
     private bool IsGrounded()

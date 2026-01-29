@@ -5,13 +5,11 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Controller controller;
-    [SerializeField] private Transform cameraTransform;
     
     [SerializeField] private float mouseSensitivity;
     [SerializeField] private float stickSensitivity;
     
     private Vector2 lookVector;
-    private float Xrotation;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -80,13 +78,13 @@ public class PlayerController : MonoBehaviour
 
     private void Rotate(Vector2 context)
     {
-        controller.Rotate(context.x);
-        Xrotation -= context.y;
-        Xrotation = Mathf.Clamp(Xrotation, -70, 70);
-        if ((lookVector.y > 0 && cameraTransform.eulerAngles.x > -70) || (lookVector.y < 0 && cameraTransform.eulerAngles.x < 70))
-        {
-            //cameraTransform.Rotate(Vector3.right, lookVector.y);
-        }
-        cameraTransform.localEulerAngles = new Vector3(Xrotation, 0, 0);
+        lookVector.x -= context.y;
+        lookVector.y += context.x;
+        
+        lookVector.x = Mathf.Clamp(lookVector.x, -70f, 70f);
+        
+        controller.Rotate(Quaternion.AngleAxis(lookVector.y, Vector3.up) * Quaternion.AngleAxis(lookVector.x, Vector3.right));
+        
+        //Debug.Log(Quaternion.AngleAxis(lookVector.y, Vector3.up) * Quaternion.AngleAxis(lookVector.x, Vector3.right));
     }
 }
