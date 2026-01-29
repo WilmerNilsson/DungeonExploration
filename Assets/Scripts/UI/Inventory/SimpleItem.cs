@@ -4,29 +4,30 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(RectTransform))]
 public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    private RectTransform rectTransform;
+    public RectTransform RectTransform { get { return (transform as RectTransform); } }
     private bool isDragging;
-
-    private void Start()
-    {
-        rectTransform = transform as RectTransform;
-    }
+    Vector2 returnPos;
 
     private void Update()
     {
         if (isDragging)
         { 
-            rectTransform.position = Input.mousePosition;
+            RectTransform.position = Input.mousePosition;
         }
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        returnPos = RectTransform.position;
         isDragging = true;
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
         isDragging = false;
+        if(!InvMaster.InvMasterInstance.TryPlaceItem(this))
+        {
+            RectTransform.position = returnPos;
+        }
     }
 }
