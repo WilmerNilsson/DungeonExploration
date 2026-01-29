@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float stickSensitivity;
     
     private Vector2 lookVector;
+    private Vector3 moveVector;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -26,18 +28,18 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            controller.Move(new Vector3(context.ReadValue<Vector2>().x, 0, context.ReadValue<Vector2>().y));
+            moveVector = new Vector3(context.ReadValue<Vector2>().x, 0, context.ReadValue<Vector2>().y);
         }
-
         if (context.canceled)
         {
-            controller.Move(Vector3.zero);
+            moveVector = Vector3.zero;
         }
+        controller.Move(moveVector);
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        controller.Jump();
+        if (context.performed) controller.Jump();
     }
     
     public void OnSprint(InputAction.CallbackContext context)
@@ -76,6 +78,16 @@ public class PlayerController : MonoBehaviour
         Rotate(context.ReadValue<Vector2>() * stickSensitivity);
     }
 
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        controller.Interact();
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        
+    }
+
     private void Rotate(Vector2 context)
     {
         lookVector.x -= context.y;
@@ -84,7 +96,5 @@ public class PlayerController : MonoBehaviour
         lookVector.x = Mathf.Clamp(lookVector.x, -70f, 70f);
         
         controller.Rotate(Quaternion.AngleAxis(lookVector.y, Vector3.up) * Quaternion.AngleAxis(lookVector.x, Vector3.right));
-        
-        //Debug.Log(Quaternion.AngleAxis(lookVector.y, Vector3.up) * Quaternion.AngleAxis(lookVector.x, Vector3.right));
     }
 }

@@ -120,6 +120,7 @@ GameObject:
   - component: {fileID: 4858494153439666970}
   - component: {fileID: 1878137323481184442}
   - component: {fileID: 5823277211771865935}
+  - component: {fileID: -8534321769884439687}
   - component: {fileID: 4612578766106565978}
   - component: {fileID: 2133758242574987440}
   - component: {fileID: 6646080871340931527}
@@ -161,6 +162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movement: {fileID: 1878137323481184442}
   rotation: {fileID: 5823277211771865935}
+  interaction: {fileID: -8534321769884439687}
   isSprinting: 0
   isCrouching: 0
 --- !u!114 &1878137323481184442
@@ -196,6 +198,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyTransform: {fileID: 3016168738674608329}
   headTransform: {fileID: 3438904474607824357}
+--- !u!114 &-8534321769884439687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4762914387664306239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d6cb9b6668a66b4fabe5c6e684e8eda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  head: {fileID: 3438904474607824357}
+  interactDistance: 5
 --- !u!54 &4612578766106565978
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -5,6 +5,7 @@ public class Controller : MonoBehaviour
     [Header("Sub Scripts")]
     [SerializeField] private Movement movement;
     [SerializeField] private Rotation rotation;
+    [SerializeField] private Interaction interaction;
 
     public bool isSprinting;
     public bool isCrouching;
@@ -34,5 +35,15 @@ public class Controller : MonoBehaviour
     public void Rotate(Quaternion rotationQuaternion)
     {
         rotation.Rotate(rotationQuaternion);
+    }
+    
+    public void Interact()
+    {
+        interaction.Interact();
+    }
+
+    public void Attack()
+    {
+        
     }
 }
