@@ -148,4 +148,12 @@ public class WilmerPlayerController : MonoBehaviour
             transform.localScale = new Vector3(1, 1, 1);
         }
     }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed && GetComponentInChildren<AttackPlayer>())
+        {
+            GetComponentInChildren<AttackPlayer>().Attack();
+        }
+    }
 }
