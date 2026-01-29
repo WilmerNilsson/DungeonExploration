@@ -6,6 +6,8 @@ public class AttackPlayer : MonoBehaviour
 {
     private Animation myAnimation;
     [SerializeField, Min(0f)] private float minTimeBetweenAttacks;
+    [SerializeField, Min(1)] private int durability = 1;
+    [SerializeField] private bool unbreakable;
 
     private bool isInCooldown = false;
 
@@ -32,5 +34,18 @@ public class AttackPlayer : MonoBehaviour
         isInCooldown = true;
         yield return new WaitForSeconds(minTimeBetweenAttacks);
         isInCooldown = false;
+    }
+
+    public void LoseDurability(int amount)
+    {
+        if (unbreakable)
+        {
+            return;
+        }
+        durability -= amount;
+        if (durability <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }
