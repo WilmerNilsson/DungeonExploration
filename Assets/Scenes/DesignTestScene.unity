@@ -7347,7 +7347,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1333650528}
-  - {fileID: 858980832}
   - {fileID: 133631974}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9678,9 +9677,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraTransform: {fileID: 510437654}
+  groundCheck: {fileID: 0}
   moveSpeed: 3
   sprintSpeed: 5
   crouchSpeed: 1
+  airMoveSpeed: 0.1
   jumpForce: 5
   mouseSensitivity: 0.5
   stickSensitivity: 1.5
@@ -36385,6 +36386,8 @@ GameObject:
   - component: {fileID: 858980832}
   - component: {fileID: 858980834}
   - component: {fileID: 858980833}
+  - component: {fileID: 858980835}
+  - component: {fileID: 858980836}
   m_Layer: 0
   m_Name: TilemapRooms
   m_TagString: Untagged
@@ -36909,7 +36912,7 @@ Transform:
   - {fileID: 1813297596}
   - {fileID: 106056335}
   - {fileID: 1188928653}
-  m_Father: {fileID: 166796906}
+  m_Father: {fileID: 1333650528}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &858980833
 TilemapRenderer:
@@ -37001,6 +37004,52 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &858980835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858980831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b558bbf17a36c0845aeaf5e2b345d835, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFloorTile: 0
+  HasTile: 0
+--- !u!114 &858980836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858980831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_AgentTypeID: 0
+  m_CollectObjects: 2
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: 10d96abe8f69d2e4c911b95bef43a349, type: 2}
+  m_BuildHeightMesh: 0
 --- !u!1001 &859488525
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -56235,6 +56284,8 @@ GameObject:
   - component: {fileID: 1333650528}
   - component: {fileID: 1333650530}
   - component: {fileID: 1333650529}
+  - component: {fileID: 1333650531}
+  - component: {fileID: 1333650532}
   m_Layer: 0
   m_Name: TilemapPath
   m_TagString: Untagged
@@ -56449,6 +56500,7 @@ Transform:
   - {fileID: 1510741003}
   - {fileID: 838150064}
   - {fileID: 1780052600}
+  - {fileID: 858980832}
   m_Father: {fileID: 166796906}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &1333650529
@@ -56541,6 +56593,52 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &1333650531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333650527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b558bbf17a36c0845aeaf5e2b345d835, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFloorTile: 0
+  HasTile: 0
+--- !u!114 &1333650532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333650527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SerializedVersion: 0
+  m_AgentTypeID: 0
+  m_CollectObjects: 2
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: 6b5e8136a45fa1c4dba70bb752756dbe, type: 2}
+  m_BuildHeightMesh: 0
 --- !u!4 &1335889072 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5039254210668747643, guid: 2cfd277f5e02a444a9c89d24ff8e3b99, type: 3}
