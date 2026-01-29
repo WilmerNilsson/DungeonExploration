@@ -9,6 +9,10 @@ public class SimpleDamage : MonoBehaviour
         if(other.TryGetComponent(out Health health))
         {
             health.TakeDamage(damage);
+            if (GetComponentInParent<AttackPlayer>())
+            {
+                GetComponentInParent<AttackPlayer>().LoseDurability(health.durabilityDamage);
+            }
         }
 #if DEBUG
         else

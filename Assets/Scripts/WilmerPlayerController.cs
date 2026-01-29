@@ -62,7 +62,7 @@ public class WilmerPlayerController : MonoBehaviour
         if (!groundCheck.GetIsGrounded()) //In air
         {
             //transform.position += Time.deltaTime * currentSpeed * rotatedVector;
-            rb.linearVelocity = new Vector3(Mathf.Clamp(rb.linearVelocity.x + rotatedVector.x * airMoveSpeed, -sprintSpeed, sprintSpeed),
+            rb.linearVelocity = new Vector3(Mathf.Clamp(rb.linearVelocity.x + rotatedVector.x * airMoveSpeed, -currentSpeed, currentSpeed),
             rb.linearVelocity.y, Mathf.Clamp(rb.linearVelocity.z + rotatedVector.z * airMoveSpeed, -currentSpeed, currentSpeed));
         }
         else
@@ -146,6 +146,14 @@ public class WilmerPlayerController : MonoBehaviour
             //currentSpeed = moveSpeed;
             isCrouching = false;
             transform.localScale = new Vector3(1, 1, 1);
+        }
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed && GetComponentInChildren<AttackPlayer>())
+        {
+            GetComponentInChildren<AttackPlayer>().Attack();
         }
     }
 }
