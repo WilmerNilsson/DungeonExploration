@@ -4,30 +4,49 @@ using UnityEngine.InputSystem;
 
 public class InteractTest : MonoBehaviour
 {
-    private LayerMask layerMask;
+    [SerializeField] private LayerMask layerMask;
     [SerializeField] private float interactDistance = 5f;
-    private void Awake()
+    [SerializeField] private GameObject UIText;
+    private Interactable interactable;
+
+    private void FixedUpdate()
     {
-        layerMask = LayerMask.GetMask("Interactable");
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, interactDistance, layerMask))
+        {
+            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Interactable"))
+            {
+                Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.green);
+                //Debug.Log("Did Hit");
+                //Debug.Log(hit.transform.gameObject.name);
+                if (!interactable)
+                {
+                    interactable = hit.transform.gameObject.GetComponent<Interactable>();
+                    UIText.SetActive(true);
+                }
+                
+            }
+            else
+            {
+                Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.yellow);
+                //Debug.Log("Hit something else");
+                interactable = null;
+                UIText.SetActive(false);
+            }
+        }
+        else
+        {
+            Debug.DrawRay(transform.position, transform.forward * 1000, Color.red);
+            //Debug.Log("Did not Hit");
+            interactable = null;UIText.SetActive(false);
+        }
     }
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && interactable)
         {
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, transform.forward, out hit, interactDistance, layerMask))
-            {
-                Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.green);
-                /*Debug.Log("Did Hit");
-                Debug.Log(hit.transform.gameObject.name);*/
-                hit.transform.gameObject.GetComponent<Interactable>().Interact();
-            }
-            else
-            {
-                Debug.DrawRay(transform.position, transform.forward * 1000, Color.red);
-                //Debug.Log("Did not Hit");
-            }
+            interactable.Interact();
         }
     }
 }
