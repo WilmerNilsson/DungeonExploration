@@ -6,6 +6,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private Movement movement;
     [SerializeField] private Rotation rotation;
     [SerializeField] private Interaction interaction;
+    [SerializeField] private Attacking attacking;
 
     public bool isSprinting;
     public bool isCrouching;
@@ -44,6 +45,6 @@ public class Controller : MonoBehaviour
 
     public void Attack()
     {
-        
+        attacking.Attack();
     }
 }
