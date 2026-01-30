@@ -19,12 +19,8 @@ public class InteractTest : MonoBehaviour
                 Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.green);
                 //Debug.Log("Did Hit");
                 //Debug.Log(hit.transform.gameObject.name);
-                if (!interactable)
-                {
-                    interactable = hit.transform.gameObject.GetComponent<Interactable>();
-                    UIText.SetActive(true);
-                }
-                
+                interactable = hit.transform.gameObject.GetComponent<Interactable>();
+                UIText.SetActive(true);
             }
             else
             {
@@ -38,7 +34,8 @@ public class InteractTest : MonoBehaviour
         {
             Debug.DrawRay(transform.position, transform.forward * 1000, Color.red);
             //Debug.Log("Did not Hit");
-            interactable = null;UIText.SetActive(false);
+            interactable = null;
+            UIText.SetActive(false);
         }
     }
 
