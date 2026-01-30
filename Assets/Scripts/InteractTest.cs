@@ -14,11 +14,10 @@ public class InteractTest : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, interactDistance, layerMask))
         {
-            if (hit.transform.gameObject.layer == LayerMask.NameToLayer("Interactable"))
+            if (hit.transform.gameObject.GetComponent<Interactable>())
             {
                 Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.green);
                 //Debug.Log("Did Hit");
-                //Debug.Log(hit.transform.gameObject.name);
                 interactable = hit.transform.gameObject.GetComponent<Interactable>();
                 UIText.SetActive(true);
             }
