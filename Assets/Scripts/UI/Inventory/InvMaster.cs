@@ -66,13 +66,15 @@ public class InvMaster : MonoBehaviour
 
         bool[,] itemSlots = item.GetSizeMatrix();
 
+#if DEBUG
         for (int x = 0; x < itemSlots.GetLength(0); x++)
         {
             for (int y = 0; y < itemSlots.GetLength(1); y++)
             {
-                Debug.Log($"item takes up: {x},{y} - {itemSlots[x,y]}");
+                //Debug.Log($"item takes up: {x},{y} - {itemSlots[x,y]}");
             }
         }
+#endif
 
         //TODO work in piviot
         if (TryGetSlotOfPos(pos, out int collum, out int row, out Rect slot))
@@ -83,10 +85,10 @@ public class InvMaster : MonoBehaviour
             {
                 for (int y = 0; y<itemSlots.GetLength(1); y++)
                 {
-                    if ((InvSlotExists(collum + x, row + y) && 
+                    if ((InvSlotExists(collum + x - item.Piviot.x, row + y - item.Piviot.y) && 
                         itemSlots[x,y] == true &&
-                        (invData[collum + x, row + y] == null ||
-                        invData[collum + x, row + y] == item)
+                        (invData[collum + x - item.Piviot.x, row + y - item.Piviot.y] == null ||
+                        invData[collum + x - item.Piviot.x, row + y - item.Piviot.y] == item)
 
                         ) ||
                         itemSlots[x, y] == false)
@@ -110,7 +112,7 @@ public class InvMaster : MonoBehaviour
                 {
                     if (itemSlots[x,y] == true)
                     {
-                        invData[collum + x, row + y] = item;
+                        invData[collum + x - item.Piviot.x, row + y - item.Piviot.y] = item;
                     }
                 }
             }

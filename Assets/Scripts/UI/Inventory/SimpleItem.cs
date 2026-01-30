@@ -11,6 +11,7 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public RectTransform RectTransform { get { return (transform as RectTransform); } }
     private bool isDragging;
     Vector2 returnPos;
+    public Vector2Int Piviot {get{ return piviot; } }
 
     private enum sizes
     {
