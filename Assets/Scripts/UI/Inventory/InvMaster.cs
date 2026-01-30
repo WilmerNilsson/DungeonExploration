@@ -83,32 +83,35 @@ public class InvMaster : MonoBehaviour
             {
                 for (int y = 0; y<itemSlots.GetLength(1); y++)
                 {
-                    if (itemSlots[x,y] == true && invData[collum + x, row + y] == null)
+                    if ((InvSlotExists(collum + x, row + y) && 
+                        itemSlots[x,y] == true &&
+                        (invData[collum + x, row + y] == null ||
+                        invData[collum + x, row + y] == item)
+
+                        ) ||
+                        itemSlots[x, y] == false)
                     {
                         //continue;
                     }
                     else
                     {
-                        Debug.Log("piviot offset by: " + x + "," + y + " not clear");
-                        Debug.Log("slot: " + (collum + x) + "," + (row + y));
-                        Debug.Log("itemSlots[x,y]: " + itemSlots[x, y]);
-                        Debug.Log("empty slot?" + invData[collum + x, row + y] == null);
 
                         return false;
                     }
                 }
             }
-
             //by this point it is clear that we can place the item
 
-            //TODO remove all slot ref, not just the first
-            TryRemoveSlottedItem(item);
+            RemoveSlottedItem(item);
 
             for (int x = 0; x < itemSlots.GetLength(0); x++)
             {
                 for (int y = 0; y < itemSlots.GetLength(1); y++)
                 {
-                    invData[collum+x, row+y] = item;
+                    if (itemSlots[x,y] == true)
+                    {
+                        invData[collum + x, row + y] = item;
+                    }
                 }
             }
             item.RectTransform.position = slot.center;
@@ -116,6 +119,13 @@ public class InvMaster : MonoBehaviour
         }
 
         return false;
+    }
+
+    private bool InvSlotExists(int collumn, int row)
+    {
+        if(collumn < 0 || row < 0 || collumn >= invData.GetLength(0) || row >= invData.GetLength(1))
+            { return false; }
+        return true;
     }
 
     
@@ -171,20 +181,20 @@ public class InvMaster : MonoBehaviour
         return false;
     }
 
-    private bool TryRemoveSlottedItem(SimpleItem item)
+    private void RemoveSlottedItem(SimpleItem item)
     {
+        //we have to itterate trough all cause items can be bigger
+        //alternativly we can count the size and stopp itterating once we have [size] amount of hits
         for (int collum = 0; collum < invData.GetLength(0); collum++)
         {
-            for(int row = 0; row < invData.GetLength(1);row++)
+            for(int row = 0; row < invData.GetLength(1); row++)
             {
                 if (invData[collum, row] == item)
                 {
                     invData[collum, row] = null;
-                    return true;
                 }
             }
         }
-        return false;
     }
 
 }
