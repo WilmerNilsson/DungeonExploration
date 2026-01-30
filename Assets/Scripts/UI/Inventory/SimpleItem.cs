@@ -4,6 +4,8 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(RectTransform))]
 public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+    [SerializeField, Tooltip("what slot the center is, 0,0 is bottom left")]
+    private Vector2Int piviot;
     [SerializeField] private sizes size;
 
     public RectTransform RectTransform { get { return (transform as RectTransform); } }
@@ -19,7 +21,7 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         xxNxx
     }
 
-    private bool[,] GetSizeMatrix()
+    public bool[,] GetSizeMatrix()
     {
         switch (size)
         {
@@ -36,14 +38,15 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 bool[,] xxx = { { true, true, true } };
 
                 return xxx;
-                break;
             case sizes.xxNxo:
-                bool[,] xxNxo = { { true, true}, { true, false } };
+                bool[,] xxNxo = { { true, true },
+                                  { false, true} };
 
                 return xxNxo;
             case sizes.xxNxx:
 
-                bool[,] xxNxx = { { true, true }, { true, true } };
+                bool[,] xxNxx = { { true, true },
+                                  { true, true } };
 
                 return xxNxx;
             

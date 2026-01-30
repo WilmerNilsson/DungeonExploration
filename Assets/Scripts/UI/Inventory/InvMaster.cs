@@ -1,5 +1,7 @@
+using Unity.Plastic.Antlr3.Runtime;
 using UnityEditor.Graphs;
 using UnityEngine;
+using static Codice.Client.Commands.WkTree.WorkspaceTreeNode;
 
 
 public class InvMaster : MonoBehaviour
@@ -61,36 +63,89 @@ public class InvMaster : MonoBehaviour
     public bool TryPlaceItem(SimpleItem item)
     {
         Vector2 pos = item.RectTransform.position;
-        Rect bigRect = GetBigRect();
 
-        if (!bigRect.Contains(pos)) return false;
+        bool[,] itemSlots = item.GetSizeMatrix();
 
-        //big O can also decrease if we do a halving of the possible spaces
-        //instead of itterating trough all possible till we get a match
-        //not really needed unless the inventory is like 100000 spaces or something.
-        for (int collum = 0; collum < collumns; collum++)
+        for (int x = 0; x < itemSlots.GetLength(0); x++)
         {
-            for (int row = 0; row < rows; row++)
+            for (int y = 0; y < itemSlots.GetLength(1); y++)
             {
-                Rect slot = GetSlotRect(row, collum);
+                Debug.Log($"item takes up: {x},{y} - {itemSlots[x,y]}");
+            }
+        }
 
-                if(slot.Contains(pos))
+        //TODO work in piviot
+        if (TryGetSlotOfPos(pos, out int collum, out int row, out Rect slot))
+        {
+            Debug.Log("found piviot slot: " + collum + "," + row);
+
+            for (int x = 0; x<itemSlots.GetLength(0); x++)
+            {
+                for (int y = 0; y<itemSlots.GetLength(1); y++)
                 {
-                    if (invData[collum, row] == null)
+                    if (itemSlots[x,y] == true && invData[collum + x, row + y] == null)
                     {
-                        TryRemoveSlottedItem(item);
-
-                        invData[collum, row] = item;
-                        item.RectTransform.position = slot.center;
-                        return true;
+                        //continue;
                     }
                     else
                     {
+                        Debug.Log("piviot offset by: " + x + "," + y + " not clear");
+                        Debug.Log("slot: " + (collum + x) + "," + (row + y));
+                        Debug.Log("itemSlots[x,y]: " + itemSlots[x, y]);
+                        Debug.Log("empty slot?" + invData[collum + x, row + y] == null);
+
                         return false;
                     }
                 }
             }
+
+            //by this point it is clear that we can place the item
+
+            //TODO remove all slot ref, not just the first
+            TryRemoveSlottedItem(item);
+
+            for (int x = 0; x < itemSlots.GetLength(0); x++)
+            {
+                for (int y = 0; y < itemSlots.GetLength(1); y++)
+                {
+                    invData[collum+x, row+y] = item;
+                }
+            }
+            item.RectTransform.position = slot.center;
+            return true;
         }
+
+        return false;
+    }
+
+    
+    private bool TryGetSlotOfPos(Vector2 pos, out int collum, out int row, out Rect slot)
+    {
+        //slot should be nullable, but i could not get the nullable forgiving to work for some reason.
+
+        //big O can also decrease if we do a halving of the possible spaces
+        //instead of itterating trough all possible till we get a match
+        //not really needed unless the inventory is like 100000 spaces or something.
+
+        if (!GetBigRect().Contains(pos)) goto fail;
+
+        for (collum = 0; collum < collumns; collum++)
+        {
+            for (row = 0; row < rows; row++)
+            {
+                slot = GetSlotRect(collum, row);
+
+                if (slot.Contains(pos))
+                {
+                    return true;
+                }
+            }
+        }
+
+    fail:
+        collum = 0;
+        row = 0;
+        slot = new();
         return false;
     }
 
