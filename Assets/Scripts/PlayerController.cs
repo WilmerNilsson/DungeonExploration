@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
 
         if (context.canceled)
         {
-            controller.isCrouching = true;
+            controller.isCrouching = false;
         }
     }
     
