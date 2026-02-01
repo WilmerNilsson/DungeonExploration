@@ -10,9 +10,10 @@ public class EnemyTest : MonoBehaviour
     [SerializeField] private Controller controller;
 
     private NavMeshPath path;
+    private bool hasTarget;
+    private Transform target;
     
     private Vector3 currentTarget;
-    private Vector3 oldTarget;
     private Vector3 realTarget;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -23,28 +24,22 @@ public class EnemyTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (currentTarget != oldTarget)
+        if (hasTarget)
         {
-            oldTarget = currentTarget;
+            agent.CalculatePath(target.position, path);
+            currentTarget = path.corners[1];
             realTarget = currentTarget - transform.position;
             controller.Rotate(Quaternion.LookRotation(realTarget));
-            //controller.Move(transform.forward);
+            controller.Move(Vector3.forward);
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            if (agentMove)
-            {
-                agent.destination = other.transform.position;
-            }
-            else
-            {
-                agent.CalculatePath(other.transform.position, path);
-                currentTarget = path.corners[1];
-            }
+            target = other.transform;
+            hasTarget = true;
         }
     }
 
@@ -52,15 +47,9 @@ public class EnemyTest : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (agentMove)
-            {
-                agent.ResetPath();
-            }
-            else
-            {
-                path.ClearCorners();
-            }
-            
+            hasTarget = false;
+            path.ClearCorners();
+            controller.Move(Vector3.zero);
         }
     }
 
@@ -70,5 +59,8 @@ public class EnemyTest : MonoBehaviour
 
         Gizmos.DrawSphere(currentTarget, 0.1f);
         Gizmos.DrawLine(transform.position, currentTarget);
+        
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, transform.position + transform.forward);
     }
 }

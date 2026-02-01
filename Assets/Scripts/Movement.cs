@@ -14,6 +14,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private float jumpForce = 5;
     private Vector3 moveVector;
     private Vector3 rotatedVector;
+    
     private float currentSpeed;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
