@@ -3,9 +3,9 @@ using UnityEngine;
 public class Attacking : MonoBehaviour
 {
     [SerializeField] private Animator animator;
-    [SerializeField] private AnimationClip attack;
-    
-    private bool isInCooldown = false;
+    [SerializeField] private string stateName;
+
+    [SerializeField] private Collider weapon;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,6 +20,16 @@ public class Attacking : MonoBehaviour
 
     public void Attack()
     {
-        animator.Play("Swing");
+        animator.Play(stateName);
+    }
+
+    public void Activate()
+    {
+        weapon.enabled = true;
+    }
+
+    public void Deactivate()
+    {
+        weapon.enabled = false;
     }
 }
