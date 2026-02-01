@@ -15,7 +15,6 @@ using UnityEditor;
 [CreateAssetMenu(fileName = "EventList", menuName = "Scriptable Objects/EventList")]
 public class EventList : ScriptableObject //TODO: Metoder, flytta cache till AudioManager? typ dictionary<path, eventData>?
 {
-    
     #region EventData
     
     [Serializable]
@@ -132,15 +131,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
     #endregion
 
     #region Music
-
-    public void CreateInstance(string eventName)
-    {
-        if (FetchEvent(eventName, out var eventData))
-        {
-            eventData.eventInstance = RuntimeManager.CreateInstance(eventData.guid);
-        }
-    }
-
+    
     public void ReleaseInstance(string eventName)
     {
         if (FetchEvent(eventName, out var eventData))
@@ -149,8 +140,8 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         }
     }
     
-    //Start - om instans inte finns skapa en
-    //Stop
+    //Start - om instans inte finns skapa en, undvik att starta om
+    //Stop - med stopmode
     //SetParameter
     //KeyOff
 
