@@ -45,10 +45,4 @@ public class ItemClickFilter : MonoBehaviour, ICanvasRaycastFilter
     {
         item = GetComponent<SimpleItem>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
