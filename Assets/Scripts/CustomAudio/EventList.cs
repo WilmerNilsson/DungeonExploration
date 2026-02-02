@@ -7,6 +7,7 @@ using FMODUnity;
 using Debug = UnityEngine.Debug;
 using GUID = FMOD.GUID;
 using Object = System.Object;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -116,7 +117,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
 
     private Dictionary<string, EventData> _eventCache = new Dictionary<string, EventData>();
 
-    public bool TryGetEvent(string eventName, out EventData eventData)
+    private bool TryGetEvent(string eventName, out EventData eventData)
     {
         if (_eventCache.TryGetValue(eventName, out eventData))
         {
@@ -130,7 +131,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
     
     #endregion
 
-    #region Music
+    #region General
     
     public void ReleaseInstance(string eventName)
     {
@@ -139,17 +140,70 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
             eventData.eventInstance.release();
         }
     }
-    
-    //Start - om instans inte finns skapa en, undvik att starta om
-    //Stop - med stopmode
-    //SetParameter
-    //KeyOff
 
+    public new void CreateInstance(string eventName)
+    {
+        if (TryGetEvent(eventName, out var eventData))
+        {
+            eventData.eventInstance = RuntimeManager.CreateInstance(eventData.eventReference);
+        }
+    }
+    
+    public void SetParameter(string eventName, string paramName, float paramValue)
+    {
+        if (!TryGetEvent(eventName, out var eventData)) return;
+        if (!eventData.ParameterCache.TryGetValue(paramName, out var parameterData)) return;
+        
+        if (parameterData.isGlobal)
+        {
+            RuntimeManager.StudioSystem.setParameterByID(parameterData.ID(), paramValue);
+        }
+        else
+        {
+            eventData.eventInstance.setParameterByID(parameterData.ID(), paramValue);
+        }
+    }
+    
+    #endregion
+    
+    #region Music
+    
+    public void StartMusic(string eventName)
+    {
+        if (TryGetEvent(eventName, out var eventData))
+        {
+            if (!eventData.eventInstance.isValid())
+                CreateInstance(eventName);
+            eventData.eventInstance.getPlaybackState(out var playbackState);
+            if (playbackState == PLAYBACK_STATE.PLAYING) return;
+            else
+            {
+                eventData.eventInstance.start();
+            }
+        }
+    }
+
+    public void StopMusic(string eventName, STOP_MODE stopMode)
+    {
+        if (TryGetEvent(eventName, out var eventData))
+        {
+            eventData.eventInstance.stop(stopMode);
+        }
+    }
+
+    public void KeyOff(string eventName)
+    {
+        if (TryGetEvent(eventName, out var eventData))
+        {
+            eventData.eventInstance.keyOff();
+        }
+    }
+    
     #endregion
 
     #region SFX
 
-    public void PlayOneShot(string eventName, string[] paramNames = null, float[] paramValues = null ,GameObject gameObject = null)
+    public void PlayOneShot(string eventName, string[] paramNames = null, float[] paramValues = null ,GameObject gameObject = null, bool followSource = true)
     {
         if (TryGetEvent(eventName, out var eventData))
         {
@@ -163,29 +217,50 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
 
             if (gameObject != null && eventData.is3D)
             {
-                RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+                if (followSource) RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+                else instance.set3DAttributes(gameObject.transform.To3DAttributes());
             }
 
             instance.start();
             instance.release();
         }
     }
-
-    private void Test()
-    {
-        var material = 1f;
-        string[] pStrings = { "Material" };
-        float[] pValues = { material };
-        var go = new GameObject();
-        PlayOneShot("name", null, null);
-    }
-
+    
     #endregion
 
     #region Ambience
-    
-    //PlayAmbience
 
+    private Dictionary<GameObject, EventInstance> ambienceInstances = new Dictionary<GameObject, EventInstance>();
+
+    public void CreateAmbienceInstance(string eventName, GameObject gameObject)
+    {
+        if (TryGetEvent(eventName, out var eventData))
+        {
+            if (eventData.isOneShot) return;
+            var instance = RuntimeManager.CreateInstance(eventData.eventReference);
+            ambienceInstances.Add(gameObject, instance);
+        }
+    }
+    
+    public void StartAmbience(string eventName, GameObject gameObject, bool attachToObject = false, bool followSource = true)
+    {
+        if (TryGetEvent(eventName, out var eventData))
+        {
+            if (eventData.isOneShot) return;
+            var instance = RuntimeManager.CreateInstance(eventData.eventReference);
+            ambienceInstances.Add(gameObject, instance);
+            
+            if (gameObject != null && eventData.is3D && attachToObject)
+            {
+                if (followSource) RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+                else instance.set3DAttributes(gameObject.transform.To3DAttributes());
+            }
+
+            instance.start();
+        }
+    }
+
+    //RuntimeUtils.to3dAttributes
     #endregion
     
     public string category;

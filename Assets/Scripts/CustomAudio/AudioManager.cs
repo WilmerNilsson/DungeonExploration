@@ -45,14 +45,15 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    private bool TryGetEventList(string category, out EventList eventList)
+    private bool TryGetEventList(string path, out EventList eventList, out string eventName)
     {
-        if (_eventListCache.TryGetValue(category, out eventList))
+        var split = path.Split('/');
+        if (_eventListCache.TryGetValue(split[0], out eventList))
         {
+            eventName = split[1];
             return true;
         }
-
-        eventList = null;
+        eventName = null;
         return false;
     }
 
@@ -64,6 +65,22 @@ public class AudioManager : MonoBehaviour
 
     #region Music
 
+    public void CreateInstance(string path)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.CreateInstance(eventName);
+        }
+    }
+
+    public void ReleaseInstance(string path)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.ReleaseInstance(eventName);
+        }
+    }
+    
     #endregion
 
     #region SFX
@@ -71,10 +88,9 @@ public class AudioManager : MonoBehaviour
     public void PlayOneShot(string path, string[] paramNames = null, float[] paramValues = null,
         GameObject gameObj = null)
     {
-        var split = path.Split('/');
-        if (TryGetEventList(split[0], out var eventList))
+        if (TryGetEventList(path, out var eventList, out var eventName))
         {
-            eventList.PlayOneShot(split[^1], paramNames, paramValues, gameObj);
+            eventList.PlayOneShot(eventName, paramNames, paramValues, gameObj);
         }
     }
     
