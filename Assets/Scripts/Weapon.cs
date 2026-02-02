@@ -23,8 +23,8 @@ public class Weapon : MonoBehaviour
         if(other.TryGetComponent(out Health health))
         {
             health.TakeDamage(damage);
-            LoseDurability(health.durabilityDamage);
-            Debug.Log(health.GetHealth());
+            LoseDurability(health.DurabilityDamage);
+            Debug.Log(health.CurrentHealth);
         }
     }
     

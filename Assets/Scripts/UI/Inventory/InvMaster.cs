@@ -6,7 +6,7 @@ using static Codice.Client.Commands.WkTree.WorkspaceTreeNode;
 
 public class InvMaster : MonoBehaviour
 {
-    public static InvMaster InvMasterInstance
+    public static InvMaster Instance
     {
         get; private set; 
     }
@@ -21,9 +21,17 @@ public class InvMaster : MonoBehaviour
 
     private void Start()
     {
-        InvMasterInstance = this;
+        Instance = this;
         invData = new SimpleItem[collumns, rows];
     }
+
+#if DEBUG
+    private void OnValidate()
+    {
+        Vector2 slotSize = GetSlotSize();
+        if (slotSize.x != slotSize.y) Debug.LogWarning($"inventory slot width and height does not match. width is {slotSize.x}, height is {slotSize.y}", this);
+    }
+#endif
 
     //we prob want to save the resutls instead of recalculating every time.
     //But i will look into it when we start working or rezising the windows
@@ -60,6 +68,13 @@ public class InvMaster : MonoBehaviour
         return slot;
     }
 
+    public Vector2 GetSlotSize()
+    {
+        Rect bigRect = GetBigRect();
+
+        return new(bigRect.width / collumns, bigRect.height/rows);
+    }
+
     public bool TryPlaceItem(SimpleItem item)
     {
         Vector2 pos = item.RectTransform.position;
@@ -79,8 +94,6 @@ public class InvMaster : MonoBehaviour
         //TODO work in piviot
         if (TryGetSlotOfPos(pos, out int collum, out int row, out Rect slot))
         {
-            Debug.Log("found piviot slot: " + collum + "," + row);
-
             for (int x = 0; x<itemSlots.GetLength(0); x++)
             {
                 for (int y = 0; y<itemSlots.GetLength(1); y++)
@@ -129,7 +142,6 @@ public class InvMaster : MonoBehaviour
             { return false; }
         return true;
     }
-
     
     private bool TryGetSlotOfPos(Vector2 pos, out int collum, out int row, out Rect slot)
     {
