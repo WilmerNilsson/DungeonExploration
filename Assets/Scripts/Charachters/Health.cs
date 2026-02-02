@@ -11,7 +11,6 @@ public class Health : MonoBehaviour
     [SerializeField, Min(1)] private int maxHealth = 1;
     [SerializeField, Min(0)] public int DurabilityDamage;
     
-    private bool isInCooldown = false;
     [SerializeField, Min(0f)] private float minTimeBetweenDamage;
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public event Action<int>? OnTakeDamage;
@@ -116,14 +115,9 @@ public class Health : MonoBehaviour
 
         if (Dead || amount <= 0) return false;
 
-        if(!isInCooldown)
-        {
-            OnTakeDamage?.Invoke(amount);
+        OnTakeDamage?.Invoke(amount);
 
-            ChangeHealth(-amount);
-            
-            StartCoroutine(ImmunityCD());
-        }
+        ChangeHealth(-amount);
 
         return true;
     }
@@ -131,12 +125,5 @@ public class Health : MonoBehaviour
     {
         Dead = true;
         OnDeath?.Invoke();
-    }
-    
-    private IEnumerator ImmunityCD()
-    {
-        isInCooldown = true;
-        yield return new WaitForSeconds(minTimeBetweenDamage);
-        isInCooldown = false;
     }
 }
