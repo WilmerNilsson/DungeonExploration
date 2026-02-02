@@ -25,8 +25,13 @@ public class AudioManager : MonoBehaviour
         
         LoadStartBanks();
         RefreshVcaCache();
-        RefreshListCache();
+        RefreshEventListCache();
         RefreshGlobalParameterCache();
+
+        if (debug && !showOnlyWarnings)
+        {
+            Debug.Log("AudioManager Initialized");
+        }
     }
 
     #endregion
@@ -37,12 +42,17 @@ public class AudioManager : MonoBehaviour
 
     private Dictionary<string, EventList> _eventListCache;
 
-    private void RefreshListCache()
+    private void RefreshEventListCache()
     {
         _eventListCache = new Dictionary<string, EventList>();
         foreach (var list in eventLists)
         {
             _eventListCache.Add(list.category, list);
+
+            if (debug && !showOnlyWarnings)
+            {
+                Debug.Log("Added " + list.category + " to eventList cache");
+            }
         }
     }
 
@@ -52,8 +62,19 @@ public class AudioManager : MonoBehaviour
         if (_eventListCache.TryGetValue(split[0], out eventList))
         {
             eventName = split[1];
+            if (debug && !showOnlyWarnings)
+            {
+                Debug.Log("Successfully retrieved " + path);
+            }
+            
             return true;
         }
+
+        if (debug)
+        {
+            Debug.LogWarning("Failed to get " + path + ". Does the event or list exist?");
+        }
+        
         eventName = null;
         return false;
     }
@@ -62,24 +83,41 @@ public class AudioManager : MonoBehaviour
 
     #region Global Parameters
 
-    public Dictionary<string, PARAMETER_ID> GlobalParameterCache;
+    private Dictionary<string, PARAMETER_ID> _globalParameterCache;
 
     private void RefreshGlobalParameterCache()
     {
-        GlobalParameterCache = new Dictionary<string, PARAMETER_ID>();
+        _globalParameterCache = new Dictionary<string, PARAMETER_ID>();
         RuntimeManager.StudioSystem.getParameterDescriptionList(out var descriptionList);
         foreach (var paramDesc in descriptionList)
         {
             Debug.Log(paramDesc.name);
-            GlobalParameterCache.Add(paramDesc.name, paramDesc.id);
+            _globalParameterCache.Add(paramDesc.name, paramDesc.id);
+
+            if (debug && !showOnlyWarnings)
+            {
+                Debug.Log("Added " + paramDesc.name + " to parameter cache");
+            }
         }
     }
 
     public void SetGlobalParameter(string paramName, float paramValue)
     {
-        if (GlobalParameterCache.TryGetValue(paramName, out PARAMETER_ID id))
+        if (_globalParameterCache.TryGetValue(paramName, out var id))
         {
             RuntimeManager.StudioSystem.setParameterByID(id, paramValue);
+
+            if (debug && !showOnlyWarnings)
+            {
+                Debug.Log("Successfully set " + paramName + " to " + paramValue);
+            }
+        }
+        else
+        {
+            if (debug)
+            {
+                Debug.LogWarning("Failed to set " + paramName + " to " + paramValue);
+            }
         }
     }
     
@@ -95,51 +133,51 @@ public class AudioManager : MonoBehaviour
         }
     }
     
-    public void CreateInstance(string path, GameObject gameObject = null, bool attachToObject = false, bool followObject = true)
+    public void CreateInstance(string path, GameObject gameObj = null, bool attachToObject = false, bool followObject = true)
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
-            eventList.CreateInstance(eventName, gameObject, attachToObject, followObject);
+            eventList.CreateInstance(eventName, gameObj, attachToObject, followObject);
         }
     }
     
-    public void ReleaseInstance(string path, GameObject gameObject = null)
+    public void ReleaseInstance(string path, GameObject gameObj = null)
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
-            eventList.ReleaseInstance(eventName, gameObject);
+            eventList.ReleaseInstance(eventName, gameObj);
         }
     }
     
-    public void StartEvent(string path, GameObject gameObject = null)
+    public void StartEvent(string path, GameObject gameObj = null)
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
-            eventList.StartEvent(eventName, gameObject);
+            eventList.StartEvent(eventName, gameObj);
         }
     }
 
-    public void StopEvent(string path, STOP_MODE stopMode, GameObject gameObject = null)
+    public void StopEvent(string path, STOP_MODE stopMode, GameObject gameObj = null)
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
-            eventList.StopEvent(eventName, stopMode, gameObject);
+            eventList.StopEvent(eventName, stopMode, gameObj);
         }
     }
     
-    public void SetParameter(string path, string paramName, float paramValue, GameObject gameObject = null)
+    public void SetParameter(string path, string paramName, float paramValue, GameObject gameObj = null)
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
-            eventList.SetParameter(eventName, paramName, paramValue, gameObject);
+            eventList.SetParameter(eventName, paramName, paramValue, gameObj);
         }
     }
 
-    public void KeyOff(string path, GameObject gameObject = null)
+    public void KeyOff(string path, GameObject gameObj = null)
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
-            eventList.KeyOff(eventName, gameObject);
+            eventList.KeyOff(eventName, gameObj);
         }
     }
     
@@ -178,6 +216,11 @@ public class AudioManager : MonoBehaviour
             vca.getPath(out var path);
             var split = path.Split('/');
             VcaCache.Add(split[^1], vca);
+            
+            if (debug && !showOnlyWarnings)
+            {
+                Debug.Log("Added " + split[^1] + " to vcaCache");
+            }
         }
     }
 
@@ -186,6 +229,10 @@ public class AudioManager : MonoBehaviour
         if (VcaCache.TryGetValue(vcaName, out var vca))
         {
             vca.setVolume(volume);
+            if (debug && !showOnlyWarnings)
+            {
+                Debug.Log("Set " + vcaName + " volume to " + volume);
+            }
         }
     }
 
@@ -194,7 +241,18 @@ public class AudioManager : MonoBehaviour
         if (VcaCache.TryGetValue(vcaName, out var vca))
         {
             vca.getVolume(out var volume);
+            
+            if (debug && !showOnlyWarnings)
+            {
+                Debug.Log("Successfully retrieved volume for vca: " + vcaName);
+            }
+            
             return volume;
+        }
+        
+        if (debug)
+        {
+            Debug.LogWarning("Failed to get volume for vca: " + vcaName);
         }
         
         return 0;
@@ -206,16 +264,17 @@ public class AudioManager : MonoBehaviour
         {
             vca.Value.setVolume(volume);
         }
+        if (debug && !showOnlyWarnings)
+        {
+            Debug.Log("Set volume for all VCAs to " + volume);
+        }
     }
 
     public void SetAllVolumes(string[] vcaNames, float[] volumes)
     {
         for (int i = 0; i < vcaNames.Length; i++)
         {
-            if (VcaCache.TryGetValue(vcaNames[i], out var vca))
-            {
-                vca.setVolume(volumes[i]);
-            }
+            SetVolume(vcaNames[i], volumes[i]);
         }
     }
 
@@ -228,6 +287,10 @@ public class AudioManager : MonoBehaviour
             tempNameList.Add(vca.Key);
             vca.Value.getVolume(out var volume);
             tempVolumeList.Add(volume);
+            if (debug && !showOnlyWarnings)
+            {
+                Debug.Log("Successfully retrieved volume for " + vca.Key);
+            }
         }
         vcaNames = tempNameList.ToArray();
         volumes = tempVolumeList.ToArray();
@@ -278,13 +341,7 @@ public class AudioManager : MonoBehaviour
     
     #endregion
     
-    #region Reverb
-    
-    //REVERB STUFF HERE
-    
-    #endregion
-    
-    #region Debug //TODO STUFF HERE
+    #region Debug
 
     public bool debug;
 
@@ -302,6 +359,11 @@ public class AudioManager : MonoBehaviour
         foreach (var bus in busList)
         {
             bus.stopAllEvents(STOP_MODE.ALLOWFADEOUT);
+        }
+
+        if (debug && !showOnlyWarnings)
+        {
+            
         }
     }
     

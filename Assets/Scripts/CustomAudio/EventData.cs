@@ -18,6 +18,7 @@ using GUID = FMOD.GUID;
         public bool isDoppler;
         public float minDistance;
         public float maxDistance;
+        public bool debug;
         
         public EventInstance eventInstance;
         

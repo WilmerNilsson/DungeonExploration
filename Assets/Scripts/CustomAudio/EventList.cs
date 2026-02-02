@@ -14,6 +14,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
 {
     public string category;
     public EventData[] events;
+    public bool debug;
     
     #region EventData
     
@@ -26,6 +27,11 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         {
             eventData.PopulateData();
             _eventCache.Add(eventData.eventName, eventData);
+
+            if (debug)
+            {
+                Debug.Log("Added " + eventData.eventName + " to eventCache");
+            }
         }
         AssetDatabase.SaveAssetIfDirty(this);
     }
@@ -37,10 +43,18 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
     {
         if (_eventCache.TryGetValue(eventName, out eventData))
         {
+            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+            {
+                Debug.Log("Successfully retrieved " + eventName);
+            }
+            
             return true;
         }
 
-        Debug.LogWarning(eventName + " not found, maybe it doesn't exist or the correct banks haven't been loaded.");
+        if (AudioManager.Instance.debug)
+        {
+            Debug.LogWarning("Failed to get " + eventName);
+        }
         
         return false;
     }
@@ -49,15 +63,19 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
 
     #region Looping Events
     
-    private Dictionary<GameObject, EventInstance> instanceList = new Dictionary<GameObject, EventInstance>();
+    private Dictionary<GameObject, EventInstance> _instanceList = new Dictionary<GameObject, EventInstance>();
 
     public void ResetInstanceList() //kanske inte behövs men maybe
     {
-        foreach (var instance in instanceList)
+        foreach (var instance in _instanceList)
         {
             instance.Value.stop(STOP_MODE.IMMEDIATE);
             instance.Value.release();
-            instanceList.Remove(instance.Key);
+            _instanceList.Remove(instance.Key);
+        }
+        if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+        {
+            Debug.Log("Resetting instance list");
         }
     }
     
@@ -69,21 +87,37 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         if (gameObject != null)
         {
             var instance = RuntimeManager.CreateInstance(eventData.eventReference);
-            instanceList.Add(gameObject, instance);
+            _instanceList.Add(gameObject, instance);
+            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+            {
+                Debug.Log("Created instance for " + eventName + " and added it to the instance list along with " + gameObject.name);
+            }
 
             if (!attachToObject) return;
             if (followObject)
             {
                 RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+                if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+                {
+                    Debug.Log("Attached " + eventName + " to " + gameObject.name);
+                }
             }
             else
             {
                 instance.set3DAttributes(gameObject.transform.To3DAttributes());
+                if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+                {
+                    Debug.Log("Set 3D attributes of " + eventName + " to those of " + gameObject.name);
+                }
             }
         }
         else
         {
             eventData.eventInstance = RuntimeManager.CreateInstance(eventData.eventReference);
+            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+            {
+                Debug.Log("Created instance for " + eventName);
+            }
         }
     }
     
@@ -94,15 +128,23 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
 
         if (gameObject != null)
         {
-            if (instanceList.TryGetValue(gameObject, out var instance))
+            if (_instanceList.TryGetValue(gameObject, out var instance))
             {
                 instance.release();
-                instanceList.Remove(gameObject);
+                _instanceList.Remove(gameObject);
+                if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+                {
+                    Debug.Log("Releasing instance for " + eventName + " and removed from instance list");
+                }
             }
         }
         else
         {
             eventData.eventInstance.release();
+            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+            {
+                Debug.Log("Releasing instance for " + eventName);
+            }
         }
     }
     
@@ -112,11 +154,15 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         {
             if (gameObject != null)
             {
-                if (!instanceList.TryGetValue(gameObject, out var instance)) return;
+                if (!_instanceList.TryGetValue(gameObject, out var instance)) return;
                 instance.getPlaybackState(out var playbackState);
                 if (playbackState != PLAYBACK_STATE.PLAYING)
                 {
                     instance.start();
+                    if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+                    {
+                        Debug.Log("Started event " + eventName + " on " + gameObject.name);
+                    }
                 }
             }
             else
@@ -125,6 +171,10 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
                 if (playbackState != PLAYBACK_STATE.PLAYING)
                 {
                     eventData.eventInstance.start();
+                    if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+                    {
+                        Debug.Log("Started event " + eventName);
+                    }
                 }
             }
         }
@@ -136,12 +186,20 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         {
             if (gameObject != null)
             {
-                if (!instanceList.TryGetValue(gameObject, out var instance)) return;
+                if (!_instanceList.TryGetValue(gameObject, out var instance)) return;
                 instance.stop(stopMode);
+                if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+                {
+                    Debug.Log("Stopped event " + eventName + " on " + gameObject.name);
+                }
             }
             else
             {
                 eventData.eventInstance.stop(stopMode);
+                if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+                {
+                    Debug.Log("Stopped event " + eventName);
+                }
             }
         }
     }
@@ -154,17 +212,29 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         if (parameterData.isGlobal)
         {
             RuntimeManager.StudioSystem.setParameterByID(parameterData.ID(), paramValue);
+            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+            {
+                Debug.Log("Set global parameter " + paramName + " to " + paramValue);
+            }
         }
         else
         {
             if (gameObject != null)
             {
-                if (!instanceList.TryGetValue(gameObject, out var instance)) return;
+                if (!_instanceList.TryGetValue(gameObject, out var instance)) return;
                 instance.setParameterByID(parameterData.ID(), paramValue);
+                if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+                {
+                    Debug.Log("Set " + paramName + " in event " + eventName + " on object " + gameObject.name + " to " + paramValue);
+                }
             }
             else
             {
                 eventData.eventInstance.setParameterByID(parameterData.ID(), paramValue);
+                if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+                {
+                    Debug.Log("Set " + paramName + " in event " + eventName + " to " + paramValue);
+                }
             }
         }
     }
@@ -175,12 +245,21 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         
         if (gameObject != null)
         { 
-            if (!instanceList.TryGetValue(gameObject, out var instance)) return;
+            if (!_instanceList.TryGetValue(gameObject, out var instance)) return;
             instance.keyOff();
+            
+            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+            {
+                Debug.Log("KeyOff in event " + eventName + " on object " + gameObject.name);
+            }
         }
         else
         { 
             eventData.eventInstance.keyOff();
+            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+            {
+                Debug.Log("KeyOff in event " + eventName);
+            }
         }
     }
     
@@ -192,9 +271,17 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
     {
         if (TryGetEvent(eventName, out var eventData))
         {
-            if (!eventData.isOneShot) return;
+            if (!eventData.isOneShot)
+            {
+                if (AudioManager.Instance.debug)
+                {
+                    Debug.LogWarning(eventName + " is not a OneShot event and should not be played through this method");
+                }
+                return;
+            }
+            
             var instance = RuntimeManager.CreateInstance(eventData.eventReference);
-
+            
             if (paramNames != null && paramValues != null)
             {
                 for (var i = 0; i < paramNames.Length; i++)
@@ -214,6 +301,11 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
 
             instance.start();
             instance.release();
+            
+            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+            {
+                Debug.Log("Playing OneShot: " + eventName);
+            }
         }
     }
     
