@@ -56,8 +56,61 @@ PrefabInstance:
       propertyPath: m_Name
       value: Basic_Sword
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b47b7c880dc2fed4da98aaa42ad43889, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b47b7c880dc2fed4da98aaa42ad43889, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1178927529589992586}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b47b7c880dc2fed4da98aaa42ad43889, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5448549735390694311}
   m_SourcePrefab: {fileID: 100100000, guid: b47b7c880dc2fed4da98aaa42ad43889, type: 3}
+--- !u!1 &6231285627939046001 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b47b7c880dc2fed4da98aaa42ad43889, type: 3}
+  m_PrefabInstance: {fileID: 6537133817734430496}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1178927529589992586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6231285627939046001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51f7f14f987392348b08c80e3260f384, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 5
+  durability: 99
+  unbreakable: 1
+--- !u!136 &5448549735390694311
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6231285627939046001}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 6.75
+  m_Height: 89.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 9.9, z: 0}
