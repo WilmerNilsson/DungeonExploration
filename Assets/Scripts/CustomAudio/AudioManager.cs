@@ -363,7 +363,7 @@ public class AudioManager : MonoBehaviour
 
         if (debug && !showOnlyWarnings)
         {
-            
+            Debug.Log("Stopped all events");
         }
     }
     
