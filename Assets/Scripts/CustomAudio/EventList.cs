@@ -325,4 +325,18 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
     //Logik för VA här???
     
     #endregion
+
+    public void StopAndReleaseAllInstances()
+    {
+        foreach (var eventData in events)
+        {
+            var eventDesc = RuntimeManager.GetEventDescription(eventData.eventReference);
+            eventDesc.getInstanceList(out var instances);
+            foreach (var instance in instances)
+            {
+                instance.stop(STOP_MODE.IMMEDIATE);
+                instance.release();
+            }
+        }
+    }
 }

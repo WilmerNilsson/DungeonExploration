@@ -392,6 +392,14 @@ public class AudioManager : MonoBehaviour
             Debug.Log("Stopped all events");
         }
     }
+
+    public void StopAndReleaseAllInstances()
+    {
+        foreach (var eventList in eventLists)
+        {
+            eventList.StopAndReleaseAllInstances();
+        }
+    }
     
     #endregion
 }
