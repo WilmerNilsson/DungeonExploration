@@ -20,7 +20,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
     
     private Dictionary<string, EventData> _eventCache = new Dictionary<string, EventData>();
 
-    public void RefreshEventCache()
+    public void RefreshEventCache() //Lägger till alla eventData till _eventCache för snabbare lookup än foreach loop i eventData
     {
         _eventCache = new Dictionary<string, EventData>();
         foreach (var eventData in events)
@@ -45,10 +45,8 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         AssetDatabase.SaveAssetIfDirty(this);
     }
     #endif
-
     
-
-    private bool TryGetEvent(string eventName, out EventData eventData)
+    private bool TryGetEvent(string eventName, out EventData eventData) //Om ett event finns i eventCache returneras true samt EventData, annars false
     {
         if (_eventCache.TryGetValue(eventName, out eventData))
         {
@@ -74,7 +72,8 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
     
     private Dictionary<GameObject, EventInstance> _instanceList = new Dictionary<GameObject, EventInstance>();
 
-    public void ResetInstanceList() //kanske inte behövs men maybe
+    public void ResetInstanceList() //Kallas av audioManager vid scenladdning,
+                                    //kanske borde göra denna lite mer sofistikerad på nåt sätt, så att den kollar om ett gameObject fortfarande finns i scenen innan den tar bort det
     {
         foreach (var instance in _instanceList)
         {
@@ -220,7 +219,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         
         if (parameterData.isGlobal)
         {
-            RuntimeManager.StudioSystem.setParameterByID(parameterData.ID(), paramValue);
+            RuntimeManager.StudioSystem.setParameterByID(parameterData.ID, paramValue);
             if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
             {
                 Debug.Log("Set global parameter " + paramName + " to " + paramValue);
@@ -231,7 +230,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
             if (gameObject != null)
             {
                 if (!_instanceList.TryGetValue(gameObject, out var instance)) return;
-                instance.setParameterByID(parameterData.ID(), paramValue);
+                instance.setParameterByID(parameterData.ID, paramValue);
                 if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
                 {
                     Debug.Log("Set " + paramName + " in event " + eventName + " on object " + gameObject.name + " to " + paramValue);
@@ -239,7 +238,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
             }
             else
             {
-                eventData.eventInstance.setParameterByID(parameterData.ID(), paramValue);
+                eventData.eventInstance.setParameterByID(parameterData.ID, paramValue);
                 if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
                 {
                     Debug.Log("Set " + paramName + " in event " + eventName + " to " + paramValue);
@@ -297,7 +296,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
                 {
                     if (eventData.ParameterCache.TryGetValue(paramNames[i], out var parameterData))
                     {
-                        instance.setParameterByID(parameterData.ID(), paramValues[i]);
+                        instance.setParameterByID(parameterData.ID, paramValues[i]);
                     }
                 }
             }

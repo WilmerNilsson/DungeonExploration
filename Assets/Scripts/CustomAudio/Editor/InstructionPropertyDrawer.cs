@@ -21,8 +21,12 @@ public class InstructionPropertyDrawer : PropertyDrawer
         {
             text = "Command",
         };
+
+        var index = label.text.Substring(label.text.Length - 1, 1)[0];
         
-        property.isExpanded = EditorGUI.Foldout(pos, property.isExpanded, label);
+        lbl.text = "Instruction " + index.ToString();
+        
+        property.isExpanded = EditorGUI.Foldout(pos, property.isExpanded, lbl);
 
         if (property.isExpanded)
         {

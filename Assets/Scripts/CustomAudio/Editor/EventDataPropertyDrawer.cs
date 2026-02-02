@@ -11,7 +11,6 @@ public class EventDataPropertyDrawer : PropertyDrawer
     {
         var eventName = property.FindPropertyRelative("eventName");
         var eventReference = property.FindPropertyRelative("eventReference");
-        var guid = property.FindPropertyRelative("guid");
         var banks = property.FindPropertyRelative("banks");
         var isOneShot = property.FindPropertyRelative("isOneShot");
         var is3D = property.FindPropertyRelative("is3D");
@@ -44,10 +43,6 @@ public class EventDataPropertyDrawer : PropertyDrawer
             if (debug.boolValue)
             {
                 pos.y += EditorGUI.GetPropertyHeight(eventReference) + EditorGUIUtility.standardVerticalSpacing;
-                lbl.text = "Guid";
-                EditorGUI.PropertyField(pos, guid, lbl, true);
-            
-                pos.y += EditorGUI.GetPropertyHeight(guid) + EditorGUIUtility.standardVerticalSpacing;
                 lbl.text = "Banks";
                 EditorGUI.PropertyField(pos, banks, lbl);
             
@@ -77,8 +72,6 @@ public class EventDataPropertyDrawer : PropertyDrawer
             }
         }
         
-        
-        
         EditorGUI.EndProperty();
     }
     
@@ -104,7 +97,6 @@ public class EventDataPropertyDrawer : PropertyDrawer
         if (debug.boolValue)
         {
             height += 5 * (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2);
-            height += EditorGUI.GetPropertyHeight(guid) + EditorGUIUtility.standardVerticalSpacing * 2;
             height += EditorGUI.GetPropertyHeight(banks) + EditorGUIUtility.standardVerticalSpacing * 2;
             height += EditorGUI.GetPropertyHeight(parameters) + EditorGUIUtility.standardVerticalSpacing * 2;
         }
