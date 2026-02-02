@@ -9,7 +9,7 @@ using UnityEngine.TestTools;
 public class HPSOTest
 {
     private Scene scene;
-    private const string sceneName = "HealthAndDamageTestScene";
+    private const string sceneName = "HealthSOAndDamageTestScene";
     private Health health;
 
     [UnitySetUp]
