@@ -3,7 +3,6 @@ using UnityEngine;
 public class Attacking : MonoBehaviour
 {
     [SerializeField] private Animator animator;
-    [SerializeField] private string stateName;
 
     [SerializeField] private Collider weapon;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -20,7 +19,7 @@ public class Attacking : MonoBehaviour
 
     public void Attack()
     {
-        animator.Play(stateName);
+        animator.SetTrigger("Attack");
     }
 
     public void Activate()
