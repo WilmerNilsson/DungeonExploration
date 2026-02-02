@@ -5,9 +5,11 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private int health;
+    [SerializeField, Tooltip("leave as null to use internal ints")]
+    private PlayerHealthSO playerHealth;
+    [SerializeField] private int currentHealth;
     [SerializeField, Min(1)] private int maxHealth = 1;
-    [SerializeField, Min(0)] public int durabilityDamage;
+    [SerializeField, Min(0)] public int DurabilityDamage;
     
     private bool isInCooldown = false;
     [SerializeField, Min(0f)] private float minTimeBetweenDamage;
@@ -23,6 +25,40 @@ public class Health : MonoBehaviour
 #pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 
     public bool Dead { private set; get; } = false;
+    public int CurrentHealth { 
+        get
+        {
+            if (playerHealth == null)
+                return currentHealth;
+            else 
+                return playerHealth.CurrentHealth;
+        } 
+        private set
+        {
+            if (playerHealth == null)
+                currentHealth = value;
+            else
+                playerHealth.CurrentHealth = value;
+        }
+    }
+
+    public int MaxHealth
+    {
+        get
+        {
+            if (playerHealth == null)
+                return maxHealth;
+            else
+                return playerHealth.MaxHealth;
+        }
+        private set
+        {
+            if (playerHealth == null)
+                maxHealth = value;
+            else
+                playerHealth.MaxHealth = value;
+        }
+    }
 
     private void OnDestroy()
     {
@@ -32,15 +68,12 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
-        health = maxHealth;
+        CurrentHealth = MaxHealth;
     }
-
-    public int GetHealth() { return health; }
-    public int GetMaxHealth() { return maxHealth; }
 
     public void Kill()
     {
-        health = 0;
+        CurrentHealth = 0;
         Die();
     }
 
@@ -52,17 +85,17 @@ public class Health : MonoBehaviour
     {
         if(Dead) return false;
 
-        health += amount;
+        CurrentHealth += amount;
 
-        OnChangeHealths?.Invoke(health, maxHealth);
+        OnChangeHealths?.Invoke(CurrentHealth, MaxHealth);
 
-        if (health <= 0)
+        if (CurrentHealth <= 0)
         {
             Die();
         }
-        else if (health > maxHealth)
+        else if (CurrentHealth > MaxHealth)
         {
-            health = maxHealth;
+            CurrentHealth = MaxHealth;
         }
 
         return true;

@@ -11,7 +11,7 @@ public class HealthText : MonoBehaviour
     void Start()
     {
         myText = GetComponent<TextMeshProUGUI>();
-        UpdateText(playerHealth.GetHealth(), playerHealth.GetMaxHealth());
+        UpdateText(playerHealth.CurrentHealth, playerHealth.CurrentHealth);
         playerHealth.OnChangeHealths += UpdateText;
     }
 
