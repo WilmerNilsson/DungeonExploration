@@ -1,3 +1,5 @@
+
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -7,6 +9,7 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField, Tooltip("what slot the center is, 0,0 is bottom left")]
     private Vector2Int piviot;
     [SerializeField] private sizes size;
+    private IItemEffect[] effects;
 
     public RectTransform RectTransform { get { return (transform as RectTransform); } }
     private bool isDragging;
@@ -54,6 +57,11 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
     }
 
+    private void Start()
+    {
+        effects = GetComponents<IItemEffect>();
+    }
+
     private void Update()
     {
         if (isDragging)
@@ -64,16 +72,27 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        returnPos = RectTransform.position;
-        isDragging = true;
+        if(eventData.button == PointerEventData.InputButton.Left)
+        {
+            returnPos = RectTransform.position;
+            isDragging = true;
+        }
+        else if(eventData.button == PointerEventData.InputButton.Right)
+        {
+            InvMaster.Instance.GetContextMenu().SelectItem(this, effects);
+        }
+
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        isDragging = false;
-        if(!InvMaster.Instance.TryPlaceItem(this))
+        if (eventData.button == PointerEventData.InputButton.Left)
         {
-            RectTransform.position = returnPos;
+            isDragging = false;
+            if (!InvMaster.Instance.TryPlaceItem(this))
+            {
+                RectTransform.position = returnPos;
+            }
         }
     }
 }
