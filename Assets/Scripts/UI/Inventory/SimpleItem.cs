@@ -56,8 +56,6 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private void Update()
     {
-        GetSizeMatrix();
-
         if (isDragging)
         { 
             RectTransform.position = Input.mousePosition;
@@ -73,7 +71,7 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public void OnPointerUp(PointerEventData eventData)
     {
         isDragging = false;
-        if(!InvMaster.InvMasterInstance.TryPlaceItem(this))
+        if(!InvMaster.Instance.TryPlaceItem(this))
         {
             RectTransform.position = returnPos;
         }
