@@ -116,7 +116,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
 
     private Dictionary<string, EventData> _eventCache = new Dictionary<string, EventData>();
 
-    public bool FetchEvent(string eventName, out EventData eventData)
+    public bool TryGetEvent(string eventName, out EventData eventData)
     {
         if (_eventCache.TryGetValue(eventName, out eventData))
         {
@@ -134,7 +134,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
     
     public void ReleaseInstance(string eventName)
     {
-        if (FetchEvent(eventName, out var eventData))
+        if (TryGetEvent(eventName, out var eventData))
         {
             eventData.eventInstance.release();
         }
@@ -148,8 +148,37 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
     #endregion
 
     #region SFX
-    
-    //PlayOneShot (name, gameobject, paramname, paramvalue)
+
+    public void PlayOneShot(string eventName, string[] paramNames = null, float[] paramValues = null ,GameObject gameObject = null)
+    {
+        if (TryGetEvent(eventName, out var eventData))
+        {
+            if (!eventData.isOneShot) return;
+            var instance = RuntimeManager.CreateInstance(eventData.eventReference);
+
+            if (paramNames != null && paramValues != null)
+            {
+                //Change parameter
+            }
+
+            if (gameObject != null && eventData.is3D)
+            {
+                RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+            }
+
+            instance.start();
+            instance.release();
+        }
+    }
+
+    private void Test()
+    {
+        var material = 1f;
+        string[] pStrings = { "Material" };
+        float[] pValues = { material };
+        var go = new GameObject();
+        PlayOneShot("name", null, null);
+    }
 
     #endregion
 
