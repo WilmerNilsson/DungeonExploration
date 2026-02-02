@@ -1,16 +1,38 @@
+using System;
+using FMOD.Studio;
 using UnityEngine;
 
-public class Instruction : MonoBehaviour
+[Serializable]
+public class Instruction
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public enum Command
     {
-        
+        CreateInstance,
+        ReleaseInstance,
+        StartEvent,
+        StopEvent,
+        SetParameter,
+        SetGlobalParameter,
+        KeyOff,
+        PlayOneShot,
+        LoadBank,
+        UnloadBank,
     }
 
-    // Update is called once per frame
-    void Update()
+    [Serializable]
+    public struct ParameterToSet
     {
-        
+        public string paramName;
+        public float paramValue;
     }
+    
+    public Command command;
+
+    public string path;
+    public GameObject gameObj;
+    public bool attatchToObject;
+    public bool followObject = true;
+    public STOP_MODE stopMode;
+    public ParameterToSet[] parametersToSet;
+    public string bankName;
 }

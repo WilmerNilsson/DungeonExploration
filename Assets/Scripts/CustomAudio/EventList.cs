@@ -18,14 +18,13 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
     
     #region EventData
     
-    #if UNITY_EDITOR
-    [ContextMenu("Fill eventData")]
-    public void FillEventDataAndRefreshCache()
+    private Dictionary<string, EventData> _eventCache = new Dictionary<string, EventData>();
+
+    public void RefreshEventCache()
     {
         _eventCache = new Dictionary<string, EventData>();
         foreach (var eventData in events)
         {
-            eventData.PopulateData();
             _eventCache.Add(eventData.eventName, eventData);
 
             if (debug)
@@ -33,11 +32,21 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
                 Debug.Log("Added " + eventData.eventName + " to eventCache");
             }
         }
+    }
+    
+    #if UNITY_EDITOR
+    [ContextMenu("Fill eventData")]
+    public void FillEventData()
+    {
+        foreach (var eventData in events)
+        {
+            eventData.PopulateData();
+        }
         AssetDatabase.SaveAssetIfDirty(this);
     }
     #endif
 
-    private Dictionary<string, EventData> _eventCache = new Dictionary<string, EventData>();
+    
 
     private bool TryGetEvent(string eventName, out EventData eventData)
     {
@@ -267,7 +276,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
 
     #region SFX
 
-    public void PlayOneShot(string eventName, string[] paramNames = null, float[] paramValues = null ,GameObject gameObject = null, bool followSource = true)
+    public void PlayOneShot(string eventName, string[] paramNames = null, float[] paramValues = null ,GameObject gameObject = null, bool followObject = true)
     {
         if (TryGetEvent(eventName, out var eventData))
         {
@@ -295,7 +304,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
 
             if (gameObject != null && eventData.is3D)
             {
-                if (followSource) RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+                if (followObject) RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
                 else instance.set3DAttributes(gameObject.transform.To3DAttributes());
             }
 

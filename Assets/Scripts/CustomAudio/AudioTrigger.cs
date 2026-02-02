@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioTrigger : MonoBehaviour
@@ -43,12 +44,12 @@ public class AudioTrigger : MonoBehaviour
     
     #region Activation
     
+    [ContextMenu("Activate")]
     public void Activate()
     {
         if (activationDelay > 0)
         {
             StartCoroutine(ActivationDelay());
-            return;
         }
         else
         {
@@ -66,9 +67,55 @@ public class AudioTrigger : MonoBehaviour
     {
         foreach (Instruction instruction in instructions)
         {
-            //switch ()
+            switch (instruction.command)
+            {
+                case Instruction.Command.CreateInstance:
+                    AudioManager.Instance.CreateInstance(instruction.path, instruction.gameObj, instruction.attatchToObject, instruction.followObject );
+                    break;
+                case Instruction.Command.ReleaseInstance:
+                    AudioManager.Instance.ReleaseInstance(instruction.path, instruction.gameObj);
+                    break;
+                case Instruction.Command.StartEvent:
+                    AudioManager.Instance.StartEvent(instruction.path, instruction.gameObj);
+                    break;
+                case Instruction.Command.StopEvent:
+                    AudioManager.Instance.StopEvent(instruction.path, instruction.stopMode, instruction.gameObj);
+                    break;
+                case Instruction.Command.SetParameter:
+                    foreach (var paramToSet in instruction.parametersToSet)
+                    {
+                        AudioManager.Instance.SetParameter(instruction.path, paramToSet.paramName, paramToSet.paramValue, instruction.gameObj);
+                    }
+                    break;
+                case Instruction.Command.SetGlobalParameter:
+                    foreach (var paramToSet in instruction.parametersToSet)
+                    {
+                        AudioManager.Instance.SetGlobalParameter(paramToSet.paramName, paramToSet.paramValue);
+                    }
+                    break;
+                case Instruction.Command.KeyOff:
+                    AudioManager.Instance.KeyOff(instruction.path, instruction.gameObj);
+                    break;
+                case Instruction.Command.PlayOneShot:
+                    var nameList = new List<string>();
+                    var valueList = new List<float>();
+                    foreach (var paramToSet in instruction.parametersToSet)
+                    {
+                        nameList.Add(paramToSet.paramName);
+                        valueList.Add(paramToSet.paramValue);
+                    }
+                    AudioManager.Instance.PlayOneShot(instruction.path,nameList.ToArray(), valueList.ToArray(), instruction.gameObj, instruction.followObject);
+                    break;
+                case Instruction.Command.LoadBank:
+                    AudioManager.Instance.LoadBank(instruction.bankName);
+                    break;
+                case Instruction.Command.UnloadBank:
+                    AudioManager.Instance.UnloadBank(instruction.bankName);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
-    
     #endregion
 }

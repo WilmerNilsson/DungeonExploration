@@ -26,6 +26,7 @@ public class AudioManager : MonoBehaviour
         LoadStartBanks();
         RefreshVcaCache();
         RefreshEventListCache();
+        RefreshAllEventCaches();
         RefreshGlobalParameterCache();
 
         if (debug && !showOnlyWarnings)
@@ -45,6 +46,15 @@ public class AudioManager : MonoBehaviour
     private void RefreshEventListCache()
     {
         _eventListCache = new Dictionary<string, EventList>();
+        if (eventLists == null)
+        {
+            if (debug)
+            {
+                Debug.LogWarning("No eventLists found, unable to add any to the eventList cache");
+            }
+            return;
+        }
+        
         foreach (var list in eventLists)
         {
             _eventListCache.Add(list.category, list);
@@ -53,6 +63,14 @@ public class AudioManager : MonoBehaviour
             {
                 Debug.Log("Added " + list.category + " to eventList cache");
             }
+        }
+    }
+
+    private void RefreshAllEventCaches()
+    {
+        foreach (var eventList in eventLists)
+        {
+            eventList.RefreshEventCache();
         }
     }
 
@@ -186,7 +204,7 @@ public class AudioManager : MonoBehaviour
     #region SFX
 
     public void PlayOneShot(string path, string[] paramNames = null, float[] paramValues = null,
-        GameObject gameObj = null)
+        GameObject gameObj = null, bool followObject = true)
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
@@ -307,12 +325,20 @@ public class AudioManager : MonoBehaviour
     {
         RuntimeManager.LoadBank(bankName + BankExtension);
         if (bankName == "Master") RuntimeManager.LoadBank(bankName + StringBankExtension);
+        if (debug && !showOnlyWarnings)
+        {
+            Debug.Log("Loading " + bankName + BankExtension);
+        }
     }
 
     public void UnloadBank(string bankName)
     {
         RuntimeManager.UnloadBank(bankName + BankExtension);
         if (bankName == "Master") RuntimeManager.UnloadBank(bankName + StringBankExtension);
+        if (debug && !showOnlyWarnings)
+        {
+            Debug.Log("Unloading " + bankName + BankExtension);
+        }
     }
 
     public string[] banksToLoadOnStart = { "Master" };
