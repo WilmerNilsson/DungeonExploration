@@ -26,6 +26,7 @@ public class AudioManager : MonoBehaviour
         LoadStartBanks();
         RefreshVcaCache();
         RefreshListCache();
+        RefreshGlobalParameterCache();
     }
 
     #endregion
@@ -59,30 +60,91 @@ public class AudioManager : MonoBehaviour
 
     #endregion
 
-    #region Parameters
+    #region Global Parameters
 
-    #endregion
+    public Dictionary<string, PARAMETER_ID> GlobalParameterCache;
 
-    #region Music
-
-    public void CreateInstance(string path)
+    private void RefreshGlobalParameterCache()
     {
-        if (TryGetEventList(path, out var eventList, out var eventName))
+        GlobalParameterCache = new Dictionary<string, PARAMETER_ID>();
+        RuntimeManager.StudioSystem.getParameterDescriptionList(out var descriptionList);
+        foreach (var paramDesc in descriptionList)
         {
-            eventList.CreateInstance(eventName);
+            Debug.Log(paramDesc.name);
+            GlobalParameterCache.Add(paramDesc.name, paramDesc.id);
         }
     }
 
-    public void ReleaseInstance(string path)
+    public void SetGlobalParameter(string paramName, float paramValue)
     {
-        if (TryGetEventList(path, out var eventList, out var eventName))
+        if (GlobalParameterCache.TryGetValue(paramName, out PARAMETER_ID id))
         {
-            eventList.ReleaseInstance(eventName);
+            RuntimeManager.StudioSystem.setParameterByID(id, paramValue);
         }
     }
     
     #endregion
+    
+    #region Looping Events
 
+    public void ResetInstanceList(string category)
+    {
+        if (_eventListCache.TryGetValue(category, out var eventList))
+        {
+            eventList.ResetInstanceList();
+        }
+    }
+    
+    public void CreateInstance(string path, GameObject gameObject = null, bool attachToObject = false, bool followObject = true)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.CreateInstance(eventName, gameObject, attachToObject, followObject);
+        }
+    }
+    
+    public void ReleaseInstance(string path, GameObject gameObject = null)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.ReleaseInstance(eventName, gameObject);
+        }
+    }
+    
+    public void StartEvent(string path, GameObject gameObject = null)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.StartEvent(eventName, gameObject);
+        }
+    }
+
+    public void StopEvent(string path, STOP_MODE stopMode, GameObject gameObject = null)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.StopEvent(eventName, stopMode, gameObject);
+        }
+    }
+    
+    public void SetParameter(string path, string paramName, float paramValue, GameObject gameObject = null)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.SetParameter(eventName, paramName, paramValue, gameObject);
+        }
+    }
+
+    public void KeyOff(string path, GameObject gameObject = null)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.KeyOff(eventName, gameObject);
+        }
+    }
+    
+    #endregion
+    
     #region SFX
 
     public void PlayOneShot(string path, string[] paramNames = null, float[] paramValues = null,
@@ -95,16 +157,16 @@ public class AudioManager : MonoBehaviour
     }
     
     #endregion
-
-    #region Ambience
-
+    
+    #region VA
+    
     #endregion
-
+    
     #region VCA
     
-    public Dictionary<string, VCA> VcaCache { get; private set; }
-
     private const string MasterBankPath = "bank:/Master";
+    
+    public Dictionary<string, VCA> VcaCache { get; private set; }
 
     private void RefreshVcaCache()
     { 
@@ -125,6 +187,50 @@ public class AudioManager : MonoBehaviour
         {
             vca.setVolume(volume);
         }
+    }
+
+    public float GetVolume(string vcaName)
+    {
+        if (VcaCache.TryGetValue(vcaName, out var vca))
+        {
+            vca.getVolume(out var volume);
+            return volume;
+        }
+        
+        return 0;
+    }
+
+    public void SetAllToVolume(float volume)
+    {
+        foreach (var vca in VcaCache)
+        {
+            vca.Value.setVolume(volume);
+        }
+    }
+
+    public void SetAllVolumes(string[] vcaNames, float[] volumes)
+    {
+        for (int i = 0; i < vcaNames.Length; i++)
+        {
+            if (VcaCache.TryGetValue(vcaNames[i], out var vca))
+            {
+                vca.setVolume(volumes[i]);
+            }
+        }
+    }
+
+    public void GetAllVolumes(out string[] vcaNames, out float[] volumes)
+    {
+        var tempNameList = new List<string>();
+        var tempVolumeList = new List<float>();
+        foreach (var vca in VcaCache)
+        {
+            tempNameList.Add(vca.Key);
+            vca.Value.getVolume(out var volume);
+            tempVolumeList.Add(volume);
+        }
+        vcaNames = tempNameList.ToArray();
+        volumes = tempVolumeList.ToArray();
     }
 
     #endregion
@@ -158,7 +264,7 @@ public class AudioManager : MonoBehaviour
 
     #endregion
 
-    #region SceneLoading
+    #region SceneLoading //TODO: STUFF HERE
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -172,7 +278,13 @@ public class AudioManager : MonoBehaviour
     
     #endregion
     
-    #region Debug
+    #region Reverb
+    
+    //REVERB STUFF HERE
+    
+    #endregion
+    
+    #region Debug //TODO STUFF HERE
 
     public bool debug;
 

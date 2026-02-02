@@ -1,12 +1,8 @@
 using UnityEngine;
-using System;
 using System.Collections.Generic;
-using FMOD;
 using FMOD.Studio;
 using FMODUnity;
 using Debug = UnityEngine.Debug;
-using GUID = FMOD.GUID;
-using Object = System.Object;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -16,90 +12,10 @@ using UnityEditor;
 [CreateAssetMenu(fileName = "EventList", menuName = "Scriptable Objects/EventList")]
 public class EventList : ScriptableObject //TODO: Metoder, flytta cache till AudioManager? typ dictionary<path, eventData>?
 {
-    #region EventData
+    public string category;
+    public EventData[] events;
     
-    [Serializable]
-    public class EventData
-    {
-        public string eventName;
-        public EventReference eventReference;
-        public GUID guid;
-        public string[] banks;
-        public bool isOneShot;
-        public bool is3D;
-        public bool isDoppler;
-        public float minDistance;
-        public float maxDistance;
-        
-        public EventInstance eventInstance;
-        
-        [Serializable]
-        public class ParameterData
-        {
-            public string paramName;
-            public bool isGlobal;
-            public uint data1;
-            public uint data2;
-
-            public PARAMETER_ID ID()
-            {
-                return new PARAMETER_ID() { data1 = data1, data2 = data2 };
-            }
-        }
-
-        public ParameterData[] parameters;
-        
-        public Dictionary<string, ParameterData> ParameterCache;
-
-        #if UNITY_EDITOR
-        public void PopulateData()
-        {
-            EditorUtils.LoadPreviewBanks();
-            guid = eventReference.Guid;
-
-            if (eventName == null | eventName == "")
-            {
-                var split = eventReference.Path.Split('/');
-                eventName = split[^1];
-            }
-            
-            var editorEventRef = EventManager.EventFromGUID(guid);
-
-            var tempBankList = new List<string>();
-            foreach (var bank in editorEventRef.Banks)
-            {
-                tempBankList.Add(bank.Name);
-            }
-            banks = tempBankList.ToArray();
-            
-            EditorUtils.System.getEventByID(guid, out var eventDescription);
-            
-            eventDescription.isOneshot(out isOneShot);
-            eventDescription.is3D(out is3D);
-            eventDescription.isDopplerEnabled(out isDoppler);
-            eventDescription.getMinMaxDistance(out minDistance, out maxDistance);
-
-            ParameterCache = new Dictionary<string, ParameterData>();
-            var tempParamList = new List<ParameterData>();
-            foreach (var paramRef in editorEventRef.Parameters)
-            {
-                var tempParam = new ParameterData
-                {
-                    paramName = paramRef.Name,
-                    isGlobal = paramRef.IsGlobal,
-                    data1 = paramRef.ID.data1,
-                    data2 = paramRef.ID.data2
-                };
-                tempParamList.Add(tempParam);
-                ParameterCache.Add(paramRef.Name, tempParam);
-            }
-            parameters = tempParamList.ToArray();
-            
-            
-            EditorUtils.UnloadPreviewBanks();
-        }
-        #endif
-    }
+    #region EventData
     
     #if UNITY_EDITOR
     [ContextMenu("Fill eventData")]
@@ -131,25 +47,106 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
     
     #endregion
 
-    #region General
+    #region Looping Events
     
-    public void ReleaseInstance(string eventName)
+    private Dictionary<GameObject, EventInstance> instanceList = new Dictionary<GameObject, EventInstance>();
+
+    public void ResetInstanceList() //kanske inte behövs men maybe
     {
-        if (TryGetEvent(eventName, out var eventData))
+        foreach (var instance in instanceList)
         {
-            eventData.eventInstance.release();
+            instance.Value.stop(STOP_MODE.IMMEDIATE);
+            instance.Value.release();
+            instanceList.Remove(instance.Key);
         }
     }
-
-    public new void CreateInstance(string eventName)
+    
+    public void CreateInstance(string eventName, GameObject gameObject = null, bool attachToObject = false, bool followObject = true)
     {
-        if (TryGetEvent(eventName, out var eventData))
+        if (!TryGetEvent(eventName, out var eventData)) return;
+        if (eventData.isOneShot) return;
+
+        if (gameObject != null)
+        {
+            var instance = RuntimeManager.CreateInstance(eventData.eventReference);
+            instanceList.Add(gameObject, instance);
+
+            if (!attachToObject) return;
+            if (followObject)
+            {
+                RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+            }
+            else
+            {
+                instance.set3DAttributes(gameObject.transform.To3DAttributes());
+            }
+        }
+        else
         {
             eventData.eventInstance = RuntimeManager.CreateInstance(eventData.eventReference);
         }
     }
     
-    public void SetParameter(string eventName, string paramName, float paramValue)
+    public void ReleaseInstance(string eventName, GameObject gameObject = null)
+    {
+        if (!TryGetEvent(eventName, out var eventData)) return;
+        if (eventData.isOneShot) return;
+
+        if (gameObject != null)
+        {
+            if (instanceList.TryGetValue(gameObject, out var instance))
+            {
+                instance.release();
+                instanceList.Remove(gameObject);
+            }
+        }
+        else
+        {
+            eventData.eventInstance.release();
+        }
+    }
+    
+    public void StartEvent(string eventName, GameObject gameObject = null)
+    {
+        if (TryGetEvent(eventName, out var eventData))
+        {
+            if (gameObject != null)
+            {
+                if (!instanceList.TryGetValue(gameObject, out var instance)) return;
+                instance.getPlaybackState(out var playbackState);
+                if (playbackState != PLAYBACK_STATE.PLAYING)
+                {
+                    instance.start();
+                }
+            }
+            else
+            {
+                eventData.eventInstance.getPlaybackState(out var playbackState);
+                if (playbackState != PLAYBACK_STATE.PLAYING)
+                {
+                    eventData.eventInstance.start();
+                }
+            }
+        }
+    }
+
+    public void StopEvent(string eventName, STOP_MODE stopMode, GameObject gameObject = null)
+    {
+        if (TryGetEvent(eventName, out var eventData))
+        {
+            if (gameObject != null)
+            {
+                if (!instanceList.TryGetValue(gameObject, out var instance)) return;
+                instance.stop(stopMode);
+            }
+            else
+            {
+                eventData.eventInstance.stop(stopMode);
+            }
+        }
+    }
+    
+    public void SetParameter(string eventName, string paramName, float paramValue, GameObject gameObject = null)
     {
         if (!TryGetEvent(eventName, out var eventData)) return;
         if (!eventData.ParameterCache.TryGetValue(paramName, out var parameterData)) return;
@@ -160,41 +157,29 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         }
         else
         {
-            eventData.eventInstance.setParameterByID(parameterData.ID(), paramValue);
-        }
-    }
-    
-    #endregion
-    
-    #region Music
-    
-    public void StartMusic(string eventName)
-    {
-        if (TryGetEvent(eventName, out var eventData))
-        {
-            if (!eventData.eventInstance.isValid())
-                CreateInstance(eventName);
-            eventData.eventInstance.getPlaybackState(out var playbackState);
-            if (playbackState == PLAYBACK_STATE.PLAYING) return;
+            if (gameObject != null)
+            {
+                if (!instanceList.TryGetValue(gameObject, out var instance)) return;
+                instance.setParameterByID(parameterData.ID(), paramValue);
+            }
             else
             {
-                eventData.eventInstance.start();
+                eventData.eventInstance.setParameterByID(parameterData.ID(), paramValue);
             }
         }
     }
 
-    public void StopMusic(string eventName, STOP_MODE stopMode)
+    public void KeyOff(string eventName, GameObject gameObject = null)
     {
-        if (TryGetEvent(eventName, out var eventData))
-        {
-            eventData.eventInstance.stop(stopMode);
+        if (!TryGetEvent(eventName, out var eventData)) return;
+        
+        if (gameObject != null)
+        { 
+            if (!instanceList.TryGetValue(gameObject, out var instance)) return;
+            instance.keyOff();
         }
-    }
-
-    public void KeyOff(string eventName)
-    {
-        if (TryGetEvent(eventName, out var eventData))
-        {
+        else
+        { 
             eventData.eventInstance.keyOff();
         }
     }
@@ -212,7 +197,13 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
 
             if (paramNames != null && paramValues != null)
             {
-                //Change parameter
+                for (var i = 0; i < paramNames.Length; i++)
+                {
+                    if (eventData.ParameterCache.TryGetValue(paramNames[i], out var parameterData))
+                    {
+                        instance.setParameterByID(parameterData.ID(), paramValues[i]);
+                    }
+                }
             }
 
             if (gameObject != null && eventData.is3D)
@@ -227,42 +218,10 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
     }
     
     #endregion
-
-    #region Ambience
-
-    private Dictionary<GameObject, EventInstance> ambienceInstances = new Dictionary<GameObject, EventInstance>();
-
-    public void CreateAmbienceInstance(string eventName, GameObject gameObject)
-    {
-        if (TryGetEvent(eventName, out var eventData))
-        {
-            if (eventData.isOneShot) return;
-            var instance = RuntimeManager.CreateInstance(eventData.eventReference);
-            ambienceInstances.Add(gameObject, instance);
-        }
-    }
     
-    public void StartAmbience(string eventName, GameObject gameObject, bool attachToObject = false, bool followSource = true)
-    {
-        if (TryGetEvent(eventName, out var eventData))
-        {
-            if (eventData.isOneShot) return;
-            var instance = RuntimeManager.CreateInstance(eventData.eventReference);
-            ambienceInstances.Add(gameObject, instance);
-            
-            if (gameObject != null && eventData.is3D && attachToObject)
-            {
-                if (followSource) RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
-                else instance.set3DAttributes(gameObject.transform.To3DAttributes());
-            }
-
-            instance.start();
-        }
-    }
-
-    //RuntimeUtils.to3dAttributes
+    #region VA
+    
+    //Logik för VA här???
+    
     #endregion
-    
-    public string category;
-    public EventData[] events;
 }
