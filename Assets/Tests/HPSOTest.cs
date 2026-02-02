@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
 [TestFixture]
-public class HPTest
+public class HPSOTest
 {
     private Scene scene;
     private const string sceneName = "HealthAndDamageTestScene";

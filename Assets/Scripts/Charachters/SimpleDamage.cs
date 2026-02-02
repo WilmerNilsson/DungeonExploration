@@ -11,7 +11,7 @@ public class SimpleDamage : MonoBehaviour
             health.TakeDamage(damage);
             if (GetComponentInParent<AttackPlayer>())
             {
-                GetComponentInParent<AttackPlayer>().LoseDurability(health.durabilityDamage);
+                GetComponentInParent<AttackPlayer>().LoseDurability(health.DurabilityDamage);
             }
         }
 #if DEBUG
