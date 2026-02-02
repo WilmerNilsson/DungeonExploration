@@ -339,4 +339,14 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
             }
         }
     }
+
+    [ContextMenu("Toggle Debug")]
+    public void ToggleDebug()
+    {
+        debug = !debug;
+        foreach (var eventData in events)
+        {
+            eventData.SetDebug(debug);
+        }
+    }
 }

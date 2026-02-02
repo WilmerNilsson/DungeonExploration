@@ -73,5 +73,10 @@ using GUID = FMOD.GUID;
             
             EditorUtils.UnloadPreviewBanks();
         }
+
+        public void SetDebug(bool newValue)
+        {
+            debug = newValue;
+        }
         #endif
     }

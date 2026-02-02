@@ -70,7 +70,7 @@ public class AudioTrigger : MonoBehaviour
             switch (instruction.command)
             {
                 case Instruction.Command.CreateInstance:
-                    AudioManager.Instance.CreateInstance(instruction.path, instruction.gameObj, instruction.attatchToObject, instruction.followObject );
+                    AudioManager.Instance.CreateInstance(instruction.path, instruction.gameObj, instruction.attachToObject, instruction.followObject );
                     break;
                 case Instruction.Command.ReleaseInstance:
                     AudioManager.Instance.ReleaseInstance(instruction.path, instruction.gameObj);
@@ -84,13 +84,13 @@ public class AudioTrigger : MonoBehaviour
                 case Instruction.Command.SetParameter:
                     foreach (var paramToSet in instruction.parametersToSet)
                     {
-                        AudioManager.Instance.SetParameter(instruction.path, paramToSet.paramName, paramToSet.paramValue, instruction.gameObj);
+                        AudioManager.Instance.SetParameter(instruction.path, paramToSet.name, paramToSet.value, instruction.gameObj);
                     }
                     break;
                 case Instruction.Command.SetGlobalParameter:
                     foreach (var paramToSet in instruction.parametersToSet)
                     {
-                        AudioManager.Instance.SetGlobalParameter(paramToSet.paramName, paramToSet.paramValue);
+                        AudioManager.Instance.SetGlobalParameter(paramToSet.name, paramToSet.value);
                     }
                     break;
                 case Instruction.Command.KeyOff:
@@ -101,8 +101,8 @@ public class AudioTrigger : MonoBehaviour
                     var valueList = new List<float>();
                     foreach (var paramToSet in instruction.parametersToSet)
                     {
-                        nameList.Add(paramToSet.paramName);
-                        valueList.Add(paramToSet.paramValue);
+                        nameList.Add(paramToSet.name);
+                        valueList.Add(paramToSet.value);
                     }
                     AudioManager.Instance.PlayOneShot(instruction.path,nameList.ToArray(), valueList.ToArray(), instruction.gameObj, instruction.followObject);
                     break;

@@ -22,15 +22,15 @@ public class Instruction
     [Serializable]
     public struct ParameterToSet
     {
-        public string paramName;
-        public float paramValue;
+        public string name;
+        public float value;
     }
     
     public Command command;
 
     public string path;
     public GameObject gameObj;
-    public bool attatchToObject;
+    public bool attachToObject;
     public bool followObject = true;
     public STOP_MODE stopMode;
     public ParameterToSet[] parametersToSet;
