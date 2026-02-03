@@ -28,7 +28,7 @@ public class DialogueManager : MonoBehaviour
 
     private string sentence;
     
-    private const string SPEAKER_TAG = "speaker";
+    private const string NAME_TAG = "name";
     private const string SPRITE_TAG = "sprite";
     private const string COLOR_TAG = "color";
     private const string SIZE_TAG = "font_size";
@@ -39,9 +39,8 @@ public class DialogueManager : MonoBehaviour
 
     //[Header("Choices UI")] 
     [SerializeField] private GameObject[] choices;
-
-    //todo text
-    //private TextMeshProUGUI[] choicesText;
+    
+    private TextMeshProUGUI[] choicesText;
 
     private Story currentStory;
 
@@ -73,13 +72,13 @@ public class DialogueManager : MonoBehaviour
             InputManager.GetInstance().isLevelPlaying = true;
         }*/
 
-        /*choicesText = new TextMeshProUGUI[choices.Length];
+        choicesText = new TextMeshProUGUI[choices.Length];
         int index = 0;
         foreach (GameObject choice in choices)
         {
             choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
             index++;
-        }*/
+        }
     }
 
     private void Update()
@@ -135,6 +134,9 @@ public class DialogueManager : MonoBehaviour
     {
         if (currentStory.currentChoices.Count > 0)
         {
+            StopAllCoroutines();
+            dialogueText.text = sentence;
+            isTyping = false;
             return;
         }
         if (currentStory.canContinue)
@@ -186,7 +188,7 @@ public class DialogueManager : MonoBehaviour
 
             switch (tagKey)
             {
-                case SPEAKER_TAG:
+                case NAME_TAG:
                     dialogueName.text = tagValue;
                     break;
                 
@@ -273,8 +275,7 @@ public class DialogueManager : MonoBehaviour
         foreach (Choice choice in currentChoices)
         {
             choices[index].gameObject.SetActive(true);
-            //todo text
-            //choicesText[index].text = choice.text;
+            choicesText[index].text = choice.text;
             index++;
         }
 
