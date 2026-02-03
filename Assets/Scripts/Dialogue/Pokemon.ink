@@ -3,11 +3,11 @@
 === Main ===
 Which Pokemon do you choose?
     + [Bulbasaur]
-        -> chosen("Bulbasaur")
+        -> chosen("<color=green>Bulbasaur")
     + [Charmander]
-        -> chosen("Charmander")
+        -> chosen("<color=red>Charmander")
     + [Squirtle]
-        -> chosen("Squirtle")
+        -> chosen("<color=blue>Squirtle")
 
 === chosen(pokemon) ===
 you chose {pokemon}!
