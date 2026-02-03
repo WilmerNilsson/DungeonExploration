@@ -42,7 +42,7 @@ public class AudioManager : MonoBehaviour
 
     public EventList[] eventLists;
 
-    private Dictionary<string, EventList> _eventListCache; //För snabbare lookup än foreach
+    public Dictionary<string, EventList> _eventListCache; //För snabbare lookup än foreach
 
     private void RefreshEventListCache() //Lägger till alla eventLists i eventListCache
     {
@@ -58,6 +58,14 @@ public class AudioManager : MonoBehaviour
             _eventListCache.Add(list.category, list);
 
             PrintDebug("Added " + list.category + " to eventList cache");
+        }
+    }
+
+    public void FillAllEventData()
+    {
+        foreach (var list in eventLists)
+        {
+            list.FillEventData();
         }
     }
 
@@ -90,7 +98,7 @@ public class AudioManager : MonoBehaviour
 
     #region Global Parameters
 
-    private Dictionary<string, PARAMETER_ID> _globalParameterCache; //För snabb lookup
+    public Dictionary<string, PARAMETER_ID> _globalParameterCache; //För snabb lookup
 
     private void RefreshGlobalParameterCache() //Lägger alla globala parameterIDs i _globalParameterCache;
     {
@@ -122,11 +130,11 @@ public class AudioManager : MonoBehaviour
     #region Looping Events 
     //Alla metoder här vidarebefodrar instruktioner in i rätt evenlist baserat på path.
     
-    public void CreateInstance(string path, GameObject gameObj = null, bool attachToObject = false, bool followObject = true)
+    public void CreateInstance(string path, GameObject gameObj = null, bool followObject = true)
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
-            eventList.CreateInstance(eventName, gameObj, attachToObject, followObject);
+            eventList.CreateInstance(eventName, gameObj, followObject);
         }
     }
     
@@ -195,18 +203,18 @@ public class AudioManager : MonoBehaviour
     
     private const string MasterBankPath = "bank:/Master";
 
-    private Dictionary<string, VCA> _vcaCache; //cache med namn på vca samt VCA
+    public Dictionary<string, VCA> VcaCache; //cache med namn på vca samt VCA
 
     private void RefreshVcaCache() //Lägger till alla vcas till _vcaCache
     { 
-        _vcaCache = new Dictionary<string, VCA>();
+        VcaCache = new Dictionary<string, VCA>();
         RuntimeManager.StudioSystem.getBank(MasterBankPath, out var masterBank);
         masterBank.getVCAList(out var vcaList);
         foreach (var vca in vcaList)
         {
             vca.getPath(out var path);
             var split = path.Split('/');
-            _vcaCache.Add(split[^1], vca);
+            VcaCache.Add(split[^1], vca);
             
             PrintDebug("Added " + split[^1] + " to vcaCache");
         }
@@ -214,7 +222,7 @@ public class AudioManager : MonoBehaviour
 
     public void SetVolume(string vcaName, float volume) //Sätter volym på en vca
     {
-        if (_vcaCache.TryGetValue(vcaName, out var vca))
+        if (VcaCache.TryGetValue(vcaName, out var vca))
         {
             vca.setVolume(volume);
             PrintDebug("Set " + vcaName + " volume to " + volume);
@@ -227,7 +235,7 @@ public class AudioManager : MonoBehaviour
 
     public float GetVolume(string vcaName) //Hämtar volym från vca i vcaCache
     {
-        if (_vcaCache.TryGetValue(vcaName, out var vca))
+        if (VcaCache.TryGetValue(vcaName, out var vca))
         {
             vca.getVolume(out var volume);
             
@@ -243,7 +251,7 @@ public class AudioManager : MonoBehaviour
 
     public void SetAllToVolume(float volume) //Sätter volym på alla vcas till volume
     {
-        foreach (var vca in _vcaCache)
+        foreach (var vca in VcaCache)
         {
             vca.Value.setVolume(volume);
         }
@@ -262,7 +270,7 @@ public class AudioManager : MonoBehaviour
     {
         var tempNameList = new List<string>();
         var tempVolumeList = new List<float>();
-        foreach (var vca in _vcaCache)
+        foreach (var vca in VcaCache)
         {
             tempNameList.Add(vca.Key);
             vca.Value.getVolume(out var volume);
@@ -328,6 +336,14 @@ public class AudioManager : MonoBehaviour
     public bool debug;
 
     public bool showOnlyWarnings;
+
+    public bool showExtraInfo; // För custom inspector
+
+    [ContextMenu("Toggle Debug")]
+    public void ToggleDebug()
+    {
+        debug = !debug;
+    }
 
     private void PrintDebug(string message, bool isWarning = false)
     {

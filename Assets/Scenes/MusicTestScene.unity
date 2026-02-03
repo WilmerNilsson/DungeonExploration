@@ -157,7 +157,6 @@ MonoBehaviour:
   - command: 0
     path: BGM/Level1
     gameObj: {fileID: 415117243}
-    attachToObject: 0
     followObject: 0
     stopMode: 0
     parametersToSet:
@@ -167,7 +166,6 @@ MonoBehaviour:
   - command: 2
     path: BGM/Level1
     gameObj: {fileID: 415117243}
-    attachToObject: 0
     followObject: 0
     stopMode: 0
     parametersToSet:
@@ -194,7 +192,6 @@ MonoBehaviour:
   - command: 7
     path: Test/Footstep
     gameObj: {fileID: 415117243}
-    attachToObject: 1
     followObject: 1
     stopMode: 0
     parametersToSet:
@@ -325,6 +322,7 @@ GameObject:
   - component: {fileID: 1117420917}
   - component: {fileID: 1117420916}
   - component: {fileID: 1117420918}
+  - component: {fileID: 1117420919}
   m_Layer: 0
   m_Name: AudioTrigger
   m_TagString: Untagged
@@ -352,7 +350,6 @@ MonoBehaviour:
   - command: 7
     path: Test/Footstep
     gameObj: {fileID: 1117420915}
-    attachToObject: 1
     followObject: 1
     stopMode: 0
     parametersToSet:
@@ -386,15 +383,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a814d164a17170438a13d63660122b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activatedBy: 1
+  activatedBy: 2
   tagToActivate: 
   activateOnce: 0
   activationDelay: 0
   instructions:
   - command: 0
     path: BGM/Level1
-    gameObj: {fileID: 1117420915}
-    attachToObject: 0
+    gameObj: {fileID: 0}
     followObject: 0
     stopMode: 0
     parametersToSet:
@@ -403,13 +399,43 @@ MonoBehaviour:
     bankName: 
   - command: 2
     path: BGM/Level1
-    gameObj: {fileID: 1117420915}
-    attachToObject: 0
+    gameObj: {fileID: 0}
     followObject: 0
     stopMode: 0
     parametersToSet:
     - name: surfaceType
       value: 0
+    bankName: 
+--- !u!114 &1117420919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1117420915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a814d164a17170438a13d63660122b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activatedBy: 2
+  tagToActivate: 
+  activateOnce: 0
+  activationDelay: 0
+  instructions:
+  - command: 3
+    path: BGM/Level1
+    gameObj: {fileID: 0}
+    followObject: 0
+    stopMode: 0
+    parametersToSet: []
+    bankName: 
+  - command: 1
+    path: BGM/Level1
+    gameObj: {fileID: 0}
+    followObject: 0
+    stopMode: 0
+    parametersToSet: []
     bankName: 
 --- !u!1 &1521434814
 GameObject:
@@ -544,19 +570,15 @@ MonoBehaviour:
   activationDelay: 0
   instructions:
   - command: 0
-    path: BGM/Test
-    gameObj: {fileID: 415117243}
-    attachToObject: 0
-    followObject: 0
+    path: BGM/Level1
+    gameObj: {fileID: 1546594189}
+    followObject: 1
     stopMode: 0
-    parametersToSet:
-    - name: surfaceType
-      value: 0
+    parametersToSet: []
     bankName: 
   - command: 2
-    path: BGM/Test
-    gameObj: {fileID: 415117243}
-    attachToObject: 0
+    path: BGM/Level1
+    gameObj: {fileID: 1546594189}
     followObject: 0
     stopMode: 0
     parametersToSet:
@@ -580,11 +602,10 @@ MonoBehaviour:
   activateOnce: 0
   activationDelay: 0
   instructions:
-  - command: 7
-    path: Test/Footstep
-    gameObj: {fileID: 1546594189}
-    attachToObject: 1
-    followObject: 1
+  - command: 1
+    path: BGM/Test
+    gameObj: {fileID: 0}
+    followObject: 0
     stopMode: 0
     parametersToSet:
     - name: surfaceType
@@ -643,7 +664,6 @@ MonoBehaviour:
   - command: 0
     path: BGM/Level1
     gameObj: {fileID: 2124376906}
-    attachToObject: 0
     followObject: 0
     stopMode: 0
     parametersToSet:
@@ -653,7 +673,6 @@ MonoBehaviour:
   - command: 2
     path: BGM/Level1
     gameObj: {fileID: 2124376906}
-    attachToObject: 0
     followObject: 0
     stopMode: 0
     parametersToSet:
@@ -680,7 +699,6 @@ MonoBehaviour:
   - command: 7
     path: Test/Footstep
     gameObj: {fileID: 2124376906}
-    attachToObject: 1
     followObject: 1
     stopMode: 0
     parametersToSet:
@@ -712,6 +730,14 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 808863321973245351, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
       propertyPath: debug
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 808863321973245351, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
+      propertyPath: showExtraInfo
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 808863321973245351, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
+      propertyPath: showOnlyWarnings
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 808863321973245351, guid: 3e48f95704a16314682581b8245b96ba, type: 3}

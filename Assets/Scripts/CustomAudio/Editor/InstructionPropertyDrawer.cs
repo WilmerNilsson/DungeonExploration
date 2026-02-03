@@ -9,7 +9,6 @@ public class InstructionPropertyDrawer : PropertyDrawer
         var command = property.FindPropertyRelative("command");
         var path = property.FindPropertyRelative("path");
         var gameObj = property.FindPropertyRelative("gameObj");
-        var attachToObject = property.FindPropertyRelative("attachToObject");
         var followObject = property.FindPropertyRelative("followObject");
         var stopMode = property.FindPropertyRelative("stopMode");
         var parametersToSet = property.FindPropertyRelative("parametersToSet");
@@ -43,19 +42,18 @@ public class InstructionPropertyDrawer : PropertyDrawer
                 pos.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2;
                 lbl.text = "Game Object";
                 EditorGUI.PropertyField(pos, gameObj, lbl);
-                
-                pos.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-                lbl.text = "Attach To Object";
-                EditorGUI.PropertyField(pos, attachToObject, lbl);
-                
-                pos.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
-                lbl.text = "Follow Object";
-                EditorGUI.PropertyField(pos, followObject, lbl);
+
+                if (command.enumValueIndex == 0 || command.enumValueIndex == 7)
+                {
+                    pos.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+                    lbl.text = "Follow Object";
+                    EditorGUI.PropertyField(pos, followObject, lbl);
+                }
             }
 
             if (command.enumValueIndex == 3)
             {
-                pos.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+                pos.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2;
                 lbl.text = "Stop Mode";
                 EditorGUI.PropertyField(pos, stopMode, lbl);
             }
@@ -98,7 +96,12 @@ public class InstructionPropertyDrawer : PropertyDrawer
         if (command.enumValueIndex < 8 && command.enumValueIndex != 5)
         {
             height += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2;
-            height += (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing) * 3;
+            height += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+
+            if (command.enumValueIndex == 0 || command.enumValueIndex == 7)
+            {
+                height += (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing);
+            }
         }
 
         if (command.enumValueIndex == 3)

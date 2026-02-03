@@ -80,12 +80,12 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         }
     }
     
-    public void CreateInstance(string eventName, GameObject gameObject = null, bool attachToObject = false, bool followObject = true)
+    public void CreateInstance(string eventName, GameObject gameObject = null, bool followObject = true)
     {
         if (!TryGetEvent(eventName, out var eventData)) return;
         if (eventData.isOneShot)
         {
-            PrintDebug("Didn't create instance for " + eventName + " because it is not a looping event");
+            PrintDebug("Didn't create instance for " + eventName + " because it is not a looping event", true);
             return;
         } //Skapa inte instans utan att släppa den om eventet är oneShot;
 
@@ -100,7 +100,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
             InstanceList.Add(gameObject, instance);
             PrintDebug("Created instance for " + eventName + " and added it to the instance list along with " + gameObject.name);
 
-            if (!attachToObject && !eventData.is3D) return; //Om event är 3D och attachToObject, fäser vi eventet på gameObject,
+            if (!eventData.is3D) return; //Om event är 3D och attachToObject, fäser vi eventet på gameObject,
                                                             //om followObject är false följer eventet inte med gameObject utan
                                                             //stannar kvar på samma position där objektet var när instansen skapades
             if (followObject)
@@ -119,6 +119,12 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
             if (eventData.eventInstance.isValid())
             {
                 PrintDebug("Didn't create instance for " + eventName + " because it already has an instance", true);
+                return;
+            }
+
+            if (eventData.is3D)
+            {
+                PrintDebug("Didn't create instance for "+ eventName + " because it's a 3D event and needs to be attached to a 3D object to work", true);
                 return;
             }
             eventData.eventInstance = RuntimeManager.CreateInstance(eventData.eventReference);
@@ -175,7 +181,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
             {
                 if (!eventData.eventInstance.isValid())
                 {
-                    PrintDebug("Didn't start " + eventName + " because it's instance is not valid");
+                    PrintDebug("Didn't start " + eventName + " because it's instance is not valid", true);
                     return;
                 }
                 

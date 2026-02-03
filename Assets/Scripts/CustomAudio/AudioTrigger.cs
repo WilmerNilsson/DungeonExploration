@@ -69,7 +69,7 @@ public class AudioTrigger : MonoBehaviour
             switch (instruction.command)
             {
                 case Instruction.Command.CreateInstance:
-                    AudioManager.Instance.CreateInstance(instruction.path, instruction.gameObj, instruction.attachToObject, instruction.followObject );
+                    AudioManager.Instance.CreateInstance(instruction.path, instruction.gameObj, instruction.followObject );
                     break;
                 case Instruction.Command.ReleaseInstance:
                     AudioManager.Instance.ReleaseInstance(instruction.path, instruction.gameObj);

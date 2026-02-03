@@ -7,12 +7,12 @@ public class Instruction //Används av audioTrigger för att skicka instruktione
 {
     public enum Command
     {
-        CreateInstance,
+        CreateInstance, //0
         ReleaseInstance,
         StartEvent,
         StopEvent,
         SetParameter,
-        SetGlobalParameter,
+        SetGlobalParameter, //5
         KeyOff,
         PlayOneShot,
         LoadBank,
@@ -22,7 +22,6 @@ public class Instruction //Används av audioTrigger för att skicka instruktione
     public Command command; //Variabler för alla metoder som kan skickas till audioManager, i inspektorn visas bara relevanta variabler beroende på command
     public string path;
     public GameObject gameObj;
-    public bool attachToObject;
     public bool followObject = true;
     public STOP_MODE stopMode;
     public ParameterToSet[] parametersToSet;
