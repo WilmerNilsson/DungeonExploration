@@ -62,6 +62,8 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         return false;
     }
     
+    //TODO: IsEventLoaded, kolla om bankerna för ett event är laddade och returnera true eller false
+    
     #endregion
 
     #region Looping Events
