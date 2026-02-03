@@ -81,12 +81,18 @@ public class PlayerController : MonoBehaviour
 
     public void OnInteract(InputAction.CallbackContext context)
     {
-        controller.Interact();
+        if (context.performed)
+        {
+            controller.Interact();
+        }
     }
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        controller.Attack();
+        if (context.performed)
+        {
+            controller.Attack();
+        }
     }
 
     private void Rotate(Vector2 context)
