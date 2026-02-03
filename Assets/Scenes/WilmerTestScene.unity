@@ -240,6 +240,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 671929676}
+        m_TargetAssemblyTypeName: DialogueManager, GameAssembly
+        m_MethodName: ContinueStory
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!136 &194072893
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -364,7 +376,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &205651178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,7 +524,7 @@ MonoBehaviour:
     m_ActionName: 'Player/Inventory[/Keyboard/e,/XInputControllerWindows/buttonNorth]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 510437657}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: InteractTest, GameAssembly
         m_MethodName: OnInteract
         m_Mode: 0
@@ -524,12 +536,52 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Interaction, GameAssembly
+        m_MethodName: Interact
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: d23bbe89-1cbf-4d8d-b479-034190b5bd55
     m_ActionName: 'Player/Interact[/Mouse/rightButton,/XInputControllerWindows/buttonWest]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 671929676}
+        m_TargetAssemblyTypeName: DialogueManager, GameAssembly
+        m_MethodName: OnAdvancePressed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: b03bcb0f-3ff4-4c83-81ef-866834886b91
     m_ActionName: 'Player/Advance_dialogue[/Keyboard/space,/XInputControllerWindows/buttonSouth]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 671929676}
+        m_TargetAssemblyTypeName: DialogueManager, GameAssembly
+        m_MethodName: OnSkipPressed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 4a3a7afa-56d5-4e7a-9751-a89c3c5faa62
+    m_ActionName: 'Player/Skip_dialogue[/Keyboard/q]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -623,7 +675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dce8121b78dbff045af3734d4ee3712c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraTransform: {fileID: 510437654}
+  cameraTransform: {fileID: 0}
   groundCheck: {fileID: 1815681348}
   moveSpeed: 3
   sprintSpeed: 5
@@ -645,7 +697,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 510437654}
   - {fileID: 1815681346}
   - {fileID: 1003926165}
   - {fileID: 787180892}
@@ -718,6 +769,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: DialogueManager, GameAssembly
         m_MethodName: MakeChoice
         m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 671929676}
+        m_TargetAssemblyTypeName: DialogueManager, GameAssembly
+        m_MethodName: ContinueStory
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -877,17 +940,24 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5760068673368521793, guid: 3d53b488f775ee3429e2f32cfeb62719, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8396059721546633852, guid: 3d53b488f775ee3429e2f32cfeb62719, type: 3}
       propertyPath: m_Name
       value: Player Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8396059721546633852, guid: 3d53b488f775ee3429e2f32cfeb62719, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1811854244061691814, guid: 3d53b488f775ee3429e2f32cfeb62719, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 510437654}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d53b488f775ee3429e2f32cfeb62719, type: 3}
 --- !u!1 &510437653
@@ -901,7 +971,6 @@ GameObject:
   - component: {fileID: 510437654}
   - component: {fileID: 510437656}
   - component: {fileID: 510437655}
-  - component: {fileID: 510437657}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -922,7 +991,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 205651184}
+  m_Father: {fileID: 2053663955}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!81 &510437655
 AudioListener:
@@ -983,23 +1052,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &510437657
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 510437653}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 972bd4afbd214104fbab0c08560403ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 257
-  interactDistance: 5
-  UIText: {fileID: 1009442444}
 --- !u!1 &530949041
 GameObject:
   m_ObjectHideFlags: 0
@@ -1033,9 +1085,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f5d5a35e66ca5d4bbe0b26356fe7551, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
+  playerHealth: {fileID: 0}
+  currentHealth: 0
   maxHealth: 3
-  durabilityDamage: 0
+  DurabilityDamage: 0
   minTimeBetweenDamage: 0
 --- !u!54 &530949043
 Rigidbody:
@@ -1416,9 +1469,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f5d5a35e66ca5d4bbe0b26356fe7551, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
+  playerHealth: {fileID: 0}
+  currentHealth: 0
   maxHealth: 3
-  durabilityDamage: 1
+  DurabilityDamage: 0
   minTimeBetweenDamage: 0
 --- !u!1 &787180891
 GameObject:
@@ -2877,6 +2931,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 671929676}
+        m_TargetAssemblyTypeName: DialogueManager, GameAssembly
+        m_MethodName: ContinueStory
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!136 &1820304166
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3145,6 +3211,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6e13c24b9fd31640a5ebe281eb79004, type: 3}
+--- !u!4 &2053663955 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1811854244061691814, guid: 3d53b488f775ee3429e2f32cfeb62719, type: 3}
+  m_PrefabInstance: {fileID: 340916810}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2133890537
 GameObject:
   m_ObjectHideFlags: 0
