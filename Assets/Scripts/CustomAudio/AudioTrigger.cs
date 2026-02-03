@@ -7,7 +7,8 @@ public class AudioTrigger : MonoBehaviour
 {
     public enum ActivatedBy
     {
-        Trigger,
+        OnTriggerEnter,
+        OnTriggerExit,
         Start,
         Other
     }
@@ -16,6 +17,7 @@ public class AudioTrigger : MonoBehaviour
     public ActivatedBy activatedBy;
     public string tagToActivate;
     public bool activateOnce;
+    private bool _hasActivated;
     public float activationDelay;
     
     public Instruction[] instructions;
@@ -33,7 +35,15 @@ public class AudioTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (activatedBy == ActivatedBy.Trigger && other.CompareTag(tagToActivate))
+        if (activatedBy == ActivatedBy.OnTriggerEnter && other.CompareTag(tagToActivate))
+        {
+            Activate();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (activatedBy == ActivatedBy.OnTriggerExit && other.CompareTag(tagToActivate))
         {
             Activate();
         }
@@ -46,6 +56,8 @@ public class AudioTrigger : MonoBehaviour
     [ContextMenu("Activate")]
     public void Activate() //Aktivera med delay eller direkt
     {
+        if (activateOnce && _hasActivated) return;
+        _hasActivated = true;
         if (activationDelay > 0)
         {
             StartCoroutine(ActivationDelay());

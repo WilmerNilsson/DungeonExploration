@@ -36,7 +36,6 @@ public class Health : MonoBehaviour
         {
             if (playerHealth == null)
             {
-                Debug.Log("setting health to" + value);
                 currentHealth = value;
             }
 

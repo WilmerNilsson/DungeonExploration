@@ -16,10 +16,15 @@ public class InventoryGrid : MonoBehaviour
     {
         Vector2 slotSize = GetSlotSize();
 
-        //note that this is without a check for float rounding.
-        //if it becomes a problem then we can change, but inventory should not have insande tranform values
-        if (slotSize.x != slotSize.y) 
+        float delta = 0.000001f;
+        if (Mathf.Abs(slotSize.x - slotSize.y) > delta)
+        {
+            Debug.Log(slotSize.x - slotSize.y);
+            Debug.Log(Mathf.Abs(slotSize.x - slotSize.y));
             Debug.LogWarning($"inventory slot width and height does not match. width is {slotSize.x}, height is {slotSize.y}", this);
+        }
+            
+        
     }
 #endif
 
@@ -28,28 +33,9 @@ public class InventoryGrid : MonoBehaviour
         invData = new SimpleItem[collumns, rows];
     }
 
-    private Rect GetBigRect()
-    {
-        Rect bigRect = new();
-
-        Vector3[] corners = new Vector3[4];
-        Debug.Log("a");
-
-        (transform as RectTransform).GetWorldCorners(corners);
-
-        Debug.Log("b");
-        //bl, tl, tr, br 
-        bigRect.xMin = corners[0].x;
-        bigRect.yMin = corners[0].y;
-        bigRect.xMax = corners[2].x;
-        bigRect.yMax = corners[2].y;
-
-        return bigRect;
-    }
-
     private Rect GetSlotRect(int collum, int row)
     {
-        Rect bigRect = GetBigRect();
+        Rect bigRect = (transform as RectTransform).rect;
 
         Rect slot = new();
 
@@ -63,23 +49,19 @@ public class InventoryGrid : MonoBehaviour
 
     public Vector2 GetSlotSize()
     {
-        Rect bigRect = GetBigRect();
+        Rect bigRect = (transform as RectTransform).rect;
 
         return new(bigRect.width / collumns, bigRect.height / rows);
     }
 
     public bool TryPlaceItem(SimpleItem item)
     {
-        Vector2 pos = item.RectTransform.position;
+        Vector2 pos = item.RectTransform.position;;
 
-        Debug.Log(1);
+        if((transform as RectTransform).rect.Contains(pos)) return false;
 
-        if(!GetBigRect().Contains(pos)) return false;
-
-        Debug.Log(2);
         bool[,] itemSlots = item.GetSizeMatrix();
 
-        Debug.Log(3);
 #if DEBUG
         for (int x = 0; x < itemSlots.GetLength(0); x++)
         {
@@ -89,7 +71,6 @@ public class InventoryGrid : MonoBehaviour
             }
         }
 #endif
-        Debug.Log(4);
 
         //TODO work in piviot
         if (TryGetSlotOfPos(pos, out int collum, out int row, out Rect slot))
@@ -151,7 +132,7 @@ public class InventoryGrid : MonoBehaviour
         //instead of itterating trough all possible till we get a match
         //not really needed unless the inventory is like 100000 spaces or something.
 
-        if (!GetBigRect().Contains(pos)) goto fail;
+        if (!(transform as RectTransform).rect.Contains(pos)) goto fail;
 
         for (collum = 0; collum < collumns; collum++)
         {
