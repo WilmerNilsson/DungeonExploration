@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using FMOD.Studio;
 using FMODUnity;
+using UnityEngine;
 using GUID = FMOD.GUID;
 #if UNITY_EDITOR
 #endif
@@ -24,6 +25,25 @@ using GUID = FMOD.GUID;
         public ParameterData[] parameters;
         
         public Dictionary<string, ParameterData> ParameterCache; //För snabbare lookup i ParameterData istället för foreach loop
+
+        public bool TryGetParamData(string paramName, out ParameterData paramData)
+        {
+            if (ParameterCache.TryGetValue(paramName, out paramData))
+            {
+                return true;
+            }
+            paramData = null;
+            return false;
+        }
+
+        public void RefreshParameterCache()
+        {
+            ParameterCache = new Dictionary<string, ParameterData>();
+            foreach (var parameterData in parameters)
+            {
+                ParameterCache.Add(parameterData.paramName, parameterData);
+            }
+        }
 
         #if UNITY_EDITOR
         public void PopulateData()
@@ -54,7 +74,7 @@ using GUID = FMOD.GUID;
             minDistance = editorEventRef.MinDistance;
             maxDistance = editorEventRef.MaxDistance;
 
-            ParameterCache = new Dictionary<string, ParameterData>(); //Fyll i parameters samt ParameterCache för att enkelt hitta en specifik ParameterData senare
+             //Fyll i parameters
             var tempParamList = new List<ParameterData>();
             foreach (var paramRef in editorEventRef.Parameters)
             {
@@ -62,10 +82,10 @@ using GUID = FMOD.GUID;
                 {
                     paramName = paramRef.Name,
                     isGlobal = paramRef.IsGlobal,
-                    ID = paramRef.ID
+                    data1 = paramRef.ID.data1,
+                    data2 = paramRef.ID.data2,
                 };
                 tempParamList.Add(tempParam);
-                ParameterCache.Add(paramRef.Name, tempParam);
             }
             parameters = tempParamList.ToArray();
             

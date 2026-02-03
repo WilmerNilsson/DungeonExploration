@@ -227,6 +227,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1117420917}
   - component: {fileID: 1117420916}
+  - component: {fileID: 1117420918}
   m_Layer: 0
   m_Name: AudioTrigger
   m_TagString: Untagged
@@ -246,30 +247,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a814d164a17170438a13d63660122b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activatedBy: 0
+  activatedBy: 2
   tagToActivate: 
   activateOnce: 0
   activationDelay: 0
   instructions:
-  - command: 0
-    path: 
-    gameObj: {fileID: 0}
-    attachToObject: 0
-    followObject: 0
+  - command: 7
+    path: Test/Footstep
+    gameObj: {fileID: 1117420915}
+    attachToObject: 1
+    followObject: 1
     stopMode: 0
     parametersToSet:
-    - name: 
-      value: 0
-    bankName: 
-  - command: 8
-    path: 
-    gameObj: {fileID: 0}
-    attachToObject: 0
-    followObject: 0
-    stopMode: 0
-    parametersToSet:
-    - name: 
-      value: 0
+    - name: surfaceType
+      value: 1
+    - name: surfaceType
+      value: 2
     bankName: 
 --- !u!4 &1117420917
 Transform:
@@ -286,6 +279,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1117420918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1117420915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a814d164a17170438a13d63660122b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activatedBy: 2
+  tagToActivate: 
+  activateOnce: 0
+  activationDelay: 0
+  instructions:
+  - command: 4
+    path: Test/Footstep
+    gameObj: {fileID: 1117420915}
+    attachToObject: 0
+    followObject: 0
+    stopMode: 0
+    parametersToSet:
+    - name: surfaceType
+      value: 0
+    bankName: 
 --- !u!1 &1521434814
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,6 +415,14 @@ PrefabInstance:
       propertyPath: debug
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 808863321973245351, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
+      propertyPath: eventLists.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 808863321973245351, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
+      propertyPath: 'eventLists.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 27474589cd33ba74bb07b43add68c8b8, type: 2}
     - target: {fileID: 6517206634113031847, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -103,7 +103,7 @@ public class AudioTrigger : MonoBehaviour
                         nameList.Add(paramToSet.name);
                         valueList.Add(paramToSet.value);
                     }
-                    AudioManager.Instance.PlayOneShot(instruction.path,nameList.ToArray(), valueList.ToArray(), instruction.gameObj, instruction.followObject);
+                    AudioManager.Instance.PlayOneShot(instruction.path, nameList.ToArray(), valueList.ToArray(), instruction.gameObj, instruction.followObject);
                     break;
                 case Instruction.Command.LoadBank:
                     AudioManager.Instance.LoadBank(instruction.bankName);

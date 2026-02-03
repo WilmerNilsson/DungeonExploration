@@ -19,7 +19,7 @@ public class InstructionPropertyDrawer : PropertyDrawer
         var pos = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing);
         var lbl = new GUIContent()
         {
-            text = "Command",
+            text = "",
         };
 
         var index = label.text.Substring(label.text.Length - 1, 1)[0];
@@ -60,7 +60,7 @@ public class InstructionPropertyDrawer : PropertyDrawer
                 EditorGUI.PropertyField(pos, stopMode, lbl);
             }
 
-            if (command.enumValueIndex == 4 || command.enumValueIndex == 5)
+            if (command.enumValueIndex == 4 || command.enumValueIndex == 5 || command.enumValueIndex == 7)
             {
                 pos.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
                 lbl.text = "Parameters to Set";
@@ -106,7 +106,7 @@ public class InstructionPropertyDrawer : PropertyDrawer
             height += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
         }
 
-        if (command.enumValueIndex is 4 or 5)
+        if (command.enumValueIndex == 4 || command.enumValueIndex == 5 || command.enumValueIndex == 7)
         {
             height += EditorGUI.GetPropertyHeight(parametersToSet);
         }

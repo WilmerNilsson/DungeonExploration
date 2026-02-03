@@ -21,10 +21,12 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
     private Dictionary<string, EventData> _eventCache = new Dictionary<string, EventData>();
 
     public void RefreshEventCache() //Lägger till alla eventData till _eventCache för snabbare lookup än foreach loop i eventData
+                                    //samt refreshar ParameterCache i alla eventData
     {
         _eventCache = new Dictionary<string, EventData>();
         foreach (var eventData in events)
         {
+            eventData.RefreshParameterCache();
             _eventCache.Add(eventData.eventName, eventData);
 
             if (debug)
@@ -217,11 +219,15 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
     public void SetParameter(string eventName, string paramName, float paramValue, GameObject gameObject = null) //Som CreateInstance men sätter parametrar. Om en parameter är global behöver man inte köra setParameter på instansen utan bara i studioSystem.
     {
         if (!TryGetEvent(eventName, out var eventData)) return;
-        if (!eventData.ParameterCache.TryGetValue(paramName, out var parameterData)) return;
+        if (!eventData.ParameterCache.TryGetValue(paramName, out var parameterData))
+        {
+            Debug.LogWarning(paramName + " " + eventData.ParameterCache.TryGetValue(paramName, out var parameter));
+            return;
+        }
         
         if (parameterData.isGlobal)
         {
-            RuntimeManager.StudioSystem.setParameterByID(parameterData.ID, paramValue);
+            RuntimeManager.StudioSystem.setParameterByID(parameterData.ID(), paramValue);
             if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
             {
                 Debug.Log("Set global parameter " + paramName + " to " + paramValue);
@@ -232,7 +238,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
             if (gameObject != null)
             {
                 if (!InstanceList.TryGetValue(gameObject, out var instance)) return;
-                instance.setParameterByID(parameterData.ID, paramValue);
+                instance.setParameterByID(parameterData.ID(), paramValue);
                 if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
                 {
                     Debug.Log("Set " + paramName + " in event " + eventName + " on object " + gameObject.name + " to " + paramValue);
@@ -240,7 +246,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
             }
             else
             {
-                eventData.eventInstance.setParameterByID(parameterData.ID, paramValue);
+                eventData.eventInstance.setParameterByID(parameterData.ID(), paramValue);
                 if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
                 {
                     Debug.Log("Set " + paramName + " in event " + eventName + " to " + paramValue);
@@ -291,7 +297,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
 
     #region SFX
 
-    public void PlayOneShot(string eventName, string[] paramNames = null, float[] paramValues = null ,GameObject gameObject = null, bool followObject = true)
+    public void PlayOneShot(string eventName, string[] paramNames = null, float[] paramValues = null,GameObject gameObject = null, bool followObject = true)
     {
         //Om event finns och är oneshot skapar vi en instans, ställer in parametrar (om de finns) och fäster ljudet på ett gameObject (om de finns), om followObject är false följer ljudet inte efter objektet (crazy)
         if (TryGetEvent(eventName, out var eventData))
@@ -307,21 +313,28 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
             
             var instance = RuntimeManager.CreateInstance(eventData.eventReference);
             
-            if (paramNames != null && paramValues != null)
-            {
-                for (var i = 0; i < paramNames.Length; i++)
-                {
-                    if (eventData.ParameterCache.TryGetValue(paramNames[i], out var parameterData))
-                    {
-                        instance.setParameterByID(parameterData.ID, paramValues[i]);
-                    }
-                }
-            }
-
             if (gameObject != null && eventData.is3D)
             {
                 if (followObject) RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
                 else instance.set3DAttributes(gameObject.transform.To3DAttributes());
+            }
+            
+            if (paramNames != null && paramValues != null)
+            {
+                for (var i = 0; i < paramNames.Length; i++)
+                {
+                    if (eventData.TryGetParamData(paramNames[i], out var paramData))
+                    {
+                        if (paramData.isGlobal)
+                        {
+                            RuntimeManager.StudioSystem.setParameterByID(paramData.ID(), paramValues[i]);
+                        }
+                        else
+                        {
+                            instance.setParameterByID(paramData.ID(), paramValues[i]);
+                        }
+                    }
+                }
             }
 
             instance.start();

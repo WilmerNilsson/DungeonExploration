@@ -18,13 +18,6 @@ public class Instruction //Används av audioTrigger för att skicka instruktione
         LoadBank,
         UnloadBank,
     }
-
-    [Serializable]
-    public struct ParameterToSet
-    {
-        public string name;
-        public float value;
-    }
     
     public Command command; //Variabler för alla metoder som kan skickas till audioManager, i inspektorn visas bara relevanta variabler beroende på command
     public string path;
@@ -34,4 +27,11 @@ public class Instruction //Används av audioTrigger för att skicka instruktione
     public STOP_MODE stopMode;
     public ParameterToSet[] parametersToSet;
     public string bankName;
+}
+
+[Serializable]
+public struct ParameterToSet
+{
+    public string name;
+    public float value;
 }

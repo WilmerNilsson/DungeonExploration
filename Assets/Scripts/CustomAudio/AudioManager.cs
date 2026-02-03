@@ -206,7 +206,7 @@ public class AudioManager : MonoBehaviour
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
-            eventList.PlayOneShot(eventName, paramNames, paramValues, gameObj);
+            eventList.PlayOneShot(eventName, paramNames, paramValues, gameObj, followObject);
         }
     }
     
