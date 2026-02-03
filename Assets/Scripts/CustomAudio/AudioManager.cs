@@ -357,7 +357,10 @@ public class AudioManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        
+        foreach (var eventList in eventLists)
+        {
+            eventList.ResetInstanceList();
+        }
     }
 
     private void OnSceneUnloaded(Scene scene)
