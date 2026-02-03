@@ -19,7 +19,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     public void Attack()
     {
-        animator.SetTrigger("Attack");
+        if(animator.GetCurrentAnimatorStateInfo(0).IsName("Idle")) animator.SetTrigger("Attack");
     }
 
     public void Activate()
