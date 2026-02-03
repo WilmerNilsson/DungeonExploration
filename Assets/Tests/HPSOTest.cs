@@ -9,7 +9,7 @@ using UnityEngine.TestTools;
 public class HPSOTest
 {
     private Scene scene;
-    private const string sceneName = "HealthAndDamageTestScene";
+    private const string sceneName = "HealthSOAndDamageTestScene";
     private Health health;
 
     [UnitySetUp]
@@ -55,7 +55,7 @@ public class HPSOTest
 
         SimpleDamage simpleDamage = Object.FindAnyObjectByType<SimpleDamage>();
         simpleDamage.transform.position = health.transform.position;
-        yield return null;
+        yield return new WaitForFixedUpdate();
 
         Assert.Less(health.CurrentHealth, oldHP, "health did not decrement after damage collider was placed over it");
     }

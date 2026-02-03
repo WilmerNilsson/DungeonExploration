@@ -20,18 +20,18 @@ public class Interaction : MonoBehaviour
     void Update()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, interactDistance, layerMask))
+        if (Physics.Raycast(head.position, head.forward, out hit, interactDistance, layerMask))
         {
             if (hit.transform.gameObject.GetComponent<Interactable>())
             {
-                Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.green);
+                Debug.DrawRay(head.position, head.forward * hit.distance, Color.green);
                 //Debug.Log("Did Hit");
                 interactable = hit.transform.gameObject.GetComponent<Interactable>();
                 //UIText.SetActive(true);
             }
             else
             {
-                Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.yellow);
+                Debug.DrawRay(head.position, head.forward * hit.distance, Color.yellow);
                 //Debug.Log("Hit something else");
                 interactable = null;
                 //UIText.SetActive(false);
@@ -39,7 +39,7 @@ public class Interaction : MonoBehaviour
         }
         else
         {
-            Debug.DrawRay(transform.position, transform.forward * 1000, Color.red);
+            Debug.DrawRay(head.position, head.forward * interactDistance, Color.red);
             //Debug.Log("Did not Hit");
             interactable = null;
             //UIText.SetActive(false);

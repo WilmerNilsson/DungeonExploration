@@ -13,6 +13,7 @@ public class InvMaster : MonoBehaviour
     [SerializeField, Min(1)] private int collumns = 1;
     [SerializeField, Min(1)] private int rows = 1;
     [SerializeField] private RectTransform inventoryGrid;
+    [SerializeField] private ItemContextMenu contextMenu;
 
     /// <summary>
     /// collum, row
@@ -28,10 +29,22 @@ public class InvMaster : MonoBehaviour
 #if DEBUG
     private void OnValidate()
     {
-        Vector2 slotSize = GetSlotSize();
-        if (slotSize.x != slotSize.y) Debug.LogWarning($"inventory slot width and height does not match. width is {slotSize.x}, height is {slotSize.y}", this);
+        if(inventoryGrid == null)
+        {
+            Debug.LogWarning("inventory grid rect is null", this);
+        }
+        else
+        {
+            Vector2 slotSize = GetSlotSize();
+            if (slotSize.x != slotSize.y) Debug.LogWarning($"inventory slot width and height does not match. width is {slotSize.x}, height is {slotSize.y}", this);
+        }
+        if (contextMenu == null) Debug.LogWarning("context menu is null", this);
+
     }
 #endif
+
+    public ItemContextMenu GetContextMenu()
+        { return contextMenu; }
 
     //we prob want to save the resutls instead of recalculating every time.
     //But i will look into it when we start working or rezising the windows
