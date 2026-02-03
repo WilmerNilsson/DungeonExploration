@@ -14,7 +14,8 @@ public class InvMaster : MonoBehaviour
     }
     [SerializeField] private InventoryGrid playerInventoryGrid;
     [SerializeField] private ItemContextMenu contextMenu;
-    [SerializeField] private InventoryGrid testGrid;
+    [SerializeField] private Transform worldContainerParent;
+    [SerializeField] private GameObject playerInventory;
 
     /// <summary>
     /// collum, row
@@ -26,7 +27,6 @@ public class InvMaster : MonoBehaviour
     private void Start()
     {
         Instance = this;
-        openContainers.Add(testGrid);
     }
 
 #if DEBUG
@@ -37,7 +37,8 @@ public class InvMaster : MonoBehaviour
             Debug.LogWarning("inventory grid rect is null", this);
         }
         if (contextMenu == null) Debug.LogWarning("context menu is null", this);
-
+        if (worldContainerParent == null) Debug.LogWarning("world container parent is null", this);
+        if (playerInventory == null) Debug.LogWarning("player inventory object is null", this);
     }
 #endif
 
@@ -66,5 +67,27 @@ public class InvMaster : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void AddOpenWorldContainerToSystem(InventoryGrid inventoryGrid)
+    {
+        openContainers.Add(inventoryGrid);
+        playerInventory.SetActive(true);
+        Debug.Log("lock player controlls and make it do the menu stuff");
+
+#if DEBUG
+        if(openContainers.Count > 1)
+        {
+            Debug.LogWarning("2 or more world containers are open, but support is currently just for 1", this);
+        }
+#endif
+
+        inventoryGrid.transform.SetParent(worldContainerParent);
+        inventoryGrid.transform.localPosition = Vector3.zero;
+    }
+
+    public void RemoveWorldContainerFromSystem(InventoryGrid inventoryGrid)
+    {
+        openContainers.Remove(inventoryGrid);
     }
 }
