@@ -15,7 +15,7 @@ public class ItemContextMenu : MonoBehaviour
     }
 #endif
 
-    public void SelectItem(SimpleItem item, IItemEffect[] effects)
+    public void SelectItem(SimpleItem item, ItemUse[] effects)
     {
         //can prob reuse stuff and just change text
         foreach(Transform child in transform)
@@ -27,12 +27,13 @@ public class ItemContextMenu : MonoBehaviour
 
         Vector2 size = (transform as RectTransform).sizeDelta;
         size.y = buttonHeight * effects.Length;
+        (transform as RectTransform).sizeDelta = size;
 
-        foreach(IItemEffect effect in effects)
+        foreach (ItemUse effect in effects)
         {
             GameObject newButton = Instantiate(buttonPrefab, transform);
             newButton.GetComponent<Button>().onClick.AddListener(effect.Activate);
-            newButton.GetComponentInChildren<TextMeshProUGUI>().text = effect.GetContextText();
+            newButton.GetComponentInChildren<TextMeshProUGUI>().text = effect.GetText();
         }
 
     }

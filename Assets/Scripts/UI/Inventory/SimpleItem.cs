@@ -9,7 +9,8 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [SerializeField, Tooltip("what slot the center is, 0,0 is bottom left")]
     private Vector2Int piviot;
     [SerializeField] private sizes size;
-    private IItemEffect[] effects;
+    //may just have simple bool for importing the default discard use
+    [SerializeField] private ItemUse[] uses;
 
     public RectTransform RectTransform { get { return (transform as RectTransform); } }
     private bool isDragging;
@@ -57,11 +58,6 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
     }
 
-    private void Start()
-    {
-        effects = GetComponents<IItemEffect>();
-    }
-
     private void Update()
     {
         if (isDragging)
@@ -79,7 +75,7 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
         else if(eventData.button == PointerEventData.InputButton.Right)
         {
-            InvMaster.Instance.GetContextMenu().SelectItem(this, effects);
+            InvMaster.Instance.GetContextMenu().SelectItem(this, uses);
         }
 
     }
