@@ -119,6 +119,103 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &415117243
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 415117246}
+  - component: {fileID: 415117245}
+  - component: {fileID: 415117244}
+  m_Layer: 0
+  m_Name: AudioTrigger (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &415117244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415117243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a814d164a17170438a13d63660122b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activatedBy: 2
+  tagToActivate: 
+  activateOnce: 0
+  activationDelay: 0
+  instructions:
+  - command: 0
+    path: BGM/Level1
+    gameObj: {fileID: 415117243}
+    attachToObject: 0
+    followObject: 0
+    stopMode: 0
+    parametersToSet:
+    - name: surfaceType
+      value: 0
+    bankName: 
+  - command: 2
+    path: BGM/Level1
+    gameObj: {fileID: 415117243}
+    attachToObject: 0
+    followObject: 0
+    stopMode: 0
+    parametersToSet:
+    - name: surfaceType
+      value: 0
+    bankName: 
+--- !u!114 &415117245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415117243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a814d164a17170438a13d63660122b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activatedBy: 2
+  tagToActivate: 
+  activateOnce: 0
+  activationDelay: 0
+  instructions:
+  - command: 7
+    path: Test/Footstep
+    gameObj: {fileID: 415117243}
+    attachToObject: 1
+    followObject: 1
+    stopMode: 0
+    parametersToSet:
+    - name: surfaceType
+      value: 1
+    bankName: 
+--- !u!4 &415117246
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415117243}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.863779, y: 1.5018721, z: 0.9666104}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &938489281
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,6 +508,103 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1546594189
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1546594192}
+  - component: {fileID: 1546594191}
+  - component: {fileID: 1546594190}
+  m_Layer: 0
+  m_Name: AudioTrigger (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1546594190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546594189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a814d164a17170438a13d63660122b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activatedBy: 2
+  tagToActivate: 
+  activateOnce: 0
+  activationDelay: 0
+  instructions:
+  - command: 0
+    path: BGM/Test
+    gameObj: {fileID: 415117243}
+    attachToObject: 0
+    followObject: 0
+    stopMode: 0
+    parametersToSet:
+    - name: surfaceType
+      value: 0
+    bankName: 
+  - command: 2
+    path: BGM/Test
+    gameObj: {fileID: 415117243}
+    attachToObject: 0
+    followObject: 0
+    stopMode: 0
+    parametersToSet:
+    - name: surfaceType
+      value: 0
+    bankName: 
+--- !u!114 &1546594191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546594189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a814d164a17170438a13d63660122b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activatedBy: 2
+  tagToActivate: 
+  activateOnce: 0
+  activationDelay: 0
+  instructions:
+  - command: 7
+    path: Test/Footstep
+    gameObj: {fileID: 1546594189}
+    attachToObject: 1
+    followObject: 1
+    stopMode: 0
+    parametersToSet:
+    - name: surfaceType
+      value: 1
+    bankName: 
+--- !u!4 &1546594192
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546594189}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.863779, y: 1.5018721, z: 0.9666104}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2124376906
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,3 +780,5 @@ SceneRoots:
   - {fileID: 5526446374506907766}
   - {fileID: 1117420917}
   - {fileID: 2124376909}
+  - {fileID: 415117246}
+  - {fileID: 1546594192}

@@ -29,10 +29,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
             eventData.RefreshParameterCache();
             _eventCache.Add(eventData.eventName, eventData);
 
-            if (debug)
-            {
-                Debug.Log("Added " + eventData.eventName + " to eventCache");
-            }
+            PrintDebug("Added " + eventData.eventName + " to eventCache");
         }
     }
     
@@ -54,16 +51,13 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         {
             if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
             {
-                Debug.Log("Successfully retrieved " + eventName);
+                PrintDebug("Successfully retrieved " + eventName);
             }
             
             return true;
         }
 
-        if (AudioManager.Instance.debug)
-        {
-            Debug.LogWarning("Failed to get " + eventName);
-        }
+        PrintDebug("Failed to get " + eventName, true);
         
         return false;
     }
@@ -75,7 +69,6 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
     public Dictionary<GameObject, EventInstance> InstanceList = new Dictionary<GameObject, EventInstance>(); //TODO: Bättre metod för att spara instanser, just nu kan ett gameObject bara ha en instans på sig.
     
     public void CleanupInstanceList() //Kallas av audioManager vid scenladdning, stoppar alla event på gameObjects som inte längre finns
-        
     {
         foreach (var instance in InstanceList)
         {
@@ -83,26 +76,29 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
             instance.Value.stop(STOP_MODE.IMMEDIATE);
             instance.Value.release();
             InstanceList.Remove(instance.Key);
-            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
-            {
-                Debug.Log("Stopped and removed eventInstance at " + instance.Key.name);
-            }
+            PrintDebug("Stopped and removed eventInstance at " + instance.Key.name);
         }
     }
     
     public void CreateInstance(string eventName, GameObject gameObject = null, bool attachToObject = false, bool followObject = true)
     {
         if (!TryGetEvent(eventName, out var eventData)) return;
-        if (eventData.isOneShot) return; //Skapa inte instans utan att släppa den om eventet är oneShot;
+        if (eventData.isOneShot)
+        {
+            PrintDebug("Didn't create instance for " + eventName + " because it is not a looping event");
+            return;
+        } //Skapa inte instans utan att släppa den om eventet är oneShot;
 
         if (gameObject != null) //Om gameObject skickas med så skapa ny instans och lägg till den i InstanceList tillsammans med gameObject
         {
+            if (InstanceList.ContainsKey(gameObject))
+            {
+                PrintDebug("Didn't create an instance for " + eventName + " at " + gameObject.name + " because " + gameObject.name + " already has an event instance", true);
+                return;
+            }
             var instance = RuntimeManager.CreateInstance(eventData.eventReference);
             InstanceList.Add(gameObject, instance);
-            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
-            {
-                Debug.Log("Created instance for " + eventName + " and added it to the instance list along with " + gameObject.name);
-            }
+            PrintDebug("Created instance for " + eventName + " and added it to the instance list along with " + gameObject.name);
 
             if (!attachToObject && !eventData.is3D) return; //Om event är 3D och attachToObject, fäser vi eventet på gameObject,
                                                             //om followObject är false följer eventet inte med gameObject utan
@@ -110,27 +106,23 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
             if (followObject)
             {
                 RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
-                if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
-                {
-                    Debug.Log("Attached " + eventName + " to " + gameObject.name);
-                }
+                PrintDebug("Attached " + eventName + " to " + gameObject.name);
             }
             else
             {
                 instance.set3DAttributes(gameObject.transform.To3DAttributes());
-                if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
-                {
-                    Debug.Log("Set 3D attributes of " + eventName + " to those of " + gameObject.name);
-                }
+                PrintDebug("Set 3D attributes of " + eventName + " to those of " + gameObject.name);
             }
         }
         else //Om inget gameObject finns lägger vi istället instance i eventData, t.ex för musikEvent som bara har en emitter.
         {
-            eventData.eventInstance = RuntimeManager.CreateInstance(eventData.eventReference);
-            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+            if (eventData.eventInstance.isValid())
             {
-                Debug.Log("Created instance for " + eventName);
+                PrintDebug("Didn't create instance for " + eventName + " because it already has an instance", true);
+                return;
             }
+            eventData.eventInstance = RuntimeManager.CreateInstance(eventData.eventReference);
+            PrintDebug("Created instance for " + eventName);
         }
     }
     
@@ -142,20 +134,20 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         {
             if (InstanceList.TryGetValue(gameObject, out var instance))
             {
-                instance.release();
-                InstanceList.Remove(gameObject);
-                if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+                if (instance.isValid())
                 {
-                    Debug.Log("Releasing instance for " + eventName + " and removed from instance list");
+                    instance.release();
+                    InstanceList.Remove(gameObject);
+                    PrintDebug("Releasing instance for " + eventName + " and removed from instance list");
                 }
             }
         }
         else
         {
-            eventData.eventInstance.release();
-            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+            if (eventData.eventInstance.isValid())
             {
-                Debug.Log("Releasing instance for " + eventName);
+                eventData.eventInstance.release();
+                PrintDebug("Releasing instance for " + eventName);
             }
         }
     }
@@ -167,26 +159,31 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
             if (gameObject != null)
             {
                 if (!InstanceList.TryGetValue(gameObject, out var instance)) return;
+                if (!instance.isValid())
+                {
+                    PrintDebug("Didn't start " + eventName + " at " + gameObject.name + " because it's instance is not valid", true);
+                    return;
+                }
                 instance.getPlaybackState(out var playbackState);
                 if (playbackState != PLAYBACK_STATE.PLAYING)
                 {
                     instance.start();
-                    if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
-                    {
-                        Debug.Log("Started event " + eventName + " on " + gameObject.name);
-                    }
+                    PrintDebug("Started event " + eventName + " on " + gameObject.name);
                 }
             }
             else
             {
+                if (!eventData.eventInstance.isValid())
+                {
+                    PrintDebug("Didn't start " + eventName + " because it's instance is not valid");
+                    return;
+                }
+                
                 eventData.eventInstance.getPlaybackState(out var playbackState);
                 if (playbackState != PLAYBACK_STATE.PLAYING)
                 {
                     eventData.eventInstance.start();
-                    if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
-                    {
-                        Debug.Log("Started event " + eventName);
-                    }
+                    PrintDebug("Started event " + eventName);
                 }
             }
         }
@@ -200,18 +197,12 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
             {
                 if (!InstanceList.TryGetValue(gameObject, out var instance)) return;
                 instance.stop(stopMode);
-                if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
-                {
-                    Debug.Log("Stopped event " + eventName + " on " + gameObject.name);
-                }
+                PrintDebug("Stopped event " + eventName + " on " + gameObject.name);
             }
             else
             {
                 eventData.eventInstance.stop(stopMode);
-                if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
-                {
-                    Debug.Log("Stopped event " + eventName);
-                }
+                PrintDebug("Stopped event " + eventName);
             }
         }
     }
@@ -221,17 +212,14 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         if (!TryGetEvent(eventName, out var eventData)) return;
         if (!eventData.ParameterCache.TryGetValue(paramName, out var parameterData))
         {
-            Debug.LogWarning(paramName + " " + eventData.ParameterCache.TryGetValue(paramName, out var parameter));
+            PrintDebug("Couldn't find parameter: " + paramName, true);
             return;
         }
         
         if (parameterData.isGlobal)
         {
             RuntimeManager.StudioSystem.setParameterByID(parameterData.ID(), paramValue);
-            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
-            {
-                Debug.Log("Set global parameter " + paramName + " to " + paramValue);
-            }
+            PrintDebug("Set global parameter " + paramName + " to " + paramValue);
         }
         else
         {
@@ -239,18 +227,12 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
             {
                 if (!InstanceList.TryGetValue(gameObject, out var instance)) return;
                 instance.setParameterByID(parameterData.ID(), paramValue);
-                if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
-                {
-                    Debug.Log("Set " + paramName + " in event " + eventName + " on object " + gameObject.name + " to " + paramValue);
-                }
+                PrintDebug("Set " + paramName + " in event " + eventName + " on object " + gameObject.name + " to " + paramValue);
             }
             else
             {
                 eventData.eventInstance.setParameterByID(parameterData.ID(), paramValue);
-                if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
-                {
-                    Debug.Log("Set " + paramName + " in event " + eventName + " to " + paramValue);
-                }
+                PrintDebug("Set " + paramName + " in event " + eventName + " to " + paramValue);
             }
         }
     }
@@ -264,18 +246,12 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
             if (!InstanceList.TryGetValue(gameObject, out var instance)) return;
             instance.keyOff();
             
-            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
-            {
-                Debug.Log("KeyOff in event " + eventName + " on object " + gameObject.name);
-            }
+            PrintDebug("KeyOff in event " + eventName + " on object " + gameObject.name);
         }
         else
         { 
             eventData.eventInstance.keyOff();
-            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
-            {
-                Debug.Log("KeyOff in event " + eventName);
-            }
+            PrintDebug("KeyOff in event " + eventName);
         }
     }
     
@@ -304,10 +280,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         {
             if (!eventData.isOneShot)
             {
-                if (AudioManager.Instance.debug)
-                {
-                    Debug.LogWarning(eventName + " is not a OneShot event and should not be played through this method");
-                }
+                PrintDebug(eventName + " is not a OneShot event and should not be played through this method", true);
                 return;
             }
             
@@ -340,10 +313,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
             instance.start();
             instance.release();
             
-            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
-            {
-                Debug.Log("Playing OneShot: " + eventName);
-            }
+            PrintDebug("Playing OneShot: " + eventName);
         }
     }
     
@@ -363,6 +333,20 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         foreach (var eventData in events)
         {
             eventData.SetDebug(debug);
+        }
+    }
+
+    private void PrintDebug(string message, bool isWarning = false)
+    {
+        if (!AudioManager.Instance.debug) return;
+        if (isWarning)
+        {
+            Debug.LogWarning(message);
+            return;
+        }
+        if (!AudioManager.Instance.showOnlyWarnings)
+        {
+            Debug.Log(message);
         }
     }
 }
