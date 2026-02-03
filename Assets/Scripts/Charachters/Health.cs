@@ -35,7 +35,11 @@ public class Health : MonoBehaviour
         private set
         {
             if (playerHealth == null)
+            {
+                Debug.Log("setting health to" + value);
                 currentHealth = value;
+            }
+
             else
                 playerHealth.CurrentHealth = value;
         }
