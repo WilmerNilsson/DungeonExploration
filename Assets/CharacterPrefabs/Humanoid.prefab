@@ -176,9 +176,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f5d5a35e66ca5d4bbe0b26356fe7551, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
+  playerHealth: {fileID: 0}
+  currentHealth: 0
   maxHealth: 10
-  durabilityDamage: 0
+  DurabilityDamage: 0
+  minTimeBetweenDamage: 0
 --- !u!1 &1853586012394562093
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,6 +619,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   head: {fileID: 3438904474607824357}
   interactDistance: 5
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1281
 --- !u!114 &9136041693334964218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -630,7 +635,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 3847011179047559410}
-  stateName: 
+  weapon: {fileID: 0}
 --- !u!54 &4612578766106565978
 Rigidbody:
   m_ObjectHideFlags: 0

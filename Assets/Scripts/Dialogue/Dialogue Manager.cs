@@ -29,7 +29,7 @@ public class DialogueManager : MonoBehaviour
     private string sentence;
     
     private const string SPEAKER_TAG = "speaker";
-    private const string PORTRAIT_TAG = "portrait";
+    private const string SPRITE_TAG = "sprite";
     private const string COLOR_TAG = "color";
     private const string SIZE_TAG = "font_size";
     private const string SPEED_TAG = "speed";
@@ -190,7 +190,7 @@ public class DialogueManager : MonoBehaviour
                     dialogueName.text = tagValue;
                     break;
                 
-                case PORTRAIT_TAG:
+                case SPRITE_TAG:
                     portraitAnimator.Play(tagValue);
                     break;
                 
