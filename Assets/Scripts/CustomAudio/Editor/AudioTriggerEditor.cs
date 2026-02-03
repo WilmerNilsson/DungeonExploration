@@ -28,12 +28,12 @@ public class AudioTriggerEditor : Editor
         GUILayout.Label("Trigger Settings", EditorStyles.boldLabel);
         
         EditorGUILayout.PropertyField(_activatedByProperty);
-        if (_activatedByProperty.enumValueIndex == 0)
+        if (_activatedByProperty.enumValueIndex < 2)
         {
             EditorGUILayout.PropertyField(_tagToActivateProperty);
         }
 
-        if (_activatedByProperty.enumValueIndex != 1)
+        if (_activatedByProperty.enumValueIndex != 2)
         {
             EditorGUILayout.PropertyField(_activateOnceProperty);
         }
