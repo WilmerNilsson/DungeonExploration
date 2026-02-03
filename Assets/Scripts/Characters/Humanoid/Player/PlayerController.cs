@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private Controller controller;
+    [SerializeField] private HumanoidController controller;
     
     [SerializeField] private float mouseSensitivity;
     [SerializeField] private float stickSensitivity;

@@ -6,7 +6,7 @@ public class MadAdventurer : MonoBehaviour
 {
     [Header("Required parts")]
     [SerializeField] public NavMeshAgent agent;
-    [SerializeField] public Controller controller;
+    [SerializeField] public HumanoidController controller;
     [SerializeField] public Animator animator;
     
     [Header("States")]

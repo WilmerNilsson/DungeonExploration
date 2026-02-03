@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Interaction : MonoBehaviour
+public class HumanoidInteract : MonoBehaviour
 {
     [SerializeField] private Transform head;
     [SerializeField] private float interactDistance = 5f;

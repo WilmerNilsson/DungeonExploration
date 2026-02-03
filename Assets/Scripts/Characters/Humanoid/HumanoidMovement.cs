@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 
-public class Movement : MonoBehaviour
+public class HumanoidMovement : MonoBehaviour
 {
-    [SerializeField] Controller controller;
+    [SerializeField] HumanoidController controller;
     [SerializeField] Rigidbody rb;
     
     [Header("Stats")]

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Rotation : MonoBehaviour
+public class HumanoidRotator : MonoBehaviour
 {
     [SerializeField] Transform bodyTransform;
     [SerializeField] Transform headTransform;

@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class Controller : MonoBehaviour
+public class HumanoidController : MonoBehaviour
 {
     [Header("Sub Scripts")]
-    [SerializeField] private Movement movement;
-    [SerializeField] private Rotation rotation;
-    [SerializeField] private Interaction interaction;
-    [SerializeField] private Attacking attacking;
+    [SerializeField] private HumanoidMovement movement;
+    [SerializeField] private HumanoidRotator rotator;
+    [SerializeField] private HumanoidInteract interact;
+    [SerializeField] private HumanoidAttackAnimatorCompanion attacking;
 
     public bool isSprinting;
     public bool isCrouching;
@@ -35,12 +35,12 @@ public class Controller : MonoBehaviour
 
     public void Rotate(Quaternion rotationQuaternion)
     {
-        rotation.Rotate(rotationQuaternion);
+        rotator.Rotate(rotationQuaternion);
     }
     
     public void Interact()
     {
-        interaction.Interact();
+        interact.Interact();
     }
 
     public void Attack()

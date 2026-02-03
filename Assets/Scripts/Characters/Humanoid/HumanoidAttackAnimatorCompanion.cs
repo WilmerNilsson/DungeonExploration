@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Attacking : MonoBehaviour
+public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 {
     [SerializeField] private Animator animator;
 
