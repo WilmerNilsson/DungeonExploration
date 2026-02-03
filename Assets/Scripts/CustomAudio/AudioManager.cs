@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FMOD.Studio;
 using FMODUnity;
@@ -11,7 +12,7 @@ public class AudioManager : MonoBehaviour
 
     public static AudioManager Instance;
 
-    private void Awake()
+    private void Awake() //Singleton + BankLaddning + Caching
     {
         if (Instance != null && Instance != this)
         {
@@ -20,6 +21,9 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
         }
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
         
         DontDestroyOnLoad(this);
         
@@ -41,9 +45,9 @@ public class AudioManager : MonoBehaviour
 
     public EventList[] eventLists;
 
-    private Dictionary<string, EventList> _eventListCache;
+    private Dictionary<string, EventList> _eventListCache; //För snabbare lookup än foreach
 
-    private void RefreshEventListCache()
+    private void RefreshEventListCache() //Lägger till alla eventLists i eventListCache
     {
         _eventListCache = new Dictionary<string, EventList>();
         if (eventLists == null)
@@ -66,7 +70,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    private void RefreshAllEventCaches()
+    private void RefreshAllEventCaches() //Refreshar eventCache i alla eventLists
     {
         foreach (var eventList in eventLists)
         {
@@ -74,7 +78,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    private bool TryGetEventList(string path, out EventList eventList, out string eventName)
+    private bool TryGetEventList(string path, out EventList eventList, out string eventName) //Om eventlist finns returneras true, eventListan, samt eventNamnet
     {
         var split = path.Split('/');
         if (_eventListCache.TryGetValue(split[0], out eventList))
@@ -101,9 +105,9 @@ public class AudioManager : MonoBehaviour
 
     #region Global Parameters
 
-    private Dictionary<string, PARAMETER_ID> _globalParameterCache;
+    private Dictionary<string, PARAMETER_ID> _globalParameterCache; //För snabb lookup
 
-    private void RefreshGlobalParameterCache()
+    private void RefreshGlobalParameterCache() //Lägger alla globala parameterIDs i _globalParameterCache;
     {
         _globalParameterCache = new Dictionary<string, PARAMETER_ID>();
         RuntimeManager.StudioSystem.getParameterDescriptionList(out var descriptionList);
@@ -119,7 +123,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void SetGlobalParameter(string paramName, float paramValue)
+    public void SetGlobalParameter(string paramName, float paramValue) //Om Global parameter finns sätts vi den till paramValue;
     {
         if (_globalParameterCache.TryGetValue(paramName, out var id))
         {
@@ -141,15 +145,8 @@ public class AudioManager : MonoBehaviour
     
     #endregion
     
-    #region Looping Events
-
-    public void ResetInstanceList(string category)
-    {
-        if (_eventListCache.TryGetValue(category, out var eventList))
-        {
-            eventList.ResetInstanceList();
-        }
-    }
+    #region Looping Events 
+    //Alla metoder här vidarebefodrar instruktioner in i rätt evenlist baserat på path.
     
     public void CreateInstance(string path, GameObject gameObj = null, bool attachToObject = false, bool followObject = true)
     {
@@ -203,6 +200,7 @@ public class AudioManager : MonoBehaviour
     
     #region SFX
 
+    //Samma som övre region, vidarebefodrar instruktion till eventList
     public void PlayOneShot(string path, string[] paramNames = null, float[] paramValues = null,
         GameObject gameObj = null, bool followObject = true)
     {
@@ -214,26 +212,27 @@ public class AudioManager : MonoBehaviour
     
     #endregion
     
-    #region VA
+    //TODO: VA LOGIK
+    #region VA 
     
     #endregion
     
     #region VCA
     
     private const string MasterBankPath = "bank:/Master";
-    
-    public Dictionary<string, VCA> VcaCache { get; private set; }
 
-    private void RefreshVcaCache()
+    private Dictionary<string, VCA> _vcaCache; //cache med namn på vca samt VCA
+
+    private void RefreshVcaCache() //Lägger till alla vcas till _vcaCache
     { 
-        VcaCache = new Dictionary<string, VCA>();
+        _vcaCache = new Dictionary<string, VCA>();
         RuntimeManager.StudioSystem.getBank(MasterBankPath, out var masterBank);
         masterBank.getVCAList(out var vcaList);
         foreach (var vca in vcaList)
         {
             vca.getPath(out var path);
             var split = path.Split('/');
-            VcaCache.Add(split[^1], vca);
+            _vcaCache.Add(split[^1], vca);
             
             if (debug && !showOnlyWarnings)
             {
@@ -242,9 +241,9 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void SetVolume(string vcaName, float volume)
+    public void SetVolume(string vcaName, float volume) //Sätter volym på en vca
     {
-        if (VcaCache.TryGetValue(vcaName, out var vca))
+        if (_vcaCache.TryGetValue(vcaName, out var vca))
         {
             vca.setVolume(volume);
             if (debug && !showOnlyWarnings)
@@ -252,11 +251,18 @@ public class AudioManager : MonoBehaviour
                 Debug.Log("Set " + vcaName + " volume to " + volume);
             }
         }
+        else
+        {
+            if (debug)
+            {
+                Debug.LogWarning("Failed to set " + vcaName + " to " + volume);
+            }
+        }
     }
 
-    public float GetVolume(string vcaName)
+    public float GetVolume(string vcaName) //Hämtar volym från vca i vcaCache
     {
-        if (VcaCache.TryGetValue(vcaName, out var vca))
+        if (_vcaCache.TryGetValue(vcaName, out var vca))
         {
             vca.getVolume(out var volume);
             
@@ -276,9 +282,9 @@ public class AudioManager : MonoBehaviour
         return 0;
     }
 
-    public void SetAllToVolume(float volume)
+    public void SetAllToVolume(float volume) //Sätter volym på alla vcas till volume
     {
-        foreach (var vca in VcaCache)
+        foreach (var vca in _vcaCache)
         {
             vca.Value.setVolume(volume);
         }
@@ -288,7 +294,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void SetAllVolumes(string[] vcaNames, float[] volumes)
+    public void SetAllVolumes(string[] vcaNames, float[] volumes) //Sätter volym på alla vcas individuellt, kan vara bra för saveLoading
     {
         for (int i = 0; i < vcaNames.Length; i++)
         {
@@ -296,11 +302,11 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void GetAllVolumes(out string[] vcaNames, out float[] volumes)
+    public void GetAllVolumes(out string[] vcaNames, out float[] volumes) //Hämtar volym på alla vcas individuellt, kan vara bra för saving
     {
         var tempNameList = new List<string>();
         var tempVolumeList = new List<float>();
-        foreach (var vca in VcaCache)
+        foreach (var vca in _vcaCache)
         {
             tempNameList.Add(vca.Key);
             vca.Value.getVolume(out var volume);
@@ -321,7 +327,7 @@ public class AudioManager : MonoBehaviour
     private const string BankExtension = ".bank";
     private const string StringBankExtension = ".strings.bank";
 
-    public void LoadBank(string bankName)
+    public void LoadBank(string bankName) //Laddar bank, om master laddas också string bank
     {
         RuntimeManager.LoadBank(bankName + BankExtension);
         if (bankName == "Master") RuntimeManager.LoadBank(bankName + StringBankExtension);
@@ -331,7 +337,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void UnloadBank(string bankName)
+    public void UnloadBank(string bankName) //Unloadar en bank
     {
         RuntimeManager.UnloadBank(bankName + BankExtension);
         if (bankName == "Master") RuntimeManager.UnloadBank(bankName + StringBankExtension);
@@ -353,19 +359,19 @@ public class AudioManager : MonoBehaviour
 
     #endregion
 
-    #region SceneLoading //TODO: STUFF HERE
+    #region SceneLoading 
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        foreach (var eventList in eventLists)
-        {
-            eventList.ResetInstanceList();
-        }
+        
     }
 
     private void OnSceneUnloaded(Scene scene)
     {
-        
+        foreach (var eventList in eventLists)
+        {
+            eventList.CleanupInstanceList(); 
+        }
     }
     
     #endregion
@@ -380,7 +386,7 @@ public class AudioManager : MonoBehaviour
 
     #region Extras
 
-    public void StopAllEvents()
+    public void StopAllEvents() //Self explanatory
     {
         RuntimeManager.StudioSystem.getBank(MasterBankPath, out var masterBank);
         masterBank.getBusList(out var busList);
@@ -396,7 +402,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void StopAndReleaseAllInstances()
+    public void StopAndReleaseAllInstances() //Typ samma som ovan men denna releasar också instanser, oklart om detta är onödigt eller ej.
     {
         foreach (var eventList in eventLists)
         {
@@ -405,4 +411,29 @@ public class AudioManager : MonoBehaviour
     }
     
     #endregion
+
+    //Troligen onödigt med 3 metoder för om audioManager stängs av
+    private void OnApplicationQuit()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
+        StopAndReleaseAllInstances();
+        StopAllEvents();
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
+        StopAndReleaseAllInstances();
+        StopAllEvents();
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
+        StopAndReleaseAllInstances();
+        StopAllEvents();
+    }
 }

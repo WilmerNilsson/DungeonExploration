@@ -36,7 +36,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
     
     #if UNITY_EDITOR
     [ContextMenu("Fill eventData")]
-    public void FillEventData()
+    public void FillEventData() //Kallar populateData i alla eventData samt sparar objektet
     {
         foreach (var eventData in events)
         {
@@ -70,38 +70,41 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
 
     #region Looping Events
     
-    private Dictionary<GameObject, EventInstance> _instanceList = new Dictionary<GameObject, EventInstance>();
-
-    public void ResetInstanceList() //Kallas av audioManager vid scenladdning,
-                                    //kanske borde göra denna lite mer sofistikerad på nåt sätt, så att den kollar om ett gameObject fortfarande finns i scenen innan den tar bort det
+    public Dictionary<GameObject, EventInstance> InstanceList = new Dictionary<GameObject, EventInstance>(); //TODO: Bättre metod för att spara instanser, just nu kan ett gameObject bara ha en instans på sig.
+    
+    public void CleanupInstanceList() //Kallas av audioManager vid scenladdning, stoppar alla event på gameObjects som inte längre finns
+        
     {
-        foreach (var instance in _instanceList)
+        foreach (var instance in InstanceList)
         {
+            if(!instance.Key.activeInHierarchy) continue;
             instance.Value.stop(STOP_MODE.IMMEDIATE);
             instance.Value.release();
-            _instanceList.Remove(instance.Key);
-        }
-        if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
-        {
-            Debug.Log("Resetting instance list");
+            InstanceList.Remove(instance.Key);
+            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+            {
+                Debug.Log("Stopped and removed eventInstance at " + instance.Key.name);
+            }
         }
     }
     
     public void CreateInstance(string eventName, GameObject gameObject = null, bool attachToObject = false, bool followObject = true)
     {
         if (!TryGetEvent(eventName, out var eventData)) return;
-        if (eventData.isOneShot) return;
+        if (eventData.isOneShot) return; //Skapa inte instans utan att släppa den om eventet är oneShot;
 
-        if (gameObject != null)
+        if (gameObject != null) //Om gameObject skickas med så skapa ny instans och lägg till den i InstanceList tillsammans med gameObject
         {
             var instance = RuntimeManager.CreateInstance(eventData.eventReference);
-            _instanceList.Add(gameObject, instance);
+            InstanceList.Add(gameObject, instance);
             if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
             {
                 Debug.Log("Created instance for " + eventName + " and added it to the instance list along with " + gameObject.name);
             }
 
-            if (!attachToObject) return;
+            if (!attachToObject && !eventData.is3D) return; //Om event är 3D och attachToObject, fäser vi eventet på gameObject,
+                                                            //om followObject är false följer eventet inte med gameObject utan
+                                                            //stannar kvar på samma position där objektet var när instansen skapades
             if (followObject)
             {
                 RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
@@ -119,7 +122,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
                 }
             }
         }
-        else
+        else //Om inget gameObject finns lägger vi istället instance i eventData, t.ex för musikEvent som bara har en emitter.
         {
             eventData.eventInstance = RuntimeManager.CreateInstance(eventData.eventReference);
             if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
@@ -129,17 +132,16 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         }
     }
     
-    public void ReleaseInstance(string eventName, GameObject gameObject = null)
+    public void ReleaseInstance(string eventName, GameObject gameObject = null) //Som CreateInstance fast släpper instansen istället
     {
         if (!TryGetEvent(eventName, out var eventData)) return;
-        if (eventData.isOneShot) return;
-
+        
         if (gameObject != null)
         {
-            if (_instanceList.TryGetValue(gameObject, out var instance))
+            if (InstanceList.TryGetValue(gameObject, out var instance))
             {
                 instance.release();
-                _instanceList.Remove(gameObject);
+                InstanceList.Remove(gameObject);
                 if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
                 {
                     Debug.Log("Releasing instance for " + eventName + " and removed from instance list");
@@ -156,13 +158,13 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         }
     }
     
-    public void StartEvent(string eventName, GameObject gameObject = null)
+    public void StartEvent(string eventName, GameObject gameObject = null) //Som CreateInstance fast startar instansen istället OM instansen inte redan spelar
     {
         if (TryGetEvent(eventName, out var eventData))
         {
             if (gameObject != null)
             {
-                if (!_instanceList.TryGetValue(gameObject, out var instance)) return;
+                if (!InstanceList.TryGetValue(gameObject, out var instance)) return;
                 instance.getPlaybackState(out var playbackState);
                 if (playbackState != PLAYBACK_STATE.PLAYING)
                 {
@@ -188,13 +190,13 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         }
     }
 
-    public void StopEvent(string eventName, STOP_MODE stopMode, GameObject gameObject = null)
+    public void StopEvent(string eventName, STOP_MODE stopMode, GameObject gameObject = null) //Som CreateInstance fast stoppar med stopMode, denna bör kallas innan releaseInstance
     {
         if (TryGetEvent(eventName, out var eventData))
         {
             if (gameObject != null)
             {
-                if (!_instanceList.TryGetValue(gameObject, out var instance)) return;
+                if (!InstanceList.TryGetValue(gameObject, out var instance)) return;
                 instance.stop(stopMode);
                 if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
                 {
@@ -212,7 +214,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         }
     }
     
-    public void SetParameter(string eventName, string paramName, float paramValue, GameObject gameObject = null)
+    public void SetParameter(string eventName, string paramName, float paramValue, GameObject gameObject = null) //Som CreateInstance men sätter parametrar. Om en parameter är global behöver man inte köra setParameter på instansen utan bara i studioSystem.
     {
         if (!TryGetEvent(eventName, out var eventData)) return;
         if (!eventData.ParameterCache.TryGetValue(paramName, out var parameterData)) return;
@@ -229,7 +231,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         {
             if (gameObject != null)
             {
-                if (!_instanceList.TryGetValue(gameObject, out var instance)) return;
+                if (!InstanceList.TryGetValue(gameObject, out var instance)) return;
                 instance.setParameterByID(parameterData.ID, paramValue);
                 if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
                 {
@@ -247,13 +249,13 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         }
     }
 
-    public void KeyOff(string eventName, GameObject gameObject = null)
+    public void KeyOff(string eventName, GameObject gameObject = null) //Som CreateInstance men skickar KeyOff
     {
         if (!TryGetEvent(eventName, out var eventData)) return;
         
         if (gameObject != null)
         { 
-            if (!_instanceList.TryGetValue(gameObject, out var instance)) return;
+            if (!InstanceList.TryGetValue(gameObject, out var instance)) return;
             instance.keyOff();
             
             if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
@@ -271,12 +273,27 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         }
     }
     
+    public void StopAndReleaseAllInstances()
+    {
+        foreach (var eventData in events)
+        {
+            var eventDesc = RuntimeManager.GetEventDescription(eventData.eventReference);
+            eventDesc.getInstanceList(out var instances);
+            foreach (var instance in instances)
+            {
+                instance.stop(STOP_MODE.IMMEDIATE);
+                instance.release();
+            }
+        }
+    }
+    
     #endregion
 
     #region SFX
 
     public void PlayOneShot(string eventName, string[] paramNames = null, float[] paramValues = null ,GameObject gameObject = null, bool followObject = true)
     {
+        //Om event finns och är oneshot skapar vi en instans, ställer in parametrar (om de finns) och fäster ljudet på ett gameObject (om de finns), om followObject är false följer ljudet inte efter objektet (crazy)
         if (TryGetEvent(eventName, out var eventData))
         {
             if (!eventData.isOneShot)
@@ -324,20 +341,7 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
     //Logik för VA här???
     
     #endregion
-
-    public void StopAndReleaseAllInstances()
-    {
-        foreach (var eventData in events)
-        {
-            var eventDesc = RuntimeManager.GetEventDescription(eventData.eventReference);
-            eventDesc.getInstanceList(out var instances);
-            foreach (var instance in instances)
-            {
-                instance.stop(STOP_MODE.IMMEDIATE);
-                instance.release();
-            }
-        }
-    }
+    
 
     [ContextMenu("Toggle Debug")]
     public void ToggleDebug()

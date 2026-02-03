@@ -3,7 +3,7 @@ using FMOD.Studio;
 using UnityEngine;
 
 [Serializable]
-public class Instruction
+public class Instruction //Används av audioTrigger för att skicka instruktioner till AudioManager
 {
     public enum Command
     {
@@ -26,8 +26,7 @@ public class Instruction
         public float value;
     }
     
-    public Command command;
-
+    public Command command; //Variabler för alla metoder som kan skickas till audioManager, i inspektorn visas bara relevanta variabler beroende på command
     public string path;
     public GameObject gameObj;
     public bool attachToObject;

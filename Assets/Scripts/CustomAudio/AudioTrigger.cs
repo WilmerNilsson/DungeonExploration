@@ -12,18 +12,17 @@ public class AudioTrigger : MonoBehaviour
         Other
     }
 
+    //Trigger settings
     public ActivatedBy activatedBy;
-    
     public string tagToActivate;
-
     public bool activateOnce;
-
     public float activationDelay;
     
     public Instruction[] instructions;
 
-    #region Triggering
+    #region Triggering 
 
+    //Metoder för att aktivera triggern baserat på activatedBy
     private void Start()
     {
         if (activatedBy == ActivatedBy.Start)
@@ -45,7 +44,7 @@ public class AudioTrigger : MonoBehaviour
     #region Activation
     
     [ContextMenu("Activate")]
-    public void Activate()
+    public void Activate() //Aktivera med delay eller direkt
     {
         if (activationDelay > 0)
         {
@@ -63,7 +62,7 @@ public class AudioTrigger : MonoBehaviour
         InterpretInstructions();
     }
 
-    private void InterpretInstructions()
+    private void InterpretInstructions() //Beroende på commmand i instruction, kalla rätt metod i audioManager
     {
         foreach (Instruction instruction in instructions)
         {
