@@ -35,7 +35,11 @@ public class Health : MonoBehaviour
         private set
         {
             if (playerHealth == null)
+            {
+                Debug.Log("setting health to" + value);
                 currentHealth = value;
+            }
+
             else
                 playerHealth.CurrentHealth = value;
         }
@@ -76,6 +80,15 @@ public class Health : MonoBehaviour
         Die();
     }
 
+    //used for events
+    /// <summary>
+    /// positive number heals, negative damages.
+    /// </summary>
+    public void ChangeHealthVoid(int amount)
+    {
+        ChangeHealth(amount);
+    }
+
     /// <summary>
     /// positive number heals, negative damages. <br/>
     /// fails and returns false if dead already.
@@ -86,8 +99,6 @@ public class Health : MonoBehaviour
 
         CurrentHealth += amount;
 
-        OnChangeHealths?.Invoke(CurrentHealth, MaxHealth);
-
         if (CurrentHealth <= 0)
         {
             Die();
@@ -96,6 +107,8 @@ public class Health : MonoBehaviour
         {
             CurrentHealth = MaxHealth;
         }
+
+        OnChangeHealths?.Invoke(CurrentHealth, MaxHealth);
 
         return true;
     }

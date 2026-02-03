@@ -24,22 +24,23 @@ public class DialogueManager : MonoBehaviour
     
     private bool advanceDialogue = false;
     private bool skipDialogue = false;
+    private float dialogueSpeed = 0.035f;
 
     private string sentence;
     
-    private const string SPEAKER_TAG = "speaker";
-    private const string PORTRAIT_TAG = "portrait";
+    private const string NAME_TAG = "name";
+    private const string SPRITE_TAG = "sprite";
     private const string COLOR_TAG = "color";
     private const string SIZE_TAG = "font_size";
+    private const string SPEED_TAG = "speed";
 
 
     public UnityEvent PlayIntroStory, onDialogueExit;
 
     //[Header("Choices UI")] 
     [SerializeField] private GameObject[] choices;
-
-    //todo text
-    //private TextMeshProUGUI[] choicesText;
+    
+    private TextMeshProUGUI[] choicesText;
 
     private Story currentStory;
 
@@ -71,13 +72,13 @@ public class DialogueManager : MonoBehaviour
             InputManager.GetInstance().isLevelPlaying = true;
         }*/
 
-        /*choicesText = new TextMeshProUGUI[choices.Length];
+        choicesText = new TextMeshProUGUI[choices.Length];
         int index = 0;
         foreach (GameObject choice in choices)
         {
             choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
             index++;
-        }*/
+        }
     }
 
     private void Update()
@@ -120,6 +121,10 @@ public class DialogueManager : MonoBehaviour
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
         dialogueText.text = "";
+        for (int i = 0; i < choices.Length; i++)
+        {
+            choices[i].gameObject.SetActive(false);
+        }
         //InputManager.GetInstance().isLevelPlaying = true;
         //data.playStoryAtStart = false;
         onDialogueExit.Invoke();
@@ -127,6 +132,13 @@ public class DialogueManager : MonoBehaviour
 
     public void ContinueStory()
     {
+        if (currentStory.currentChoices.Count > 0)
+        {
+            StopAllCoroutines();
+            dialogueText.text = sentence;
+            isTyping = false;
+            return;
+        }
         if (currentStory.canContinue)
         {
             //audioSource.Stop();
@@ -141,14 +153,20 @@ public class DialogueManager : MonoBehaviour
             
             StopAllCoroutines();
             
-            StartCoroutine(TypeSentence(sentence));
+            HandleTags(currentStory.currentTags);
+            if (dialogueSpeed > 0)
+            {
+                StartCoroutine(TypeSentence(sentence));
+            }
+            else
+            {
+                dialogueText.text = sentence;
+            }
 
             
             //audioSource.PlayOneShot(audioClip);
             
             DisplayChoices();
-
-            HandleTags(currentStory.currentTags);
         }
         else
         {
@@ -170,25 +188,47 @@ public class DialogueManager : MonoBehaviour
 
             switch (tagKey)
             {
-                case SPEAKER_TAG:
+                case NAME_TAG:
                     dialogueName.text = tagValue;
                     break;
-                case PORTRAIT_TAG:
+                
+                case SPRITE_TAG:
                     portraitAnimator.Play(tagValue);
                     break;
+                
                 case COLOR_TAG:
                     if (ColorUtility.TryParseHtmlString($"#{tagValue}", out Color color))
                     {
-                        dialogueName.color = color;
+                        dialogueText.color = color;
                     }
                     else
                     {
                         Debug.LogWarning($"color not found: {tagValue}");
                     }
                     break;
+                
                 case SIZE_TAG:
-                    dialogueText.fontSize = Convert.ToInt32(tagValue);
+                    if (float.TryParse(tagValue, out float size))
+                    {
+                        dialogueText.fontSize = size;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"size not found: {tagValue}");
+                    }
                     break;
+                
+                case SPEED_TAG:
+                    if (float.TryParse(tagValue, out float speed))
+                    {
+                        dialogueSpeed = speed;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Couldn't parse speed: {tagValue}");
+                    }
+                    break;
+                
                 default:
                     Debug.LogWarning($"Tag came in but is not currently being handled: {tag}");
                     break;
@@ -197,12 +237,25 @@ public class DialogueManager : MonoBehaviour
     }
     private IEnumerator TypeSentence(string sentence)
     {
+        bool richText = false;
         isTyping = true;
         dialogueText.text = "";
         foreach (char letter in sentence.ToCharArray())
         {
+            if (letter.ToString() == "<")
+            {
+                richText = true;
+            }
+
+            if (letter.ToString() == ">")
+            {
+                richText = false;
+            }
             dialogueText.text += letter;
-            yield return new WaitForSeconds(0.035f);
+            if (!richText)
+            {
+                yield return new WaitForSeconds(dialogueSpeed);
+            }
         }
 
         isTyping = false;
@@ -222,8 +275,7 @@ public class DialogueManager : MonoBehaviour
         foreach (Choice choice in currentChoices)
         {
             choices[index].gameObject.SetActive(true);
-            //todo text
-            //choicesText[index].text = choice.text;
+            choicesText[index].text = choice.text;
             index++;
         }
 
@@ -244,7 +296,17 @@ public class DialogueManager : MonoBehaviour
 
     public void MakeChoice(int index)
     {
-        currentStory.ChooseChoiceIndex(index);
+        if (isTyping)
+        {
+            StopAllCoroutines();
+            dialogueText.text = sentence;
+            isTyping = false;
+            return;
+        }
+        else
+        {
+            currentStory.ChooseChoiceIndex(index);
+        }
     }
 
     public void OnAdvancePressed(InputAction.CallbackContext context)
