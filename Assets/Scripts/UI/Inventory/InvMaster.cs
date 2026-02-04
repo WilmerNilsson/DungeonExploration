@@ -170,4 +170,25 @@ public class InvMaster : MonoBehaviour
     {
         transform.SetParent(drawOntopParent);
     }
+
+    public void DestroyItem(SimpleItem item)
+    {
+        if (playerInventoryGrid.TryRemoveSlottedItem(item))
+        {
+            
+        }
+        else
+        {
+            foreach (ContainerController container in openContainers)
+            {
+                if (container.Grid.TryRemoveSlottedItem(item))
+                {
+                    break;
+                }
+            }
+        }
+
+        contextMenu.TryDeselectItem(item);
+        Destroy(item.gameObject);
+    }
 }
