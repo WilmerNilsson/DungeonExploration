@@ -37,8 +37,9 @@ public class HumanoidMovement : MonoBehaviour
         
         if (!IsGrounded()) //In air
         {
-            rb.linearVelocity = new Vector3(Mathf.Clamp(rb.linearVelocity.x + rotatedVector.x * airMoveSpeed, -currentSpeed, currentSpeed),
-                rb.linearVelocity.y, Mathf.Clamp(rb.linearVelocity.z + rotatedVector.z * airMoveSpeed, -currentSpeed, currentSpeed));
+            Vector3 newVelocity = new Vector3(rb.linearVelocity.x + rotatedVector.x * airMoveSpeed, 0f, rb.linearVelocity.z + rotatedVector.z * airMoveSpeed).normalized * currentSpeed;
+            newVelocity.y = rb.linearVelocity.y;
+            rb.linearVelocity = newVelocity;
         }
         else
         {
