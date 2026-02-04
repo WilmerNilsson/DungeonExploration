@@ -151,19 +151,19 @@ public class InventoryGrid : MonoBehaviour
         return false;
     }
 
-    public bool TryInsertItem(SimpleItem item)
+    public bool TryInsertItem(SimpleItem item, bool instantiate = false)
     {
         for (int collum = 0; collum < InvData.GetLength(0); collum++)
         {
             for (int row = 0; row < InvData.GetLength(1); row++)
             {
-                if(TryPutItemInSlot(item, collum, row)) return true;
+                if(TryPutItemInSlot(item, collum, row, instantiate)) return true;
             }
         }
         return false;
     }
 
-    private bool TryPutItemInSlot(SimpleItem item, int collum, int row)
+    private bool TryPutItemInSlot(SimpleItem item, int collum, int row, bool instantiate = false)
     {
         bool[,] itemSlots = item.GetSizeMatrix();
 
@@ -188,7 +188,14 @@ public class InventoryGrid : MonoBehaviour
         }
         //by this point it is clear that we can place the item
 
-        TryRemoveSlottedItem(item);
+        if ( instantiate )
+        {
+            item = Instantiate(item.gameObject).GetComponent<SimpleItem>();
+        }
+        else
+        {
+            TryRemoveSlottedItem(item);
+        }
 
         for (int x = 0; x < itemSlots.GetLength(0); x++)
         {

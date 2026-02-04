@@ -24,6 +24,8 @@ public class InvMaster : MonoBehaviour
     //dunno what we expect to be the max open container amount, but going with 1 for now
     private List<ContainerController> openContainers = new(1);
 
+    public InventoryGrid PlayerInventory { get { return playerInventoryGrid; } }
+
     private void Start()
     {
         Instance = this;
