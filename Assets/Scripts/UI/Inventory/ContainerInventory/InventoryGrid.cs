@@ -132,6 +132,7 @@ public class InventoryGrid : MonoBehaviour
                     }
                 }
             }
+            item.RectTransform.SetParent(transform);
             item.RectTransform.position = slot.center;
             return true;
         }
