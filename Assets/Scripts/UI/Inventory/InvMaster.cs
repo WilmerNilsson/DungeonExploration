@@ -1,7 +1,7 @@
-using Unity.Plastic.Antlr3.Runtime;
-using UnityEditor.Graphs;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
-using static Codice.Client.Commands.WkTree.WorkspaceTreeNode;
+using UnityEngine.EventSystems;
 
 
 public class InvMaster : MonoBehaviour
@@ -10,205 +10,185 @@ public class InvMaster : MonoBehaviour
     {
         get; private set; 
     }
-    [SerializeField, Min(1)] private int collumns = 1;
-    [SerializeField, Min(1)] private int rows = 1;
-    [SerializeField] private RectTransform inventoryGrid;
+    [SerializeField] private InventoryGrid playerInventoryGrid;
+    [SerializeField] private ItemContextMenu contextMenu;
+    [SerializeField] private Transform worldContainerParent;
+    [SerializeField] private GameObject playerInventory;
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private Transform drawOntopParent;
 
     /// <summary>
     /// collum, row
     /// </summary>
-    private SimpleItem[,] invData;
+
+    //dunno what we expect to be the max open container amount, but going with 1 for now
+    private List<ContainerController> openContainers = new(1);
 
     private void Start()
     {
         Instance = this;
-        invData = new SimpleItem[collumns, rows];
     }
 
 #if DEBUG
     private void OnValidate()
     {
-        Vector2 slotSize = GetSlotSize();
-        if (slotSize.x != slotSize.y) Debug.LogWarning($"inventory slot width and height does not match. width is {slotSize.x}, height is {slotSize.y}", this);
+        if(playerInventoryGrid == null)
+        {
+            Debug.LogWarning("inventory grid rect is null", this);
+        }
+        if (contextMenu == null) Debug.LogWarning("context menu is null", this);
+        if (worldContainerParent == null) Debug.LogWarning("world container parent is null", this);
+        if (playerInventory == null) Debug.LogWarning("player inventory object is null", this);
+
+        if(!PrefabUtility.IsPartOfPrefabAsset(this) && playerController == null)
+        {
+            //for some reason this activated constantly
+            //Debug.LogWarning("no connection to a player controller", this);
+        }
+
+        if (drawOntopParent == null) Debug.LogWarning("draw ontop parent is null", this);
+
+        if (!PrefabUtility.IsPartOfPrefabAsset(this) && GameObject.FindAnyObjectByType<EventSystem>() == null)
+            Debug.LogWarning("no event system in scene", this);
     }
 #endif
 
-    //we prob want to save the resutls instead of recalculating every time.
-    //But i will look into it when we start working or rezising the windows
-    private Rect GetBigRect()
-    {
-        Rect bigRect = new();
-
-        Vector3[] corners = new Vector3[4];
-        inventoryGrid.GetWorldCorners(corners);
-        //bl, tl, tr, br 
-        bigRect.xMin = corners[0].x;
-        bigRect.yMin = corners[0].y;
-        bigRect.xMax = corners[2].x;
-        bigRect.yMax = corners[2].y;
-
-        return bigRect;
-    }
-
-    //should prob make a simpler variant that only calculates the center.
-    /// <summary>
-    /// gets the rect for the slot, start counting from 0
-    /// </summary>
-    private Rect GetSlotRect(int collum, int row)
-    {
-        Rect bigRect = GetBigRect();
-
-        Rect slot = new();
-
-        slot.xMin = bigRect.xMin + collum * (bigRect.width / collumns);
-        slot.xMax = bigRect.xMin + (collum + 1) * (bigRect.width / collumns);
-        slot.yMin = bigRect.yMin + row * (bigRect.height / rows);
-        slot.yMax = bigRect.yMin + (row + 1) * (bigRect.height / rows);
-
-        return slot;
-    }
+    public ItemContextMenu GetContextMenu()
+        { return contextMenu; }
 
     public Vector2 GetSlotSize()
     {
-        Rect bigRect = GetBigRect();
-
-        return new(bigRect.width / collumns, bigRect.height/rows);
+        return playerInventoryGrid.GetSlotSize();
     }
 
     public bool TryPlaceItem(SimpleItem item)
     {
-        Vector2 pos = item.RectTransform.position;
+        //perhaps have a reference in SimpleItem to current inventory that we can remove it from
+        //when we move it from one inventory to another.
 
-        bool[,] itemSlots = item.GetSizeMatrix();
+        if(playerInventoryGrid.TryPlaceItem(item))
+        {
+            foreach (ContainerController container in openContainers)
+            {
+                if(container.Grid.TryRemoveSlottedItem(item))
+                {
+                    break;
+                }
+            }
+
+            return true;
+        }
+        else
+        {
+            for (int i = 0; i < openContainers.Count; i++)
+            {
+                ContainerController container = openContainers[i];
+                if (container.Grid.TryPlaceItem(item))
+                {
+                    if(playerInventoryGrid.TryRemoveSlottedItem(item))
+                    {
+                        return true;
+                    }
+
+                    //we did not move the item from players inventory,
+                    //so we need to check if there is another inventory to remove the item from
+                    for (int i2 = 0; i2 < openContainers.Count; i2++)
+                    {
+                        if(i == i2) continue;
+
+                        if (openContainers[i2].Grid.TryRemoveSlottedItem(item)) break;
+                    }
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public void AddOpenWorldContainerToSystem(ContainerController container)
+    {
+        if (openContainers.Contains(container)) return;
+
+        openContainers.Add(container);
+
+        OpenPlayerInventory();
 
 #if DEBUG
-        for (int x = 0; x < itemSlots.GetLength(0); x++)
+        if(openContainers.Count > 1)
         {
-            for (int y = 0; y < itemSlots.GetLength(1); y++)
-            {
-                //Debug.Log($"item takes up: {x},{y} - {itemSlots[x,y]}");
-            }
+            Debug.LogWarning("2 or more world containers are open, but support is currently just for 1", this);
         }
 #endif
 
-        //TODO work in piviot
-        if (TryGetSlotOfPos(pos, out int collum, out int row, out Rect slot))
+        container.Grid.transform.SetParent(worldContainerParent);
+        container.Grid.transform.localPosition = Vector3.zero;
+    }
+
+    public void RemoveWorldContainerFromSystem(ContainerController container)
+    {
+        openContainers.Remove(container);
+    }
+
+    public void ToggleInventory()
+    {
+        if(playerInventory.activeSelf)
         {
-            for (int x = 0; x<itemSlots.GetLength(0); x++)
-            {
-                for (int y = 0; y<itemSlots.GetLength(1); y++)
-                {
-                    if ((InvSlotExists(collum + x - item.Piviot.x, row + y - item.Piviot.y) && 
-                        itemSlots[x,y] == true &&
-                        (invData[collum + x - item.Piviot.x, row + y - item.Piviot.y] == null ||
-                        invData[collum + x - item.Piviot.x, row + y - item.Piviot.y] == item)
+            ClosePlayerInventory();
+        }
+        else
+        {
+            OpenPlayerInventory();
+        }
+    }
 
-                        ) ||
-                        itemSlots[x, y] == false)
-                    {
-                        //continue;
-                    }
-                    else
-                    {
+    public void OpenPlayerInventory()
+    {
+        playerInventory.SetActive(true);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined; //we need to controll curson with a pause menu once implimented
+        playerController.LockMovement(true);
+    }
 
-                        return false;
-                    }
-                }
-            }
-            //by this point it is clear that we can place the item
+    public void ClosePlayerInventory()
+    {
+        playerInventory.SetActive(false);
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        playerController.LockMovement(false);
 
-            RemoveSlottedItem(item);
-
-            for (int x = 0; x < itemSlots.GetLength(0); x++)
-            {
-                for (int y = 0; y < itemSlots.GetLength(1); y++)
-                {
-                    if (itemSlots[x,y] == true)
-                    {
-                        invData[collum + x - item.Piviot.x, row + y - item.Piviot.y] = item;
-                    }
-                }
-            }
-            item.RectTransform.position = slot.center;
-            return true;
+        foreach (ContainerController container in openContainers)
+        {
+            container.Close();
         }
 
-        return false;
+        openContainers.Clear();
     }
 
-    private bool InvSlotExists(int collumn, int row)
+    public void ParentTransformOntop(Transform transform)
     {
-        if(collumn < 0 || row < 0 || collumn >= invData.GetLength(0) || row >= invData.GetLength(1))
-            { return false; }
-        return true;
+        transform.SetParent(drawOntopParent);
     }
-    
-    private bool TryGetSlotOfPos(Vector2 pos, out int collum, out int row, out Rect slot)
+
+    public void DestroyItem(SimpleItem item)
     {
-        //slot should be nullable, but i could not get the nullable forgiving to work for some reason.
-
-        //big O can also decrease if we do a halving of the possible spaces
-        //instead of itterating trough all possible till we get a match
-        //not really needed unless the inventory is like 100000 spaces or something.
-
-        if (!GetBigRect().Contains(pos)) goto fail;
-
-        for (collum = 0; collum < collumns; collum++)
+        if (playerInventoryGrid.TryRemoveSlottedItem(item))
         {
-            for (row = 0; row < rows; row++)
+            
+        }
+        else
+        {
+            foreach (ContainerController container in openContainers)
             {
-                slot = GetSlotRect(collum, row);
-
-                if (slot.Contains(pos))
+                if (container.Grid.TryRemoveSlottedItem(item))
                 {
-                    return true;
+                    break;
                 }
             }
         }
 
-    fail:
-        collum = 0;
-        row = 0;
-        slot = new();
-        return false;
+        contextMenu.TryDeselectItem(item);
+        Destroy(item.gameObject);
     }
-
-    public bool TryInsertItem(SimpleItem item)
-    {
-        for (int collum = 0; collum < invData.GetLength(0); collum++)
-        {
-            for (int row = 0; row < invData.GetLength(1); row++)
-            {
-                Debug.Log("trying c,r" + collum + ", " + row);
-
-                if (invData[collum, row] == null)
-                {
-                    Rect slot = GetSlotRect(collum, row);
-
-                    item.RectTransform.position = slot.center;
-
-                    invData[collum, row] = item;
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private void RemoveSlottedItem(SimpleItem item)
-    {
-        //we have to itterate trough all cause items can be bigger
-        //alternativly we can count the size and stopp itterating once we have [size] amount of hits
-        for (int collum = 0; collum < invData.GetLength(0); collum++)
-        {
-            for(int row = 0; row < invData.GetLength(1); row++)
-            {
-                if (invData[collum, row] == item)
-                {
-                    invData[collum, row] = null;
-                }
-            }
-        }
-    }
-
 }

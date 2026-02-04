@@ -55,7 +55,7 @@ public class HPTest
 
         SimpleDamage simpleDamage = Object.FindAnyObjectByType<SimpleDamage>();
         simpleDamage.transform.position = health.transform.position;
-        yield return null;
+        yield return new WaitForFixedUpdate();
 
         Assert.Less(health.CurrentHealth, oldHP, "health did not decrement after damage collider was placed over it");
     }
