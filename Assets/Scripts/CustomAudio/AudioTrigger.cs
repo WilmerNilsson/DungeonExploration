@@ -10,7 +10,8 @@ public class AudioTrigger : MonoBehaviour
         OnTriggerEnter,
         OnTriggerExit,
         Start,
-        Other
+        Other,
+        OnDestroy
     }
 
     //Trigger settings
@@ -45,6 +46,15 @@ public class AudioTrigger : MonoBehaviour
     {
         if (activatedBy == ActivatedBy.OnTriggerExit && other.CompareTag(tagToActivate))
         {
+            Activate();
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (activatedBy == ActivatedBy.OnDestroy)
+        {
+            activationDelay = 0;
             Activate();
         }
     }

@@ -33,11 +33,14 @@ public class AudioTriggerEditor : Editor
             EditorGUILayout.PropertyField(_tagToActivateProperty);
         }
 
-        if (_activatedByProperty.enumValueIndex != 2)
+        if (_activatedByProperty.enumValueIndex < 4)
         {
-            EditorGUILayout.PropertyField(_activateOnceProperty);
+            if (_activatedByProperty.enumValueIndex != 2)
+            {
+                EditorGUILayout.PropertyField(_activateOnceProperty);
+            }
+            EditorGUILayout.PropertyField(_activationDelayProperty);
         }
-        EditorGUILayout.PropertyField(_activationDelayProperty);
         
         EditorGUILayout.Separator();
         

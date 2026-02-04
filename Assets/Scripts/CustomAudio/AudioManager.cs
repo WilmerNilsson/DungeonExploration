@@ -381,14 +381,16 @@ public class AudioManager : MonoBehaviour
     #endregion
 
     //Troligen onödigt med 3 metoder för om audioManager stängs av
+    
     private void OnApplicationQuit()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
-        StopAndReleaseAllInstances();
+        //StopAndReleaseAllInstances();
         StopAllEvents();
     }
 
+    /*
     private void OnDisable()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
@@ -403,5 +405,5 @@ public class AudioManager : MonoBehaviour
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
         StopAndReleaseAllInstances();
         StopAllEvents();
-    }
+    }*/
 }
