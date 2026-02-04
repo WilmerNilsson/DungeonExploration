@@ -316,6 +316,53 @@ MonoBehaviour:
     - name: surfaceType
       value: 0
     bankName: 
+--- !u!1 &2081962032
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2081962034}
+  - component: {fileID: 2081962033}
+  m_Layer: 0
+  m_Name: DialogueTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2081962033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2081962032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb7b9750a4900f84e803045ef676a667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  path: VA/DialogueTest
+  lineParameter: LineIndex
+  lineIndex: 0
+--- !u!4 &2081962034
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2081962032}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -221.67227, y: 72.765434, z: 43.278755}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1680744059918040833
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -324,6 +371,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
+      propertyPath: activatedBy
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
+      propertyPath: instructions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
+      propertyPath: instructions.Array.data[0].path
+      value: BGM/Level1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
+      propertyPath: instructions.Array.data[0].command
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
+      propertyPath: instructions.Array.data[0].parametersToSet.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
+      propertyPath: instructions.Array.data[0].parametersToSet.Array.data[0].name
+      value: EnemyClose
+      objectReference: {fileID: 0}
+    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
+      propertyPath: instructions.Array.data[0].parametersToSet.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7039417583642897791, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
       propertyPath: m_Name
       value: AudioTrigger
@@ -381,6 +456,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 808863321973245351, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
+      propertyPath: eventLists.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 808863321973245351, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
+      propertyPath: 'eventLists.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 7f867892a08e427408ae769fca174d74, type: 2}
     - target: {fileID: 6517206634113031847, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -438,3 +521,4 @@ SceneRoots:
   - {fileID: 5526446374506907766}
   - {fileID: 1117420917}
   - {fileID: 1680744059918040833}
+  - {fileID: 2081962034}

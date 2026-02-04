@@ -8,6 +8,8 @@ public class ItemContextMenu : MonoBehaviour
     [SerializeField] private GameObject buttonPrefab;
     [SerializeField, Min(1)] private int buttonHeight;
 
+    private SimpleItem selectedItem;
+
 #if DEBUG
     private void OnValidate()
     {
@@ -15,8 +17,24 @@ public class ItemContextMenu : MonoBehaviour
     }
 #endif
 
+    public bool TryDeselectItem(SimpleItem item)
+    {
+        if(selectedItem = item)
+        {
+            foreach (Transform child in transform)
+            {
+                Destroy(child.gameObject);
+            }
+
+            return true;
+        }
+        return false;
+    }
+
     public void SelectItem(SimpleItem item, ItemUse[] effects)
     {
+        selectedItem = item;
+
         //can prob reuse stuff and just change text
         foreach(Transform child in transform)
         {

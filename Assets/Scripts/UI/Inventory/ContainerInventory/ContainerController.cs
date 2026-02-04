@@ -6,10 +6,36 @@ public class ContainerController : MonoBehaviour
     [SerializeField] private GameObject[] spawnItems;
     [SerializeField] private InventoryGrid myGrid;
 
+    public InventoryGrid Grid { get { return myGrid; } }
+
+    private void Start()
+    {
+        foreach(GameObject prefab in spawnItems)
+        {
+            SimpleItem item = Instantiate(prefab).GetComponent<SimpleItem>();
+
+#if DEBUG
+            if (item == null)
+            {
+                Debug.LogError("chest spawn contents contain something that isn't a item", this);
+                return;
+            }
+
+            bool couldInsert = myGrid.TryInsertItem(item);
+            if (!couldInsert )
+            {
+                Debug.LogError("failed to insert spawn item", this);
+            }
+#else
+            myGrid.TryInsertItem(item);
+#endif
+        }
+    }
+
     public void Open()
     {
         myGrid.gameObject.SetActive(true);
-        InvMaster.Instance.AddOpenWorldContainerToSystem(myGrid);
+        InvMaster.Instance.AddOpenWorldContainerToSystem(this);
     }
 
     public void Close()

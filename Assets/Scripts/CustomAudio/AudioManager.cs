@@ -194,8 +194,40 @@ public class AudioManager : MonoBehaviour
     
     #endregion
     
-    //TODO: VA LOGIK
-    #region VA 
+    
+    #region VA
+
+    public void InitializeDialogue(string path)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.InitializeDialogue(eventName);
+        }
+    }
+
+    public void SayLine(string path, string lineParameter, int lineIndex)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.SayLine(eventName, lineParameter, lineIndex);
+        }
+    }
+
+    public void StopLine(string path)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.StopLine(eventName);
+        }
+    }
+
+    public void EndDialogue(string path)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.EndDialogue(eventName);
+        }
+    }
     
     #endregion
     

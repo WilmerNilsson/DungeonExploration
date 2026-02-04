@@ -29,13 +29,15 @@ public class DialogueManager : MonoBehaviour
     private string sentence;
     
     private const string NAME_TAG = "name";
-    private const string SPRITE_TAG = "sprite";
+    private const string ANIMATION_TAG = "animation";
     private const string COLOR_TAG = "color";
     private const string SIZE_TAG = "font_size";
     private const string SPEED_TAG = "speed";
+    private const string INDEX_TAG = "index";
 
 
-    public UnityEvent PlayIntroStory, onDialogueExit;
+    public UnityEvent onDialogueEnter, onStartLine, onEndLine, onDialogueExit;
+    private int lineIndex = 0;
 
     //[Header("Choices UI")] 
     [SerializeField] private GameObject[] choices;
@@ -106,6 +108,9 @@ public class DialogueManager : MonoBehaviour
 
     public void EnterDialogueMode(TextAsset InkJSON)
     {
+        onDialogueEnter?.Invoke();
+        //Debug.Log("entering dialogue mode");
+        isTyping = false;
         currentStory = new Story(InkJSON.text);
         dialogueIsPlaying = true;
         dialoguePanel.SetActive(true);
@@ -128,12 +133,24 @@ public class DialogueManager : MonoBehaviour
         //InputManager.GetInstance().isLevelPlaying = true;
         //data.playStoryAtStart = false;
         onDialogueExit.Invoke();
+        //Debug.Log("exitDialogueMode");
     }
 
     public void ContinueStory()
     {
+        if (isTyping)
+        {
+            onEndLine?.Invoke();
+            //Debug.Log("endLine type");
+            StopAllCoroutines();
+            dialogueText.text = sentence;
+            isTyping = false;
+            return;
+        }
         if (currentStory.currentChoices.Count > 0)
         {
+            //onEndLine?.Invoke();
+            //Debug.Log("endLine choice");
             StopAllCoroutines();
             dialogueText.text = sentence;
             isTyping = false;
@@ -142,14 +159,10 @@ public class DialogueManager : MonoBehaviour
         if (currentStory.canContinue)
         {
             //audioSource.Stop();
-            if (isTyping)
-            {
-                StopAllCoroutines();
-                dialogueText.text = sentence;
-                isTyping = false;
-                return;
-            }
+            //Debug.Log("startLine");
+            onStartLine?.Invoke();
             sentence = currentStory.Continue();
+            lineIndex++;
             
             StopAllCoroutines();
             
@@ -192,7 +205,7 @@ public class DialogueManager : MonoBehaviour
                     dialogueName.text = tagValue;
                     break;
                 
-                case SPRITE_TAG:
+                case ANIMATION_TAG:
                     portraitAnimator.Play(tagValue);
                     break;
                 
@@ -229,6 +242,17 @@ public class DialogueManager : MonoBehaviour
                     }
                     break;
                 
+                case INDEX_TAG:
+                    if (int.TryParse(tagValue, out int index))
+                    {
+                        lineIndex += index;
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Couldn't parse index: {tagValue}");
+                    }
+                    break;
+                
                 default:
                     Debug.LogWarning($"Tag came in but is not currently being handled: {tag}");
                     break;
@@ -258,6 +282,8 @@ public class DialogueManager : MonoBehaviour
             }
         }
 
+        //Debug.Log("endLine done");
+        onEndLine?.Invoke();
         isTyping = false;
         //audioSource.Stop();
     }
