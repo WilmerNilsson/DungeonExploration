@@ -392,6 +392,11 @@ public class EventList : ScriptableObject
     public void SayLine(string eventName, string lineParameter, int lineIndex)
     {
         if (!TryGetEvent(eventName, out var eventData)) return;
+        if (!eventData.eventInstance.isValid())
+        {
+            PrintDebug("You need to create an instance for " + eventName + " before trying to start a dialogue", true);
+            return;
+        }
         
         if (!eventData.ParameterCache.TryGetValue(lineParameter, out var parameterData))
         {
