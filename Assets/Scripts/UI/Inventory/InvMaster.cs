@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Plastic.Antlr3.Runtime;
 using UnityEditor.Graphs;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using static Codice.Client.Commands.WkTree.WorkspaceTreeNode;
 
 
@@ -16,6 +17,7 @@ public class InvMaster : MonoBehaviour
     [SerializeField] private ItemContextMenu contextMenu;
     [SerializeField] private Transform worldContainerParent;
     [SerializeField] private GameObject playerInventory;
+    [SerializeField] private PlayerController playerController;
 
     /// <summary>
     /// collum, row
@@ -39,6 +41,9 @@ public class InvMaster : MonoBehaviour
         if (contextMenu == null) Debug.LogWarning("context menu is null", this);
         if (worldContainerParent == null) Debug.LogWarning("world container parent is null", this);
         if (playerInventory == null) Debug.LogWarning("player inventory object is null", this);
+        //if (playerController == null) Debug.LogWarning("no connection to a player controller", this) ;
+
+        if (GameObject.FindAnyObjectByType<EventSystem>() == null) Debug.LogWarning("no event system in scene", this);
     }
 #endif
 
@@ -60,12 +65,11 @@ public class InvMaster : MonoBehaviour
         {
             foreach(InventoryGrid grid in openContainers)
             {
-                Debug.Log("is grid null: " + grid == null);
-                Debug.Log(grid.name);
                 if(grid.TryPlaceItem(item)) return true;
             }
         }
 
+        Debug.Log("failed to place item");
         return false;
     }
 
@@ -73,7 +77,9 @@ public class InvMaster : MonoBehaviour
     {
         openContainers.Add(inventoryGrid);
         playerInventory.SetActive(true);
-        Debug.Log("lock player controlls and make it do the menu stuff");
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
+        playerController.LockMovement(true);
 
 #if DEBUG
         if(openContainers.Count > 1)

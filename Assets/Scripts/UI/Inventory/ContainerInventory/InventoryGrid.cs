@@ -23,7 +23,9 @@ public class InventoryGrid : MonoBehaviour
             Debug.Log(Mathf.Abs(slotSize.x - slotSize.y));
             Debug.LogWarning($"inventory slot width and height does not match. width is {slotSize.x}, height is {slotSize.y}", this);
         }
-            
+
+        if ((transform as RectTransform).pivot.y != 0.5f || (transform as RectTransform).pivot.x != 0.5f)
+            Debug.LogWarning("inventory grid piviot is not 0.5 in x and y", this);
         
     }
 #endif
@@ -33,9 +35,23 @@ public class InventoryGrid : MonoBehaviour
         invData = new SimpleItem[collumns, rows];
     }
 
+    private Rect GlobalRect()
+    {
+        RectTransform rt = (transform as RectTransform);
+
+        Rect bigRect = rt.rect;
+
+        bigRect.center = rt.position;
+
+        bigRect.width = bigRect.width * rt.lossyScale.x;
+        bigRect.height = bigRect.height * rt.lossyScale.y;
+
+        return bigRect;
+    }
+
     private Rect GetSlotRect(int collum, int row)
     {
-        Rect bigRect = (transform as RectTransform).rect;
+        Rect bigRect = GlobalRect();
 
         Rect slot = new();
 
@@ -49,16 +65,19 @@ public class InventoryGrid : MonoBehaviour
 
     public Vector2 GetSlotSize()
     {
-        Rect bigRect = (transform as RectTransform).rect;
+        Rect bigRect = GlobalRect();
 
         return new(bigRect.width / collumns, bigRect.height / rows);
     }
 
     public bool TryPlaceItem(SimpleItem item)
     {
-        Vector2 pos = item.RectTransform.position;;
+        Vector2 pos = item.RectTransform.position;
 
-        if((transform as RectTransform).rect.Contains(pos)) return false;
+        if(!GlobalRect().Contains(pos))
+        {
+            return false;
+        }
 
         bool[,] itemSlots = item.GetSizeMatrix();
 
@@ -91,7 +110,6 @@ public class InventoryGrid : MonoBehaviour
                     }
                     else
                     {
-
                         return false;
                     }
                 }
@@ -132,7 +150,10 @@ public class InventoryGrid : MonoBehaviour
         //instead of itterating trough all possible till we get a match
         //not really needed unless the inventory is like 100000 spaces or something.
 
-        if (!(transform as RectTransform).rect.Contains(pos)) goto fail;
+        if (!GlobalRect().Contains(pos))
+        {
+            goto fail;
+        }
 
         for (collum = 0; collum < collumns; collum++)
         {
@@ -160,7 +181,7 @@ public class InventoryGrid : MonoBehaviour
         {
             for (int row = 0; row < invData.GetLength(1); row++)
             {
-                Debug.Log("trying c,r" + collum + ", " + row);
+                //Debug.Log("trying c,r" + collum + ", " + row);
 
                 if (invData[collum, row] == null)
                 {
