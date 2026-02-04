@@ -379,7 +379,7 @@ public class EventList : ScriptableObject
 
     public void InitializeDialogue(string eventName)
     {
-        if (!TryGetEvent(eventName, out var eventData)) return;
+        if (!TryGetEvent(eventName, out var eventData)) return; //Om event finns & det inte redan finns en instans skapar vi en
         if (eventData.eventInstance.isValid())
         {
             PrintDebug("Didn't create instance for dialogue event " + eventData.eventName + " since it already has a valid instance", true);
@@ -391,12 +391,12 @@ public class EventList : ScriptableObject
 
     public void SayLine(string eventName, string lineParameter, int lineIndex)
     {
-        if (!TryGetEvent(eventName, out var eventData)) return;
+        if (!TryGetEvent(eventName, out var eventData)) return; 
         if (!eventData.eventInstance.isValid())
         {
             PrintDebug("You need to create an instance for " + eventName + " before trying to start a dialogue", true);
             return;
-        }
+        } //Om event och instans finns ställer vi in parametrar(om de finns) och spelar instansen
         
         if (!eventData.ParameterCache.TryGetValue(lineParameter, out var parameterData))
         {
@@ -408,13 +408,13 @@ public class EventList : ScriptableObject
         eventData.eventInstance.start();
     }
 
-    public void StopLine(string eventName)
+    public void StopLine(string eventName) //Stoppa instansen om event finns
     {
         if (!TryGetEvent(eventName, out var eventData)) return;
         eventData.eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
     }
 
-    public void EndDialogue(string eventName)
+    public void EndDialogue(string eventName) //Stoppa och släpp instans
     {
         if (!TryGetEvent(eventName, out var eventData)) return;
         eventData.eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
