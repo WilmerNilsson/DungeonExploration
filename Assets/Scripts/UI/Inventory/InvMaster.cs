@@ -24,7 +24,7 @@ public class InvMaster : MonoBehaviour
     /// </summary>
 
     //dunno what we expect to be the max open container amount, but going with 1 for now
-    private List<InventoryGrid> openContainers = new(1);
+    private List<ContainerController> openContainers = new(1);
 
     private void Start()
     {
@@ -63,23 +63,22 @@ public class InvMaster : MonoBehaviour
         }
         else
         {
-            foreach(InventoryGrid grid in openContainers)
+            foreach(ContainerController container in openContainers)
             {
-                if(grid.TryPlaceItem(item)) return true;
+                if(container.Grid.TryPlaceItem(item)) return true;
             }
         }
 
-        Debug.Log("failed to place item");
         return false;
     }
 
-    public void AddOpenWorldContainerToSystem(InventoryGrid inventoryGrid)
+    public void AddOpenWorldContainerToSystem(ContainerController container)
     {
-        openContainers.Add(inventoryGrid);
-        playerInventory.SetActive(true);
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined;
-        playerController.LockMovement(true);
+        if (openContainers.Contains(container)) return;
+
+        openContainers.Add(container);
+
+        OpenPlayerInventory();
 
 #if DEBUG
         if(openContainers.Count > 1)
@@ -88,12 +87,48 @@ public class InvMaster : MonoBehaviour
         }
 #endif
 
-        inventoryGrid.transform.SetParent(worldContainerParent);
-        inventoryGrid.transform.localPosition = Vector3.zero;
+        container.Grid.transform.SetParent(worldContainerParent);
+        container.Grid.transform.localPosition = Vector3.zero;
     }
 
-    public void RemoveWorldContainerFromSystem(InventoryGrid inventoryGrid)
+    public void RemoveWorldContainerFromSystem(ContainerController container)
     {
-        openContainers.Remove(inventoryGrid);
+        openContainers.Remove(container);
     }
+
+    public void ToggleInventory()
+    {
+        if(playerInventory.activeSelf)
+        {
+            ClosePlayerInventory();
+        }
+        else
+        {
+            OpenPlayerInventory();
+        }
+    }
+
+    public void OpenPlayerInventory()
+    {
+        playerInventory.SetActive(true);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined; //we need to controll curson with a pause menu once implimented
+        playerController.LockMovement(true);
+    }
+
+    public void ClosePlayerInventory()
+    {
+        playerInventory.SetActive(false);
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        playerController.LockMovement(false);
+
+        foreach (ContainerController container in openContainers)
+        {
+            container.Close();
+        }
+
+        openContainers.Clear();
+    }
+
 }

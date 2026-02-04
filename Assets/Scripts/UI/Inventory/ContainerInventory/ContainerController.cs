@@ -6,10 +6,12 @@ public class ContainerController : MonoBehaviour
     [SerializeField] private GameObject[] spawnItems;
     [SerializeField] private InventoryGrid myGrid;
 
+    public InventoryGrid Grid { get { return myGrid; } }
+
     public void Open()
     {
         myGrid.gameObject.SetActive(true);
-        InvMaster.Instance.AddOpenWorldContainerToSystem(myGrid);
+        InvMaster.Instance.AddOpenWorldContainerToSystem(this);
     }
 
     public void Close()

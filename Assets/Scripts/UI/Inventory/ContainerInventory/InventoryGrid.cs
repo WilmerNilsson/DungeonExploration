@@ -37,6 +37,10 @@ public class InventoryGrid : MonoBehaviour
 
     private Rect GlobalRect()
     {
+        //This will get global rect that is neutral to rotation
+        //alternative is to go with the corners, and then counter rotate them
+        //i do not think one or the other is much more preformance heavy
+
         RectTransform rt = (transform as RectTransform);
 
         Rect bigRect = rt.rect;

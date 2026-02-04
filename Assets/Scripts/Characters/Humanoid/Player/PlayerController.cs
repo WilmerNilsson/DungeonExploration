@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 lookVector;
     private Vector3 moveVector;
 
-    bool lockedMovement = false;
+    private bool lockedMovement = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -120,8 +120,10 @@ public class PlayerController : MonoBehaviour
         controller.Rotate(Quaternion.AngleAxis(lookVector.y, Vector3.up) * Quaternion.AngleAxis(lookVector.x, Vector3.right));
     }
 
-    internal void LockMovement(bool newValue)
+    public void LockMovement(bool newValue)
     {
         lockedMovement = newValue;
+
+        //controller.ResetMovement();
     }
 }
