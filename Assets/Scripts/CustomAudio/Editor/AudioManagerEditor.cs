@@ -39,25 +39,6 @@ public class AudioManagerEditor : Editor
         
         EditorGUILayout.Separator();
         
-        if (Application.isPlaying && debug.boolValue)
-        {
-            GUILayout.Label("VCAs:", EditorStyles.boldLabel);
-            foreach (var vca in AudioManager.Instance.VcaCache)
-            {
-                EditorGUILayout.SelectableLabel(vca.Key, GUILayout.Height(EditorGUIUtility.singleLineHeight));
-            }
-            
-            EditorGUILayout.Separator();
-            
-            GUILayout.Label("Global Parameters:", EditorStyles.boldLabel);
-            foreach (var param in AudioManager.Instance._globalParameterCache)
-            {
-                EditorGUILayout.SelectableLabel(param.Key, GUILayout.Height(EditorGUIUtility.singleLineHeight));
-            }
-        }
-        
-        EditorGUILayout.Separator();
-        
         if (GUILayout.Button("Toggle Debug"))
         {
             audioManager.ToggleDebug();

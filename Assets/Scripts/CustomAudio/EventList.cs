@@ -10,7 +10,7 @@ using UnityEditor;
 
 
 [CreateAssetMenu(fileName = "EventList", menuName = "Scriptable Objects/EventList")]
-public class EventList : ScriptableObject //TODO: Metoder, flytta cache till AudioManager? typ dictionary<path, eventData>?
+public class EventList : ScriptableObject
 {
     public string category;
     public EventData[] events;
@@ -62,6 +62,22 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         return false;
     }
     
+    private const string BankExtension = ".bank";
+    private bool HasEventLoaded(EventData eventData)
+    {
+        var hasLoaded = true;
+        foreach (var bank in eventData.banks)
+        {
+            if (!RuntimeManager.HasBankLoaded(bank + BankExtension))
+            {
+                PrintDebug("The bank: " + bank + " for " + eventData.eventName + " isn't loaded", true);
+                hasLoaded = false;
+            }
+        }
+        if(hasLoaded) PrintDebug("All banks for " + eventData.eventName + " are loaded");
+        return hasLoaded;
+    }
+    
     #endregion
 
     #region Looping Events
@@ -83,12 +99,21 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
     public void CreateInstance(string eventName, GameObject gameObject = null, bool followObject = true)
     {
         if (!TryGetEvent(eventName, out var eventData)) return;
+
+        if (!HasEventLoaded(eventData)) return;
+        
         if (eventData.isOneShot)
         {
             PrintDebug("Didn't create instance for " + eventName + " because it is not a looping event", true);
             return;
         } //Skapa inte instans utan att släppa den om eventet är oneShot;
 
+        if (eventData.is3D && gameObject == null)
+        {
+            PrintDebug("Didn't create instance for " + eventName + " Since it is a 3D event and needs a gameObject to attach to", true);
+            return;
+        }
+        
         if (gameObject != null) //Om gameObject skickas med så skapa ny instans och lägg till den i InstanceList tillsammans med gameObject
         {
             if (InstanceList.ContainsKey(gameObject))
@@ -140,20 +165,41 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         {
             if (InstanceList.TryGetValue(gameObject, out var instance))
             {
-                if (instance.isValid())
+                if (!instance.isValid())
+                {
+                    PrintDebug("Didn't release instance for " + eventName + " at " + gameObject.name + " because it is not a valid instance", true);
+                    return;
+                }
+                instance.getPlaybackState(out var state);
+                if (state == PLAYBACK_STATE.STOPPED || state == PLAYBACK_STATE.STOPPING)
                 {
                     instance.release();
                     InstanceList.Remove(gameObject);
                     PrintDebug("Releasing instance for " + eventName + " and removed from instance list");
                 }
+                else
+                {
+                    PrintDebug("Instance for " + eventData.eventName + " at " + gameObject.name + " needs to be stopped before release", true);
+                }
             }
         }
         else
         {
-            if (eventData.eventInstance.isValid())
+            if (!eventData.eventInstance.isValid())
+            {
+                PrintDebug("Didn't release instance for " + eventName + " because it is not a valid instance", true);
+                return;
+            }
+            
+            eventData.eventInstance.getPlaybackState(out var state);
+            if (state == PLAYBACK_STATE.STOPPED || state == PLAYBACK_STATE.STOPPING)
             {
                 eventData.eventInstance.release();
                 PrintDebug("Releasing instance for " + eventName);
+            }
+            else
+            {
+                PrintDebug("Instance for " + eventData.eventName + " needs to be stopped before release", true);
             }
         }
     }
@@ -284,9 +330,17 @@ public class EventList : ScriptableObject //TODO: Metoder, flytta cache till Aud
         //Om event finns och är oneshot skapar vi en instans, ställer in parametrar (om de finns) och fäster ljudet på ett gameObject (om de finns), om followObject är false följer ljudet inte efter objektet (crazy)
         if (TryGetEvent(eventName, out var eventData))
         {
+            if (!HasEventLoaded(eventData)) return;
+            
             if (!eventData.isOneShot)
             {
                 PrintDebug(eventName + " is not a OneShot event and should not be played through this method", true);
+                return;
+            }
+            
+            if (eventData.is3D && gameObject == null)
+            {
+                PrintDebug("Didn't play OneShot for " + eventName + " Since it is a 3D event and needs a gameObject to attach to", true);
                 return;
             }
             

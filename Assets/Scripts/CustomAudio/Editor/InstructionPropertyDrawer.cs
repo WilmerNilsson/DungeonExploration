@@ -96,7 +96,7 @@ public class InstructionPropertyDrawer : PropertyDrawer
         if (command.enumValueIndex < 8 && command.enumValueIndex != 5)
         {
             height += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2;
-            height += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+            height += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2;
 
             if (command.enumValueIndex == 0 || command.enumValueIndex == 7)
             {
@@ -116,7 +116,7 @@ public class InstructionPropertyDrawer : PropertyDrawer
         
         if (command.enumValueIndex > 7)
         {
-            height += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+            height += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2;
         }
         
         return height;

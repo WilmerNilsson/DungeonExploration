@@ -22,17 +22,25 @@ public class HumanoidInteract : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(head.position, head.forward, out hit, interactDistance, layerMask))
         {
-            if (hit.transform.gameObject.GetComponent<Interactable>())
+            if (hit.transform.gameObject.TryGetComponent(out Interactable newInteractable))
             {
                 Debug.DrawRay(head.position, head.forward * hit.distance, Color.green);
                 //Debug.Log("Did Hit");
-                interactable = hit.transform.gameObject.GetComponent<Interactable>();
+                if (interactable != newInteractable)
+                {
+                    interactable = newInteractable;
+                    interactable.OnView(true);
+                }
                 //UIText.SetActive(true);
             }
             else
             {
                 Debug.DrawRay(head.position, head.forward * hit.distance, Color.yellow);
                 //Debug.Log("Hit something else");
+                if (interactable)
+                {
+                    interactable.OnView(false);
+                }
                 interactable = null;
                 //UIText.SetActive(false);
             }
@@ -41,6 +49,10 @@ public class HumanoidInteract : MonoBehaviour
         {
             Debug.DrawRay(head.position, head.forward * interactDistance, Color.red);
             //Debug.Log("Did not Hit");
+            if (interactable)
+            {
+                interactable.OnView(false);
+            }
             interactable = null;
             //UIText.SetActive(false);
         }
