@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using FMOD.Studio;
 using FMODUnity;
+using UnityEditor.ShaderKeywordFilter;
 using Debug = UnityEngine.Debug;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 #if UNITY_EDITOR
@@ -45,18 +46,16 @@ public class EventList : ScriptableObject
     }
     #endif
     
-    private bool TryGetEvent(string eventName, out EventData eventData) //Om ett event finns i eventCache returneras true samt EventData, annars false
+    private bool TryGetEvent(string eventName, out EventData eventData) //Om ett event finns i eventCache OCH banken eventet hör till är laddad returneras true samt EventData, annars false
     {
         if (_eventCache.TryGetValue(eventName, out eventData))
         {
-            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+            if (HasEventLoaded(eventData))
             {
                 PrintDebug("Successfully retrieved " + eventName);
+                return true;
             }
-            
-            return true;
         }
-
         PrintDebug("Failed to get " + eventName, true);
         
         return false;
@@ -99,8 +98,6 @@ public class EventList : ScriptableObject
     public void CreateInstance(string eventName, GameObject gameObject = null, bool followObject = true)
     {
         if (!TryGetEvent(eventName, out var eventData)) return;
-
-        if (!HasEventLoaded(eventData)) return;
         
         if (eventData.isOneShot)
         {
@@ -330,7 +327,6 @@ public class EventList : ScriptableObject
         //Om event finns och är oneshot skapar vi en instans, ställer in parametrar (om de finns) och fäster ljudet på ett gameObject (om de finns), om followObject är false följer ljudet inte efter objektet (crazy)
         if (TryGetEvent(eventName, out var eventData))
         {
-            if (!HasEventLoaded(eventData)) return;
             
             if (!eventData.isOneShot)
             {
@@ -380,8 +376,45 @@ public class EventList : ScriptableObject
     #endregion
     
     #region VA
-    
-    //Logik för VA här???
+
+    public void InitializeDialogue(string eventName)
+    {
+        if (!TryGetEvent(eventName, out var eventData)) return;
+        if (eventData.eventInstance.isValid())
+        {
+            PrintDebug("Didn't create instance for dialogue event " + eventData.eventName + " since it already has a valid instance", true);
+            return;
+        }
+        eventData.eventInstance = RuntimeManager.CreateInstance(eventData.eventReference);
+        PrintDebug("Created instance for dialogue event " + eventData.eventName);
+    }
+
+    public void SayLine(string eventName, string lineParameter, int lineIndex)
+    {
+        if (!TryGetEvent(eventName, out var eventData)) return;
+        
+        if (!eventData.ParameterCache.TryGetValue(lineParameter, out var parameterData))
+        {
+            PrintDebug("Couldn't find parameter: " + lineParameter, true);
+            return;
+        }
+        eventData.eventInstance.setParameterByID(parameterData.ID(), lineIndex);
+        
+        eventData.eventInstance.start();
+    }
+
+    public void StopLine(string eventName)
+    {
+        if (!TryGetEvent(eventName, out var eventData)) return;
+        eventData.eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
+    }
+
+    public void EndDialogue(string eventName)
+    {
+        if (!TryGetEvent(eventName, out var eventData)) return;
+        eventData.eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
+        eventData.eventInstance.release();
+    }
     
     #endregion
     
