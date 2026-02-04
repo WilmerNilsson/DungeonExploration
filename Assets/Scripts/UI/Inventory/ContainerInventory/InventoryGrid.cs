@@ -188,7 +188,7 @@ public class InventoryGrid : MonoBehaviour
         }
         //by this point it is clear that we can place the item
 
-        RemoveSlottedItem(item);
+        TryRemoveSlottedItem(item);
 
         for (int x = 0; x < itemSlots.GetLength(0); x++)
         {
@@ -205,10 +205,12 @@ public class InventoryGrid : MonoBehaviour
         return true;
     }
 
-    private void RemoveSlottedItem(SimpleItem item)
+    public bool TryRemoveSlottedItem(SimpleItem item)
     {
         //we have to itterate trough all cause items can be bigger
         //alternativly we can count the size and stopp itterating once we have [size] amount of hits
+        bool foundMatch = false;
+
         for (int collum = 0; collum < InvData.GetLength(0); collum++)
         {
             for (int row = 0; row < InvData.GetLength(1); row++)
@@ -216,9 +218,12 @@ public class InventoryGrid : MonoBehaviour
                 if (InvData[collum, row] == item)
                 {
                     InvData[collum, row] = null;
+                    foundMatch = true;
                 }
             }
         }
+
+        return foundMatch;
     }
 
 }
