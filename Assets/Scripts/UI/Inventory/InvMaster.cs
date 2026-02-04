@@ -41,10 +41,15 @@ public class InvMaster : MonoBehaviour
         if (playerInventory == null) Debug.LogWarning("player inventory object is null", this);
 
         if(!PrefabUtility.IsPartOfPrefabAsset(this) && playerController == null)
-            Debug.LogWarning("no connection to a player controller", this) ;
+        {
+            //for some reason this activated constantly
+            //Debug.LogWarning("no connection to a player controller", this);
+        }
+
         if (drawOntopParent == null) Debug.LogWarning("draw ontop parent is null", this);
 
-        if (GameObject.FindAnyObjectByType<EventSystem>() == null) Debug.LogWarning("no event system in scene", this);
+        if (!PrefabUtility.IsPartOfPrefabAsset(this) && GameObject.FindAnyObjectByType<EventSystem>() == null)
+            Debug.LogWarning("no event system in scene", this);
     }
 #endif
 

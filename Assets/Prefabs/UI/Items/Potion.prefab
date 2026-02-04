@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3113354548642778703}
   - component: {fileID: 2895719447209793109}
   - component: {fileID: 8340747355471346599}
+  - component: {fileID: 8490275448964758129}
   m_Layer: 5
   m_Name: Potion
   m_TagString: Untagged
@@ -95,10 +96,10 @@ MonoBehaviour:
     OnUse:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Health, GameAssembly
-          m_MethodName: ChangeHealthVoid
-          m_Mode: 3
+        - m_Target: {fileID: 8490275448964758129}
+          m_TargetAssemblyTypeName: HealthPotion, GameAssembly
+          m_MethodName: Drink
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -107,51 +108,16 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - text: drop
-    OnUse:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Health, GameAssembly
-          m_MethodName: ChangeHealthVoid
-          m_Mode: 3
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 4
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - text: drop
-    OnUse:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Health, GameAssembly
-          m_MethodName: ChangeHealthVoid
-          m_Mode: 3
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 4
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - text: drop
-    OnUse:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 0}
-          m_TargetAssemblyTypeName: Health, GameAssembly
-          m_MethodName: ChangeHealthVoid
-          m_Mode: 3
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 4
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+--- !u!114 &8490275448964758129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4294192794624958368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2afd3455b51e9aa4eb6952ae1f2797c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amount: 3
