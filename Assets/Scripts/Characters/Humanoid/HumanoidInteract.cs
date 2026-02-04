@@ -28,7 +28,7 @@ public class HumanoidInteract : MonoBehaviour
                 //Debug.Log("Did Hit");
                 if (interactable != newInteractable)
                 {
-                    interactable = new Interactable();
+                    interactable = newInteractable;
                     interactable.OnView(true);
                 }
                 //UIText.SetActive(true);
@@ -37,7 +37,10 @@ public class HumanoidInteract : MonoBehaviour
             {
                 Debug.DrawRay(head.position, head.forward * hit.distance, Color.yellow);
                 //Debug.Log("Hit something else");
-                interactable.OnView(false);
+                if (interactable)
+                {
+                    interactable.OnView(false);
+                }
                 interactable = null;
                 //UIText.SetActive(false);
             }
@@ -46,7 +49,10 @@ public class HumanoidInteract : MonoBehaviour
         {
             Debug.DrawRay(head.position, head.forward * interactDistance, Color.red);
             //Debug.Log("Did not Hit");
-            interactable.OnView(false);
+            if (interactable)
+            {
+                interactable.OnView(false);
+            }
             interactable = null;
             //UIText.SetActive(false);
         }
