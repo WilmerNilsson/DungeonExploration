@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -16,7 +17,9 @@ public class InvMaster : MonoBehaviour
     [SerializeField] private GameObject playerInventory;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private Transform drawOntopParent;
-
+    [Header("reading")] //Starting to feel like we may want to split this up further, but prob once we do a pause menu
+    [SerializeField] private GameObject readingCanvasParent;
+    [SerializeField] private TextMeshProUGUI readingText;
     /// <summary>
     /// collum, row
     /// </summary>
@@ -192,5 +195,16 @@ public class InvMaster : MonoBehaviour
 
         contextMenu.TryDeselectItem(item);
         Destroy(item.gameObject);
+    }
+
+    public void OpenText(string newText)
+    {
+        readingCanvasParent.SetActive(true);
+        readingText.text = newText;
+    }
+
+    public void CloseText()
+    {
+        readingCanvasParent.SetActive(false);
     }
 }
