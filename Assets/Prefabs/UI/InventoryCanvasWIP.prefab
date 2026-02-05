@@ -26,7 +26,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 213426291332018659}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -34,12 +34,12 @@ RectTransform:
   - {fileID: 4536821772862600290}
   - {fileID: 5421476947177865578}
   - {fileID: 1596397749348610517}
-  m_Father: {fileID: 8864560649238937224}
+  m_Father: {fileID: 2164406994059038603}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -480, y: 0}
+  m_SizeDelta: {x: 960, y: 216}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &976264804564895249
 Canvas:
@@ -137,7 +137,6 @@ RectTransform:
   m_Children:
   - {fileID: 6325648957468074169}
   - {fileID: 7968944040886888666}
-  - {fileID: 4185857275702406391}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -331,6 +330,8 @@ MonoBehaviour:
   playerInventory: {fileID: 5619994753349327374}
   playerController: {fileID: 0}
   drawOntopParent: {fileID: 6061787559150278193}
+  readingCanvasParent: {fileID: 213426291332018659}
+  readingText: {fileID: 8278894226838711161}
 --- !u!1 &1923427527488889676
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,6 +610,7 @@ RectTransform:
   m_Children:
   - {fileID: 2728386083094553044}
   - {fileID: 3868064813061507258}
+  - {fileID: 4185857275702406391}
   m_Father: {fileID: 7968944040886888666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.1}
@@ -775,10 +777,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 213426291332018659}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 5466869278847863774}
+        m_TargetAssemblyTypeName: InvMaster, GameAssembly
+        m_MethodName: CloseText
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

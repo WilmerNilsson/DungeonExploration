@@ -24,11 +24,25 @@ public class HumanoidMovement : MonoBehaviour
     [SerializeField] private float raycastDistance;
     [SerializeField] private float raycastAngle;
     [SerializeField] private float stepSmooth;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+    public event Action<moveActions>? OnMoveActionChange;
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+
+    private moveActions currentAction = moveActions.None;
+
+    private void OnDestroy()
     {
-        
+        OnMoveActionChange = null;
+    }
+
+    public enum moveActions
+    {
+        None,
+        Walking,
+        Sprinting,
+        CrouchWalk,
+        Airborne
     }
 
     // Update is called once per frame
@@ -46,24 +60,43 @@ public class HumanoidMovement : MonoBehaviour
                 newVelocity = newVelocity.normalized * currentSpeed;
             }
             rb.linearVelocity = new Vector3(newVelocity.x, rb.linearVelocity.y, newVelocity.z);
+
+            SetMoveAction(moveActions.Airborne);
         }
         else
         {
+            if(moveVector == Vector3.zero) SetMoveAction(moveActions.None);
+
             if (controller.isCrouching) //crouching
             {
                 currentSpeed = crouchSpeed;
+
+                if (moveVector != Vector3.zero) SetMoveAction(moveActions.CrouchWalk);
             }
             else if (controller.isSprinting && moveVector.z > 0) //sprinting forwards
             {
                 currentSpeed = sprintSpeed;
+
+                if (moveVector != Vector3.zero) SetMoveAction(moveActions.Sprinting);
             }
             else
             {
                 currentSpeed = moveSpeed;
+
+                if (moveVector != Vector3.zero) SetMoveAction(moveActions.Walking);
             }
             ClimbStair();
             rb.linearVelocity = new Vector3(currentSpeed * rotatedVector.x, rb.linearVelocity.y,
                 currentSpeed * rotatedVector.z);
+        }
+
+        void SetMoveAction(moveActions newAction)
+        {
+            if(newAction != currentAction)
+            {
+                currentAction = newAction; 
+                OnMoveActionChange?.Invoke(currentAction);
+            }
         }
     }
 

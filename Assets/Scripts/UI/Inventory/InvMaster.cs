@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -16,7 +17,9 @@ public class InvMaster : MonoBehaviour
     [SerializeField] private GameObject playerInventory;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private Transform drawOntopParent;
-
+    [Header("reading")] //Starting to feel like we may want to split this up further, but prob once we do a pause menu
+    [SerializeField] private GameObject readingCanvasParent;
+    [SerializeField] private TextMeshProUGUI readingText;
     /// <summary>
     /// collum, row
     /// </summary>
@@ -147,6 +150,7 @@ public class InvMaster : MonoBehaviour
 
     public void OpenPlayerInventory()
     {
+        contextMenu.Deselect();
         playerInventory.SetActive(true);
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined; //we need to controll curson with a pause menu once implimented
@@ -155,6 +159,7 @@ public class InvMaster : MonoBehaviour
 
     public void ClosePlayerInventory()
     {
+        contextMenu.Deselect();
         playerInventory.SetActive(false);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -171,6 +176,8 @@ public class InvMaster : MonoBehaviour
     public void ParentTransformOntop(Transform transform)
     {
         transform.SetParent(drawOntopParent);
+
+        contextMenu.Deselect();
     }
 
     public void DestroyItem(SimpleItem item)
@@ -192,5 +199,17 @@ public class InvMaster : MonoBehaviour
 
         contextMenu.TryDeselectItem(item);
         Destroy(item.gameObject);
+    }
+
+    public void OpenText(string newText)
+    {
+        contextMenu.Deselect();
+        readingCanvasParent.SetActive(true);
+        readingText.text = newText;
+    }
+
+    public void CloseText()
+    {
+        readingCanvasParent.SetActive(false);
     }
 }
