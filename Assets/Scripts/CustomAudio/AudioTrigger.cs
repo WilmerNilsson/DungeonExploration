@@ -86,6 +86,11 @@ public class AudioTrigger : MonoBehaviour
 
     private void InterpretInstructions() //Beroende på commmand i instruction, kalla rätt metod i audioManager
     {
+        if (AudioManager.Instance == null)
+        {
+            Debug.LogWarning("There is no AudioManager in the scene, please add one");
+            return;
+        }
         foreach (Instruction instruction in instructions)
         {
             switch (instruction.command)

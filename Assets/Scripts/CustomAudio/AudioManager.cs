@@ -387,13 +387,16 @@ public class AudioManager : MonoBehaviour
         if (!showOnlyWarnings) Debug.Log(message);
     }
     
-    public string[] GetGlobalParameterList()
+    public string[] GetGlobalParameterList(out float[] valueList)
     {
         var tempList = new List<string>();
+        var tempValueList = new List<float>();
         foreach (var parameter in _globalParameterCache)
         {
             tempList.Add(parameter.Key);
+            tempValueList.Add(GetGlobalParameterValue(parameter.Key));
         }
+        valueList = tempValueList.ToArray();
         return tempList.ToArray();
     }
 

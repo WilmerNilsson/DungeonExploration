@@ -23,7 +23,7 @@ public class AudioDebug : MonoBehaviour
     public void GetGlobalParamList()
     {
         globalParams = new List<GlobalParamList>();
-        var strings = AudioManager.Instance.GetGlobalParameterList();
+        var strings = AudioManager.Instance.GetGlobalParameterList(out var values);
         foreach (var name in strings)
         {
             var tempEntry = new GlobalParamList();
