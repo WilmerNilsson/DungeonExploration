@@ -125,7 +125,15 @@ public class EventList : ScriptableObject
                                                             //stannar kvar på samma position där objektet var när instansen skapades
             if (followObject)
             {
-                RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+                if (gameObject.TryGetComponent<Rigidbody>(out var rb))
+                {
+                    RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+                }
+                else
+                {
+                    RuntimeManager.AttachInstanceToGameObject(instance, gameObject, true);
+                }
+                
                 PrintDebug("Attached " + eventName + " to " + gameObject.name);
             }
             else
@@ -342,7 +350,17 @@ public class EventList : ScriptableObject
             
             if (gameObject != null && eventData.is3D)
             {
-                if (followObject) RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+                if (followObject)
+                {
+                    if (gameObject.TryGetComponent<Rigidbody>(out var rb))
+                    {
+                        RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+                    }
+                    else
+                    {
+                        RuntimeManager.AttachInstanceToGameObject(instance, gameObject, true);
+                    }
+                }
                 else instance.set3DAttributes(gameObject.transform.To3DAttributes());
             }
             
