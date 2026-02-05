@@ -122,7 +122,7 @@ public class InGameUIController : MonoBehaviour, IUIController
 
     void Awake()
     {
-        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCharacterMovement>().OnAttackAction += AttackSorter;
+        //GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCharacterMovement>().OnAttackAction += AttackSorter;
 
         inGameUI = transform.GetChild(0).gameObject;
         cutsceneCanvas = transform.GetChild(1).gameObject;

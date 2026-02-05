@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class CanvasScaleFactorAdjuster : MonoBehaviour
 {
     [SerializeField] bool hasCameraInScene = true;
-    UnityEngine.Rendering.Universal.PixelPerfectCamera ppc;
+    //UnityEngine.Rendering.Universal.PixelPerfectCamera ppc;
     CanvasScaler canvasScaler;
  
     void Start()
@@ -17,7 +17,7 @@ public class CanvasScaleFactorAdjuster : MonoBehaviour
 
         if(hasCameraInScene)
         {
-            ppc = Camera.main.gameObject.GetComponent<UnityEngine.Rendering.Universal.PixelPerfectCamera>();
+            //ppc = Camera.main.gameObject.GetComponent<UnityEngine.Rendering.Universal.PixelPerfectCamera>();
             AdjustScalingFactorAuto();
         }
         else
@@ -28,7 +28,7 @@ public class CanvasScaleFactorAdjuster : MonoBehaviour
  
     void AdjustScalingFactorAuto()
     {
-        canvasScaler.scaleFactor = ppc.pixelRatio;
+        //canvasScaler.scaleFactor = ppc.pixelRatio;
     }
 
     public void AdjustScalingFactorFromInt(int value)

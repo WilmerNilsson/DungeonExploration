@@ -37,11 +37,11 @@ public class HealthBar : MonoBehaviour
         {
             _health = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Health>();
 
-            _health.OnCurrentHealthChangeAction += SetCurrentHP;
-            _health.OnMaxHealthChangeAction += SetMaxHP;
+            //_health.OnCurrentHealthChangeAction += SetCurrentHP;
+            //_health.OnMaxHealthChangeAction += SetMaxHP;
 
-            SetCurrentHP(_health.GetCurrentHealth());
-            SetMaxHP(_health.GetMaxHealth());
+            //SetCurrentHP(_health.GetCurrentHealth());
+            //SetMaxHP(_health.GetMaxHealth());
         }
         else if(_isBossHealthBar)
         {
@@ -53,8 +53,8 @@ public class HealthBar : MonoBehaviour
     {
         if(_health != null)
         {
-            _health.OnCurrentHealthChangeAction -= SetCurrentHP;
-            _health.OnMaxHealthChangeAction -= SetMaxHP;
+            //_health.OnCurrentHealthChangeAction -= SetCurrentHP;
+            //_health.OnMaxHealthChangeAction -= SetMaxHP;
         }
     }
 
@@ -85,17 +85,17 @@ public class HealthBar : MonoBehaviour
     {
         if(_health != null)
         {
-            _health.OnCurrentHealthChangeAction -= SetCurrentHP;
-            _health.OnMaxHealthChangeAction -= SetMaxHP;
+            //_health.OnCurrentHealthChangeAction -= SetCurrentHP;
+            //_health.OnMaxHealthChangeAction -= SetMaxHP;
         }
         
         _health = bossHealth;
 
-        _health.OnCurrentHealthChangeAction += SetCurrentHP;
-        _health.OnMaxHealthChangeAction += SetMaxHP;
+        //_health.OnCurrentHealthChangeAction += SetCurrentHP;
+        //_health.OnMaxHealthChangeAction += SetMaxHP;
 
-        SetCurrentHP(_health.GetCurrentHealth());
-        SetMaxHP(_health.GetMaxHealth());
+        //SetCurrentHP(_health.GetCurrentHealth());
+        //SetMaxHP(_health.GetMaxHealth());
     }
 
     void UpdateInfo()
