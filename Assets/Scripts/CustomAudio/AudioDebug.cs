@@ -22,6 +22,11 @@ public class AudioDebug : MonoBehaviour
 
     public void GetGlobalParamList()
     {
+        if (!AudioManager.IsValid)
+        {
+            Debug.LogWarning("There is no AudioManager in the scene, please add one");
+            return;
+        }
         globalParams = new List<GlobalParamList>();
         var strings = AudioManager.Instance.GetGlobalParameterList(out var values);
         foreach (var name in strings)

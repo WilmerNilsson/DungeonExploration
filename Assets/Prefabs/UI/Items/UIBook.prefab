@@ -12,11 +12,10 @@ GameObject:
   - component: {fileID: 3113354548642778703}
   - component: {fileID: 2895719447209793109}
   - component: {fileID: 8340747355471346599}
-  - component: {fileID: 8490275448964758129}
   - component: {fileID: -8854653704836512832}
   - component: {fileID: -3702027065416735679}
   m_Layer: 5
-  m_Name: UIHealthPotion
+  m_Name: UIBook
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,7 +68,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d4fb7b38391fc9c4e99d90ca1d19c187, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 13128bd95ca0e024d93b82e5e070998a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -94,23 +93,7 @@ MonoBehaviour:
   piviot: {x: 0, y: 0}
   size: 0
   uses:
-  - text: Drink
-    OnUse:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 8490275448964758129}
-          m_TargetAssemblyTypeName: HealthPotion, GameAssembly
-          m_MethodName: Drink
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 4
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - text: Inspect
+  - text: Read
     OnUse:
       m_PersistentCalls:
         m_Calls:
@@ -121,41 +104,11 @@ MonoBehaviour:
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 4
+            m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - text: Drop
-    OnUse:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: -8854653704836512832}
-          m_TargetAssemblyTypeName: ItemDrop, GameAssembly
-          m_MethodName: Drop
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 4
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
---- !u!114 &8490275448964758129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4294192794624958368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2afd3455b51e9aa4eb6952ae1f2797c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  amount: 3
-  myItem: {fileID: 8340747355471346599}
 --- !u!114 &-8854653704836512832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,4 +136,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e556bf153e0d9de40996717735b9473e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: Health potion, <br> heals 3hp
+  text: 20 years ago the funny number was 1337

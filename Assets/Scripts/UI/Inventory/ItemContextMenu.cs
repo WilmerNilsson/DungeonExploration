@@ -17,6 +17,16 @@ public class ItemContextMenu : MonoBehaviour
     }
 #endif
 
+    public void Deselect()
+    {
+        selectedItem = null;
+
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
     public bool TryDeselectItem(SimpleItem item)
     {
         if(selectedItem = item)
