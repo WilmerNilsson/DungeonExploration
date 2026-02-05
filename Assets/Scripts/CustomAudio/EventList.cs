@@ -8,7 +8,6 @@ using STOP_MODE = FMOD.Studio.STOP_MODE;
 using UnityEditor;
 #endif
 
-
 [CreateAssetMenu(fileName = "EventList", menuName = "Scriptable Objects/EventList")]
 public class EventList : ScriptableObject
 {
@@ -45,18 +44,16 @@ public class EventList : ScriptableObject
     }
     #endif
     
-    private bool TryGetEvent(string eventName, out EventData eventData) //Om ett event finns i eventCache returneras true samt EventData, annars false
+    private bool TryGetEvent(string eventName, out EventData eventData) //Om ett event finns i eventCache OCH banken eventet hör till är laddad returneras true samt EventData, annars false
     {
         if (_eventCache.TryGetValue(eventName, out eventData))
         {
-            if (AudioManager.Instance.debug && !AudioManager.Instance.showOnlyWarnings)
+            if (HasEventLoaded(eventData))
             {
                 PrintDebug("Successfully retrieved " + eventName);
+                return true;
             }
-            
-            return true;
         }
-
         PrintDebug("Failed to get " + eventName, true);
         
         return false;
@@ -99,8 +96,6 @@ public class EventList : ScriptableObject
     public void CreateInstance(string eventName, GameObject gameObject = null, bool followObject = true)
     {
         if (!TryGetEvent(eventName, out var eventData)) return;
-
-        if (!HasEventLoaded(eventData)) return;
         
         if (eventData.isOneShot)
         {
@@ -130,7 +125,15 @@ public class EventList : ScriptableObject
                                                             //stannar kvar på samma position där objektet var när instansen skapades
             if (followObject)
             {
-                RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+                if (gameObject.TryGetComponent<Rigidbody>(out var rb))
+                {
+                    RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+                }
+                else
+                {
+                    RuntimeManager.AttachInstanceToGameObject(instance, gameObject, true);
+                }
+                
                 PrintDebug("Attached " + eventName + " to " + gameObject.name);
             }
             else
@@ -330,7 +333,6 @@ public class EventList : ScriptableObject
         //Om event finns och är oneshot skapar vi en instans, ställer in parametrar (om de finns) och fäster ljudet på ett gameObject (om de finns), om followObject är false följer ljudet inte efter objektet (crazy)
         if (TryGetEvent(eventName, out var eventData))
         {
-            if (!HasEventLoaded(eventData)) return;
             
             if (!eventData.isOneShot)
             {
@@ -348,7 +350,17 @@ public class EventList : ScriptableObject
             
             if (gameObject != null && eventData.is3D)
             {
-                if (followObject) RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+                if (followObject)
+                {
+                    if (gameObject.TryGetComponent<Rigidbody>(out var rb))
+                    {
+                        RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+                    }
+                    else
+                    {
+                        RuntimeManager.AttachInstanceToGameObject(instance, gameObject, true);
+                    }
+                }
                 else instance.set3DAttributes(gameObject.transform.To3DAttributes());
             }
             
@@ -380,8 +392,50 @@ public class EventList : ScriptableObject
     #endregion
     
     #region VA
-    
-    //Logik för VA här???
+
+    public void InitializeDialogue(string eventName)
+    {
+        if (!TryGetEvent(eventName, out var eventData)) return; //Om event finns & det inte redan finns en instans skapar vi en
+        if (eventData.eventInstance.isValid())
+        {
+            PrintDebug("Didn't create instance for dialogue event " + eventData.eventName + " since it already has a valid instance", true);
+            return;
+        }
+        eventData.eventInstance = RuntimeManager.CreateInstance(eventData.eventReference);
+        PrintDebug("Created instance for dialogue event " + eventData.eventName);
+    }
+
+    public void SayLine(string eventName, string lineParameter, int lineIndex)
+    {
+        if (!TryGetEvent(eventName, out var eventData)) return; 
+        if (!eventData.eventInstance.isValid())
+        {
+            PrintDebug("You need to create an instance for " + eventName + " before trying to start a dialogue", true);
+            return;
+        } //Om event och instans finns ställer vi in parametrar(om de finns) och spelar instansen
+        
+        if (!eventData.ParameterCache.TryGetValue(lineParameter, out var parameterData))
+        {
+            PrintDebug("Couldn't find parameter: " + lineParameter, true);
+            return;
+        }
+        eventData.eventInstance.setParameterByID(parameterData.ID(), lineIndex);
+        
+        eventData.eventInstance.start();
+    }
+
+    public void StopLine(string eventName) //Stoppa instansen om event finns
+    {
+        if (!TryGetEvent(eventName, out var eventData)) return;
+        eventData.eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
+    }
+
+    public void EndDialogue(string eventName) //Stoppa och släpp instans
+    {
+        if (!TryGetEvent(eventName, out var eventData)) return;
+        eventData.eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
+        eventData.eventInstance.release();
+    }
     
     #endregion
     

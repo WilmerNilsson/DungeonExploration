@@ -60,7 +60,7 @@ public class AudioManager : MonoBehaviour
             PrintDebug("Added " + list.category + " to eventList cache");
         }
     }
-
+    #if UNITY_EDITOR
     public void FillAllEventData()
     {
         foreach (var list in eventLists)
@@ -68,7 +68,8 @@ public class AudioManager : MonoBehaviour
             list.FillEventData();
         }
     }
-
+    #endif
+    
     private void RefreshAllEventCaches() //Refreshar eventCache i alla eventLists
     {
         foreach (var eventList in eventLists)
@@ -76,6 +77,7 @@ public class AudioManager : MonoBehaviour
             eventList.RefreshEventCache();
         }
     }
+    
 
     private bool TryGetEventList(string path, out EventList eventList, out string eventName) //Om eventlist finns returneras true, eventListan, samt eventNamnet
     {
@@ -124,6 +126,8 @@ public class AudioManager : MonoBehaviour
            PrintDebug("Failed to set " + paramName + " to " + paramValue, true);
         }
     }
+
+   
     
     #endregion
     
@@ -194,8 +198,39 @@ public class AudioManager : MonoBehaviour
     
     #endregion
     
-    //TODO: VA LOGIK
-    #region VA 
+    #region VA
+
+    public void InitializeDialogue(string path)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.InitializeDialogue(eventName);
+        }
+    }
+
+    public void SayLine(string path, string lineParameter, int lineIndex)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.SayLine(eventName, lineParameter, lineIndex);
+        }
+    }
+
+    public void StopLine(string path)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.StopLine(eventName);
+        }
+    }
+
+    public void EndDialogue(string path)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.EndDialogue(eventName);
+        }
+    }
     
     #endregion
     
@@ -350,6 +385,30 @@ public class AudioManager : MonoBehaviour
         if (!debug) return;
         if (isWarning) Debug.LogWarning(message);
         if (!showOnlyWarnings) Debug.Log(message);
+    }
+    
+    public string[] GetGlobalParameterList(out float[] valueList)
+    {
+        var tempList = new List<string>();
+        var tempValueList = new List<float>();
+        foreach (var parameter in _globalParameterCache)
+        {
+            tempList.Add(parameter.Key);
+            tempValueList.Add(GetGlobalParameterValue(parameter.Key));
+        }
+        valueList = tempValueList.ToArray();
+        return tempList.ToArray();
+    }
+
+    public float GetGlobalParameterValue(string paramName)
+    {
+        if (_globalParameterCache.TryGetValue(paramName, out var id))
+        {
+            RuntimeManager.StudioSystem.getParameterByID(id, out var paramValue);
+            return paramValue;
+        }
+
+        return 0f;
     }
 
     #endregion

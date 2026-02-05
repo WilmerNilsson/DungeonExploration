@@ -17,6 +17,8 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private bool isDragging;
     Vector2 returnPos;
     public Vector2Int Pivot {get{ return pivot; } }
+    Transform returnParent;
+    public Vector2Int Piviot {get{ return piviot; } }
 
     public bool[,] itemGridSize = new bool[4, 4];
     
@@ -75,6 +77,10 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if(eventData.button == PointerEventData.InputButton.Left)
         {
             returnPos = RectTransform.position;
+            returnParent = transform.parent;
+
+            InvMaster.Instance.ParentTransformOntop(transform);
+
             isDragging = true;
         }
         else if(eventData.button == PointerEventData.InputButton.Right)
@@ -92,6 +98,7 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             if (!InvMaster.Instance.TryPlaceItem(this))
             {
                 RectTransform.position = returnPos;
+                transform.SetParent(returnParent);
             }
         }
     }

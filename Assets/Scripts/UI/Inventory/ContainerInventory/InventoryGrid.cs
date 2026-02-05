@@ -1,3 +1,4 @@
+using UnityEditor.Graphs;
 using UnityEngine;
 
 [RequireComponent(typeof(RectTransform))]
@@ -9,7 +10,18 @@ public class InventoryGrid : MonoBehaviour
     /// <summary>
     /// collum, row
     /// </summary>
-    private SimpleItem[,] invData;
+    private SimpleItem[,] InvData
+    {
+        get
+        {
+            if (_invData == null)
+            {
+                _invData = new SimpleItem[collumns, rows];
+            }
+            return _invData;
+        }
+    }
+    private SimpleItem[,] _invData;
 
 #if DEBUG
     private void OnValidate()
@@ -23,19 +35,34 @@ public class InventoryGrid : MonoBehaviour
             Debug.Log(Mathf.Abs(slotSize.x - slotSize.y));
             Debug.LogWarning($"inventory slot width and height does not match. width is {slotSize.x}, height is {slotSize.y}", this);
         }
-            
+
+        if ((transform as RectTransform).pivot.y != 0.5f || (transform as RectTransform).pivot.x != 0.5f)
+            Debug.LogWarning("inventory grid piviot is not 0.5 in x and y", this);
         
     }
 #endif
 
-    void Start()
+    private Rect GlobalRect()
     {
-        invData = new SimpleItem[collumns, rows];
+        //This will get global rect that is neutral to rotation
+        //alternative is to go with the corners, and then counter rotate them
+        //i do not think one or the other is much more preformance heavy
+
+        RectTransform rt = (transform as RectTransform);
+
+        Rect bigRect = rt.rect;
+
+        bigRect.center = rt.position;
+
+        bigRect.width = bigRect.width * rt.lossyScale.x;
+        bigRect.height = bigRect.height * rt.lossyScale.y;
+
+        return bigRect;
     }
 
     private Rect GetSlotRect(int collum, int row)
     {
-        Rect bigRect = (transform as RectTransform).rect;
+        Rect bigRect = GlobalRect();
 
         Rect slot = new();
 
@@ -49,16 +76,19 @@ public class InventoryGrid : MonoBehaviour
 
     public Vector2 GetSlotSize()
     {
-        Rect bigRect = (transform as RectTransform).rect;
+        Rect bigRect = GlobalRect();
 
         return new(bigRect.width / collumns, bigRect.height / rows);
     }
 
     public bool TryPlaceItem(SimpleItem item)
     {
-        Vector2 pos = item.RectTransform.position;;
+        Vector2 pos = item.RectTransform.position;
 
-        if((transform as RectTransform).rect.Contains(pos)) return false;
+        if(!GlobalRect().Contains(pos))
+        {
+            return false;
+        }
 
         bool[,] itemSlots = item.GetSizeMatrix();
 
@@ -75,43 +105,7 @@ public class InventoryGrid : MonoBehaviour
         //TODO work in piviot
         if (TryGetSlotOfPos(pos, out int collum, out int row, out Rect slot))
         {
-            for (int x = 0; x < itemSlots.GetLength(0); x++)
-            {
-                for (int y = 0; y < itemSlots.GetLength(1); y++)
-                {
-                    if ((InvSlotExists(collum + x - item.Pivot.x, row + y - item.Pivot.y) &&
-                        itemSlots[x, y] == true &&
-                        (invData[collum + x - item.Pivot.x, row + y - item.Pivot.y] == null ||
-                        invData[collum + x - item.Pivot.x, row + y - item.Pivot.y] == item)
-
-                        ) ||
-                        itemSlots[x, y] == false)
-                    {
-                        //continue;
-                    }
-                    else
-                    {
-
-                        return false;
-                    }
-                }
-            }
-            //by this point it is clear that we can place the item
-
-            RemoveSlottedItem(item);
-
-            for (int x = 0; x < itemSlots.GetLength(0); x++)
-            {
-                for (int y = 0; y < itemSlots.GetLength(1); y++)
-                {
-                    if (itemSlots[x, y] == true)
-                    {
-                        invData[collum + x - item.Pivot.x, row + y - item.Pivot.y] = item;
-                    }
-                }
-            }
-            item.RectTransform.position = slot.center;
-            return true;
+            return TryPutItemInSlot(item, collum, row);
         }
 
         return false;
@@ -119,7 +113,7 @@ public class InventoryGrid : MonoBehaviour
 
     private bool InvSlotExists(int collumn, int row)
     {
-        if (collumn < 0 || row < 0 || collumn >= invData.GetLength(0) || row >= invData.GetLength(1))
+        if (collumn < 0 || row < 0 || collumn >= InvData.GetLength(0) || row >= InvData.GetLength(1))
         { return false; }
         return true;
     }
@@ -132,7 +126,10 @@ public class InventoryGrid : MonoBehaviour
         //instead of itterating trough all possible till we get a match
         //not really needed unless the inventory is like 100000 spaces or something.
 
-        if (!(transform as RectTransform).rect.Contains(pos)) goto fail;
+        if (!GlobalRect().Contains(pos))
+        {
+            goto fail;
+        }
 
         for (collum = 0; collum < collumns; collum++)
         {
@@ -154,42 +151,86 @@ public class InventoryGrid : MonoBehaviour
         return false;
     }
 
-    public bool TryInsertItem(SimpleItem item)
+    public bool TryInsertItem(SimpleItem item, bool instantiate = false)
     {
-        for (int collum = 0; collum < invData.GetLength(0); collum++)
+        for (int collum = 0; collum < InvData.GetLength(0); collum++)
         {
-            for (int row = 0; row < invData.GetLength(1); row++)
+            for (int row = 0; row < InvData.GetLength(1); row++)
             {
-                Debug.Log("trying c,r" + collum + ", " + row);
-
-                if (invData[collum, row] == null)
-                {
-                    Rect slot = GetSlotRect(collum, row);
-
-                    item.RectTransform.position = slot.center;
-
-                    invData[collum, row] = item;
-                    return true;
-                }
+                if(TryPutItemInSlot(item, collum, row, instantiate)) return true;
             }
         }
         return false;
     }
 
-    private void RemoveSlottedItem(SimpleItem item)
+    private bool TryPutItemInSlot(SimpleItem item, int collum, int row, bool instantiate = false)
     {
-        //we have to itterate trough all cause items can be bigger
-        //alternativly we can count the size and stopp itterating once we have [size] amount of hits
-        for (int collum = 0; collum < invData.GetLength(0); collum++)
+        bool[,] itemSlots = item.GetSizeMatrix();
+
+        for (int x = 0; x < itemSlots.GetLength(0); x++)
         {
-            for (int row = 0; row < invData.GetLength(1); row++)
+            for (int y = 0; y < itemSlots.GetLength(1); y++)
             {
-                if (invData[collum, row] == item)
+                if ((InvSlotExists(collum + x - item.Piviot.x, row + y - item.Piviot.y) &&
+                    itemSlots[x, y] == true &&
+                    (InvData[collum + x - item.Piviot.x, row + y - item.Piviot.y] == null ||
+                    InvData[collum + x - item.Piviot.x, row + y - item.Piviot.y] == item)
+                    ) ||
+                    itemSlots[x, y] == false)
                 {
-                    invData[collum, row] = null;
+                    //continue;
+                }
+                else
+                {
+                    return false;
                 }
             }
         }
+        //by this point it is clear that we can place the item
+
+        if ( instantiate )
+        {
+            item = Instantiate(item.gameObject).GetComponent<SimpleItem>();
+        }
+        else
+        {
+            TryRemoveSlottedItem(item);
+        }
+
+        for (int x = 0; x < itemSlots.GetLength(0); x++)
+        {
+            for (int y = 0; y < itemSlots.GetLength(1); y++)
+            {
+                if (itemSlots[x, y] == true)
+                {
+                    InvData[collum + x - item.Piviot.x, row + y - item.Piviot.y] = item;
+                }
+            }
+        }
+        item.RectTransform.SetParent(transform);
+        item.RectTransform.position = GetSlotRect(collum, row).center;
+        return true;
+    }
+
+    public bool TryRemoveSlottedItem(SimpleItem item)
+    {
+        //we have to itterate trough all cause items can be bigger
+        //alternativly we can count the size and stopp itterating once we have [size] amount of hits
+        bool foundMatch = false;
+
+        for (int collum = 0; collum < InvData.GetLength(0); collum++)
+        {
+            for (int row = 0; row < InvData.GetLength(1); row++)
+            {
+                if (InvData[collum, row] == item)
+                {
+                    InvData[collum, row] = null;
+                    foundMatch = true;
+                }
+            }
+        }
+
+        return foundMatch;
     }
 
 }
