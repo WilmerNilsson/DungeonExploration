@@ -79,10 +79,10 @@ public class InventoryGrid : MonoBehaviour
             {
                 for (int y = 0; y < itemSlots.GetLength(1); y++)
                 {
-                    if ((InvSlotExists(collum + x - item.Piviot.x, row + y - item.Piviot.y) &&
+                    if ((InvSlotExists(collum + x - item.Pivot.x, row + y - item.Pivot.y) &&
                         itemSlots[x, y] == true &&
-                        (invData[collum + x - item.Piviot.x, row + y - item.Piviot.y] == null ||
-                        invData[collum + x - item.Piviot.x, row + y - item.Piviot.y] == item)
+                        (invData[collum + x - item.Pivot.x, row + y - item.Pivot.y] == null ||
+                        invData[collum + x - item.Pivot.x, row + y - item.Pivot.y] == item)
 
                         ) ||
                         itemSlots[x, y] == false)
@@ -106,7 +106,7 @@ public class InventoryGrid : MonoBehaviour
                 {
                     if (itemSlots[x, y] == true)
                     {
-                        invData[collum + x - item.Piviot.x, row + y - item.Piviot.y] = item;
+                        invData[collum + x - item.Pivot.x, row + y - item.Pivot.y] = item;
                     }
                 }
             }

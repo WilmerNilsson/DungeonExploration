@@ -7,7 +7,8 @@ using UnityEngine.EventSystems;
 public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField, Tooltip("what slot the center is, 0,0 is bottom left")]
-    private Vector2Int piviot;
+    private Vector2Int pivot;
+
     [SerializeField] private sizes size;
     //may just have simple bool for importing the default discard use
     [SerializeField] private ItemUse[] uses;
@@ -15,8 +16,10 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public RectTransform RectTransform { get { return (transform as RectTransform); } }
     private bool isDragging;
     Vector2 returnPos;
-    public Vector2Int Piviot {get{ return piviot; } }
+    public Vector2Int Pivot {get{ return pivot; } }
 
+    public bool[,] itemGridSize = new bool[4, 4];
+    
     private enum sizes
     {
         x = default, 
@@ -28,6 +31,7 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public bool[,] GetSizeMatrix()
     {
+        return itemGridSize;
         switch (size)
         {
             case sizes.x:
