@@ -30,9 +30,4 @@ public class ItemPickup : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log(collision.collider.gameObject.name);
-    }
 }
