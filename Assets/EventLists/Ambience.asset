@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7493b6246a18ce4ca3407bc85a819a4, type: 3}
+  m_Name: Ambience
+  m_EditorClassIdentifier: 
+  category: Ambience
+  events:
+  - eventName: Dungeon_Ambiance
+    eventReference:
+      Guid:
+        Data1: 1763366045
+        Data2: 1184738382
+        Data3: 831333510
+        Data4: 283818222
+      Path: event:/Ambiance/Dungeon_Ambiance/Dungeon_Ambiance
+    banks:
+    - SFX
+    isOneShot: 0
+    is3D: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters:
+    - paramName: RoomSize
+      isGlobal: 1
+      data1: 1313807388
+      data2: 1842583426
+  - eventName: Trap
+    eventReference:
+      Guid:
+        Data1: 1913256704
+        Data2: 1137451524
+        Data3: 994068362
+        Data4: -522122436
+      Path: event:/Ambiance/Traps/Trap
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Torch
+    eventReference:
+      Guid:
+        Data1: 1773656881
+        Data2: 1304675578
+        Data3: 867806894
+        Data4: -1695175215
+      Path: event:/Ambiance/Torch
+    banks:
+    - SFX
+    isOneShot: 0
+    is3D: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  debug: 0
