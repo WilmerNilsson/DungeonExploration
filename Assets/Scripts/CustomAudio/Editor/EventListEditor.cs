@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
@@ -41,3 +42,4 @@ public class EventListEditor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 }
+#endif

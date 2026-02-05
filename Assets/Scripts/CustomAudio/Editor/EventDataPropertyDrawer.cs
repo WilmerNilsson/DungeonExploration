@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -100,3 +101,4 @@ public class EventDataPropertyDrawer : PropertyDrawer
         return height;
     }
 }
+#endif

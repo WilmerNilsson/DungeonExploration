@@ -60,7 +60,7 @@ public class AudioManager : MonoBehaviour
             PrintDebug("Added " + list.category + " to eventList cache");
         }
     }
-
+    #if UNITY_EDITOR
     public void FillAllEventData()
     {
         foreach (var list in eventLists)
@@ -68,7 +68,8 @@ public class AudioManager : MonoBehaviour
             list.FillEventData();
         }
     }
-
+    #endif
+    
     private void RefreshAllEventCaches() //Refreshar eventCache i alla eventLists
     {
         foreach (var eventList in eventLists)
@@ -76,6 +77,7 @@ public class AudioManager : MonoBehaviour
             eventList.RefreshEventCache();
         }
     }
+    
 
     private bool TryGetEventList(string path, out EventList eventList, out string eventName) //Om eventlist finns returneras true, eventListan, samt eventNamnet
     {

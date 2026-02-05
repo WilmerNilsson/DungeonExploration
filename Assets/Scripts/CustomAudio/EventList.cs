@@ -2,13 +2,11 @@ using UnityEngine;
 using System.Collections.Generic;
 using FMOD.Studio;
 using FMODUnity;
-using UnityEditor.ShaderKeywordFilter;
 using Debug = UnityEngine.Debug;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-
 
 [CreateAssetMenu(fileName = "EventList", menuName = "Scriptable Objects/EventList")]
 public class EventList : ScriptableObject
