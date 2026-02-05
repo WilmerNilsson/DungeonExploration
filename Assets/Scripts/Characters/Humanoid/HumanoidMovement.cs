@@ -81,12 +81,14 @@ public class HumanoidMovement : MonoBehaviour
 
     private void ClimbStair()
     {
-        Vector3 forward = Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * Vector3.forward;
-        Vector3 minusAngle = Quaternion.AngleAxis(transform.eulerAngles.y - raycastAngle, Vector3.up) * Vector3.forward;
-        Vector3 plusAngle = Quaternion.AngleAxis(transform.eulerAngles.y + raycastAngle, Vector3.up) * Vector3.forward;
+        Vector3 forward = Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * rotatedVector.normalized;
+        Vector3 minusAngle = Quaternion.AngleAxis(transform.eulerAngles.y - raycastAngle, Vector3.up) * rotatedVector.normalized;
+        Vector3 plusAngle = Quaternion.AngleAxis(transform.eulerAngles.y + raycastAngle, Vector3.up) * rotatedVector.normalized;
         
         RaycastHit lowerHit;
         RaycastHit upperHit;
+        Debug.DrawRay(lowerRaycast.position, rotatedVector.normalized * raycastDistance, Color.red);
+        Debug.DrawRay(upperRaycast.position, rotatedVector.normalized * raycastDistance, Color.green);
         if (Physics.Raycast(lowerRaycast.transform.position, forward, out lowerHit, raycastDistance))
         {
             if (!Physics.Raycast(upperRaycast.transform.position, forward, out upperHit, raycastDistance))
@@ -119,7 +121,7 @@ public class HumanoidMovement : MonoBehaviour
     {
         //Gizmos.DrawSphere(transform.position - Vector3.up * 0.6f, .5f);
         
-        Gizmos.DrawLine(lowerRaycast.transform.position, lowerRaycast.transform.position + Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * Vector3.forward * raycastDistance);
-        Gizmos.DrawLine(upperRaycast.transform.position, upperRaycast.transform.position + Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * Vector3.forward * raycastDistance); 
+        Gizmos.DrawLine(lowerRaycast.transform.position, lowerRaycast.transform.position + Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * rotatedVector.normalized * raycastDistance);
+        Gizmos.DrawLine(upperRaycast.transform.position, upperRaycast.transform.position + Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * rotatedVector.normalized * raycastDistance); 
     }
 }
