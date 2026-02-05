@@ -15,6 +15,12 @@ public class ContainerController : MonoBehaviour
         
         foreach (GameObject item in spawnItems)
         {
+
+            if(item == null)
+            {
+                Debug.LogWarning("spawn items has a null entry", this);
+                continue;
+            }
             if(item.GetComponent<SimpleItem>() == null)
             {
                 Debug.LogWarning("spawn item lacks SimpleItemScript:" + item.name, this);
