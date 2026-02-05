@@ -150,6 +150,7 @@ public class InvMaster : MonoBehaviour
 
     public void OpenPlayerInventory()
     {
+        contextMenu.Deselect();
         playerInventory.SetActive(true);
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined; //we need to controll curson with a pause menu once implimented
@@ -158,6 +159,7 @@ public class InvMaster : MonoBehaviour
 
     public void ClosePlayerInventory()
     {
+        contextMenu.Deselect();
         playerInventory.SetActive(false);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -174,6 +176,8 @@ public class InvMaster : MonoBehaviour
     public void ParentTransformOntop(Transform transform)
     {
         transform.SetParent(drawOntopParent);
+
+        contextMenu.Deselect();
     }
 
     public void DestroyItem(SimpleItem item)
@@ -199,6 +203,7 @@ public class InvMaster : MonoBehaviour
 
     public void OpenText(string newText)
     {
+        contextMenu.Deselect();
         readingCanvasParent.SetActive(true);
         readingText.text = newText;
     }
