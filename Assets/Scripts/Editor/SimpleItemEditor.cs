@@ -1,15 +1,30 @@
+#if (UNITY_EDITOR)
+
+using System;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 [CustomEditor(typeof(SimpleItem))]
 public class SimpleItemEditor : Editor
 {
     public bool showLevels = true;
+    private SimpleItem item;
+
+    private SerializedProperty Bools;
     
+    public bool[] itemGrid;
+    private void OnEnable()
+    {
+        item = (SimpleItem)target;
+        Bools = serializedObject.FindProperty("itemGridSize");
+    }
+
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        SimpleItem item = (SimpleItem)target;
+        serializedObject.Update();
+        
         EditorGUILayout.Space ();
         
         showLevels = EditorGUILayout.Foldout (showLevels, "Item grid space ("+item.itemGridSize.Length+")");
@@ -18,54 +33,37 @@ public class SimpleItemEditor : Editor
         {
             EditorGUI.indentLevel++;
             
-            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.BeginVertical();
             for (int x = 0; x < 4; x++)
             {
-                EditorGUILayout.BeginVertical();
+                EditorGUILayout.BeginHorizontal();
                 for (int y = 0; y < 4; y++)
                 {
-                    item.itemGridSize[x, y] = EditorGUILayout.Toggle(item.itemGridSize[x, y]);
+                    EditorGUILayout.PropertyField(Bools.GetArrayElementAtIndex(x + 4*y), GUIContent.none, GUILayout.Width(20));
                 }
-                EditorGUILayout.EndVertical();
+                EditorGUILayout.EndHorizontal();
             }
-            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
+        }
+
+        if (GUILayout.Button("test"))
+        {
+            string test = "";
+            for (int x = 0; x < 4; x++)
+            {
+                for (int y = 0; y < 4; y++)
+                {
+                    test += item.itemGridSize[x + 4*y];
+                    test += " ";
+                }
+                test += "\n";
+            }
+            Debug.Log(test);
         }
         
-        // input = new int[4][];
-        // itemSize = new int[4][];
+        serializedObject.ApplyModifiedProperties();
         
-        // Rect r = EditorGUILayout.BeginVertical();
-        //
-        // EditorGUILayout.BeginHorizontal();
-        // itemSize[0][0] = EditorGUILayout.IntField(input[0][0]);
-        // itemSize[0][1] = EditorGUILayout.IntField(input[0][1]);
-        // itemSize[0][2] = EditorGUILayout.IntField(input[0][2]);
-        // itemSize[0][3] = EditorGUILayout.IntField(input[0][3]);
-        // EditorGUILayout.EndHorizontal();
-        //
-        // EditorGUILayout.BeginHorizontal();
-        // itemSize[1][0] = EditorGUILayout.IntField(input[1][0]);
-        // itemSize[1][1] = EditorGUILayout.IntField(input[1][1]);
-        // itemSize[1][2] = EditorGUILayout.IntField(input[1][2]);
-        // itemSize[1][3] = EditorGUILayout.IntField(input[1][3]);
-        // EditorGUILayout.EndHorizontal();
-        //
-        // EditorGUILayout.BeginHorizontal();
-        // itemSize[2][0] = EditorGUILayout.IntField(input[2][0]);
-        // itemSize[2][1] = EditorGUILayout.IntField(input[2][1]);
-        // itemSize[2][2] = EditorGUILayout.IntField(input[2][2]);
-        // itemSize[2][3] = EditorGUILayout.IntField(input[2][3]);
-        // EditorGUILayout.EndHorizontal();
-        //
-        // EditorGUILayout.BeginHorizontal();
-        // itemSize[3][0] = EditorGUILayout.IntField(input[3][0]);
-        // itemSize[3][1] = EditorGUILayout.IntField(input[3][1]);
-        // itemSize[3][2] = EditorGUILayout.IntField(input[3][2]);
-        // itemSize[3][3] = EditorGUILayout.IntField(input[3][3]);
-        // EditorGUILayout.EndHorizontal();
-        //
-        // EditorGUILayout.EndVertical();
-        // SerializedProperty wha = serializedObject.FindProperty("wha");
-        // EditorGUI.BeginProperty(r, GUIContent.none, wha);
     }
 }
+
+#endif
