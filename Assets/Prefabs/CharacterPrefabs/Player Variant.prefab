@@ -273,6 +273,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: faf3df1fbabd34040b379365dc6af63d, type: 2}
+    - target: {fileID: 4252825241695925139, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
+      propertyPath: playerHealth
+      value: 
+      objectReference: {fileID: 11400000, guid: 8d1752d3d4465884c80e0304113f59c8, type: 2}
     - target: {fileID: 4612578766106565978, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: m_Mass
       value: 2
@@ -320,6 +324,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4762914387664306239, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       insertIndex: 7
       addedObject: {fileID: 6118569703945162990}
+    - targetCorrespondingSourceObject: {fileID: 4762914387664306239, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1673565161895545653}
   m_SourcePrefab: {fileID: 100100000, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
 --- !u!4 &1811854244061691814 stripped
 Transform:
@@ -508,7 +515,19 @@ MonoBehaviour:
     m_ActionId: 20cb063d-0f9a-4e31-b90b-35031d53b448
     m_ActionName: 'Player/Pause[/Keyboard/escape]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1673565161895545653}
+        m_TargetAssemblyTypeName: PlayerUIController, GameAssembly
+        m_MethodName: OnInventory
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: c2349218-3206-4995-915f-cbec94f54d96
     m_ActionName: 'Player/Inventory[/Keyboard/e]'
   - m_PersistentCalls:
@@ -540,6 +559,20 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1673565161895545653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8396059721546633852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 876d96a189e1a904e8e4703d86bc3ee8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 5487802014182324307}
+  invMaster: {fileID: 0}
 --- !u!114 &8498670743821873497 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4858494153439666970, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}

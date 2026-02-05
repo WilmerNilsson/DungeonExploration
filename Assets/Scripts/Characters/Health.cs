@@ -12,6 +12,9 @@ public class Health : MonoBehaviour
     [SerializeField, Min(0)] public int DurabilityDamage;
     
     [SerializeField, Min(0f)] private float minTimeBetweenDamage;
+
+    public static Health PlayerHealthInstance { get; private set;  }
+
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public event Action<int>? OnTakeDamage;
     public event Action? OnDeath;
@@ -71,6 +74,11 @@ public class Health : MonoBehaviour
     private void Start()
     {
         CurrentHealth = MaxHealth;
+
+        if (!(playerHealth == null))
+        {
+            PlayerHealthInstance = this;
+        }
     }
 
     public void Kill()

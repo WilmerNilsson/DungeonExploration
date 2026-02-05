@@ -15,6 +15,7 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public RectTransform RectTransform { get { return (transform as RectTransform); } }
     private bool isDragging;
     Vector2 returnPos;
+    Transform returnParent;
     public Vector2Int Piviot {get{ return piviot; } }
 
     private enum sizes
@@ -71,6 +72,10 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         if(eventData.button == PointerEventData.InputButton.Left)
         {
             returnPos = RectTransform.position;
+            returnParent = transform.parent;
+
+            InvMaster.Instance.ParentTransformOntop(transform);
+
             isDragging = true;
         }
         else if(eventData.button == PointerEventData.InputButton.Right)
@@ -88,6 +93,7 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             if (!InvMaster.Instance.TryPlaceItem(this))
             {
                 RectTransform.position = returnPos;
+                transform.SetParent(returnParent);
             }
         }
     }

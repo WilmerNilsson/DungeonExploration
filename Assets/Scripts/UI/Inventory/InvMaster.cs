@@ -1,10 +1,7 @@
-using Ink.Parsed;
 using System.Collections.Generic;
-using Unity.Plastic.Antlr3.Runtime;
-using UnityEditor.Graphs;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static Codice.Client.Commands.WkTree.WorkspaceTreeNode;
 
 
 public class InvMaster : MonoBehaviour
@@ -18,6 +15,7 @@ public class InvMaster : MonoBehaviour
     [SerializeField] private Transform worldContainerParent;
     [SerializeField] private GameObject playerInventory;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private Transform drawOntopParent;
 
     /// <summary>
     /// collum, row
@@ -25,6 +23,8 @@ public class InvMaster : MonoBehaviour
 
     //dunno what we expect to be the max open container amount, but going with 1 for now
     private List<ContainerController> openContainers = new(1);
+
+    public InventoryGrid PlayerInventory { get { return playerInventoryGrid; } }
 
     private void Start()
     {
@@ -41,9 +41,17 @@ public class InvMaster : MonoBehaviour
         if (contextMenu == null) Debug.LogWarning("context menu is null", this);
         if (worldContainerParent == null) Debug.LogWarning("world container parent is null", this);
         if (playerInventory == null) Debug.LogWarning("player inventory object is null", this);
-        //if (playerController == null) Debug.LogWarning("no connection to a player controller", this) ;
 
-        if (GameObject.FindAnyObjectByType<EventSystem>() == null) Debug.LogWarning("no event system in scene", this);
+        if(!PrefabUtility.IsPartOfPrefabAsset(this) && playerController == null)
+        {
+            //for some reason this activated constantly
+            //Debug.LogWarning("no connection to a player controller", this);
+        }
+
+        if (drawOntopParent == null) Debug.LogWarning("draw ontop parent is null", this);
+
+        if (!PrefabUtility.IsPartOfPrefabAsset(this) && GameObject.FindAnyObjectByType<EventSystem>() == null)
+            Debug.LogWarning("no event system in scene", this);
     }
 #endif
 
@@ -57,15 +65,44 @@ public class InvMaster : MonoBehaviour
 
     public bool TryPlaceItem(SimpleItem item)
     {
+        //perhaps have a reference in SimpleItem to current inventory that we can remove it from
+        //when we move it from one inventory to another.
+
         if(playerInventoryGrid.TryPlaceItem(item))
         {
+            foreach (ContainerController container in openContainers)
+            {
+                if(container.Grid.TryRemoveSlottedItem(item))
+                {
+                    break;
+                }
+            }
+
             return true;
         }
         else
         {
-            foreach(ContainerController container in openContainers)
+            for (int i = 0; i < openContainers.Count; i++)
             {
-                if(container.Grid.TryPlaceItem(item)) return true;
+                ContainerController container = openContainers[i];
+                if (container.Grid.TryPlaceItem(item))
+                {
+                    if(playerInventoryGrid.TryRemoveSlottedItem(item))
+                    {
+                        return true;
+                    }
+
+                    //we did not move the item from players inventory,
+                    //so we need to check if there is another inventory to remove the item from
+                    for (int i2 = 0; i2 < openContainers.Count; i2++)
+                    {
+                        if(i == i2) continue;
+
+                        if (openContainers[i2].Grid.TryRemoveSlottedItem(item)) break;
+                    }
+
+                    return true;
+                }
             }
         }
 
@@ -131,4 +168,29 @@ public class InvMaster : MonoBehaviour
         openContainers.Clear();
     }
 
+    public void ParentTransformOntop(Transform transform)
+    {
+        transform.SetParent(drawOntopParent);
+    }
+
+    public void DestroyItem(SimpleItem item)
+    {
+        if (playerInventoryGrid.TryRemoveSlottedItem(item))
+        {
+            
+        }
+        else
+        {
+            foreach (ContainerController container in openContainers)
+            {
+                if (container.Grid.TryRemoveSlottedItem(item))
+                {
+                    break;
+                }
+            }
+        }
+
+        contextMenu.TryDeselectItem(item);
+        Destroy(item.gameObject);
+    }
 }
