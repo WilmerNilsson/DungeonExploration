@@ -39846,6 +39846,11 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &736510489 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8396059721546633852, guid: 3d53b488f775ee3429e2f32cfeb62719, type: 3}
+  m_PrefabInstance: {fileID: 1116218587}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &740795762
 Mesh:
   m_ObjectHideFlags: 0
@@ -59589,7 +59594,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8396059721546633852, guid: 3d53b488f775ee3429e2f32cfeb62719, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1273889418}
   m_SourcePrefab: {fileID: 100100000, guid: 3d53b488f775ee3429e2f32cfeb62719, type: 3}
 --- !u!43 &1120032368
 Mesh:
@@ -68275,6 +68283,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2253519240906807946, guid: 3d53b488f775ee3429e2f32cfeb62719, type: 3}
   m_PrefabInstance: {fileID: 1116218587}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1273889418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 736510489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc293c0446b8972448fbee1677af522d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emitterIsThisObject: 0
+  instructions:
+  - path: Player/SwordSwing
+    gameObject: {fileID: 1876694327}
+    followObject: 1
+    parametersToSet: []
 --- !u!43 &1280432488
 Mesh:
   m_ObjectHideFlags: 0
@@ -97920,6 +97946,11 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1876694327 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2899091833207479867, guid: 3d53b488f775ee3429e2f32cfeb62719, type: 3}
+  m_PrefabInstance: {fileID: 1116218587}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1878865604
 Mesh:
   m_ObjectHideFlags: 0

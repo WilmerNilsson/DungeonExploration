@@ -1,0 +1,285 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7493b6246a18ce4ca3407bc85a819a4, type: 3}
+  m_Name: Player
+  m_EditorClassIdentifier: 
+  category: Player
+  events:
+  - eventName: Crouch
+    eventReference:
+      Guid:
+        Data1: 1838614167
+        Data2: 1125695131
+        Data3: -917396850
+        Data4: 1039931948
+      Path: event:/Player/Foley/Crouch
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Footsteps
+    eventReference:
+      Guid:
+        Data1: -1601875250
+        Data2: 1302351512
+        Data3: -808690007
+        Data4: 2074805805
+      Path: event:/Player/Foley/Footsteps
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    minDistance: 1
+    maxDistance: 2.2
+    debug: 0
+    parameters:
+    - paramName: surfaceType
+      isGlobal: 0
+      data1: 2409256524
+      data2: 1522719029
+  - eventName: Jump
+    eventReference:
+      Guid:
+        Data1: 407463004
+        Data2: 1236730135
+        Data3: -686158409
+        Data4: -1809549754
+      Path: event:/Player/Foley/Jump
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Land
+    eventReference:
+      Guid:
+        Data1: 981942694
+        Data2: 1170302005
+        Data3: 1078097320
+        Data4: 2102860344
+      Path: event:/Player/Foley/Land
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters:
+    - paramName: surfaceType
+      isGlobal: 0
+      data1: 2409256524
+      data2: 1522719029
+  - eventName: Run
+    eventReference:
+      Guid:
+        Data1: -1190909364
+        Data2: 1335245060
+        Data3: -1544620126
+        Data4: -1624280498
+      Path: event:/Player/Foley/Run
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters:
+    - paramName: surfaceType
+      isGlobal: 0
+      data1: 2409256524
+      data2: 1522719029
+  - eventName: Sneak
+    eventReference:
+      Guid:
+        Data1: 481306460
+        Data2: 1083614710
+        Data3: -778672761
+        Data4: -1196477520
+      Path: event:/Player/Foley/Sneak
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Take_Damage
+    eventReference:
+      Guid:
+        Data1: 682598519
+        Data2: 1153000272
+        Data3: -628293213
+        Data4: -2052368569
+      Path: event:/Player/Foley/Take_Damage
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Rope
+    eventReference:
+      Guid:
+        Data1: 899366842
+        Data2: 1207631029
+        Data3: 1432944573
+        Data4: -1561945739
+      Path: event:/Player/Tools/Rope
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Death
+    eventReference:
+      Guid:
+        Data1: 941497113
+        Data2: 1204195257
+        Data3: -1563407949
+        Data4: 1996458937
+      Path: event:/Player/VoiceOver/Death
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: MaceDraw
+    eventReference:
+      Guid:
+        Data1: 117038431
+        Data2: 1316967584
+        Data3: 953966527
+        Data4: 93756998
+      Path: event:/Player/Weapons/Mace/MaceDraw
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: MaceSwing
+    eventReference:
+      Guid:
+        Data1: 670634877
+        Data2: 1181582949
+        Data3: 1433416865
+        Data4: -1187100018
+      Path: event:/Player/Weapons/Mace/MaceSwing
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: SpearDraw
+    eventReference:
+      Guid:
+        Data1: -368424739
+        Data2: 1078631819
+        Data3: -2057157759
+        Data4: 901269589
+      Path: event:/Player/Weapons/Spear/SpearDraw
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: SpearSwing
+    eventReference:
+      Guid:
+        Data1: 1245330088
+        Data2: 1259604517
+        Data3: -1634906436
+        Data4: -575427368
+      Path: event:/Player/Weapons/Spear/SpearSwing
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: SwordDraw
+    eventReference:
+      Guid:
+        Data1: 1826768141
+        Data2: 1195450235
+        Data3: 665233564
+        Data4: 1390284585
+      Path: event:/Player/Weapons/Sword/SwordDraw
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: SwordParry
+    eventReference:
+      Guid:
+        Data1: 1736530211
+        Data2: 1131489808
+        Data3: -516748105
+        Data4: 615583645
+      Path: event:/Player/Weapons/Sword/SwordParry
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: SwordSwing
+    eventReference:
+      Guid:
+        Data1: 2099678300
+        Data2: 1108240502
+        Data3: -1972189767
+        Data4: -1576565586
+      Path: event:/Player/Weapons/Sword/SwordSwing
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  debug: 0

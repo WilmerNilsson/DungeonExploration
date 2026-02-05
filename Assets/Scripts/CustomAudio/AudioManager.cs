@@ -126,6 +126,8 @@ public class AudioManager : MonoBehaviour
            PrintDebug("Failed to set " + paramName + " to " + paramValue, true);
         }
     }
+
+   
     
     #endregion
     
@@ -195,7 +197,6 @@ public class AudioManager : MonoBehaviour
     }
     
     #endregion
-    
     
     #region VA
 
@@ -384,6 +385,30 @@ public class AudioManager : MonoBehaviour
         if (!debug) return;
         if (isWarning) Debug.LogWarning(message);
         if (!showOnlyWarnings) Debug.Log(message);
+    }
+    
+    public string[] GetGlobalParameterList(out float[] valueList)
+    {
+        var tempList = new List<string>();
+        var tempValueList = new List<float>();
+        foreach (var parameter in _globalParameterCache)
+        {
+            tempList.Add(parameter.Key);
+            tempValueList.Add(GetGlobalParameterValue(parameter.Key));
+        }
+        valueList = tempValueList.ToArray();
+        return tempList.ToArray();
+    }
+
+    public float GetGlobalParameterValue(string paramName)
+    {
+        if (_globalParameterCache.TryGetValue(paramName, out var id))
+        {
+            RuntimeManager.StudioSystem.getParameterByID(id, out var paramValue);
+            return paramValue;
+        }
+
+        return 0f;
     }
 
     #endregion
