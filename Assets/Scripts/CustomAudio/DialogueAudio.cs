@@ -9,21 +9,41 @@ public class DialogueAudio : MonoBehaviour
     
     public void InitializeDialogue(string path)
     {
+        if (!AudioManager.IsValid)
+        {
+            Debug.LogWarning("There is no AudioManager in the scene, please add one");
+            return;
+        }
         AudioManager.Instance.InitializeDialogue(path);
     }
 
     public void SayLine(string path, string lineParameter, int lineIndex)
     {
+        if (!AudioManager.IsValid)
+        {
+            Debug.LogWarning("There is no AudioManager in the scene, please add one");
+            return;
+        }
         AudioManager.Instance.SayLine(path, lineParameter, lineIndex);
     }
 
     public void StopLine(string path)
     {
+        if (!AudioManager.IsValid)
+        {
+            Debug.LogWarning("There is no AudioManager in the scene, please add one");
+            return;
+        }
         AudioManager.Instance.StopLine(path);
     }
 
     public void EndDialogue(string path)
     {
+        if (!AudioManager.IsValid)
+        {
+            Debug.LogWarning("There is no AudioManager in the scene, please add one");
+            return;
+        }
         AudioManager.Instance.EndDialogue(path);
     }
 }

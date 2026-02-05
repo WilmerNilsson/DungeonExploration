@@ -452,6 +452,11 @@ public class EventList : ScriptableObject
 
     private void PrintDebug(string message, bool isWarning = false)
     {
+        if (!AudioManager.IsValid)
+        {
+            Debug.LogWarning("There is no AudioManager in the scene, please add one");
+            return;
+        }
         if (!AudioManager.Instance.debug) return;
         if (isWarning)
         {

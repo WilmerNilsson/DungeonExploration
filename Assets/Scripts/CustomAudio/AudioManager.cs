@@ -20,6 +20,7 @@ public class AudioManager : MonoBehaviour
         } else 
         {
             Instance = this;
+            IsValid = true;
         }
 
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -35,6 +36,8 @@ public class AudioManager : MonoBehaviour
 
         PrintDebug("AudioManager Initialized");
     }
+
+    public static bool IsValid;
 
     #endregion
 
@@ -428,15 +431,17 @@ public class AudioManager : MonoBehaviour
         PrintDebug("Stopped all events");
     }
 
-    public void StopAndReleaseAllInstances() //Typ samma som ovan men denna releasar också instanser, oklart om detta är onödigt eller ej.
+    public void
+        StopAndReleaseAllInstances() //Typ samma som ovan men denna releasar också instanser, oklart om detta är onödigt eller ej.
     {
         foreach (var eventList in eventLists)
         {
             eventList.StopAndReleaseAllInstances();
         }
+
         PrintDebug("Stopped and released all eventInstances");
     }
-    
+
     #endregion
 
     //Troligen onödigt med 3 metoder för om audioManager stängs av
