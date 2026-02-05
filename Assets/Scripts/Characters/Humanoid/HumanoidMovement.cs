@@ -87,17 +87,19 @@ public class HumanoidMovement : MonoBehaviour
         
         RaycastHit lowerHit;
         RaycastHit upperHit;
-        Debug.DrawRay(lowerRaycast.position, rotatedVector.normalized * raycastDistance, Color.red);
-        Debug.DrawRay(upperRaycast.position, rotatedVector.normalized * raycastDistance, Color.green);
-        if (Physics.Raycast(lowerRaycast.transform.position, forward, out lowerHit, raycastDistance))
+        Debug.DrawRay(lowerRaycast.transform.position, rotatedVector.normalized * raycastDistance, Color.red);
+        Debug.DrawRay(upperRaycast.transform.position, rotatedVector.normalized * raycastDistance, Color.green);
+        if (Physics.Raycast(lowerRaycast.transform.position, rotatedVector.normalized, out lowerHit, raycastDistance))
         {
-            if (!Physics.Raycast(upperRaycast.transform.position, forward, out upperHit, raycastDistance))
+            Debug.Log(1);
+            if (!Physics.Raycast(upperRaycast.transform.position, rotatedVector.normalized, out upperHit, raycastDistance))
             {
                 rb.position -= new Vector3(0f, -stepSmooth, 0f);
             }
         }
         else if (Physics.Raycast(lowerRaycast.transform.position, minusAngle, out lowerHit, raycastDistance))
         {
+            Debug.Log(2);
             if (!Physics.Raycast(upperRaycast.transform.position, minusAngle, out upperHit, raycastDistance))
             {
                 rb.position -= new Vector3(0f, -stepSmooth, 0f);
@@ -105,6 +107,7 @@ public class HumanoidMovement : MonoBehaviour
         }
         else if (Physics.Raycast(lowerRaycast.transform.position, plusAngle, out lowerHit, raycastDistance))
         {
+            Debug.Log(3);
             if (!Physics.Raycast(upperRaycast.transform.position, plusAngle, out upperHit, raycastDistance))
             {
                 rb.position -= new Vector3(0f, -stepSmooth, 0f);
