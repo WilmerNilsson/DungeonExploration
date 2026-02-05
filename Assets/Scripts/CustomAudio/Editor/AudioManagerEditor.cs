@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 
@@ -80,3 +81,4 @@ public class AudioManagerEditor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 }
+#endif

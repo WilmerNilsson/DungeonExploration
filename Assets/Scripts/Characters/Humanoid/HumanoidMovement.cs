@@ -20,6 +20,7 @@ public class HumanoidMovement : MonoBehaviour
     [Header("Stair raycast positions")]
     [SerializeField] private Transform upperRaycast;
     [SerializeField] private Transform lowerRaycast;
+    [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float raycastDistance;
     [SerializeField] private float raycastAngle;
     [SerializeField] private float stepSmooth;
@@ -81,29 +82,31 @@ public class HumanoidMovement : MonoBehaviour
 
     private void ClimbStair()
     {
-        Vector3 forward = Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * Vector3.forward;
-        Vector3 minusAngle = Quaternion.AngleAxis(transform.eulerAngles.y - raycastAngle, Vector3.up) * Vector3.forward;
-        Vector3 plusAngle = Quaternion.AngleAxis(transform.eulerAngles.y + raycastAngle, Vector3.up) * Vector3.forward;
+        Vector3 forward = Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * rotatedVector.normalized;
+        Vector3 minusAngle = Quaternion.AngleAxis(transform.eulerAngles.y - raycastAngle, Vector3.up) * rotatedVector.normalized;
+        Vector3 plusAngle = Quaternion.AngleAxis(transform.eulerAngles.y + raycastAngle, Vector3.up) * rotatedVector.normalized;
         
         RaycastHit lowerHit;
         RaycastHit upperHit;
-        if (Physics.Raycast(lowerRaycast.transform.position, forward, out lowerHit, raycastDistance))
+        Debug.DrawRay(lowerRaycast.transform.position, rotatedVector.normalized * raycastDistance, Color.red);
+        Debug.DrawRay(upperRaycast.transform.position, rotatedVector.normalized * raycastDistance, Color.green);
+        if (Physics.Raycast(lowerRaycast.transform.position, rotatedVector.normalized, out lowerHit, raycastDistance, groundLayer))
         {
-            if (!Physics.Raycast(upperRaycast.transform.position, forward, out upperHit, raycastDistance))
+            if (!Physics.Raycast(upperRaycast.transform.position, rotatedVector.normalized, out upperHit, raycastDistance, groundLayer))
             {
                 rb.position -= new Vector3(0f, -stepSmooth, 0f);
             }
         }
-        else if (Physics.Raycast(lowerRaycast.transform.position, minusAngle, out lowerHit, raycastDistance))
+        else if (Physics.Raycast(lowerRaycast.transform.position, minusAngle, out lowerHit, raycastDistance, groundLayer))
         {
-            if (!Physics.Raycast(upperRaycast.transform.position, minusAngle, out upperHit, raycastDistance))
+            if (!Physics.Raycast(upperRaycast.transform.position, minusAngle, out upperHit, raycastDistance, groundLayer))
             {
                 rb.position -= new Vector3(0f, -stepSmooth, 0f);
             }
         }
-        else if (Physics.Raycast(lowerRaycast.transform.position, plusAngle, out lowerHit, raycastDistance))
+        else if (Physics.Raycast(lowerRaycast.transform.position, plusAngle, out lowerHit, raycastDistance, groundLayer))
         {
-            if (!Physics.Raycast(upperRaycast.transform.position, plusAngle, out upperHit, raycastDistance))
+            if (!Physics.Raycast(upperRaycast.transform.position, plusAngle, out upperHit, raycastDistance, groundLayer))
             {
                 rb.position -= new Vector3(0f, -stepSmooth, 0f);
             }
@@ -119,7 +122,7 @@ public class HumanoidMovement : MonoBehaviour
     {
         //Gizmos.DrawSphere(transform.position - Vector3.up * 0.6f, .5f);
         
-        Gizmos.DrawLine(lowerRaycast.transform.position, lowerRaycast.transform.position + Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * Vector3.forward * raycastDistance);
-        Gizmos.DrawLine(upperRaycast.transform.position, upperRaycast.transform.position + Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * Vector3.forward * raycastDistance); 
+        Gizmos.DrawLine(lowerRaycast.transform.position, lowerRaycast.transform.position + Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * rotatedVector.normalized * raycastDistance);
+        Gizmos.DrawLine(upperRaycast.transform.position, upperRaycast.transform.position + Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * rotatedVector.normalized * raycastDistance); 
     }
 }

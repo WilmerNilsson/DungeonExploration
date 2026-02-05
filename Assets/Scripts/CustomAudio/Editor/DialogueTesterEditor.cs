@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
@@ -51,3 +52,4 @@ public class DialogueTesterEditor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 }
+#endif

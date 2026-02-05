@@ -5,6 +5,7 @@ using FMODUnity;
 using UnityEngine;
 using GUID = FMOD.GUID;
 #if UNITY_EDITOR
+using UnityEditor;
 #endif
 
 [Serializable]
@@ -91,10 +92,10 @@ using GUID = FMOD.GUID;
             
             EditorUtils.UnloadPreviewBanks();
         }
-
+        #endif
         public void SetDebug(bool newValue) //Kallas av eventList, används för att gömma eller visa variabler i inspektorn
         {
             debug = newValue;
         }
-        #endif
+       
     }
