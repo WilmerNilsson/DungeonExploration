@@ -18,6 +18,12 @@ public class OneShotPlayer : MonoBehaviour
     
     public void Play(int index)
     {
+        if (!AudioManager.IsValid)
+        {
+            Debug.LogWarning("There is no AudioManager in the scene, please add one");
+            return;
+        }
+        
         var nameList = new List<string>();
         var valueList = new List<float>();
         foreach (var paramToSet in instructions[index].parametersToSet)

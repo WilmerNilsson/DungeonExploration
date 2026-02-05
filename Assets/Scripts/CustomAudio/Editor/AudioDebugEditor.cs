@@ -16,7 +16,7 @@ public class AudioDebugEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        if (Application.isPlaying)
+        if (Application.isPlaying && AudioManager.IsValid)
         {
             audioDebug.GetGlobalParamList();
             EditorGUILayout.PropertyField(globalParamListProperty);
