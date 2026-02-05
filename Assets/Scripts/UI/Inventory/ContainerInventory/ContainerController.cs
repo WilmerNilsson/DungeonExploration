@@ -8,6 +8,27 @@ public class ContainerController : MonoBehaviour
 
     public InventoryGrid Grid { get { return myGrid; } }
 
+#if DEBUG
+    private void OnValidate()
+    {
+        if (myGrid == null) Debug.LogWarning("Container lacks a inventory grid", this);
+        
+        foreach (GameObject item in spawnItems)
+        {
+
+            if(item == null)
+            {
+                Debug.LogWarning("spawn items has a null entry", this);
+                continue;
+            }
+            if(item.GetComponent<SimpleItem>() == null)
+            {
+                Debug.LogWarning("spawn item lacks SimpleItemScript:" + item.name, this);
+            }
+        }
+    }
+#endif
+
     private void Start()
     {
         foreach(GameObject prefab in spawnItems)
