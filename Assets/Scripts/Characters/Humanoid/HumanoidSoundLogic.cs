@@ -65,8 +65,6 @@ public class HumanoidSoundLogic : MonoBehaviour
 
     private void HandleMovementChange(HumanoidMovement.moveActions actions)
     {
-        Debug.Log(actions);
-
         switch (actions)
         {
             case HumanoidMovement.moveActions.None:
