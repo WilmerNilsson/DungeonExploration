@@ -414,6 +414,24 @@ public class AudioManager : MonoBehaviour
         return 0f;
     }
 
+    public string[] GetEventInstanceList(string path)
+    {
+        var tempList = new List<string>();
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            foreach (var instance in eventList.InstanceList)
+            {
+                tempList.Add(instance.Key.name);
+            }
+        }
+        return tempList.ToArray();
+    }
+
+    public EventData[] GetEventDataList(EventList eventList)
+    {
+        return eventList.events;
+    }
+
     #endregion
 
     #region Extras
