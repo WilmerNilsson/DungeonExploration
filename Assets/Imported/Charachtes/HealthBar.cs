@@ -58,29 +58,6 @@ public class HealthBar : MonoBehaviour
         }
     }
 
-    public static void SetBossHpInstance(Health bossHealth)
-    {
-        if(s_bossHpBar == null)
-        {
-            CheckForBossHealthBar();
-        }
-        s_bossHpBar.SetBossHpInstance_(bossHealth);
-
-        static void CheckForBossHealthBar()
-        {
-            HealthBar[] allHealthBars = FindObjectsOfType<HealthBar>();
-
-            for(int i = 0; i < allHealthBars.Length; i++)
-            {
-                if(allHealthBars[i]._isBossHealthBar)
-                {
-                    s_bossHpBar = allHealthBars[i];
-                    break;
-                }
-            }
-        }
-    }
-
     private void SetBossHpInstance_(Health bossHealth)
     {
         if(_health != null)
