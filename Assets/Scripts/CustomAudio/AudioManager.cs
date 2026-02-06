@@ -326,7 +326,7 @@ public class AudioManager : MonoBehaviour
     private const string BankExtension = ".bank";
     private const string StringBankExtension = ".strings.bank";
 
-    public void LoadBank(string bankName) //Laddar bank, om master laddas också string bank
+    public void LoadBank(string bankName, bool loadSamples = false) //Laddar bank, om master laddas också string bank
     {
         RuntimeManager.LoadBank(bankName + BankExtension);
         if (bankName == "Master") RuntimeManager.LoadBank(bankName + StringBankExtension);
@@ -340,13 +340,23 @@ public class AudioManager : MonoBehaviour
         PrintDebug("Unloading " + bankName + BankExtension);
     }
 
-    public string[] banksToLoadOnStart = { "Master" };
+    [Serializable]
+    public struct bankToLoadOnStart
+    {
+        public string bankName;
+        public bool loadSamples;
+    }
+    
+    public bankToLoadOnStart[] banksToLoadOnStart =
+    {
+        new() { bankName = "Master", loadSamples = false },
+    };
 
     private void LoadStartBanks()
     {
         foreach (var bank in banksToLoadOnStart)
         {
-            LoadBank(bank);
+            LoadBank(bank.bankName, bank.loadSamples);
         }
     }
 
