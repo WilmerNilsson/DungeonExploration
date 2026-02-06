@@ -11,6 +11,6 @@ public class PlayerUIController : MonoBehaviour
 
     public void OnPause()
     {
-
+        GameObject.FindGameObjectWithTag("MainUI").GetComponent<InGameUIController>().TogglePauseMenu();
     }
 }
