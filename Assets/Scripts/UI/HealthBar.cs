@@ -34,8 +34,11 @@ public class HealthBar : MonoBehaviour
         {
             Debug.LogWarning("failed to find player health, disabling script", this);
             gameObject.SetActive(false);
+            return;
         }
 #endif
+
+        UpdateInfo(health.CurrentHealth, health.MaxHealth);
     }
 
     private void OnEnable()
