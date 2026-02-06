@@ -29,7 +29,7 @@ public class AudioDebugEditor : Editor
         {
             EditorGUILayout.PropertyField(pathProperty);
             EditorGUILayout.Separator();
-            EditorGUILayout.PropertyField(proceduresProperty);
+            EditorGUILayout.PropertyField(proceduresProperty, GUIContent.none);
             
             if (GUILayout.Button("Execute"))
             {
