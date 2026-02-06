@@ -3,14 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BottonSetSelectedColor : MonoBehaviour
+public class ButtonSetSelectedColor : MonoBehaviour
 {
     //Code taken mostly from Unity Mechanics (youtube)
-    [SerializeField] Button button;
+    [SerializeField] private Button button;
     //Color iNormalColor = Color.white;
     //Color iHighlightedColor = Color.white;
-    ColorBlock cb;
-    
+    private ColorBlock cb;
+
+#if DEBUG
+    private void OnValidate()
+    {
+        if(button == null)
+        {
+            Debug.LogWarning("button not set", this);
+        }
+    }
+#endif
+
     void Start()
     {
         cb = button.colors;

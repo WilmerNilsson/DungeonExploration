@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ButtonEnableTimer : MonoBehaviour
 {
-    [SerializeField] float waitTime = 2f;
+    [SerializeField, Min(0f)] float waitTime = 2f;
 
     Button button;
 

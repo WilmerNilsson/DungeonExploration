@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(TMP_Text))]
 public class WarningCountdown : MonoBehaviour
 {
-    [SerializeField] GraphicsSettings graphicsScript;
-    [SerializeField] int countdownMaxNr = 10;
+    [SerializeField] private GraphicsSettingsMaster graphicsScript;
+    [SerializeField, Min(1)] private int countdownMaxNr = 10;
 
-    TMP_Text text;
+    private TMP_Text text;
 
-    Coroutine countdownCorutine;
+    private Coroutine countdownCorutine;
 
     private void Awake()
     {

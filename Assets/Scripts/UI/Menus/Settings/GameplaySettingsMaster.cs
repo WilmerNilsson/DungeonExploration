@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class GameplayMaster : MonoBehaviour
+public class GameplaySettingsMaster : MonoBehaviour
 {
     [SerializeField] private TMP_InputField gameSpeedInputField;
     [SerializeField] private TMP_InputField playerHPInputField;

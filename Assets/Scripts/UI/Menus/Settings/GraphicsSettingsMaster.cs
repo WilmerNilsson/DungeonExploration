@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class GraphicsSettings : MonoBehaviour
+public class GraphicsSettingsMaster : MonoBehaviour
 {
     [SerializeField] GameObject warningWindow;
     [SerializeField] TMP_Dropdown resolutionDropdown;

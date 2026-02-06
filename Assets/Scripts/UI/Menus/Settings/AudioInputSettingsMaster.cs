@@ -9,7 +9,7 @@ public class AudioInputPair
     public TMP_InputField inputField; public Slider slider;
 }
 
-public class AudioInputMaster : MonoBehaviour
+public class AudioInputSettingsMaster : MonoBehaviour
 {
     [SerializeField] GameObject masterAudioParent;
     AudioInputPair masterAudioPair = new AudioInputPair();

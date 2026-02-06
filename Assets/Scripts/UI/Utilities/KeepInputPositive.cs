@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+[RequireComponent(typeof(TMP_InputField))]
 public class KeepInputPositive : MonoBehaviour
 {
-    TMP_InputField numberInput;
+    private TMP_InputField numberInput;
 
     private void Awake()
     {
