@@ -17,16 +17,16 @@ public class EventList : ScriptableObject
     
     #region EventData
     
-    private Dictionary<string, EventData> _eventCache = new Dictionary<string, EventData>();
+    public Dictionary<string, EventData> EventCache = new Dictionary<string, EventData>();
 
     public void RefreshEventCache() //Lägger till alla eventData till _eventCache för snabbare lookup än foreach loop i eventData
                                     //samt refreshar ParameterCache i alla eventData
     {
-        _eventCache = new Dictionary<string, EventData>();
+        EventCache = new Dictionary<string, EventData>();
         foreach (var eventData in events)
         {
             eventData.RefreshParameterCache();
-            _eventCache.Add(eventData.eventName, eventData);
+            EventCache.Add(eventData.eventName, eventData);
 
             PrintDebug("Added " + eventData.eventName + " to eventCache");
         }
@@ -46,7 +46,7 @@ public class EventList : ScriptableObject
     
     public bool TryGetEvent(string eventName, out EventData eventData) //Om ett event finns i eventCache OCH banken eventet hör till är laddad returneras true samt EventData, annars false
     {
-        if (_eventCache.TryGetValue(eventName, out eventData))
+        if (EventCache.TryGetValue(eventName, out eventData))
         {
             if (HasEventLoaded(eventData))
             {
@@ -79,7 +79,7 @@ public class EventList : ScriptableObject
 
     #region Looping Events
     
-    public Dictionary<GameObject, EventInstance> InstanceList = new Dictionary<GameObject, EventInstance>(); //TODO: Bättre metod för att spara instanser, just nu kan ett gameObject bara ha en instans på sig.
+    public Dictionary<GameObject, EventInstance> InstanceList = new Dictionary<GameObject, EventInstance>();
     
     public void CleanupInstanceList() //Kallas av audioManager vid scenladdning, stoppar alla event på gameObjects som inte längre finns
     {

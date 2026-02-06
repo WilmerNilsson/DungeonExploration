@@ -69,7 +69,7 @@ public class AudioManagerEditor : Editor
                 GUILayout.Label("Global Parameters:", EditorStyles.boldLabel);
                 if (Application.isPlaying && AudioManager.IsValid)
                 {
-                    foreach (var param in AudioManager.Instance._globalParameterCache)
+                    foreach (var param in AudioManager.Instance.GlobalParameterCache)
                     {
                         EditorGUILayout.SelectableLabel(param.Key, GUILayout.Height(EditorGUIUtility.singleLineHeight));
                     }
