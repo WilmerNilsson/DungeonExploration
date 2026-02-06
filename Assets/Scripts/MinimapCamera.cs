@@ -1,10 +1,10 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MinimapCamera : MonoBehaviour
 {
-    [SerializeField] private Transform target;
-
-    [SerializeField] private float height = 5;
+    public List<MinimapArea> mapAreas = new List<MinimapArea>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -14,6 +14,25 @@ public class MinimapCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector3(transform.position.x, target.transform.position.y + height, transform.position.z);
+        
+    }
+
+    public void DrawMap()
+    {
+        foreach (MinimapArea mapArea in mapAreas)
+        {
+            mapArea.DrawArea();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("enter");
+        other.GetComponent<Collider>().enabled = false;
+        foreach (Collider collider in other.GetComponents<Collider>())
+        {
+            collider.enabled = false;
+        }
+        mapAreas.Add(other.gameObject.GetComponent<MinimapArea>());
     }
 }
