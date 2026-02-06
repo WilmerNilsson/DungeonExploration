@@ -4,37 +4,17 @@ using UnityEngine;
 
 public class AudioDebug : MonoBehaviour
 {
-    [Serializable]
-    public class InstanceList
+    public enum Procedures
     {
-        public string EventName;
-        public GameObject gameObject;
+        GetGlobalParameterList,
+        GetInstanceList,
+        GetLocalParameterList,
+        GetAllInstances,
+        GetAllVcas,
+        GetLoadedBanks,
     }
 
-    [Serializable]
-    public class GlobalParamList
-    {
-        public string paramName;
-        public float paramValue;
-    }
-
-    public List<GlobalParamList> globalParams;
-
-    public void GetGlobalParamList()
-    {
-        if (!AudioManager.IsValid)
-        {
-            Debug.LogWarning("There is no AudioManager in the scene, please add one");
-            return;
-        }
-        globalParams = new List<GlobalParamList>();
-        var strings = AudioManager.Instance.GetGlobalParameterList(out var values);
-        foreach (var name in strings)
-        {
-            var tempEntry = new GlobalParamList();
-            tempEntry.paramName = name;
-            tempEntry.paramValue = AudioManager.Instance.GetGlobalParameterValue(name);
-            globalParams.Add(tempEntry);
-        }
-    }
+    public string path;
+    public Procedures procedure;
+    public string text;
 }
