@@ -12,7 +12,6 @@ public class AudioManagerEditor : Editor
     private SerializedProperty showExtraInfo;
     private AudioManager audioManager;
     
-    
     public void OnEnable()
     {
         eventLists = serializedObject.FindProperty("eventLists");
@@ -48,6 +47,7 @@ public class AudioManagerEditor : Editor
         if (debug.boolValue)
         {
             EditorGUILayout.Separator();
+            
             EditorGUILayout.PropertyField(debug);
             EditorGUILayout.PropertyField(showOnlyWarnings);
             EditorGUILayout.PropertyField(showExtraInfo);
@@ -57,7 +57,7 @@ public class AudioManagerEditor : Editor
             if (showExtraInfo.boolValue)
             {
                 GUILayout.Label("VCAs:", EditorStyles.boldLabel);
-                if (Application.isPlaying)
+                if (Application.isPlaying && AudioManager.IsValid)
                 {
                     foreach (var vca in AudioManager.Instance.VcaCache)
                     {
@@ -67,7 +67,7 @@ public class AudioManagerEditor : Editor
                 EditorGUILayout.Separator();
                 
                 GUILayout.Label("Global Parameters:", EditorStyles.boldLabel);
-                if (Application.isPlaying)
+                if (Application.isPlaying && AudioManager.IsValid)
                 {
                     foreach (var param in AudioManager.Instance._globalParameterCache)
                     {

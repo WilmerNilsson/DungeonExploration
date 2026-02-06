@@ -44,7 +44,7 @@ public class EventList : ScriptableObject
     }
     #endif
     
-    private bool TryGetEvent(string eventName, out EventData eventData) //Om ett event finns i eventCache OCH banken eventet hör till är laddad returneras true samt EventData, annars false
+    public bool TryGetEvent(string eventName, out EventData eventData) //Om ett event finns i eventCache OCH banken eventet hör till är laddad returneras true samt EventData, annars false
     {
         if (_eventCache.TryGetValue(eventName, out eventData))
         {
@@ -452,6 +452,11 @@ public class EventList : ScriptableObject
 
     private void PrintDebug(string message, bool isWarning = false)
     {
+        if (!AudioManager.IsValid)
+        {
+            Debug.LogWarning("There is no AudioManager in the scene, please add one");
+            return;
+        }
         if (!AudioManager.Instance.debug) return;
         if (isWarning)
         {

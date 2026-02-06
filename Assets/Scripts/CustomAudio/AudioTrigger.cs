@@ -26,6 +26,7 @@ public class AudioTrigger : MonoBehaviour
     #region Triggering 
 
     //Metoder för att aktivera triggern baserat på activatedBy
+    
     private void Start()
     {
         if (activatedBy == ActivatedBy.Start)
@@ -66,6 +67,11 @@ public class AudioTrigger : MonoBehaviour
     [ContextMenu("Activate")]
     public void Activate() //Aktivera med delay eller direkt
     {
+        if (!AudioManager.IsValid)
+        {
+            Debug.LogWarning("There is no AudioManager in the scene, please add one");
+            return;
+        }
         if (activateOnce && _hasActivated) return;
         _hasActivated = true;
         if (activationDelay > 0)

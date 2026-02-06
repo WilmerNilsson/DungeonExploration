@@ -20,6 +20,7 @@ public class AudioManager : MonoBehaviour
         } else 
         {
             Instance = this;
+            IsValid = true;
         }
 
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -35,6 +36,8 @@ public class AudioManager : MonoBehaviour
 
         PrintDebug("AudioManager Initialized");
     }
+
+    public static bool IsValid;
 
     #endregion
 
@@ -126,6 +129,8 @@ public class AudioManager : MonoBehaviour
            PrintDebug("Failed to set " + paramName + " to " + paramValue, true);
         }
     }
+
+   
     
     #endregion
     
@@ -195,7 +200,6 @@ public class AudioManager : MonoBehaviour
     }
     
     #endregion
-    
     
     #region VA
 
@@ -322,7 +326,7 @@ public class AudioManager : MonoBehaviour
     private const string BankExtension = ".bank";
     private const string StringBankExtension = ".strings.bank";
 
-    public void LoadBank(string bankName) //Laddar bank, om master laddas också string bank
+    public void LoadBank(string bankName, bool loadSamples = false) //Laddar bank, om master laddas också string bank
     {
         RuntimeManager.LoadBank(bankName + BankExtension);
         if (bankName == "Master") RuntimeManager.LoadBank(bankName + StringBankExtension);
@@ -336,13 +340,23 @@ public class AudioManager : MonoBehaviour
         PrintDebug("Unloading " + bankName + BankExtension);
     }
 
-    public string[] banksToLoadOnStart = { "Master" };
+    [Serializable]
+    public struct bankToLoadOnStart
+    {
+        public string bankName;
+        public bool loadSamples;
+    }
+    
+    public bankToLoadOnStart[] banksToLoadOnStart =
+    {
+        new() { bankName = "Master", loadSamples = false },
+    };
 
     private void LoadStartBanks()
     {
         foreach (var bank in banksToLoadOnStart)
         {
-            LoadBank(bank);
+            LoadBank(bank.bankName, bank.loadSamples);
         }
     }
 
@@ -385,6 +399,48 @@ public class AudioManager : MonoBehaviour
         if (isWarning) Debug.LogWarning(message);
         if (!showOnlyWarnings) Debug.Log(message);
     }
+    
+    public string[] GetGlobalParameterList(out float[] valueList)
+    {
+        var tempList = new List<string>();
+        var tempValueList = new List<float>();
+        foreach (var parameter in _globalParameterCache)
+        {
+            tempList.Add(parameter.Key);
+            tempValueList.Add(GetGlobalParameterValue(parameter.Key));
+        }
+        valueList = tempValueList.ToArray();
+        return tempList.ToArray();
+    }
+
+    public float GetGlobalParameterValue(string paramName)
+    {
+        if (_globalParameterCache.TryGetValue(paramName, out var id))
+        {
+            RuntimeManager.StudioSystem.getParameterByID(id, out var paramValue);
+            return paramValue;
+        }
+
+        return 0f;
+    }
+
+    public string[] GetEventInstanceList(string path)
+    {
+        var tempList = new List<string>();
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            foreach (var instance in eventList.InstanceList)
+            {
+                tempList.Add(instance.Key.name);
+            }
+        }
+        return tempList.ToArray();
+    }
+
+    public EventData[] GetEventDataList(EventList eventList)
+    {
+        return eventList.events;
+    }
 
     #endregion
 
@@ -403,15 +459,17 @@ public class AudioManager : MonoBehaviour
         PrintDebug("Stopped all events");
     }
 
-    public void StopAndReleaseAllInstances() //Typ samma som ovan men denna releasar också instanser, oklart om detta är onödigt eller ej.
+    public void
+        StopAndReleaseAllInstances() //Typ samma som ovan men denna releasar också instanser, oklart om detta är onödigt eller ej.
     {
         foreach (var eventList in eventLists)
         {
             eventList.StopAndReleaseAllInstances();
         }
+
         PrintDebug("Stopped and released all eventInstances");
     }
-    
+
     #endregion
 
     //Troligen onödigt med 3 metoder för om audioManager stängs av

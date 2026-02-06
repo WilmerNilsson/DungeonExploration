@@ -119,6 +119,106 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &237938543 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9088536847596784133, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
+  m_PrefabInstance: {fileID: 5526446374506907766}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &237938544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 237938543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37e843c328f27f340b43e551ef08a7ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  globalParams: []
+--- !u!1 &691628091
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 691628093}
+  - component: {fileID: 691628092}
+  - component: {fileID: 691628094}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &691628092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691628091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc293c0446b8972448fbee1677af522d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emitterIsThisObject: 1
+  instructions:
+  - path: Test/Footstep
+    gameObject: {fileID: 0}
+    followObject: 1
+    parametersToSet: []
+  - path: VA/DialogueTest
+    gameObject: {fileID: 0}
+    followObject: 1
+    parametersToSet: []
+--- !u!4 &691628093
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691628091}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -4.35}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &691628094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691628091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5d30a9c5c8a2444c9a762f68638f5ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnPlay:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 691628092}
+        m_TargetAssemblyTypeName: OneShotPlayer, GameAssembly
+        m_MethodName: Play
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &938489281
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,21 +351,7 @@ MonoBehaviour:
   tagToActivate: 
   activateOnce: 0
   activationDelay: 0
-  instructions:
-  - command: 3
-    path: BGM/Level1
-    gameObj: {fileID: 0}
-    followObject: 0
-    stopMode: 0
-    parametersToSet: []
-    bankName: 
-  - command: 1
-    path: BGM/Level1
-    gameObj: {fileID: 0}
-    followObject: 0
-    stopMode: 0
-    parametersToSet: []
-    bankName: 
+  instructions: []
 --- !u!4 &1117420917
 Transform:
   m_ObjectHideFlags: 0
@@ -300,22 +386,54 @@ MonoBehaviour:
   instructions:
   - command: 0
     path: BGM/Level1
-    gameObj: {fileID: 0}
+    gameObj: {fileID: 1117420915}
     followObject: 1
     stopMode: 0
     parametersToSet:
     - name: surfaceType
       value: 0
     bankName: 
-  - command: 2
+  - command: 0
     path: BGM/Level1
-    gameObj: {fileID: 0}
-    followObject: 0
+    gameObj: {fileID: 1323828241}
+    followObject: 1
     stopMode: 0
     parametersToSet:
     - name: surfaceType
       value: 0
     bankName: 
+  - command: 0
+    path: BGM/Level1
+    gameObj: {fileID: 2081962032}
+    followObject: 1
+    stopMode: 0
+    parametersToSet:
+    - name: surfaceType
+      value: 0
+    bankName: 
+  - command: 0
+    path: BGM/Level1
+    gameObj: {fileID: 1415653385}
+    followObject: 1
+    stopMode: 0
+    parametersToSet:
+    - name: surfaceType
+      value: 0
+    bankName: 
+  - command: 0
+    path: BGM/Level1
+    gameObj: {fileID: 691628091}
+    followObject: 1
+    stopMode: 0
+    parametersToSet:
+    - name: surfaceType
+      value: 0
+    bankName: 
+--- !u!1 &1323828241 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7039417583642897791, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
+  m_PrefabInstance: {fileID: 1680744059918040833}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1415653385
 GameObject:
   m_ObjectHideFlags: 0
@@ -536,13 +654,9 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 808863321973245351, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
-      propertyPath: eventLists.Array.size
-      value: 3
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 808863321973245351, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
-      propertyPath: 'eventLists.Array.data[2]'
-      value: 
-      objectReference: {fileID: 11400000, guid: 7f867892a08e427408ae769fca174d74, type: 2}
     - target: {fileID: 6517206634113031847, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -587,10 +701,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: AudioManager
       objectReference: {fileID: 0}
+    - target: {fileID: 9088536847596784133, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9088536847596784133, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 237938544}
   m_SourcePrefab: {fileID: 100100000, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -602,3 +723,4 @@ SceneRoots:
   - {fileID: 1680744059918040833}
   - {fileID: 2081962034}
   - {fileID: 1415653388}
+  - {fileID: 691628093}
