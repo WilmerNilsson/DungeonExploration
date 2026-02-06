@@ -84,7 +84,21 @@ public class AudioManager : MonoBehaviour
 
     private bool TryGetEventList(string path, out EventList eventList, out string eventName) //Om eventlist finns returneras true, eventListan, samt eventNamnet
     {
+        if (!path.Contains("/"))
+        {
+            PrintDebug(path + " is not a valid path", true);
+            eventList = null;
+            eventName = "";
+            return false;
+        }
         var split = path.Split('/');
+        if (split.Length != 2 || split[1] == "")
+        {
+            PrintDebug(path + " is not a valid path", true);
+            eventList = null;
+            eventName = "";
+            return false;
+        }
         if (_eventListCache.TryGetValue(split[0], out eventList))
         {
             eventName = split[1];
@@ -326,7 +340,7 @@ public class AudioManager : MonoBehaviour
     private const string BankExtension = ".bank";
     private const string StringBankExtension = ".strings.bank";
 
-    public void LoadBank(string bankName) //Laddar bank, om master laddas också string bank
+    public void LoadBank(string bankName, bool loadSamples = false) //Laddar bank, om master laddas också string bank
     {
         RuntimeManager.LoadBank(bankName + BankExtension);
         if (bankName == "Master") RuntimeManager.LoadBank(bankName + StringBankExtension);
@@ -340,13 +354,23 @@ public class AudioManager : MonoBehaviour
         PrintDebug("Unloading " + bankName + BankExtension);
     }
 
-    public string[] banksToLoadOnStart = { "Master" };
+    [Serializable]
+    public struct bankToLoadOnStart
+    {
+        public string bankName;
+        public bool loadSamples;
+    }
+    
+    public bankToLoadOnStart[] banksToLoadOnStart =
+    {
+        new() { bankName = "Master", loadSamples = false },
+    };
 
     private void LoadStartBanks()
     {
         foreach (var bank in banksToLoadOnStart)
         {
-            LoadBank(bank);
+            LoadBank(bank.bankName, bank.loadSamples);
         }
     }
 
@@ -413,6 +437,62 @@ public class AudioManager : MonoBehaviour
 
         return 0f;
     }
+
+    public bool TryGetEventDescription(string path, out EventDescription eventDescription)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.TryGetEvent(eventName, out var eventData);
+            eventDescription = RuntimeManager.GetEventDescription(eventData.eventReference);
+            return true;
+        }
+
+        eventDescription = new EventDescription();
+        return false;
+    }
+
+    public bool TryGetLocalParameterList(string path, out ParameterData[] parameterList)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.TryGetEvent(eventName, out var eventData);
+            parameterList = eventData.parameters;
+            return true;
+        }
+        parameterList = null;
+        return false;
+    }
+
+    public string[] GetEventInstanceList(string category)
+    {
+        var tempList = new List<string>();
+        var path = category + "/x";
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            foreach (var instance in eventList.InstanceList)
+            {
+                instance.Value.getDescription(out var description);
+                description.getPath(out var eventPath);
+                var split = eventPath.Split('/');
+                
+                tempList.Add(split[^1] + ": " + instance.Key.name);
+            }
+        }
+        return tempList.ToArray();
+    }
+
+    public bool TryEventData (string path, out EventData eventData)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.TryGetEvent(eventName, out eventData);
+            return true;
+        }
+        eventData = null;
+        return false;
+    }
+    
+    
 
     #endregion
 

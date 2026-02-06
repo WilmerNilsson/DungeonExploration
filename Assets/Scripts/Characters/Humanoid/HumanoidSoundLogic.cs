@@ -59,7 +59,10 @@ public class HumanoidSoundLogic : MonoBehaviour
         {
             currentTimer++;
 
-            //PLAY SOUND HERE
+            if (AudioManager.IsValid)
+            {
+                AudioManager.Instance.PlayOneShot("Player/Footsteps", null, null, gameObject, true);
+            }
         }
     }
 

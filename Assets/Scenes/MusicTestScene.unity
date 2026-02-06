@@ -351,21 +351,7 @@ MonoBehaviour:
   tagToActivate: 
   activateOnce: 0
   activationDelay: 0
-  instructions:
-  - command: 3
-    path: BGM/Level1
-    gameObj: {fileID: 0}
-    followObject: 0
-    stopMode: 0
-    parametersToSet: []
-    bankName: 
-  - command: 1
-    path: BGM/Level1
-    gameObj: {fileID: 0}
-    followObject: 0
-    stopMode: 0
-    parametersToSet: []
-    bankName: 
+  instructions: []
 --- !u!4 &1117420917
 Transform:
   m_ObjectHideFlags: 0
@@ -400,22 +386,54 @@ MonoBehaviour:
   instructions:
   - command: 0
     path: BGM/Level1
-    gameObj: {fileID: 0}
+    gameObj: {fileID: 1117420915}
     followObject: 1
     stopMode: 0
     parametersToSet:
     - name: surfaceType
       value: 0
     bankName: 
-  - command: 2
+  - command: 0
     path: BGM/Level1
-    gameObj: {fileID: 0}
-    followObject: 0
+    gameObj: {fileID: 1323828241}
+    followObject: 1
     stopMode: 0
     parametersToSet:
     - name: surfaceType
       value: 0
     bankName: 
+  - command: 0
+    path: BGM/Level1
+    gameObj: {fileID: 2081962032}
+    followObject: 1
+    stopMode: 0
+    parametersToSet:
+    - name: surfaceType
+      value: 0
+    bankName: 
+  - command: 0
+    path: BGM/Level1
+    gameObj: {fileID: 1415653385}
+    followObject: 1
+    stopMode: 0
+    parametersToSet:
+    - name: surfaceType
+      value: 0
+    bankName: 
+  - command: 0
+    path: BGM/Level1
+    gameObj: {fileID: 691628091}
+    followObject: 1
+    stopMode: 0
+    parametersToSet:
+    - name: surfaceType
+      value: 0
+    bankName: 
+--- !u!1 &1323828241 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7039417583642897791, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
+  m_PrefabInstance: {fileID: 1680744059918040833}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1415653385
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,7 +703,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9088536847596784133, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
