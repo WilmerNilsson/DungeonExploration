@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class CanvasScaleFactorAdjuster : MonoBehaviour
 {
-    CanvasScaler canvasScaler;
+    private CanvasScaler canvasScaler;
  
     void Start()
     {
