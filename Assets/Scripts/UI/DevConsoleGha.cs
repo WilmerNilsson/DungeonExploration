@@ -15,7 +15,6 @@ public class DevConsoleGha : MonoBehaviour
             _commandFormat = format;
 
             _commandS = command;
-            _invokeS = true;
         }
 
         public DebugCommand(string id, string description, string format, Action command)
@@ -25,19 +24,19 @@ public class DevConsoleGha : MonoBehaviour
             _commandFormat = format;
 
             _command = command;
-            _invokeS = false;
         }
 
         public string _commandId { get; }
         public string _commandDescription { get; }
         public string _commandFormat { get; }
-        private bool _invokeS;
-        private Action<string> _commandS;
-        private Action _command;
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+        private Action<string>? _commandS;
+        private Action? _command;
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 
         public void Invoke(string value = null)
         {
-            if(_invokeS)
+            if(_commandS != null)
             {
                 _commandS.Invoke(value);
             }
@@ -52,26 +51,22 @@ public class DevConsoleGha : MonoBehaviour
     [SerializeField] TMP_InputField _inputTextWindow;
 
     private GameObject _toggleObject;
-    private static DevConsoleGha s_instance;
+    public static DevConsoleGha Instance {  get; private set; }
     private List<DebugCommand> _commandList;
 
-    GameManagerSO gameManager;
+    //GameManagerSO gameManager;
 
     private void Awake()
     {
-        s_instance = this;
+        Instance = this;
         _toggleObject = transform.GetChild(0).gameObject;
 
-        gameManager = GameManagerSO.GetGameManagerSOInstance();
+        //gameManager = GameManagerSO.GetGameManagerSOInstance();
 
         _commandList = new List<DebugCommand>
         {
             new DebugCommand("help", "Shows a list of commands. Or shows info about a command", "help (command)", HelpCommand),
-            new DebugCommand("set_resolution", "Sets resolution", "set_resolution width height fullScreenMode refreshRate", SetResolutionCommand),
-            new DebugCommand("get_resolution", "Gets resolution", "get_resolution", GetResolutionCommand),
-            new DebugCommand("teleport", "Teleports the player", "teleport x y", TeleportCommand),
-            new DebugCommand("get_pos", "Gets player position", "get_pos", GetPosCommand),
-            new DebugCommand("give_ability", "Adds ability with id", "give_ability ID", AddAbilityCommand)
+            new DebugCommand("get_resolution", "shows resolution data", "get_resolution", GetResolutionCommand)
         };
     }
 
@@ -99,13 +94,13 @@ public class DevConsoleGha : MonoBehaviour
 
     public void ToggeDevConsole()
     {
-        gameManager.FreezeTime(!_toggleObject.activeSelf);
+        //gameManager.FreezeTime(!_toggleObject.activeSelf);
         _toggleObject.SetActive(!_toggleObject.activeSelf);
     }
 
     public static DevConsoleGha GetInstance()
     {
-        return s_instance;
+        return Instance;
     }
 
     /* #region command methods */
@@ -246,24 +241,6 @@ public class DevConsoleGha : MonoBehaviour
     private void GetPosCommand()
     {
         _infoTextWindow.text += $"{(Vector2) GameObject.FindGameObjectWithTag("Player").transform.position}\n\n";
-    }
-
-    private void AddAbilityCommand(string input)
-    {
-        if(input == null)
-        {
-            _infoTextWindow.text += "That command requires paramiters\n";
-            return;
-        }
-
-        int id;
-        if(!int.TryParse(input, out id))
-        {
-            _infoTextWindow.text += "Failed to parse paramiter\n";
-            return;
-        }
-
-        GameManagerSO.GetGameManagerSOInstance().AddIDToList(GameManagerSO.IDListName.abilities, id);
     }
 
     /* #endregion */
