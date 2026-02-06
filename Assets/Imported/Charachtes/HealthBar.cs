@@ -6,97 +6,60 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField] bool _isPlayerHealthBar = false;
-    [SerializeField] bool _isBossHealthBar = false;
+    //[SerializeField] bool _isPlayerHealthBar = false; //we only have the player healtbar in this game
 
-    TextMeshProUGUI _text;
+    private TextMeshProUGUI text;
 
-    Image _image;
-    SlicedFilledImage _sFImage;
-    bool _isNormalImage;
-    Health _health;
-
-    private static HealthBar s_bossHpBar;
-
-    int _currentHP;
-    int _maxHP;
+    private Image image;
+    private SlicedFilledImage sFImage;
+    private bool isNormalImage;
+    private Health health;
 
     private void Awake()
     {
-        _isNormalImage = TryGetComponent<Image>(out _image);
-        if(!_isNormalImage)
+        isNormalImage = TryGetComponent<Image>(out image);
+        if(!isNormalImage)
         {
-            _sFImage = GetComponent<SlicedFilledImage>();
+            sFImage = GetComponent<SlicedFilledImage>();
         }
-        _text = GetComponentInChildren<TextMeshProUGUI>();
+        text = GetComponentInChildren<TextMeshProUGUI>();
     }
 
     private void Start()
     {
-        if(_isPlayerHealthBar)
-        {
-            _health = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Health>();
+        health = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Health>();
 
-            //_health.OnCurrentHealthChangeAction += SetCurrentHP;
-            //_health.OnMaxHealthChangeAction += SetMaxHP;
-
-            //SetCurrentHP(_health.GetCurrentHealth());
-            //SetMaxHP(_health.GetMaxHealth());
-        }
-        else if(_isBossHealthBar)
+#if DEBUG
+        if(health == null)
         {
-            s_bossHpBar = this;
+            Debug.LogWarning("failed to find player health, disabling script", this);
+            gameObject.SetActive(false);
         }
+#endif
+    }
+
+    private void OnEnable()
+    {
+        health.OnChangeHealths += UpdateInfo;
+
+        UpdateInfo(health.CurrentHealth, health.MaxHealth);
     }
 
     private void OnDisable()
     {
-        if(_health != null)
-        {
-            //_health.OnCurrentHealthChangeAction -= SetCurrentHP;
-            //_health.OnMaxHealthChangeAction -= SetMaxHP;
-        }
+        health.OnChangeHealths += UpdateInfo;
     }
 
-    private void SetBossHpInstance_(Health bossHealth)
+    void UpdateInfo(int current, int max)
     {
-        if(_health != null)
+        if(isNormalImage)
         {
-            //_health.OnCurrentHealthChangeAction -= SetCurrentHP;
-            //_health.OnMaxHealthChangeAction -= SetMaxHP;
-        }
-        
-        _health = bossHealth;
-
-        //_health.OnCurrentHealthChangeAction += SetCurrentHP;
-        //_health.OnMaxHealthChangeAction += SetMaxHP;
-
-        //SetCurrentHP(_health.GetCurrentHealth());
-        //SetMaxHP(_health.GetMaxHealth());
-    }
-
-    void UpdateInfo()
-    {
-        if(_isNormalImage)
-        {
-            _image.fillAmount = Mathf.Clamp((float) _currentHP / _maxHP, 0, 1);
+            image.fillAmount = Mathf.Clamp((float) current / max, 0, 1);
         }
         else
         {
-            _sFImage.fillAmount = Mathf.Clamp((float) _currentHP / _maxHP, 0, 1);
+            sFImage.fillAmount = Mathf.Clamp((float) current / max, 0, 1);
         }
-        _text.SetText(_currentHP + "/" + _maxHP);
-    }
-
-    void SetCurrentHP(int newValue)
-    {
-        _currentHP = newValue;
-        UpdateInfo();
-    }
-
-    void SetMaxHP(int newValue)
-    {
-        _maxHP = newValue;
-        UpdateInfo();
+        text.SetText(current + "/" + max);
     }
 }
