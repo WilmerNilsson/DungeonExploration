@@ -47,7 +47,6 @@ public class AudioDebugEditor : Editor
                 audioDebug.Execute(out text, out lines);
             }
             
-            
             EditorGUILayout.SelectableLabel(text, EditorStyles.textField, GUILayout.Height(
                 (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing) * lines));
         }
@@ -55,7 +54,12 @@ public class AudioDebugEditor : Editor
         {
             GUILayout.Label("AudioManager Debug Tool", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(proceduresProperty, GUIContent.none);
-            GUILayout.Label("Information will be displayed here when in playmode", EditorStyles.boldLabel);
+            if (proceduresProperty.enumValueIndex is 1 or 2)
+            {
+                EditorGUILayout.PropertyField(pathProperty);
+            }
+            EditorGUILayout.SelectableLabel("Information will be displayed here when in play mode", EditorStyles.textField, GUILayout.Height(
+                EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing));
         }
 
         serializedObject.ApplyModifiedProperties();

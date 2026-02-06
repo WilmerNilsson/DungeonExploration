@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 
@@ -43,22 +44,21 @@ public class AudioDebug : MonoBehaviour
                 result = text;
                 return;
             case Procedures.GetInstanceList:
-                if (AudioManager.Instance.TryGetEventList(path, out var list, out var eventName))
+                if (AudioManager.Instance.TryGetEventList(path, out var eventList, out var eventName))
                 {
-                    if (list.TryGetEvent(eventName, out var eventData))
+                    if (eventList.TryGetEvent(eventName, out var eventData))
                     {
                         if (eventData.isOneShot)
                         {
-                            lines = 0;
-                            result = "";
+                            lines = 1;
+                            result = "Cannot fetch instances since the event is not a Looping Event";
                             return;
                         }
                         var eventDesc = RuntimeManager.GetEventDescription(eventData.eventReference);
                         if (!eventDesc.isValid())
                         {
-                            Debug.Log("Description IS NOT VALID");
-                            lines = 0;
-                            result = "";
+                            lines = 1;
+                            result = "Event Description is not Valid";
                             return;
                         }
                         eventDesc.getInstanceList(out var instanceList);
@@ -67,7 +67,7 @@ public class AudioDebug : MonoBehaviour
                         var objectList = new List<GameObject>();
                         foreach (var instance in instanceList)
                         {
-                            foreach (var kvp in list.InstanceList)
+                            foreach (var kvp in eventList.InstanceList)
                             {
                                 if (instance.Equals(kvp.Value))
                                 {
@@ -91,9 +91,65 @@ public class AudioDebug : MonoBehaviour
                         return;
                     }
                 }
-                break;
+                result = "Couldn't find Event";
+                lines = 1;
+                return;
             case Procedures.GetLocalParameterList:
-                result = "This has not been implemented yet";
+                if (AudioManager.Instance.TryGetEventList(path, out var list, out var eName))
+                {
+                    if (list.TryGetEvent(eName, out var eventData))
+                    {
+                        if (eventData.isOneShot)
+                        {
+                            lines = 1;
+                            result = "Cannot fetch instances since the event is not a Looping Event";
+                            return;
+                        }
+                        var eventDesc = RuntimeManager.GetEventDescription(eventData.eventReference);
+                        if (!eventDesc.isValid())
+                        {
+                            lines = 1;
+                            result = "Event Description is not Valid";
+                            return;
+                        }
+                        eventDesc.getInstanceList(out var instanceList);
+                        if (eventData.eventInstance.isValid())
+                        {
+                            lines++;
+                            text += "The instance in EventData has these parameters: \n";
+                            foreach (var paramData in eventData.parameters)
+                            {
+                                lines++;
+                                eventData.eventInstance.getParameterByID(paramData.ID(), out var value);
+                                text += paramData.paramName + ": " + value + "\n";
+                            }
+
+                            text += "\n";
+
+                            lines++;
+                        }
+
+                        foreach (var kvp in list.InstanceList)
+                        {
+                            lines++;
+                            text += "The instance on " + kvp.Key.name + " has these parameters: \n";
+                            foreach (var paramData in eventData.parameters)
+                            {
+                                lines++;
+                                kvp.Value.getParameterByID(paramData.ID(), out var value);
+                                text += paramData.paramName + ": " + value + "\n";
+                            }
+
+                            text += "\n";
+
+                            lines++;
+                        }
+                        
+                        result = text;
+                        return;
+                    }
+                }
+                result = "Couldn't find Event";
                 lines = 1;
                 return;
             case Procedures.GetAllInstances:
@@ -142,125 +198,5 @@ public class AudioDebug : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
-
-        result = "";
-        lines = 0;
     }
-    
-    /*
-     public string[] GetGlobalParameterList(out float[] valueList)
-    {
-        var tempList = new List<string>();
-        var tempValueList = new List<float>();
-        foreach (var parameter in _globalParameterCache)
-        {
-            tempList.Add(parameter.Key);
-            tempValueList.Add(GetGlobalParameterValue(parameter.Key));
-        }
-        valueList = tempValueList.ToArray();
-        return tempList.ToArray();
-    }
-
-    public float GetGlobalParameterValue(string paramName)
-    {
-        if (_globalParameterCache.TryGetValue(paramName, out var id))
-        {
-            RuntimeManager.StudioSystem.getParameterByID(id, out var paramValue);
-            return paramValue;
-        }
-
-        return 0f;
-    }
-
-    public bool TryGetEventDescription(string path, out EventDescription eventDescription)
-    {
-        if (TryGetEventList(path, out var eventList, out var eventName))
-        {
-            eventList.TryGetEvent(eventName, out var eventData);
-            eventDescription = RuntimeManager.GetEventDescription(eventData.eventReference);
-            return true;
-        }
-
-        eventDescription = new EventDescription();
-        return false;
-    }
-
-    public bool TryGetLocalParameterList(string path, out ParameterData[] parameterList)
-    {
-        if (TryGetEventList(path, out var eventList, out var eventName))
-        {
-            eventList.TryGetEvent(eventName, out var eventData);
-            parameterList = eventData.parameters;
-            return true;
-        }
-        parameterList = null;
-        return false;
-    }
-
-    public string[] GetEventInstanceList(string category)
-    {
-        var tempList = new List<string>();
-        var path = category + "/x";
-        if (TryGetEventList(path, out var eventList, out var eventName))
-        {
-            foreach (var instance in eventList.InstanceList)
-            {
-                instance.Value.getDescription(out var description);
-                description.getPath(out var eventPath);
-                var split = eventPath.Split('/');
-                
-                tempList.Add(split[^1] + ": " + instance.Key.name);
-            }
-        }
-        return tempList.ToArray();
-    }
-
-    public bool TryEventData (string path, out EventData eventData)
-    {
-        if (TryGetEventList(path, out var eventList, out var eventName))
-        {
-            eventList.TryGetEvent(eventName, out eventData);
-            return true;
-        }
-        eventData = null;
-        return false;
-    }
-     *text = "";
-                lines = 0;
-                switch (proceduresProperty.enumValueIndex)
-                {
-                    case 0:
-                        var strings = AudioManager.Instance.GetGlobalParameterList(out var values);
-                        for (int i = 0; i < strings.Length; i++)
-                        {
-                            lines++;
-                            text += strings[i] + ": " + values[i] + "\n";
-                        }
-                        break;
-                    case 1:
-                        var instances = AudioManager.Instance.GetEventInstanceList(pathProperty.stringValue);
-                        lines = 1;
-                        text = pathProperty.stringValue + " has Instances on these objects:" + "\n";
-                        foreach (var instance in instances)
-                        {
-                            lines++;
-                            text += instance + "\n";
-                        }
-                        break;
-                    case 2:
-                        if (AudioManager.Instance.TryEventData(pathProperty.stringValue, out var eventData))
-                        {
-                            text = eventData.eventName + " has these local parameters:";
-                            
-                        }
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                    case 5:
-                        break;
-                }
-     * 
-     */
 }
