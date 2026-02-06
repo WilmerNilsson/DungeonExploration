@@ -1,4 +1,4 @@
-using UnityEditor.Graphs;
+
 using UnityEngine;
 
 [RequireComponent(typeof(RectTransform))]
@@ -102,7 +102,7 @@ public class InventoryGrid : MonoBehaviour
         }
 #endif
 
-        //TODO work in piviot
+        //TODO work in pivot
         if (TryGetSlotOfPos(pos, out int collum, out int row, out Rect slot))
         {
             return TryPutItemInSlot(item, collum, row);
@@ -171,10 +171,10 @@ public class InventoryGrid : MonoBehaviour
         {
             for (int y = 0; y < itemSlots.GetLength(1); y++)
             {
-                if ((InvSlotExists(collum + x - item.Piviot.x, row + y - item.Piviot.y) &&
+                if ((InvSlotExists(collum + x - item.Pivot.x, row + y - item.Pivot.y) &&
                     itemSlots[x, y] == true &&
-                    (InvData[collum + x - item.Piviot.x, row + y - item.Piviot.y] == null ||
-                    InvData[collum + x - item.Piviot.x, row + y - item.Piviot.y] == item)
+                    (InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y] == null ||
+                    InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y] == item)
                     ) ||
                     itemSlots[x, y] == false)
                 {
@@ -203,7 +203,7 @@ public class InventoryGrid : MonoBehaviour
             {
                 if (itemSlots[x, y] == true)
                 {
-                    InvData[collum + x - item.Piviot.x, row + y - item.Piviot.y] = item;
+                    InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y] = item;
                 }
             }
         }
