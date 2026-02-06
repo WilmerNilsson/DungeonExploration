@@ -37,6 +37,7 @@ public class SavefileData
     public List<int> hpUps = new List<int>();
 }
 
+[CreateAssetMenu(fileName = "GameManagerSO", menuName = "Scriptable Objects/GameManagerSO")]
 public class GameManagerSO : ScriptableObject
 {
     [SerializeField] AudioMixer mixer;

@@ -27,7 +27,7 @@ public class HealthBar : MonoBehaviour
 
     private void Start()
     {
-        health = GameObject.FindGameObjectWithTag("Player").GetComponentInChildren<Health>();
+        health = GameObject.FindGameObjectWithTag("Player")?.GetComponentInChildren<Health>();
 
 #if DEBUG
         if(health == null)
@@ -40,6 +40,13 @@ public class HealthBar : MonoBehaviour
 
     private void OnEnable()
     {
+#if DEBUG
+        if (health == null)
+        {
+            return;
+        }
+#endif
+
         health.OnChangeHealths += UpdateInfo;
 
         UpdateInfo(health.CurrentHealth, health.MaxHealth);
@@ -47,7 +54,14 @@ public class HealthBar : MonoBehaviour
 
     private void OnDisable()
     {
-        health.OnChangeHealths += UpdateInfo;
+#if DEBUG
+        if (health == null)
+        {
+            return;
+        }
+#endif
+
+        health.OnChangeHealths -= UpdateInfo;
     }
 
     void UpdateInfo(int current, int max)

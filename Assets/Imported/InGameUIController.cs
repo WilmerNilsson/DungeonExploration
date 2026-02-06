@@ -8,177 +8,50 @@ using TMPro;
 
 public class InGameUIController : MonoBehaviour, IUIController
 {
-    [Serializable]
-    private class AbilityCountdown
-    {
-        public int attackID = 0;
-
-        [SerializeField] TMP_Text textA;
-
-        public int selfCooldown = 0;
-        public int globalCooldown = 0;
-        public bool isInSelfCooldown = false;
-        public bool isInGlobalCooldown = false;
-
-        IEnumerator SelfCooldown()
-        {
-            isInSelfCooldown = true;
-            UpdateCounter();
-            while(selfCooldown > 0)
-            {
-                yield return new WaitForSeconds(0.1f);
-                selfCooldown --;
-                UpdateCounter();
-            }
-            isInSelfCooldown = false;
-        }
-
-        IEnumerator GlobalCooldown()
-        {
-            isInGlobalCooldown = true;
-            UpdateCounter();
-            while(globalCooldown > 0)
-            {
-                yield return new WaitForSeconds(0.1f);
-                globalCooldown --;
-                UpdateCounter();
-            }
-            isInGlobalCooldown = false;
-        }
-
-        public void UpdateCounter()
-        {
-            string cooldownString;
-            if(globalCooldown == 0 && selfCooldown == 0)
-            {
-                textA.SetText("");
-            }
-            else if(selfCooldown > globalCooldown)
-            {
-                globalCooldown = 0;
-
-                cooldownString = selfCooldown.ToString();
-
-                if(selfCooldown >= 100)
-                {
-                    cooldownString = (selfCooldown / 10).ToString();
-                    textA.SetText(cooldownString);
-                }
-                else if(selfCooldown >= 10)
-                {
-                    cooldownString = selfCooldown.ToString();
-                    textA.SetText(cooldownString.Insert(1, "."));
-                }
-                else
-                {
-                    cooldownString = selfCooldown.ToString();
-                    textA.SetText(cooldownString.Insert(0, "0."));
-                }
-            }
-            else
-            {
-                selfCooldown = 0;
-
-                cooldownString = globalCooldown.ToString();
-
-                if(globalCooldown >= 100)
-                {
-                    cooldownString = (globalCooldown / 10).ToString();
-                    textA.SetText(cooldownString);
-                }
-                else if(globalCooldown >= 10)
-                {
-                    cooldownString = globalCooldown.ToString();
-                    textA.SetText(cooldownString.Insert(1, "."));
-                }
-                else
-                {
-                    cooldownString = globalCooldown.ToString();
-                    textA.SetText(cooldownString.Insert(0, "0."));
-                }
-            }
-        }
-    }
-
     [SerializeField] GameObject warningWindowForChangingScreen;
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject inGameUI;
 
-    [SerializeField] List<AbilityCountdown> abilityCountdowns;
-    GameObject currentScreen;
 
-    GameManagerSO gameManager;
+    private GameObject currentScreen;
 
-    bool cutsceneWindowActive = false;
-    bool gameIsPaused = false;
-    bool canUnpause = true;
-    bool useWarningScreen = false;
-    GameObject heldWarningScreen;
+    private GameManagerSO gameManager;
 
-    GameObject cutsceneCanvas;
-    GameObject pauseMenu;
-    GameObject inGameUI;
+    private bool cutsceneWindowActive = false;
+    private bool gameIsPaused = false;
+    private bool canUnpause = true;
+    private bool useWarningScreen = false;
+    private GameObject heldWarningScreen;
 
     public event Action<bool> OnPauseChangeAction;
     public event Action OnChangeScreenAction;
 
+#if DEBUG
+    private void OnValidate()
+    {
+        if(warningWindowForChangingScreen == null)
+        {
+            Debug.LogWarning("warning screen not set", this);
+        }
+        if(pauseMenu == null)
+        {
+            Debug.LogWarning("pause menu not set", this);
+        }
+        if(inGameUI == null)
+        {
+            Debug.LogWarning("in game ui not set", this);
+        }
+    }
+#endif
+
     void Awake()
     {
-        //GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCharacterMovement>().OnAttackAction += AttackSorter;
-
-        inGameUI = transform.GetChild(0).gameObject;
-        cutsceneCanvas = transform.GetChild(1).gameObject;
-        pauseMenu = transform.GetChild(2).gameObject;
+        
     }
 
     private void Start()
     {
         gameManager = GameManagerSO.GetGameManagerSOInstance();
-    }
-
-    void AttackSorter(int iDvalue, float selfCooldownValue, float globalCooldownValue)
-    {
-        for(int i = 0; i < abilityCountdowns.Count; i++)
-        {
-            if(iDvalue == abilityCountdowns[i].attackID)
-            {
-                abilityCountdowns[i].selfCooldown = (int) (selfCooldownValue * 10);
-            }
-            abilityCountdowns[i].globalCooldown = (int) (globalCooldownValue * 10);
-
-            if((abilityCountdowns[i].attackID != iDvalue || globalCooldownValue > selfCooldownValue) && !abilityCountdowns[i].isInGlobalCooldown)
-            {
-                StartCoroutine(GlobalCooldown(i));
-            }
-            else if(!abilityCountdowns[i].isInSelfCooldown)
-            {
-                StartCoroutine(SelfCooldown(i));
-            }
-        }
-
-        IEnumerator SelfCooldown(int i)
-        {
-            abilityCountdowns[i].isInSelfCooldown = true;
-            abilityCountdowns[i].UpdateCounter();
-            while(abilityCountdowns[i].selfCooldown > 0)
-            {
-                yield return new WaitForSeconds(0.1f);
-                abilityCountdowns[i].selfCooldown --;
-                abilityCountdowns[i].UpdateCounter();
-            }
-            abilityCountdowns[i].isInSelfCooldown = false;
-        }
-
-        IEnumerator GlobalCooldown(int i)
-        {
-            abilityCountdowns[i].isInGlobalCooldown = true;
-            abilityCountdowns[i].UpdateCounter();
-            while(abilityCountdowns[i].globalCooldown > 0)
-            {
-                yield return new WaitForSeconds(0.1f);
-                abilityCountdowns[i].globalCooldown --;
-                abilityCountdowns[i].UpdateCounter();
-            }
-            abilityCountdowns[i].isInGlobalCooldown = false;
-        }
     }
 
     public void WarningWindowAnswer(bool answer)
@@ -229,14 +102,6 @@ public class InGameUIController : MonoBehaviour, IUIController
     public void ChangeUseWarningScreen(bool value)
     {
         useWarningScreen = value;
-    }
-
-    public void ActivateCutsceneWindow(bool value)
-    {
-        cutsceneWindowActive = value;
-        cutsceneCanvas.SetActive(value);
-
-        gameManager.FreezeTime(value);
     }
 
     void Pause()
