@@ -1,0 +1,270 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+
+public class DevConsoleGha : MonoBehaviour
+{
+    private class DebugCommand
+    {
+        public DebugCommand(string id, string description, string format, Action<string> command)
+        {
+            _commandId = id;
+            _commandDescription = description;
+            _commandFormat = format;
+
+            _commandS = command;
+            _invokeS = true;
+        }
+
+        public DebugCommand(string id, string description, string format, Action command)
+        {
+            _commandId = id;
+            _commandDescription = description;
+            _commandFormat = format;
+
+            _command = command;
+            _invokeS = false;
+        }
+
+        public string _commandId { get; }
+        public string _commandDescription { get; }
+        public string _commandFormat { get; }
+        private bool _invokeS;
+        private Action<string> _commandS;
+        private Action _command;
+
+        public void Invoke(string value = null)
+        {
+            if(_invokeS)
+            {
+                _commandS.Invoke(value);
+            }
+            else
+            {
+                _command.Invoke();
+            }
+        }
+    }
+
+    [SerializeField] TMP_Text _infoTextWindow;
+    [SerializeField] TMP_InputField _inputTextWindow;
+
+    private GameObject _toggleObject;
+    private static DevConsoleGha s_instance;
+    private List<DebugCommand> _commandList;
+
+    GameManagerSO gameManager;
+
+    private void Awake()
+    {
+        s_instance = this;
+        _toggleObject = transform.GetChild(0).gameObject;
+
+        gameManager = GameManagerSO.GetGameManagerSOInstance();
+
+        _commandList = new List<DebugCommand>
+        {
+            new DebugCommand("help", "Shows a list of commands. Or shows info about a command", "help (command)", HelpCommand),
+            new DebugCommand("set_resolution", "Sets resolution", "set_resolution width height fullScreenMode refreshRate", SetResolutionCommand),
+            new DebugCommand("get_resolution", "Gets resolution", "get_resolution", GetResolutionCommand),
+            new DebugCommand("teleport", "Teleports the player", "teleport x y", TeleportCommand),
+            new DebugCommand("get_pos", "Gets player position", "get_pos", GetPosCommand),
+            new DebugCommand("give_ability", "Adds ability with id", "give_ability ID", AddAbilityCommand)
+        };
+    }
+
+    public void HandleInput(string input)
+    {
+        if(input == string.Empty || input == null)
+        {
+            return;
+        }
+        _inputTextWindow.text = string.Empty;
+
+        string[] properties = input.Split(' ', 2);
+
+        int index = _commandList.FindIndex(item => item._commandId == properties[0]);
+
+        if(index != -1)
+        {
+            _commandList[index].Invoke(properties.Length == 2 ? properties[1] : null);
+        }
+        else
+        {
+            _infoTextWindow.text += "No command with that id found, try \"help\"\n";
+        }
+    }
+
+    public void ToggeDevConsole()
+    {
+        gameManager.FreezeTime(!_toggleObject.activeSelf);
+        _toggleObject.SetActive(!_toggleObject.activeSelf);
+    }
+
+    public static DevConsoleGha GetInstance()
+    {
+        return s_instance;
+    }
+
+    /* #region command methods */
+
+    private void HelpCommand(string input)
+    {
+        if(input == null)
+        {
+            foreach(DebugCommand command in _commandList)
+            {
+                _infoTextWindow.text += $"{command._commandFormat} - {command._commandDescription}\n";
+            }
+            _infoTextWindow.text += "\n";
+        }
+        else
+        {
+            bool foundCommandId = false;
+            foreach(DebugCommand command in _commandList)
+            {
+                if(input == command._commandId)
+                {
+                    foundCommandId = true;
+
+                    _infoTextWindow.text += $"\n{command._commandFormat} - {command._commandDescription}\n\n";
+                }
+            }
+            if(!foundCommandId)
+            {
+                _infoTextWindow.text += $"Failed to find the command \"{input}\", example format: help get_resolution\n";
+            }
+        }
+    }
+
+    private void SetResolutionCommand(string input)
+    {
+        if(input == null)
+        {
+            _infoTextWindow.text += "That command requires paramiters\n";
+            return;
+        }
+
+        string[] properties = input.Split(" ");
+        int failedParamiter;
+        bool success = false;
+
+        int width;
+        int height;
+        object fullScreenMode;
+        uint refreshRate;
+
+        if(properties.Length != 4)
+        {
+            _infoTextWindow.text += "Wrong number of paramiters\n";
+            return;
+        }
+
+        success = int.TryParse(properties[0], out width);
+        if(!success)
+        {
+            failedParamiter = 1;
+            goto Failed;
+        }
+
+        success = int.TryParse(properties[1], out height);
+        if(!success)
+        {
+            failedParamiter = 2;
+            goto Failed;
+        }
+
+        success = System.Enum.TryParse(typeof(FullScreenMode), properties[2], out fullScreenMode);
+        if(!success)
+        {
+            failedParamiter = 3;
+            goto Failed;
+        }
+
+        success = uint.TryParse(properties[3], out refreshRate);
+        if(!success)
+        {
+            failedParamiter = 4;
+            goto Failed;
+        }
+
+        Screen.SetResolution(width, height, (FullScreenMode) fullScreenMode, new RefreshRate{numerator = refreshRate, denominator = 1});
+        return;
+
+        Failed:
+            _infoTextWindow.text += $"Failed to parse paramiter {failedParamiter}\n";
+    }
+
+    private void GetResolutionCommand()
+    {
+        _infoTextWindow.text += $"{Screen.width} x {Screen.height}, {Screen.fullScreenMode}, {Screen.currentResolution.refreshRateRatio}\n\n"; 
+    }
+
+    private void TeleportCommand(string input)
+    {
+        if(input == null)
+        {
+            _infoTextWindow.text += "That command requires paramiters\n";
+            return;
+        }
+
+        string[] properties = input.Split(' ');
+        int failedParamiter;
+        bool success;
+
+        Vector2 endLocation;
+
+        if(properties.Length != 2)
+        {
+            _infoTextWindow.text += "Wrong number of paramiters\n";
+            return;
+        }
+        
+        success = float.TryParse(properties[0], out endLocation.x);
+        if(!success)
+        {
+            failedParamiter = 1;
+            goto Failed;
+        }
+
+        success = float.TryParse(properties[1], out endLocation.y);
+        if(!success)
+        {
+            failedParamiter = 2;
+            goto Failed;
+        }
+
+        GameObject.FindGameObjectWithTag("Player").transform.position = endLocation;
+        return;
+
+        Failed:
+            _infoTextWindow.text += $"Failed to parse paramiter {failedParamiter}\n";
+    }
+
+    private void GetPosCommand()
+    {
+        _infoTextWindow.text += $"{(Vector2) GameObject.FindGameObjectWithTag("Player").transform.position}\n\n";
+    }
+
+    private void AddAbilityCommand(string input)
+    {
+        if(input == null)
+        {
+            _infoTextWindow.text += "That command requires paramiters\n";
+            return;
+        }
+
+        int id;
+        if(!int.TryParse(input, out id))
+        {
+            _infoTextWindow.text += "Failed to parse paramiter\n";
+            return;
+        }
+
+        GameManagerSO.GetGameManagerSOInstance().AddIDToList(GameManagerSO.IDListName.abilities, id);
+    }
+
+    /* #endregion */
+}
