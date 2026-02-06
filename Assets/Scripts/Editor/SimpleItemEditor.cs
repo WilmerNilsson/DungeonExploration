@@ -13,9 +13,10 @@ public class SimpleItemEditor : Editor
 
     private SerializedProperty Bools;
 
-    private const int gridHeight = 4;
-    private const int gridWidth = 4;
-    
+    private const int gridWidth = SimpleItem.GridWidth;
+    private const int gridHeight = SimpleItem.GridHeight;
+
+
     public bool[] itemGrid;
     private void OnEnable()
     {

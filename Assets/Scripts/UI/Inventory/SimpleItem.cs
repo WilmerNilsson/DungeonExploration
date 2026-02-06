@@ -6,9 +6,12 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(RectTransform))]
 public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+    public const int GridHeight = 4;
+    public const int GridWidth = 4;
+
     [SerializeField, Tooltip("what slot the center is, 0,0 is bottom left")]
     private Vector2Int pivot;
-    [HideInInspector] public bool[] itemGridSize = new bool[16];
+    [HideInInspector] public bool[] itemGridSize = new bool[GridHeight*GridWidth];
     //may just have simple bool for importing the default discard use
     [SerializeField] private ItemUse[] uses;
 
@@ -20,7 +23,9 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public bool[,] GetSizeMatrix()
     {
-        bool[,] tempSize = new bool[4, 4];
+        //small optimisazion would be to shrink the matrix if possible
+        //slightly better optimisazion would be to cashe it and mark it dirty if changed
+        bool[,] tempSize = new bool[GridWidth, GridHeight];
 
         for (int x = 0; x < 4; x++)
         {
