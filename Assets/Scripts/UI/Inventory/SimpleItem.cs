@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField, Tooltip("what slot the center is, 0,0 is bottom left")]
-    private Vector2Int piviot;
+    private Vector2Int pivot;
     [HideInInspector] public bool[] itemGridSize = new bool[16];
     //may just have simple bool for importing the default discard use
     [SerializeField] private ItemUse[] uses;
@@ -16,7 +16,7 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private bool isDragging;
     Vector2 returnPos;
     Transform returnParent;
-    public Vector2Int Piviot {get{ return piviot; } }
+    public Vector2Int Pivot {get{ return pivot; } }
 
     public bool[,] GetSizeMatrix()
     {
