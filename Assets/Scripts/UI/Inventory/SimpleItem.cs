@@ -8,7 +8,7 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     [SerializeField, Tooltip("what slot the center is, 0,0 is bottom left")]
     private Vector2Int piviot;
-    [SerializeField] private sizes size;
+    [HideInInspector] public bool[] itemGridSize = new bool[16];
     //may just have simple bool for importing the default discard use
     [SerializeField] private ItemUse[] uses;
 
@@ -18,45 +18,18 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     Transform returnParent;
     public Vector2Int Piviot {get{ return piviot; } }
 
-    private enum sizes
-    {
-        x = default, 
-        xx,
-        xxx,
-        xxNxo,
-        xxNxx
-    }
-
     public bool[,] GetSizeMatrix()
     {
-        switch (size)
+        bool[,] tempSize = new bool[4, 4];
+
+        for (int x = 0; x < 4; x++)
         {
-            case sizes.x:
-            default:
-                bool[,] x = { { true } };
-
-                return x;
-            case sizes.xx:
-                bool[,] xx = { { true, true } };
-
-                return xx;
-            case sizes.xxx:
-                bool[,] xxx = { { true, true, true } };
-
-                return xxx;
-            case sizes.xxNxo:
-                bool[,] xxNxo = { { true, true },
-                                  { false, true} };
-
-                return xxNxo;
-            case sizes.xxNxx:
-
-                bool[,] xxNxx = { { true, true },
-                                  { true, true } };
-
-                return xxNxx;
-            
+            for (int y = 0; y < 4; y++)
+            {
+                tempSize[x, y] = itemGridSize[x + 4 * y];
+            }
         }
+        return tempSize;
     }
 
     private void Update()
