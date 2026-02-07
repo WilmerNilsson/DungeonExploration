@@ -11,7 +11,6 @@ public class AudioDebug : MonoBehaviour
         GetGlobalParameterList,
         GetInstanceList,
         GetLocalParameterList,
-        GetAllInstances,
         GetAllVcas,
         GetLoadedBanks,
         SeePerformanceMetrics
@@ -150,10 +149,6 @@ public class AudioDebug : MonoBehaviour
                     }
                 }
                 result = "Couldn't find Event";
-                lines = 1;
-                return;
-            case Procedures.GetAllInstances:
-                result = "This has not been implemented yet";
                 lines = 1;
                 return;
             case Procedures.GetAllVcas:

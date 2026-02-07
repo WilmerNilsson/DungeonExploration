@@ -9,7 +9,6 @@ public class AudioManagerEditor : Editor
     private SerializedProperty banksToLoadOnStart;
     private SerializedProperty debug;
     private SerializedProperty showOnlyWarnings;
-    private SerializedProperty showExtraInfo;
     private AudioManager audioManager;
     
     public void OnEnable()
@@ -18,7 +17,6 @@ public class AudioManagerEditor : Editor
         banksToLoadOnStart = serializedObject.FindProperty("banksToLoadOnStart");
         debug = serializedObject.FindProperty("debug");
         showOnlyWarnings = serializedObject.FindProperty("showOnlyWarnings");
-        showExtraInfo = serializedObject.FindProperty("showExtraInfo");
         audioManager = (AudioManager)target;
     }
 
@@ -50,31 +48,7 @@ public class AudioManagerEditor : Editor
             
             EditorGUILayout.PropertyField(debug);
             EditorGUILayout.PropertyField(showOnlyWarnings);
-            EditorGUILayout.PropertyField(showExtraInfo);
             
-            EditorGUILayout.Separator();
-
-            if (showExtraInfo.boolValue)
-            {
-                GUILayout.Label("VCAs:", EditorStyles.boldLabel);
-                if (Application.isPlaying && AudioManager.IsValid)
-                {
-                    foreach (var vca in AudioManager.Instance.VcaCache)
-                    {
-                        EditorGUILayout.SelectableLabel(vca.Key, GUILayout.Height(EditorGUIUtility.singleLineHeight));
-                    }
-                }
-                EditorGUILayout.Separator();
-                
-                GUILayout.Label("Global Parameters:", EditorStyles.boldLabel);
-                if (Application.isPlaying && AudioManager.IsValid)
-                {
-                    foreach (var param in AudioManager.Instance.GlobalParameterCache)
-                    {
-                        EditorGUILayout.SelectableLabel(param.Key, GUILayout.Height(EditorGUIUtility.singleLineHeight));
-                    }
-                }
-            }
         }
         
         

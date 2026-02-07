@@ -35,7 +35,7 @@ public class AudioDebugEditor : Editor
                 EditorGUILayout.PropertyField(pathProperty);
             }
 
-            if (proceduresProperty.enumValueIndex != 6)
+            if (proceduresProperty.enumValueIndex != 5)
             {
                 if (GUILayout.Button("Execute"))
                 {

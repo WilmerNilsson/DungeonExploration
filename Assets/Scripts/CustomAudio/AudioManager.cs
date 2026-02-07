@@ -158,12 +158,28 @@ public class AudioManager : MonoBehaviour
             eventList.CreateInstance(eventName, gameObj, followObject);
         }
     }
+
+    public void LoadSampleData(string path)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.LoadSampleData(eventName);
+        }
+    }
     
     public void ReleaseInstance(string path, GameObject gameObj = null)
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
             eventList.ReleaseInstance(eventName, gameObj);
+        }
+    }
+    
+    public void UnloadSampleData(string path)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.UnloadSampleData(eventName);
         }
     }
     
@@ -398,8 +414,6 @@ public class AudioManager : MonoBehaviour
     public bool debug;
 
     public bool showOnlyWarnings;
-
-    public bool showExtraInfo; // För custom inspector
 
     [ContextMenu("Toggle Debug")]
     public void ToggleDebug()

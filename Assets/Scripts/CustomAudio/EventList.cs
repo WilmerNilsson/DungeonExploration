@@ -159,6 +159,20 @@ public class EventList : ScriptableObject
             PrintDebug("Created instance for " + eventName);
         }
     }
+
+    public void LoadSampleData(string eventName)
+    {
+        if (!TryGetEvent(eventName, out var eventData)) return;
+        if (eventData.isOneShot)
+        {
+            PrintDebug("Didn't load samples for " + eventName + " because it is not a looping event", true);
+            return;
+        }
+        
+        var eventDesc = RuntimeManager.GetEventDescription(eventData.eventReference);
+        eventDesc.loadSampleData();
+        PrintDebug("Loading samples for" + eventName);
+    }
     
     public void ReleaseInstance(string eventName, GameObject gameObject = null) //Som CreateInstance fast släpper instansen istället
     {
@@ -205,6 +219,19 @@ public class EventList : ScriptableObject
                 PrintDebug("Instance for " + eventData.eventName + " needs to be stopped before release", true);
             }
         }
+    }
+
+    public void UnloadSampleData(string eventName)
+    {
+        if (!TryGetEvent(eventName, out var eventData)) return;
+        if (eventData.isOneShot)
+        {
+            PrintDebug("Didn't unload samples for " + eventName + " because it is not a looping event", true);
+            return;
+        }
+        var eventDesc = RuntimeManager.GetEventDescription(eventData.eventReference);
+        eventDesc.unloadSampleData();
+        PrintDebug("Unloading samples for" + eventName);
     }
     
     public void StartEvent(string eventName, GameObject gameObject = null) //Som CreateInstance fast startar instansen istället OM instansen inte redan spelar

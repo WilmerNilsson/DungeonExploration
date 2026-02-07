@@ -100,8 +100,8 @@ public class AudioTrigger : MonoBehaviour
                 case Instruction.Command.CreateInstance:
                     AudioManager.Instance.CreateInstance(instruction.path, instruction.gameObj, instruction.followObject);
                     break;
-                case Instruction.Command.ReleaseInstance:
-                    AudioManager.Instance.ReleaseInstance(instruction.path, instruction.gameObj);
+                case Instruction.Command.LoadSampleData:
+                    AudioManager.Instance.LoadSampleData(instruction.path);
                     break;
                 case Instruction.Command.StartEvent:
                     AudioManager.Instance.StartEvent(instruction.path, instruction.gameObj);
@@ -109,16 +109,16 @@ public class AudioTrigger : MonoBehaviour
                 case Instruction.Command.StopEvent:
                     AudioManager.Instance.StopEvent(instruction.path, instruction.stopMode, instruction.gameObj);
                     break;
+                case Instruction.Command.ReleaseInstance:
+                    AudioManager.Instance.ReleaseInstance(instruction.path, instruction.gameObj);
+                    break;
+                case Instruction.Command.UnloadSampleData:
+                    AudioManager.Instance.UnloadSampleData(instruction.path);
+                    break;
                 case Instruction.Command.SetParameter:
                     foreach (var paramToSet in instruction.parametersToSet)
                     {
                         AudioManager.Instance.SetParameter(instruction.path, paramToSet.name, paramToSet.value, instruction.gameObj);
-                    }
-                    break;
-                case Instruction.Command.SetGlobalParameter:
-                    foreach (var paramToSet in instruction.parametersToSet)
-                    {
-                        AudioManager.Instance.SetGlobalParameter(paramToSet.name, paramToSet.value);
                     }
                     break;
                 case Instruction.Command.KeyOff:
@@ -134,8 +134,14 @@ public class AudioTrigger : MonoBehaviour
                     }
                     AudioManager.Instance.PlayOneShot(instruction.path, nameList.ToArray(), valueList.ToArray(), instruction.gameObj, instruction.followObject);
                     break;
+                case Instruction.Command.SetGlobalParameter:
+                    foreach (var paramToSet in instruction.parametersToSet)
+                    {
+                        AudioManager.Instance.SetGlobalParameter(paramToSet.name, paramToSet.value);
+                    }
+                    break;
                 case Instruction.Command.LoadBank:
-                    AudioManager.Instance.LoadBank(instruction.bankName);
+                    AudioManager.Instance.LoadBank(instruction.bankName, instruction.loadSampleData);
                     break;
                 case Instruction.Command.UnloadBank:
                     AudioManager.Instance.UnloadBank(instruction.bankName);
