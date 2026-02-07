@@ -401,6 +401,11 @@ public class AudioManager : MonoBehaviour
 
     private void OnSceneUnloaded(Scene scene)
     {
+        CleanupInstances();
+    }
+
+    public void CleanupInstances()
+    {
         foreach (var eventList in eventLists)
         {
             eventList.CleanupInstanceList(); 
@@ -477,12 +482,16 @@ public class AudioManager : MonoBehaviour
         StopAndReleaseAllInstances();
         StopAllEvents();
     }
-
+    
+    
+    
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
         StopAndReleaseAllInstances();
         StopAllEvents();
-    }*/
+    }
+
+    */
 }

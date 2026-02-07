@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using FMOD.Studio;
 using FMODUnity;
 using Debug = UnityEngine.Debug;
@@ -83,14 +84,17 @@ public class EventList : ScriptableObject
     
     public void CleanupInstanceList() //Kallas av audioManager vid scenladdning, stoppar alla event på gameObjects som inte längre finns
     {
-        foreach (var instance in InstanceList)
+        PrintDebug(category + " has " + InstanceList.Count + " instance(s) in list before cleanup");
+        var objList = InstanceList.Select(kvp => kvp.Key).ToList(); 
+        foreach (var obj in objList)
         {
-            if(!instance.Key.activeInHierarchy) continue;
-            instance.Value.stop(STOP_MODE.IMMEDIATE);
-            instance.Value.release();
-            InstanceList.Remove(instance.Key);
-            PrintDebug("Stopped and removed eventInstance at " + instance.Key.name);
+            if (obj != null) continue;
+            InstanceList[obj].stop(STOP_MODE.IMMEDIATE);
+            InstanceList[obj].release();
+            InstanceList.Remove(obj);
+            PrintDebug("Stopped and released eventInstance at " + obj);
         }
+        PrintDebug(category + " has " + InstanceList.Count + " instance(s) in list after cleanup");
     }
     
     public void CreateInstance(string eventName, GameObject gameObject = null, bool followObject = true)

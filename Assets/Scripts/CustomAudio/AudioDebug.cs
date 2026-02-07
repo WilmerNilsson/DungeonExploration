@@ -74,7 +74,6 @@ public class AudioDebug : MonoBehaviour
                                 }
                             }
                         }
-
                         if (objectList.Count > 0)
                         {
                             lines++;
@@ -82,10 +81,16 @@ public class AudioDebug : MonoBehaviour
                             foreach (var obj in objectList)
                             {
                                 lines++;
-                                text += obj.name + "\n";
+                                if (obj == null)
+                                {
+                                    text += "NULL\n";
+                                }
+                                else
+                                {
+                                    text += obj.name + "\n";
+                                }
                             }
                         }
-                       
                         result = text;
                         return;
                     }
