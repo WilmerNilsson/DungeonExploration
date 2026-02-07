@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class Health : MonoBehaviour
 
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public event Action<int>? OnTakeDamage;
-    public event Action? OnDeath;
+    public UnityEvent OnDeath;
     /// <summary>
     /// if health or max health changes this will activate.<br/>
     /// order is: current health, max health. <br/>

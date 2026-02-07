@@ -15,6 +15,7 @@ public class AudioTrigger : MonoBehaviour
     }
 
     //Trigger settings
+    [Tooltip("How this audio trigger is activated")]
     public ActivatedBy activatedBy;
     public string tagToActivate;
     public bool activateOnce;
@@ -97,7 +98,7 @@ public class AudioTrigger : MonoBehaviour
             switch (instruction.command)
             {
                 case Instruction.Command.CreateInstance:
-                    AudioManager.Instance.CreateInstance(instruction.path, instruction.gameObj, instruction.followObject );
+                    AudioManager.Instance.CreateInstance(instruction.path, instruction.gameObj, instruction.followObject);
                     break;
                 case Instruction.Command.ReleaseInstance:
                     AudioManager.Instance.ReleaseInstance(instruction.path, instruction.gameObj);

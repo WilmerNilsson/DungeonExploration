@@ -1,40 +1,202 @@
 using System;
 using System.Collections.Generic;
+using FMOD.Studio;
+using FMODUnity;
 using UnityEngine;
 
 public class AudioDebug : MonoBehaviour
 {
-    [Serializable]
-    public class InstanceList
+    public enum Procedures
     {
-        public string EventName;
-        public GameObject gameObject;
+        GetGlobalParameterList,
+        GetInstanceList,
+        GetLocalParameterList,
+        GetAllInstances,
+        GetAllVcas,
+        GetLoadedBanks,
+        SeePerformanceMetrics
     }
 
-    [Serializable]
-    public class GlobalParamList
-    {
-        public string paramName;
-        public float paramValue;
-    }
+    public string path;
+    public Procedures procedure;
+    public string text;
 
-    public List<GlobalParamList> globalParams;
-
-    public void GetGlobalParamList()
+    public void Execute(out string result, out int lines)
     {
         if (!AudioManager.IsValid)
         {
-            Debug.LogWarning("There is no AudioManager in the scene, please add one");
+            result = "";
+            lines = 0;
             return;
         }
-        globalParams = new List<GlobalParamList>();
-        var strings = AudioManager.Instance.GetGlobalParameterList(out var values);
-        foreach (var name in strings)
+
+        text = "";
+        lines = 0;
+        switch (procedure)
         {
-            var tempEntry = new GlobalParamList();
-            tempEntry.paramName = name;
-            tempEntry.paramValue = AudioManager.Instance.GetGlobalParameterValue(name);
-            globalParams.Add(tempEntry);
+            case Procedures.GetGlobalParameterList:
+                foreach (var param in AudioManager.Instance.GlobalParameterCache)
+                {
+                    lines++;
+                    RuntimeManager.StudioSystem.getParameterByID(param.Value, out var value);
+                    text += param.Key + ": " + value + "\n";
+                }
+                result = text;
+                return;
+            case Procedures.GetInstanceList:
+                if (AudioManager.Instance.TryGetEventList(path, out var eventList, out var eventName))
+                {
+                    if (eventList.TryGetEvent(eventName, out var eventData))
+                    {
+                        if (eventData.isOneShot)
+                        {
+                            lines = 1;
+                            result = "Cannot fetch instances since the event is not a Looping Event";
+                            return;
+                        }
+                        var eventDesc = RuntimeManager.GetEventDescription(eventData.eventReference);
+                        if (!eventDesc.isValid())
+                        {
+                            lines = 1;
+                            result = "Event Description is not Valid";
+                            return;
+                        }
+                        eventDesc.getInstanceList(out var instanceList);
+                        text = eventName + " has " + instanceList.Length + " instance(s) \n";
+                        lines = 1;
+                        var objectList = new List<GameObject>();
+                        foreach (var instance in instanceList)
+                        {
+                            foreach (var kvp in eventList.InstanceList)
+                            {
+                                if (instance.Equals(kvp.Value))
+                                {
+                                    objectList.Add(kvp.Key);
+                                }
+                            }
+                        }
+
+                        if (objectList.Count > 0)
+                        {
+                            lines++;
+                            text += objectList.Count + " of which are on these objects:\n";
+                            foreach (var obj in objectList)
+                            {
+                                lines++;
+                                text += obj.name + "\n";
+                            }
+                        }
+                       
+                        result = text;
+                        return;
+                    }
+                }
+                result = "Couldn't find Event";
+                lines = 1;
+                return;
+            case Procedures.GetLocalParameterList:
+                if (AudioManager.Instance.TryGetEventList(path, out var list, out var eName))
+                {
+                    if (list.TryGetEvent(eName, out var eventData))
+                    {
+                        if (eventData.isOneShot)
+                        {
+                            lines = 1;
+                            result = "Cannot fetch instances since the event is not a Looping Event";
+                            return;
+                        }
+                        var eventDesc = RuntimeManager.GetEventDescription(eventData.eventReference);
+                        if (!eventDesc.isValid())
+                        {
+                            lines = 1;
+                            result = "Event Description is not Valid";
+                            return;
+                        }
+                        eventDesc.getInstanceList(out var instanceList);
+                        if (eventData.eventInstance.isValid())
+                        {
+                            lines++;
+                            text += "The instance in EventData has these parameters: \n";
+                            foreach (var paramData in eventData.parameters)
+                            {
+                                lines++;
+                                eventData.eventInstance.getParameterByID(paramData.ID(), out var value);
+                                text += paramData.paramName + ": " + value + "\n";
+                            }
+
+                            text += "\n";
+
+                            lines++;
+                        }
+
+                        foreach (var kvp in list.InstanceList)
+                        {
+                            lines++;
+                            text += "The instance on " + kvp.Key.name + " has these parameters: \n";
+                            foreach (var paramData in eventData.parameters)
+                            {
+                                lines++;
+                                kvp.Value.getParameterByID(paramData.ID(), out var value);
+                                text += paramData.paramName + ": " + value + "\n";
+                            }
+
+                            text += "\n";
+
+                            lines++;
+                        }
+                        
+                        result = text;
+                        return;
+                    }
+                }
+                result = "Couldn't find Event";
+                lines = 1;
+                return;
+            case Procedures.GetAllInstances:
+                result = "This has not been implemented yet";
+                lines = 1;
+                return;
+            case Procedures.GetAllVcas:
+                foreach (var VCA in AudioManager.Instance.VcaCache)
+                {
+                    lines++;
+                    VCA.Value.getVolume(out var volume);
+                    text += VCA.Key + ": " + volume + "\n";
+                }
+                result = text;
+                return;
+            case Procedures.GetLoadedBanks:
+                RuntimeManager.StudioSystem.getBankList(out var banks);
+                foreach (var bank in banks)
+                {
+                    lines += 3;
+                    bank.getPath(out var bankPath);
+                    bank.getLoadingState(out var loadingState);
+                    bank.getSampleLoadingState(out var sampleLoadingState);
+                    var split = bankPath.Split('/');
+                    text += split[^1] + ": \n Loading state: " + loadingState  + "\n Sample loading state: " + sampleLoadingState + "\n \n";
+                }
+                result = text;
+                return;
+            case Procedures.SeePerformanceMetrics:
+                RuntimeManager.StudioSystem.getMemoryUsage(out var memory);
+                
+                text += "Memory Metrics: (Doesn't include non-streaming sample data)" +
+                        "\n Exclusive: " + memory.exclusive/1000000f + " MB" + 
+                        "\n Inclusive: " + memory.inclusive/1000000f + " MB" + 
+                        "\n Sample Data: " + memory.sampledata/1000000f + " MB" + "\n \n";
+                
+                RuntimeManager.StudioSystem.getCPUUsage(out var cpu, out var core);
+                text += "CPU Metrics: " +
+                        "\n DSP: " + core.dsp + 
+                        "\n Stream: " + core.stream + 
+                        "\n Geometry: " + core.geometry + 
+                        "\n Update: " + core.update;
+                result = text;
+                lines = 10;
+                return;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 }

@@ -45,11 +45,11 @@ public class AudioManager : MonoBehaviour
 
     public EventList[] eventLists;
 
-    public Dictionary<string, EventList> _eventListCache; //För snabbare lookup än foreach
+    public Dictionary<string, EventList> EventListCache; //För snabbare lookup än foreach
 
     private void RefreshEventListCache() //Lägger till alla eventLists i eventListCache
     {
-        _eventListCache = new Dictionary<string, EventList>();
+        EventListCache = new Dictionary<string, EventList>();
         if (eventLists == null)
         {
             PrintDebug("No eventLists found, unable to add any to the eventList cache", true);
@@ -58,7 +58,7 @@ public class AudioManager : MonoBehaviour
         
         foreach (var list in eventLists)
         {
-            _eventListCache.Add(list.category, list);
+            EventListCache.Add(list.category, list);
 
             PrintDebug("Added " + list.category + " to eventList cache");
         }
@@ -82,10 +82,24 @@ public class AudioManager : MonoBehaviour
     }
     
 
-    private bool TryGetEventList(string path, out EventList eventList, out string eventName) //Om eventlist finns returneras true, eventListan, samt eventNamnet
+    public bool TryGetEventList(string path, out EventList eventList, out string eventName) //Om eventlist finns returneras true, eventListan, samt eventNamnet
     {
+        if (!path.Contains("/"))
+        {
+            PrintDebug(path + " is not a valid path", true);
+            eventList = null;
+            eventName = "";
+            return false;
+        }
         var split = path.Split('/');
-        if (_eventListCache.TryGetValue(split[0], out eventList))
+        if (split.Length != 2 || split[1] == "")
+        {
+            PrintDebug(path + " is not a valid path", true);
+            eventList = null;
+            eventName = "";
+            return false;
+        }
+        if (EventListCache.TryGetValue(split[0], out eventList))
         {
             eventName = split[1];
             PrintDebug("Successfully retrieved " + path);
@@ -103,22 +117,22 @@ public class AudioManager : MonoBehaviour
 
     #region Global Parameters
 
-    public Dictionary<string, PARAMETER_ID> _globalParameterCache; //För snabb lookup
+    public Dictionary<string, PARAMETER_ID> GlobalParameterCache; //För snabb lookup
 
     private void RefreshGlobalParameterCache() //Lägger alla globala parameterIDs i _globalParameterCache;
     {
-        _globalParameterCache = new Dictionary<string, PARAMETER_ID>();
+        GlobalParameterCache = new Dictionary<string, PARAMETER_ID>();
         RuntimeManager.StudioSystem.getParameterDescriptionList(out var descriptionList);
         foreach (var paramDesc in descriptionList)
         {
-            _globalParameterCache.Add(paramDesc.name, paramDesc.id);
+            GlobalParameterCache.Add(paramDesc.name, paramDesc.id);
             PrintDebug("Added " + paramDesc.name + " to global parameter cache");
         }
     }
 
     public void SetGlobalParameter(string paramName, float paramValue) //Om Global parameter finns sätts vi den till paramValue;
     {
-        if (_globalParameterCache.TryGetValue(paramName, out var id))
+        if (GlobalParameterCache.TryGetValue(paramName, out var id))
         {
             RuntimeManager.StudioSystem.setParameterByID(id, paramValue);
 
@@ -326,10 +340,10 @@ public class AudioManager : MonoBehaviour
     private const string BankExtension = ".bank";
     private const string StringBankExtension = ".strings.bank";
 
-    public void LoadBank(string bankName) //Laddar bank, om master laddas också string bank
+    public void LoadBank(string bankName, bool loadSamples = false) //Laddar bank, om master laddas också string bank
     {
-        RuntimeManager.LoadBank(bankName + BankExtension);
-        if (bankName == "Master") RuntimeManager.LoadBank(bankName + StringBankExtension);
+        RuntimeManager.LoadBank(bankName + BankExtension, loadSamples);
+        if (bankName == "Master") RuntimeManager.LoadBank(bankName + StringBankExtension, loadSamples);
         PrintDebug("Loading " + bankName + BankExtension);
     }
 
@@ -340,13 +354,23 @@ public class AudioManager : MonoBehaviour
         PrintDebug("Unloading " + bankName + BankExtension);
     }
 
-    public string[] banksToLoadOnStart = { "Master" };
+    [Serializable]
+    public struct bankToLoadOnStart
+    {
+        public string bankName;
+        public bool loadSamples;
+    }
+    
+    public bankToLoadOnStart[] banksToLoadOnStart =
+    {
+        new() { bankName = "Master", loadSamples = false },
+    };
 
     private void LoadStartBanks()
     {
         foreach (var bank in banksToLoadOnStart)
         {
-            LoadBank(bank);
+            LoadBank(bank.bankName, bank.loadSamples);
         }
     }
 
@@ -390,47 +414,6 @@ public class AudioManager : MonoBehaviour
         if (!showOnlyWarnings) Debug.Log(message);
     }
     
-    public string[] GetGlobalParameterList(out float[] valueList)
-    {
-        var tempList = new List<string>();
-        var tempValueList = new List<float>();
-        foreach (var parameter in _globalParameterCache)
-        {
-            tempList.Add(parameter.Key);
-            tempValueList.Add(GetGlobalParameterValue(parameter.Key));
-        }
-        valueList = tempValueList.ToArray();
-        return tempList.ToArray();
-    }
-
-    public float GetGlobalParameterValue(string paramName)
-    {
-        if (_globalParameterCache.TryGetValue(paramName, out var id))
-        {
-            RuntimeManager.StudioSystem.getParameterByID(id, out var paramValue);
-            return paramValue;
-        }
-
-        return 0f;
-    }
-
-    public string[] GetEventInstanceList(string path)
-    {
-        var tempList = new List<string>();
-        if (TryGetEventList(path, out var eventList, out var eventName))
-        {
-            foreach (var instance in eventList.InstanceList)
-            {
-                tempList.Add(instance.Key.name);
-            }
-        }
-        return tempList.ToArray();
-    }
-
-    public EventData[] GetEventDataList(EventList eventList)
-    {
-        return eventList.events;
-    }
 
     #endregion
 

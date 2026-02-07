@@ -6,9 +6,12 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(RectTransform))]
 public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+    public const int GridHeight = 4;
+    public const int GridWidth = 4;
+
     [SerializeField, Tooltip("what slot the center is, 0,0 is bottom left")]
-    private Vector2Int piviot;
-    [SerializeField] private sizes size;
+    private Vector2Int pivot;
+    [HideInInspector] public bool[] itemGridSize = new bool[GridHeight*GridWidth];
     //may just have simple bool for importing the default discard use
     [SerializeField] private ItemUse[] uses;
 
@@ -16,47 +19,22 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private bool isDragging;
     Vector2 returnPos;
     Transform returnParent;
-    public Vector2Int Piviot {get{ return piviot; } }
-
-    private enum sizes
-    {
-        x = default, 
-        xx,
-        xxx,
-        xxNxo,
-        xxNxx
-    }
+    public Vector2Int Pivot {get{ return pivot; } }
 
     public bool[,] GetSizeMatrix()
     {
-        switch (size)
+        //small optimisazion would be to shrink the matrix if possible
+        //slightly better optimisazion would be to cashe it and mark it dirty if changed
+        bool[,] tempSize = new bool[GridWidth, GridHeight];
+
+        for (int x = 0; x < 4; x++)
         {
-            case sizes.x:
-            default:
-                bool[,] x = { { true } };
-
-                return x;
-            case sizes.xx:
-                bool[,] xx = { { true, true } };
-
-                return xx;
-            case sizes.xxx:
-                bool[,] xxx = { { true, true, true } };
-
-                return xxx;
-            case sizes.xxNxo:
-                bool[,] xxNxo = { { true, true },
-                                  { false, true} };
-
-                return xxNxo;
-            case sizes.xxNxx:
-
-                bool[,] xxNxx = { { true, true },
-                                  { true, true } };
-
-                return xxNxx;
-            
+            for (int y = 0; y < 4; y++)
+            {
+                tempSize[x, y] = itemGridSize[x + 4 * y];
+            }
         }
+        return tempSize;
     }
 
     private void Update()
