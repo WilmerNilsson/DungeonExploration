@@ -390,12 +390,14 @@ MonoBehaviour:
   activateOnce: 0
   activationDelay: 0
   instructions:
-  - command: 1
+  - command: 9
     path: BGM/Level1
     gameObj: {fileID: 0}
     followObject: 0
     stopMode: 0
-    parametersToSet: []
+    parametersToSet:
+    - name: Combat
+      value: 0
     bankName: 
     loadSampleData: 0
 --- !u!4 &1117420917
@@ -490,7 +492,7 @@ MonoBehaviour:
       value: 0
     bankName: 
     loadSampleData: 0
-  - command: 0
+  - command: 2
     path: BGM/Level1
     gameObj: {fileID: 0}
     followObject: 1
