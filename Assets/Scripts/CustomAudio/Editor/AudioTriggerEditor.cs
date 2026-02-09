@@ -31,7 +31,7 @@ public class AudioTriggerEditor : Editor
         EditorGUILayout.PropertyField(_activatedByProperty);
         if (_activatedByProperty.enumValueIndex < 2)
         {
-            EditorGUILayout.PropertyField(_tagToActivateProperty);
+            EditorGUILayout.PropertyField(_tagToActivateProperty, GUILayout.Height(EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing));
         }
 
         if (_activatedByProperty.enumValueIndex < 4)
