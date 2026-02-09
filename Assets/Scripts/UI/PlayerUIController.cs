@@ -9,6 +9,11 @@ public class PlayerUIController : MonoBehaviour
         InvMaster.Instance.ToggleInventory();
     }
 
+    public void OnMinimap()
+    {
+        MinimapMaster.Instance.ToggleMinimap();
+    }
+
     public void OnPause()
     {
         GameObject.FindGameObjectWithTag("MainUI").GetComponent<InGameUIController>().TogglePauseMenu();
