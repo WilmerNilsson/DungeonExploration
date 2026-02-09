@@ -1,6 +1,4 @@
-using Codice.CM.SEIDInfo;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(RectTransform), typeof(SimpleItem))]
 public class ItemClickFilter : MonoBehaviour, ICanvasRaycastFilter

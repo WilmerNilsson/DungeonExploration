@@ -37,7 +37,7 @@ public class InventoryGrid : MonoBehaviour
         }
 
         if ((transform as RectTransform).pivot.y != 0.5f || (transform as RectTransform).pivot.x != 0.5f)
-            Debug.LogWarning("inventory grid piviot is not 0.5 in x and y", this);
+            Debug.LogWarning("inventory grid pivot is not 0.5 in x and y", this);
         
     }
 #endif
@@ -171,6 +171,7 @@ public class InventoryGrid : MonoBehaviour
         {
             for (int y = 0; y < itemSlots.GetLength(1); y++)
             {
+                //todo make this legable
                 if ((InvSlotExists(collum + x - item.Pivot.x, row + y - item.Pivot.y) &&
                     itemSlots[x, y] == true &&
                     (InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y] == null ||

@@ -8,46 +8,66 @@ public class AudioDebugEditor : Editor
     
     //ÄR DET MÖJLIGT ATT KOLLA LISTAN INSTANSER I EVENTDESCRIPTION OCH JÄMFÖRA DE I INSTANCELIST FÖR ATT SEDAN SKAPA EN COMPOSITE LIST
     
-    private SerializedProperty globalParamListProperty;
+    private SerializedProperty proceduresProperty;
+    private SerializedProperty pathProperty;
     private AudioDebug audioDebug;
     
     public void OnEnable()
     {
-        globalParamListProperty = serializedObject.FindProperty("globalParams");
+        proceduresProperty = serializedObject.FindProperty("procedure");
+        pathProperty = serializedObject.FindProperty("path");
         audioDebug = (AudioDebug)target;
     }
 
-    private string text = "test";
-    private string path = "";
+    private string text = "";
     private int lines;
     
     public override void OnInspectorGUI()
     {
+        serializedObject.Update();
         if (Application.isPlaying && AudioManager.IsValid)
         {
-            path = EditorGUILayout.TextField("Path", path);
+            EditorGUILayout.PropertyField(pathProperty);
+            EditorGUILayout.Separator();
+            EditorGUILayout.PropertyField(proceduresProperty, GUIContent.none);
             
-            if (GUILayout.Button("Get Global Parameter List"))
+            if (GUILayout.Button("Execute"))
             {
                 text = "";
                 lines = 0;
-                var strings = AudioManager.Instance.GetGlobalParameterList(out var values);
-                for (int i = 0; i < strings.Length; i++)
+                switch (proceduresProperty.enumValueIndex)
                 {
-                    lines++;
-                    text += strings[i] + ": " + values[i] +  "\n";
-                }
-            }
-
-            if (GUILayout.Button("Get EventInstance List"))
-            {
-                var strings = AudioManager.Instance.GetEventInstanceList(path);
-                text = path + " has " + strings.Length + " instances on these objects:" + "\n";
-                lines = 0;
-                foreach (var name in strings)
-                {
-                    lines++;
-                    text += name + "\n";
+                    case 0:
+                        var strings = AudioManager.Instance.GetGlobalParameterList(out var values);
+                        for (int i = 0; i < strings.Length; i++)
+                        {
+                            lines++;
+                            text += strings[i] + ": " + values[i] + "\n";
+                        }
+                        break;
+                    case 1:
+                        var instances = AudioManager.Instance.GetEventInstanceList(pathProperty.stringValue);
+                        lines = 1;
+                        text = pathProperty.stringValue + " has Instances on these objects:" + "\n";
+                        foreach (var instance in instances)
+                        {
+                            lines++;
+                            text += instance + "\n";
+                        }
+                        break;
+                    case 2:
+                        if (AudioManager.Instance.TryEventData(pathProperty.stringValue, out var eventData))
+                        {
+                            text = eventData.eventName + " has these local parameters:";
+                            
+                        }
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
                 }
             }
             
@@ -58,6 +78,8 @@ public class AudioDebugEditor : Editor
         {
             GUILayout.Label("Information will be displayed here when in playmode", EditorStyles.boldLabel);
         }
+
+        serializedObject.ApplyModifiedProperties();
     }
 }
 #endif
