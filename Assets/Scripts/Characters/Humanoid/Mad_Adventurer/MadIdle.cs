@@ -4,10 +4,10 @@ using UnityEngine;
 [System.Serializable]
 public class MadIdle : MadState
 {
-    [SerializeField, Tooltip("how far away in x it can move from its spawn"), Min(0f)] private float xWanderRange;
-    [SerializeField, Tooltip("how far away in z it can move from its spawn"), Min(0f)] private float zWanderRange;
-    [SerializeField, Tooltip("minimum wait time in seconds"), Min(0f)] private float minWaitTime;
-    [SerializeField, Tooltip("maximum wait time in seconds"), Min(1f)] private float maxWaitTime;
+    [SerializeField, Tooltip("how far away in x it can move from its spawn"), Min(0f)] private float xWanderRange = 5;
+    [SerializeField, Tooltip("how far away in z it can move from its spawn"), Min(0f)] private float zWanderRange = 5;
+    [SerializeField, Tooltip("minimum wait time in seconds"), Min(0f)] private float minWaitTime = 0;
+    [SerializeField, Tooltip("maximum wait time in seconds"), Min(1f)] private float maxWaitTime = 1;
     private Vector3 spawnPosition;
     private Vector3 position;
     

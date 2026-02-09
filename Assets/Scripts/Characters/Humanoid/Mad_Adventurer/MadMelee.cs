@@ -3,8 +3,8 @@ using UnityEngine;
 [System.Serializable]
 public class MadMelee : MadState
 {
-    [SerializeField, Tooltip("max distance to target before Chasing"), Min(1f)] public float maxMeleeRange;
-    [SerializeField, Tooltip("minimum distance to target"), Min(0f)] private float minMeleeRange;
+    [SerializeField, Tooltip("max distance to target before Chasing"), Min(1f)] public float maxMeleeRange = 2.5f;
+    [SerializeField, Tooltip("minimum distance to target"), Min(0f)] private float minMeleeRange = 0.5f;
 
     private float distance;
     public override void Enter()
