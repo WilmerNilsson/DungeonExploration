@@ -28,7 +28,7 @@ public class InventoryGrid : MonoBehaviour
     {
         Vector2 slotSize = GetSlotSize();
 
-        float delta = 0.000001f;
+        float delta = 0.0005f;
         if (Mathf.Abs(slotSize.x - slotSize.y) > delta)
         {
             Debug.Log(slotSize.x - slotSize.y);

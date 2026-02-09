@@ -17,11 +17,14 @@ public class MinimapTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("enter");
-        other.GetComponent<Collider>().enabled = false;
-        foreach (Collider collider in other.GetComponents<Collider>())
+        if (other.gameObject.TryGetComponent(out MinimapArea mapArea))
         {
-            collider.enabled = false;
+            other.GetComponent<Collider>().enabled = false;
+            foreach (Collider collider in other.GetComponents<Collider>())
+            {
+                collider.enabled = false;
+            }
+            mapAreas.Add(mapArea);
         }
-        mapAreas.Add(other.gameObject.GetComponent<MinimapArea>());
     }
 }

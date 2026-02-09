@@ -7,7 +7,7 @@ public class MinimapMaster : MonoBehaviour
         get; private set; 
     }
     [SerializeField] private GameObject minimap;
-    [SerializeField] private PlayerController playerController;
+    //[SerializeField] private PlayerController playerController;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
@@ -37,7 +37,7 @@ public class MinimapMaster : MonoBehaviour
         minimap.SetActive(true);
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined; //we need to controll curson with a pause menu once implimented
-        playerController.LockMovement(true);
+        //playerController.LockMovement(true);
     }
 
     public void CloseMinimap()
@@ -45,6 +45,6 @@ public class MinimapMaster : MonoBehaviour
         minimap.SetActive(false);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        playerController.LockMovement(false);
+        //playerController.LockMovement(false);
     }
 }

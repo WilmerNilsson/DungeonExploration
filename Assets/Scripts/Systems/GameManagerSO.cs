@@ -40,8 +40,6 @@ public class SavefileData
 [CreateAssetMenu(fileName = "GameManagerSO", menuName = "Scriptable Objects/GameManagerSO")]
 public class GameManagerSO : ScriptableObject
 {
-    [SerializeField] AudioMixer mixer;
-
     GlobalSettings globalSettings = new GlobalSettings();
     SavefileData currentSavefileData = new SavefileData();
     SavefileData lastSavedSavefileData = new SavefileData();
