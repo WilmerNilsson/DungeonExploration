@@ -3,24 +3,21 @@ using UnityEngine;
 
 public class CrazedIK : MonoBehaviour
 {
-    protected Animator animator;
+    public Animator animator;
 
     public bool ikActive = false;
     public Transform rightHandObj = null;
     public Transform lookObj = null;
 
-    void Start ()
-    {
-        animator = GetComponent<Animator>();
-    }
 
     //a callback for calculating IK
-    void OnAnimatorIK()
+    void OnAnimatorIK(int layerIndex)
     {
         if(animator) {
        
             //if the IK is active, set the position and rotation directly to the goal.
             if(ikActive) {
+                Debug.Log("Hello");
 
                 // Set the look target position, if one has been assigned
                 if(lookObj != null) {
