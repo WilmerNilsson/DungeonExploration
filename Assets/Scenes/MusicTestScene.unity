@@ -130,6 +130,8 @@ GameObject:
   - component: {fileID: 691628093}
   - component: {fileID: 691628092}
   - component: {fileID: 691628094}
+  - component: {fileID: 691628096}
+  - component: {fileID: 691628095}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -186,13 +188,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5d30a9c5c8a2444c9a762f68638f5ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnPlay:
+  onPlay:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 691628092}
-        m_TargetAssemblyTypeName: OneShotPlayer, GameAssembly
-        m_MethodName: Play
-        m_Mode: 3
+      - m_Target: {fileID: 2063651673}
+        m_TargetAssemblyTypeName: AudioManager, GameAssembly
+        m_MethodName: CleanupInstances
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &691628095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691628091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5d30a9c5c8a2444c9a762f68638f5ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onPlay:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 691628095}
+        m_TargetAssemblyTypeName: UnityEventTest, GameAssembly
+        m_MethodName: Remove
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &691628096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691628091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5d30a9c5c8a2444c9a762f68638f5ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onPlay:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 691628096}
+        m_TargetAssemblyTypeName: UnityEventTest, GameAssembly
+        m_MethodName: Add
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -553,6 +609,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2063651673 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 808863321973245351, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
+  m_PrefabInstance: {fileID: 5526446374506907766}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3ca42f564943b546802d1481427811e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2081962032
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,9 +763,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 61649496702353971, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
+      propertyPath: path
+      value: BGM/Level1
+      objectReference: {fileID: 0}
+    - target: {fileID: 61649496702353971, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
+      propertyPath: procedure
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 595548610535706512, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 808863321973245351, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
+      propertyPath: showOnlyWarnings
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6517206634113031847, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
       propertyPath: m_LocalPosition.x

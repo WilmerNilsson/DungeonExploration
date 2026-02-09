@@ -88,7 +88,7 @@ public class EventList : ScriptableObject
         var objList = InstanceList.Select(kvp => kvp.Key).ToList(); 
         foreach (var obj in objList)
         {
-            if (obj != null) continue;
+            if (obj) continue;
             InstanceList[obj].stop(STOP_MODE.IMMEDIATE);
             InstanceList[obj].release();
             InstanceList.Remove(obj);
