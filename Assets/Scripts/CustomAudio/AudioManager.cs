@@ -25,6 +25,8 @@ public class AudioManager : MonoBehaviour
 
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
+
+        GameManagerSO.Instance.OnFreezeGameChange += OnPauseEvent;
         
         DontDestroyOnLoad(this);
         
@@ -390,6 +392,15 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    #endregion
+    
+    #region Game States
+
+    private void OnPauseEvent(bool paused) //Kallas av GameManagerSO och sätter parametern Paused till 
+    {
+        SetGlobalParameter("Paused", paused ? 1 : 0);
+    }
+    
     #endregion
 
     #region SceneLoading 
