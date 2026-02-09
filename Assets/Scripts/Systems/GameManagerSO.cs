@@ -82,6 +82,7 @@ public class GameManagerSO : ScriptableObject
             if (instance == null)
             {
                 instance = Resources.LoadAll<GameManagerSO>("")[0];
+                instance.ResetManagerVariables();
             }
             instance.FirstAcces();
             return instance;
@@ -89,7 +90,7 @@ public class GameManagerSO : ScriptableObject
     }
 
     //called on SingletonSpawner awake
-    //unimplimented
+    //put in first acces for now
     public void ResetManagerVariables()
     {
         thingsFreezingGame = 0;
@@ -341,13 +342,9 @@ public class GameManagerSO : ScriptableObject
 
     private void UpdateMixerMasterVolume()
     {
-        if (globalSettings.masterVolume > 0)
+        if(AudioManager.IsValid)
         {
-            mixer.SetFloat("MasterVol", Mathf.Log10(globalSettings.masterVolume / 100f) * 20f);
-        }
-        else
-        {
-            mixer.SetFloat("MasterVol", -80f);
+            AudioManager.Instance.SetVolume("Master", globalSettings.masterVolume / 100f);
         }
     }
 
@@ -359,13 +356,9 @@ public class GameManagerSO : ScriptableObject
 
     private void UpdateMixerEffectsVolume()
     {
-        if (globalSettings.effectsVolume > 0)
+        if (AudioManager.IsValid)
         {
-            mixer.SetFloat("EffectsVol", Mathf.Log10(globalSettings.effectsVolume / 100f) * 20f);
-        }
-        else
-        {
-            mixer.SetFloat("EffectsVol", -80f);
+            AudioManager.Instance.SetVolume("Effects", globalSettings.masterVolume / 100f);
         }
     }
 
@@ -377,13 +370,9 @@ public class GameManagerSO : ScriptableObject
 
     public void UpdateMixerMusicVolume()
     {
-        if (globalSettings.musicVolume > 0)
+        if (AudioManager.IsValid)
         {
-            mixer.SetFloat("MusicVol", Mathf.Log10(globalSettings.musicVolume / 100f) * 20f);
-        }
-        else
-        {
-            mixer.SetFloat("MusicVol", -80f);
+            AudioManager.Instance.SetVolume("Music", globalSettings.masterVolume / 100f);
         }
     }
     #endregion
