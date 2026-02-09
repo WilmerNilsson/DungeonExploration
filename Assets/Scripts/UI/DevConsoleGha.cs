@@ -66,7 +66,9 @@ public class DevConsoleGha : MonoBehaviour
         commandList = new List<DebugCommand>
         {
             new DebugCommand("help", "Shows a list of commands. Or shows info about a command", "help (command)", HelpCommand),
-            new DebugCommand("get_resolution", "shows resolution data", "get_resolution", GetResolutionCommand)
+            new DebugCommand("get_resolution", "shows resolution data", "get_resolution", GetResolutionCommand),
+            new DebugCommand("teleport", "teleports the player", "teleport x y z", TeleportCommand),
+            new DebugCommand("get_pos", "gets the player current possistion", "get_pos", GetPosCommand),
         };
     }
 
@@ -104,7 +106,7 @@ public class DevConsoleGha : MonoBehaviour
         return Instance;
     }
 
-    /* #region command methods */
+    #region command methods 
 
     private void HelpCommand(string input)
     {
@@ -210,9 +212,9 @@ public class DevConsoleGha : MonoBehaviour
         int failedParamiter;
         bool success;
 
-        Vector2 endLocation;
+        Vector3 endLocation;
 
-        if(properties.Length != 2)
+        if(properties.Length != 3)
         {
             _infoTextWindow.text += "Wrong number of paramiters\n";
             return;
@@ -232,6 +234,13 @@ public class DevConsoleGha : MonoBehaviour
             goto Failed;
         }
 
+        success = float.TryParse(properties[2], out endLocation.z);
+        if (!success)
+        {
+            failedParamiter = 3;
+            goto Failed;
+        }
+
         GameObject.FindGameObjectWithTag("Player").transform.position = endLocation;
         return;
 
@@ -241,8 +250,8 @@ public class DevConsoleGha : MonoBehaviour
 
     private void GetPosCommand()
     {
-        _infoTextWindow.text += $"{(Vector2) GameObject.FindGameObjectWithTag("Player").transform.position}\n\n";
+        _infoTextWindow.text += $"{GameObject.FindGameObjectWithTag("Player").transform.position}\n\n";
     }
 
-    /* #endregion */
+    #endregion
 }
