@@ -8,15 +8,18 @@ public class Instruction //Används av audioTrigger för att skicka instruktione
     public enum Command
     {
         CreateInstance, //0
-        ReleaseInstance,
+        LoadSampleData,
         StartEvent,
-        StopEvent,
+        StopEvent, 
+        ReleaseInstance, //4
+        UnloadSampleData,
         SetParameter,
-        SetGlobalParameter, //5
         KeyOff,
         PlayOneShot,
+        SetGlobalParameter, //9
         LoadBank,
         UnloadBank,
+        
     }
     
     public Command command; //Variabler för alla metoder som kan skickas till audioManager, i inspektorn visas bara relevanta variabler beroende på command
@@ -26,6 +29,7 @@ public class Instruction //Används av audioTrigger för att skicka instruktione
     public STOP_MODE stopMode;
     public ParameterToSet[] parametersToSet;
     public string bankName;
+    public bool loadSampleData;
 }
 
 [Serializable]
