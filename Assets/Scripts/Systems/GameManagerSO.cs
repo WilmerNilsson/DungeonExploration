@@ -48,18 +48,22 @@ public class GameManagerSO : ScriptableObject
     int currentSavefileNr = 1;
 
     private static GameManagerSO instance;
-    bool hasLoadedSettings = false;
+    private bool hasLoadedSettings = false;
 
-    int _thingsFreezingGame = 0;
+    private int thingsFreezingGame = 0;
+    private int thingsLockingMouse = 0;
 
-    public event Action<IDListName, int> OnIDAddedToListSelfReset;
-    public event Action<float> OnPlayerHealthCheatValueChangeSelfReset;
-    public event Action<float> OnEnemyHealthCheatValueChangeSelfReset;
-    public event Action OnSavePointSaveSelfReset;
-    public event Action<bool> OnFreezeTimeChangeSelfReset;
-    public event Action<int> OnLoadScene;
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+    public event Action<IDListName, int>? OnIDAddedToListSelfReset;
+    public event Action<float>? OnPlayerHealthCheatValueChangeSelfReset;
+    public event Action<float>? OnEnemyHealthCheatValueChangeSelfReset;
+    public event Action? OnSavePointSaveSelfReset;
+    public event Action<bool>? OnFreezeTimeChangeSelfReset;
+    public event Action<int>? OnLoadScene;
+    public event Action<bool>? OnLockMouse;
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 
-    void FirstAcces()
+    private void FirstAcces()
     {
         if(!hasLoadedSettings)
         {
@@ -71,24 +75,29 @@ public class GameManagerSO : ScriptableObject
         }
     }
 
-    public static GameManagerSO GetGameManagerSOInstance()
+    public static GameManagerSO Instance
     {
-        if(instance == null)
+        get
         {
-            instance = Resources.LoadAll<GameManagerSO>("")[0];
+            if (instance == null)
+            {
+                instance = Resources.LoadAll<GameManagerSO>("")[0];
+            }
+            instance.FirstAcces();
+            return instance;
         }
-        instance.FirstAcces();
-        return instance;
     }
 
     //called on SingletonSpawner awake
+    //unimplimented
     public void ResetManagerVariables()
     {
-        _thingsFreezingGame = 0;
+        thingsFreezingGame = 0;
+        thingsLockingMouse = 0;
         hasLoadedSettings = false;
     }
 
-    /* #region  moveToSceneStuff */
+    #region move to scene stuff
     public void MoveToScene(Vector2 newLocation, int newSceneNr)
     {
         currentSavefileData.sceneNr = newSceneNr;
@@ -119,9 +128,9 @@ public class GameManagerSO : ScriptableObject
         OnSavePointSaveSelfReset = null;
         OnFreezeTimeChangeSelfReset = null;
     }
-    /* #endregion */
+    #endregion
 
-    /* #region  SaveFile ID stuff */
+    #region SaveFile ID stuff
     public enum IDListName
     {
         abilities,
@@ -198,9 +207,9 @@ public class GameManagerSO : ScriptableObject
             return -1;
         }
     }
-    /* #endregion */
+    #endregion
 
-    /* #region  GamePlayCheats */
+    #region  GamePlayCheats
     public void SetPlayerHealthCheatValue(float newValue)
     {
         currentSavefileData.playerHealthCheatValue = newValue;
@@ -232,9 +241,9 @@ public class GameManagerSO : ScriptableObject
     {
         return currentSavefileData.enemyHealthCheatValue;
     }
-    /* #endregion */
+    #endregion
 
-    /* #region  TimeScale */
+    #region Timescale and mouselock
     public float GetTimeScale()
     {
         return currentSavefileData.normalTimeScale;
@@ -247,39 +256,61 @@ public class GameManagerSO : ScriptableObject
 
     public void FreezeTime(bool value)
     {
-        bool wasFrozen = _thingsFreezingGame == 0 ? false : true;
+        bool wasFrozen = thingsFreezingGame != 0;
 
         if(value)
         {
-            _thingsFreezingGame++;
+            thingsFreezingGame++;
         }
         else
         {
-            _thingsFreezingGame--;
+            thingsFreezingGame--;
         }
 
-        if(!wasFrozen && _thingsFreezingGame != 0)
+        if(!wasFrozen && thingsFreezingGame != 0)
         {
             Time.timeScale = 0;
 
-            if(OnFreezeTimeChangeSelfReset != null)
-            {
-                OnFreezeTimeChangeSelfReset(true);
-            }
+            OnFreezeTimeChangeSelfReset?.Invoke(true);
         }
-        else if(wasFrozen && _thingsFreezingGame == 0)
+        else if(wasFrozen && thingsFreezingGame == 0)
         {
             Time.timeScale = currentSavefileData.normalTimeScale;
 
-            if(OnFreezeTimeChangeSelfReset != null)
-            {
-                OnFreezeTimeChangeSelfReset(false);
-            }
+            OnFreezeTimeChangeSelfReset?.Invoke(false);
         }
     }
-    /* #endregion */
+    
+    public void LockMouse(bool value)
+    {
+        bool wasLocked = thingsLockingMouse != 0;
 
-    /* #region  Sound */
+        if (value)
+        {
+            thingsLockingMouse++;
+        }
+        else
+        {
+            thingsLockingMouse--;
+        }
+
+        if(!wasLocked && thingsLockingMouse != 0)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined; //we need to controll curson with a pause menu once implimented
+            OnLockMouse?.Invoke(true);
+        }
+        else if (wasLocked && thingsLockingMouse == 0)
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+            OnLockMouse?.Invoke(false);
+        }
+    }
+
+    #endregion
+
+    #region Sound
     public float GetMasterVolume()
     {
         return globalSettings.masterVolume;
@@ -308,7 +339,7 @@ public class GameManagerSO : ScriptableObject
         UpdateMixerMasterVolume();
     }
 
-    void UpdateMixerMasterVolume()
+    private void UpdateMixerMasterVolume()
     {
         if (globalSettings.masterVolume > 0)
         {
@@ -326,7 +357,7 @@ public class GameManagerSO : ScriptableObject
         UpdateMixerEffectsVolume();
     }
 
-    void UpdateMixerEffectsVolume()
+    private void UpdateMixerEffectsVolume()
     {
         if (globalSettings.effectsVolume > 0)
         {
@@ -344,7 +375,7 @@ public class GameManagerSO : ScriptableObject
         UpdateMixerMusicVolume();
     }
 
-    void UpdateMixerMusicVolume()
+    public void UpdateMixerMusicVolume()
     {
         if (globalSettings.musicVolume > 0)
         {
@@ -355,9 +386,9 @@ public class GameManagerSO : ScriptableObject
             mixer.SetFloat("MusicVol", -80f);
         }
     }
-    /* #endregion */
+    #endregion
 
-    /* #region  SavefilesStuff */
+    #region  SavefilesStuff
     private SavefileData CopySaveFileData(SavefileData dataToBeCopied)
     {
         SavefileData newData = new SavefileData();
@@ -503,9 +534,9 @@ public class GameManagerSO : ScriptableObject
 
         currentSavefileData = JsonUtility.FromJson<SavefileData>(json);
     }
-    /* #endregion */
+    #endregion
 
-    /* #region  GetOtherSavefileStuff */
+    #region GetOtherSavefileStuff
     public Vector2 GetCurrentPlayerSavePos()
     {
         return currentSavefileData.savePos;
@@ -515,5 +546,5 @@ public class GameManagerSO : ScriptableObject
     {
         return globalSettings.conflictingControllsNeutralizes;
     }
-    /* #endregion */
+    #endregion
 }
