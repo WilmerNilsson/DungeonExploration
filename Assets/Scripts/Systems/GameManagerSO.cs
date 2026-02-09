@@ -40,8 +40,6 @@ public class SavefileData
 [CreateAssetMenu(fileName = "GameManagerSO", menuName = "Scriptable Objects/GameManagerSO")]
 public class GameManagerSO : ScriptableObject
 {
-    [SerializeField] AudioMixer mixer;
-
     GlobalSettings globalSettings = new GlobalSettings();
     SavefileData currentSavefileData = new SavefileData();
     SavefileData lastSavedSavefileData = new SavefileData();
@@ -82,15 +80,13 @@ public class GameManagerSO : ScriptableObject
             if (instance == null)
             {
                 instance = Resources.LoadAll<GameManagerSO>("")[0];
-                instance.ResetManagerVariables();
             }
             instance.FirstAcces();
             return instance;
         }
     }
 
-    //called on SingletonSpawner awake
-    //put in first acces for now
+    //called on awake in GameManagerReseter;
     public void ResetManagerVariables()
     {
         thingsFreezingGame = 0;

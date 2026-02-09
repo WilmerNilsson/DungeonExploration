@@ -50,20 +50,20 @@ public class DevConsoleGha : MonoBehaviour
     [SerializeField] TMP_Text _infoTextWindow;
     [SerializeField] TMP_InputField _inputTextWindow;
 
-    private GameObject _toggleObject;
+    private GameObject toggleObject;
     public static DevConsoleGha Instance {  get; private set; }
-    private List<DebugCommand> _commandList;
+    private List<DebugCommand> commandList;
 
     //GameManagerSO gameManager;
 
     private void Awake()
     {
         Instance = this;
-        _toggleObject = transform.GetChild(0).gameObject;
+        toggleObject = transform.GetChild(0).gameObject;
 
         //gameManager = GameManagerSO.GetGameManagerSOInstance();
 
-        _commandList = new List<DebugCommand>
+        commandList = new List<DebugCommand>
         {
             new DebugCommand("help", "Shows a list of commands. Or shows info about a command", "help (command)", HelpCommand),
             new DebugCommand("get_resolution", "shows resolution data", "get_resolution", GetResolutionCommand)
@@ -80,11 +80,11 @@ public class DevConsoleGha : MonoBehaviour
 
         string[] properties = input.Split(' ', 2);
 
-        int index = _commandList.FindIndex(item => item._commandId == properties[0]);
+        int index = commandList.FindIndex(item => item._commandId == properties[0]);
 
         if(index != -1)
         {
-            _commandList[index].Invoke(properties.Length == 2 ? properties[1] : null);
+            commandList[index].Invoke(properties.Length == 2 ? properties[1] : null);
         }
         else
         {
@@ -94,8 +94,9 @@ public class DevConsoleGha : MonoBehaviour
 
     public void ToggeDevConsole()
     {
-        //gameManager.FreezeTime(!_toggleObject.activeSelf);
-        _toggleObject.SetActive(!_toggleObject.activeSelf);
+        GameManagerSO.Instance.FreezeTime(!toggleObject.activeSelf);
+        GameManagerSO.Instance.LockMouse(!toggleObject.activeSelf);
+        toggleObject.SetActive(!toggleObject.activeSelf);
     }
 
     public static DevConsoleGha GetInstance()
@@ -109,7 +110,7 @@ public class DevConsoleGha : MonoBehaviour
     {
         if(input == null)
         {
-            foreach(DebugCommand command in _commandList)
+            foreach(DebugCommand command in commandList)
             {
                 _infoTextWindow.text += $"{command._commandFormat} - {command._commandDescription}\n";
             }
@@ -118,7 +119,7 @@ public class DevConsoleGha : MonoBehaviour
         else
         {
             bool foundCommandId = false;
-            foreach(DebugCommand command in _commandList)
+            foreach(DebugCommand command in commandList)
             {
                 if(input == command._commandId)
                 {
