@@ -8,8 +8,10 @@ public class CrazedIK : MonoBehaviour
     public bool ikActive = false;
     public Transform rightHandObj = null;
     public Transform lookObj = null;
+    
+    [SerializeField] private float lerpSpeed = 1.0f;
 
-
+    private float animationWeight;
     //a callback for calculating IK
     void OnAnimatorIK(int layerIndex)
     {
@@ -17,7 +19,6 @@ public class CrazedIK : MonoBehaviour
        
             //if the IK is active, set the position and rotation directly to the goal.
             if(ikActive) {
-                Debug.Log("Hello");
 
                 // Set the look target position, if one has been assigned
                 if(lookObj != null) {
@@ -27,8 +28,9 @@ public class CrazedIK : MonoBehaviour
 
                 // Set the right hand target position and rotation, if one has been assigned
                 if(rightHandObj != null) {
-                    animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
-                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);  
+                    animationWeight = Mathf.Lerp(animationWeight, 1, lerpSpeed);
+                    animator.SetIKPositionWeight(AvatarIKGoal.RightHand,animationWeight);
+                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand,animationWeight);  
                     animator.SetIKPosition(AvatarIKGoal.RightHand,rightHandObj.position);
                     animator.SetIKRotation(AvatarIKGoal.RightHand,rightHandObj.rotation);
                 }
@@ -39,6 +41,7 @@ public class CrazedIK : MonoBehaviour
                 animator.SetIKPositionWeight(AvatarIKGoal.RightHand,0);
                 animator.SetIKRotationWeight(AvatarIKGoal.RightHand,0);
                 animator.SetLookAtWeight(0);
+                animationWeight = 0;
             }
         }
     }
