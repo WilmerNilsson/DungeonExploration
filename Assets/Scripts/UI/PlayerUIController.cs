@@ -18,4 +18,9 @@ public class PlayerUIController : MonoBehaviour
     {
         GameObject.FindGameObjectWithTag("MainUI").GetComponent<InGameUIController>().TogglePauseMenu();
     }
+
+    public void OnDevConsole()
+    {
+        DevConsoleGha.Instance.ToggeDevConsole();
+    }
 }
