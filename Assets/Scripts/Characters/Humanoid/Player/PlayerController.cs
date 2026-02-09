@@ -14,17 +14,18 @@ public class PlayerController : MonoBehaviour
 
     private bool lockedMovement = false;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //we may move this to game manager OnLoadScene
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        GameManagerSO.Instance.OnLockMouse += LockMovement;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDestroy()
     {
-
+        GameManagerSO.Instance.OnLockMouse -= LockMovement;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -120,7 +121,7 @@ public class PlayerController : MonoBehaviour
         controller.Rotate(Quaternion.AngleAxis(lookVector.y, Vector3.up) * Quaternion.AngleAxis(lookVector.x, Vector3.right));
     }
 
-    public void LockMovement(bool newValue)
+    private void LockMovement(bool newValue)
     {
         lockedMovement = newValue;
 

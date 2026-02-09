@@ -13,7 +13,7 @@ public class GameplaySettingsMaster : MonoBehaviour
     
     void Start()
     {
-        gameManager = GameManagerSO.GetGameManagerSOInstance();
+        gameManager = GameManagerSO.Instance;
         SetInputValues();
     }
 

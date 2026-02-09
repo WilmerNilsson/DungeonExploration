@@ -41,7 +41,7 @@ public class AudioInputSettingsMaster : MonoBehaviour
 
     private void Start() 
     {
-        gameManager = GameManagerSO.GetGameManagerSOInstance();
+        gameManager = GameManagerSO.Instance;
         uIController = GameObject.FindGameObjectWithTag("MainUI").GetComponent<IUIController>();
 
         masterAudioPair.inputField.SetTextWithoutNotify(gameManager.GetMasterVolume().ToString());
