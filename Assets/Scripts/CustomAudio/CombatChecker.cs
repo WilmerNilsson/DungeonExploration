@@ -25,7 +25,6 @@ public static class CombatChecker
 
     private static void CheckCombatState()
     {
-        Debug.Log(EnemiesChasing.Count + " Enemies Chasing");
         if (AudioManager.IsValid)
         {
             AudioManager.Instance.SetGlobalParameter("Combat", EnemiesChasing.Count > 0 ? 1 : 0);
