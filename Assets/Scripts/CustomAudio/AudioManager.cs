@@ -25,8 +25,15 @@ public class AudioManager : MonoBehaviour
 
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
-
-        GameManagerSO.Instance.OnFreezeGameChange += OnPauseEvent;
+        
+        if (GameManagerSO.Instance != null)
+        {
+            GameManagerSO.Instance.OnFreezeGameChange += OnPauseEvent;
+        }
+        else
+        {
+            PrintDebug("Couldn't find GameManagerSO", true);
+        }
         
         DontDestroyOnLoad(this);
         
