@@ -51,7 +51,7 @@ public class InGameUIController : MonoBehaviour, IUIController
 
     private void Start()
     {
-        gameManager = GameManagerSO.GetGameManagerSOInstance();
+        gameManager = GameManagerSO.Instance;
     }
 
     public void WarningWindowAnswer(bool answer)
@@ -87,12 +87,30 @@ public class InGameUIController : MonoBehaviour, IUIController
             {
                 Pause();
             }
-            if(OnPauseChangeAction != null)
-            {
-                OnPauseChangeAction(gameIsPaused);
-            }
+            OnPauseChangeAction?.Invoke(gameIsPaused);
         }
-    }
+
+        void Pause()
+        {
+            inGameUI.SetActive(false);
+            pauseMenu.SetActive(true);
+            gameManager.FreezeTime(true);
+            gameManager.LockMouse(true);
+
+            gameIsPaused = true;
+        }
+
+        void Resume()
+        {
+            inGameUI.SetActive(true);
+            pauseMenu.SetActive(false);
+
+            gameManager.FreezeTime(false);
+            gameManager.LockMouse(false);
+
+            gameIsPaused = false;
+        }
+}
 
     public void ChangeCanUnpause(bool value)
     {
@@ -102,28 +120,6 @@ public class InGameUIController : MonoBehaviour, IUIController
     public void ChangeUseWarningScreen(bool value)
     {
         useWarningScreen = value;
-    }
-
-    void Pause()
-    {
-        inGameUI.SetActive(false);
-        pauseMenu.SetActive(true);
-        gameManager.FreezeTime(true);
-        gameIsPaused = true;
-    }
-
-    public void Resume()
-    {
-        inGameUI.SetActive(true);
-        pauseMenu.SetActive(false);
-
-        gameManager.FreezeTime(false);
-        
-        gameIsPaused = false;
-        if(OnPauseChangeAction != null)
-        {
-            OnPauseChangeAction(gameIsPaused);
-        }
     }
 
     public void ExitToMenu()
