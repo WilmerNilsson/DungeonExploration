@@ -21,7 +21,7 @@ MonoBehaviour:
         Data2: 1125695131
         Data3: -917396850
         Data4: 1039931948
-      Path: event:/Player/Foley/Crouch
+      Path: event:/Sound/Player/Foley/Crouch
     banks:
     - SFX
     isOneShot: 1
@@ -37,7 +37,7 @@ MonoBehaviour:
         Data2: 1302351512
         Data3: -808690007
         Data4: 2074805805
-      Path: event:/Player/Foley/Footsteps
+      Path: event:/Sound/Player/Foley/Footsteps
     banks:
     - SFX
     isOneShot: 1
@@ -57,7 +57,7 @@ MonoBehaviour:
         Data2: 1236730135
         Data3: -686158409
         Data4: -1809549754
-      Path: event:/Player/Foley/Jump
+      Path: event:/Sound/Player/Foley/Jump
     banks:
     - SFX
     isOneShot: 1
@@ -73,7 +73,7 @@ MonoBehaviour:
         Data2: 1170302005
         Data3: 1078097320
         Data4: 2102860344
-      Path: event:/Player/Foley/Land
+      Path: event:/Sound/Player/Foley/Land
     banks:
     - SFX
     isOneShot: 1
@@ -93,7 +93,7 @@ MonoBehaviour:
         Data2: 1335245060
         Data3: -1544620126
         Data4: -1624280498
-      Path: event:/Player/Foley/Run
+      Path: event:/Sound/Player/Foley/Run
     banks:
     - SFX
     isOneShot: 1
@@ -109,19 +109,23 @@ MonoBehaviour:
   - eventName: Sneak
     eventReference:
       Guid:
-        Data1: 481306460
-        Data2: 1083614710
-        Data3: -778672761
-        Data4: -1196477520
-      Path: event:/Player/Foley/Sneak
+        Data1: -292369202
+        Data2: 1203377431
+        Data3: 30939821
+        Data4: 1633049054
+      Path: event:/Sound/Player/Foley/Sneak
     banks:
     - SFX
     isOneShot: 1
     is3D: 1
     minDistance: 1
-    maxDistance: 20
+    maxDistance: 2.2
     debug: 0
-    parameters: []
+    parameters:
+    - paramName: surfaceType
+      isGlobal: 0
+      data1: 2409256524
+      data2: 1522719029
   - eventName: Take_Damage
     eventReference:
       Guid:
@@ -129,7 +133,7 @@ MonoBehaviour:
         Data2: 1153000272
         Data3: -628293213
         Data4: -2052368569
-      Path: event:/Player/Foley/Take_Damage
+      Path: event:/Sound/Player/Foley/Take_Damage
     banks:
     - SFX
     isOneShot: 1
@@ -145,7 +149,7 @@ MonoBehaviour:
         Data2: 1207631029
         Data3: 1432944573
         Data4: -1561945739
-      Path: event:/Player/Tools/Rope
+      Path: event:/Sound/Player/Tools/Rope
     banks:
     - SFX
     isOneShot: 1
@@ -161,7 +165,7 @@ MonoBehaviour:
         Data2: 1204195257
         Data3: -1563407949
         Data4: 1996458937
-      Path: event:/Player/VoiceOver/Death
+      Path: event:/Sound/Player/VoiceOver/Death
     banks:
     - SFX
     isOneShot: 1
@@ -177,7 +181,7 @@ MonoBehaviour:
         Data2: 1316967584
         Data3: 953966527
         Data4: 93756998
-      Path: event:/Player/Weapons/Mace/MaceDraw
+      Path: event:/Sound/Player/Weapons/Mace/MaceDraw
     banks:
     - SFX
     isOneShot: 1
@@ -193,7 +197,7 @@ MonoBehaviour:
         Data2: 1181582949
         Data3: 1433416865
         Data4: -1187100018
-      Path: event:/Player/Weapons/Mace/MaceSwing
+      Path: event:/Sound/Player/Weapons/Mace/MaceSwing
     banks:
     - SFX
     isOneShot: 1
@@ -209,7 +213,7 @@ MonoBehaviour:
         Data2: 1078631819
         Data3: -2057157759
         Data4: 901269589
-      Path: event:/Player/Weapons/Spear/SpearDraw
+      Path: event:/Sound/Player/Weapons/Spear/SpearDraw
     banks:
     - SFX
     isOneShot: 1
@@ -225,7 +229,7 @@ MonoBehaviour:
         Data2: 1259604517
         Data3: -1634906436
         Data4: -575427368
-      Path: event:/Player/Weapons/Spear/SpearSwing
+      Path: event:/Sound/Player/Weapons/Spear/SpearSwing
     banks:
     - SFX
     isOneShot: 1
@@ -241,7 +245,7 @@ MonoBehaviour:
         Data2: 1195450235
         Data3: 665233564
         Data4: 1390284585
-      Path: event:/Player/Weapons/Sword/SwordDraw
+      Path: event:/Sound/Player/Weapons/Sword/SwordDraw
     banks:
     - SFX
     isOneShot: 1
@@ -257,7 +261,7 @@ MonoBehaviour:
         Data2: 1131489808
         Data3: -516748105
         Data4: 615583645
-      Path: event:/Player/Weapons/Sword/SwordParry
+      Path: event:/Sound/Player/Weapons/Sword/SwordParry
     banks:
     - SFX
     isOneShot: 1
@@ -273,7 +277,7 @@ MonoBehaviour:
         Data2: 1108240502
         Data3: -1972189767
         Data4: -1576565586
-      Path: event:/Player/Weapons/Sword/SwordSwing
+      Path: event:/Sound/Player/Weapons/Sword/SwordSwing
     banks:
     - SFX
     isOneShot: 1
