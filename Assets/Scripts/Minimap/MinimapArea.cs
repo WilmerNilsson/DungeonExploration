@@ -24,6 +24,10 @@ public class MinimapArea : MonoBehaviour
     private void Awake()
     {
         ReturnDecendantOfParent(this.gameObject, children);
+        foreach (GameObject child in children)
+        {
+            child.SetActive(false);
+        }
     }
 
     public void DrawArea()
