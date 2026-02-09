@@ -45,11 +45,11 @@ public class AudioManager : MonoBehaviour
 
     public EventList[] eventLists;
 
-    public Dictionary<string, EventList> _eventListCache; //För snabbare lookup än foreach
+    public Dictionary<string, EventList> EventListCache; //För snabbare lookup än foreach
 
     private void RefreshEventListCache() //Lägger till alla eventLists i eventListCache
     {
-        _eventListCache = new Dictionary<string, EventList>();
+        EventListCache = new Dictionary<string, EventList>();
         if (eventLists == null)
         {
             PrintDebug("No eventLists found, unable to add any to the eventList cache", true);
@@ -58,7 +58,7 @@ public class AudioManager : MonoBehaviour
         
         foreach (var list in eventLists)
         {
-            _eventListCache.Add(list.category, list);
+            EventListCache.Add(list.category, list);
 
             PrintDebug("Added " + list.category + " to eventList cache");
         }
@@ -82,7 +82,7 @@ public class AudioManager : MonoBehaviour
     }
     
 
-    private bool TryGetEventList(string path, out EventList eventList, out string eventName) //Om eventlist finns returneras true, eventListan, samt eventNamnet
+    public bool TryGetEventList(string path, out EventList eventList, out string eventName) //Om eventlist finns returneras true, eventListan, samt eventNamnet
     {
         if (!path.Contains("/"))
         {
@@ -99,7 +99,7 @@ public class AudioManager : MonoBehaviour
             eventName = "";
             return false;
         }
-        if (_eventListCache.TryGetValue(split[0], out eventList))
+        if (EventListCache.TryGetValue(split[0], out eventList))
         {
             eventName = split[1];
             PrintDebug("Successfully retrieved " + path);
@@ -117,22 +117,22 @@ public class AudioManager : MonoBehaviour
 
     #region Global Parameters
 
-    public Dictionary<string, PARAMETER_ID> _globalParameterCache; //För snabb lookup
+    public Dictionary<string, PARAMETER_ID> GlobalParameterCache; //För snabb lookup
 
     private void RefreshGlobalParameterCache() //Lägger alla globala parameterIDs i _globalParameterCache;
     {
-        _globalParameterCache = new Dictionary<string, PARAMETER_ID>();
+        GlobalParameterCache = new Dictionary<string, PARAMETER_ID>();
         RuntimeManager.StudioSystem.getParameterDescriptionList(out var descriptionList);
         foreach (var paramDesc in descriptionList)
         {
-            _globalParameterCache.Add(paramDesc.name, paramDesc.id);
+            GlobalParameterCache.Add(paramDesc.name, paramDesc.id);
             PrintDebug("Added " + paramDesc.name + " to global parameter cache");
         }
     }
 
     public void SetGlobalParameter(string paramName, float paramValue) //Om Global parameter finns sätts vi den till paramValue;
     {
-        if (_globalParameterCache.TryGetValue(paramName, out var id))
+        if (GlobalParameterCache.TryGetValue(paramName, out var id))
         {
             RuntimeManager.StudioSystem.setParameterByID(id, paramValue);
 
@@ -158,12 +158,28 @@ public class AudioManager : MonoBehaviour
             eventList.CreateInstance(eventName, gameObj, followObject);
         }
     }
+
+    public void LoadSampleData(string path)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.LoadSampleData(eventName);
+        }
+    }
     
     public void ReleaseInstance(string path, GameObject gameObj = null)
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
             eventList.ReleaseInstance(eventName, gameObj);
+        }
+    }
+    
+    public void UnloadSampleData(string path)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.UnloadSampleData(eventName);
         }
     }
     
@@ -342,8 +358,8 @@ public class AudioManager : MonoBehaviour
 
     public void LoadBank(string bankName, bool loadSamples = false) //Laddar bank, om master laddas också string bank
     {
-        RuntimeManager.LoadBank(bankName + BankExtension);
-        if (bankName == "Master") RuntimeManager.LoadBank(bankName + StringBankExtension);
+        RuntimeManager.LoadBank(bankName + BankExtension, loadSamples);
+        if (bankName == "Master") RuntimeManager.LoadBank(bankName + StringBankExtension, loadSamples);
         PrintDebug("Loading " + bankName + BankExtension);
     }
 
@@ -385,6 +401,11 @@ public class AudioManager : MonoBehaviour
 
     private void OnSceneUnloaded(Scene scene)
     {
+        CleanupInstances();
+    }
+
+    public void CleanupInstances()
+    {
         foreach (var eventList in eventLists)
         {
             eventList.CleanupInstanceList(); 
@@ -399,8 +420,6 @@ public class AudioManager : MonoBehaviour
 
     public bool showOnlyWarnings;
 
-    public bool showExtraInfo; // För custom inspector
-
     [ContextMenu("Toggle Debug")]
     public void ToggleDebug()
     {
@@ -413,85 +432,6 @@ public class AudioManager : MonoBehaviour
         if (isWarning) Debug.LogWarning(message);
         if (!showOnlyWarnings) Debug.Log(message);
     }
-    
-    public string[] GetGlobalParameterList(out float[] valueList)
-    {
-        var tempList = new List<string>();
-        var tempValueList = new List<float>();
-        foreach (var parameter in _globalParameterCache)
-        {
-            tempList.Add(parameter.Key);
-            tempValueList.Add(GetGlobalParameterValue(parameter.Key));
-        }
-        valueList = tempValueList.ToArray();
-        return tempList.ToArray();
-    }
-
-    public float GetGlobalParameterValue(string paramName)
-    {
-        if (_globalParameterCache.TryGetValue(paramName, out var id))
-        {
-            RuntimeManager.StudioSystem.getParameterByID(id, out var paramValue);
-            return paramValue;
-        }
-
-        return 0f;
-    }
-
-    public bool TryGetEventDescription(string path, out EventDescription eventDescription)
-    {
-        if (TryGetEventList(path, out var eventList, out var eventName))
-        {
-            eventList.TryGetEvent(eventName, out var eventData);
-            eventDescription = RuntimeManager.GetEventDescription(eventData.eventReference);
-            return true;
-        }
-
-        eventDescription = new EventDescription();
-        return false;
-    }
-
-    public bool TryGetLocalParameterList(string path, out ParameterData[] parameterList)
-    {
-        if (TryGetEventList(path, out var eventList, out var eventName))
-        {
-            eventList.TryGetEvent(eventName, out var eventData);
-            parameterList = eventData.parameters;
-            return true;
-        }
-        parameterList = null;
-        return false;
-    }
-
-    public string[] GetEventInstanceList(string category)
-    {
-        var tempList = new List<string>();
-        var path = category + "/x";
-        if (TryGetEventList(path, out var eventList, out var eventName))
-        {
-            foreach (var instance in eventList.InstanceList)
-            {
-                instance.Value.getDescription(out var description);
-                description.getPath(out var eventPath);
-                var split = eventPath.Split('/');
-                
-                tempList.Add(split[^1] + ": " + instance.Key.name);
-            }
-        }
-        return tempList.ToArray();
-    }
-
-    public bool TryEventData (string path, out EventData eventData)
-    {
-        if (TryGetEventList(path, out var eventList, out var eventName))
-        {
-            eventList.TryGetEvent(eventName, out eventData);
-            return true;
-        }
-        eventData = null;
-        return false;
-    }
-    
     
 
     #endregion
@@ -542,12 +482,16 @@ public class AudioManager : MonoBehaviour
         StopAndReleaseAllInstances();
         StopAllEvents();
     }
-
+    
+    
+    
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
         StopAndReleaseAllInstances();
         StopAllEvents();
-    }*/
+    }
+
+    */
 }

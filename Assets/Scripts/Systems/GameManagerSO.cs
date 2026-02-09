@@ -49,6 +49,10 @@ public class GameManagerSO : ScriptableObject
     private bool hasLoadedSettings = false;
 
     private int thingsFreezingGame = 0;
+    public bool IsGameFrozen
+    {
+        get { return thingsFreezingGame > 0; }
+    }
     private int thingsLockingMouse = 0;
 
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
@@ -56,8 +60,18 @@ public class GameManagerSO : ScriptableObject
     public event Action<float>? OnPlayerHealthCheatValueChangeSelfReset;
     public event Action<float>? OnEnemyHealthCheatValueChangeSelfReset;
     public event Action? OnSavePointSaveSelfReset;
-    public event Action<bool>? OnFreezeTimeChangeSelfReset;
+    public event Action<bool>? OnFreezeGameChangeSelfReset;
+    /// <summary>
+    /// will not reset on scene change, care for memory leaks
+    /// </summary>
+    public event Action<bool>? OnFreezeGameChange;
+    /// <summary>
+    /// will not reset on scene change, care for memory leaks
+    /// </summary>
     public event Action<int>? OnLoadScene;
+    /// <summary>
+    /// will not reset on scene change, care for memory leaks
+    /// </summary>
     public event Action<bool>? OnLockMouse;
 #pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 
@@ -80,15 +94,13 @@ public class GameManagerSO : ScriptableObject
             if (instance == null)
             {
                 instance = Resources.LoadAll<GameManagerSO>("")[0];
-                instance.ResetManagerVariables();
             }
             instance.FirstAcces();
             return instance;
         }
     }
 
-    //called on SingletonSpawner awake
-    //put in first acces for now
+    //called on awake in GameManagerReseter;
     public void ResetManagerVariables()
     {
         thingsFreezingGame = 0;
@@ -119,13 +131,13 @@ public class GameManagerSO : ScriptableObject
         }
     }
 
-    void ResetActions()
+    private void ResetActions()
     {
         OnIDAddedToListSelfReset = null;
         OnPlayerHealthCheatValueChangeSelfReset = null;
         OnEnemyHealthCheatValueChangeSelfReset = null;
         OnSavePointSaveSelfReset = null;
-        OnFreezeTimeChangeSelfReset = null;
+        OnFreezeGameChangeSelfReset = null;
     }
     #endregion
 
@@ -270,13 +282,15 @@ public class GameManagerSO : ScriptableObject
         {
             Time.timeScale = 0;
 
-            OnFreezeTimeChangeSelfReset?.Invoke(true);
+            OnFreezeGameChangeSelfReset?.Invoke(true);
+            OnFreezeGameChange?.Invoke(true);
         }
         else if(wasFrozen && thingsFreezingGame == 0)
         {
             Time.timeScale = currentSavefileData.normalTimeScale;
 
-            OnFreezeTimeChangeSelfReset?.Invoke(false);
+            OnFreezeGameChangeSelfReset?.Invoke(false);
+            OnFreezeGameChange?.Invoke(false);
         }
     }
     

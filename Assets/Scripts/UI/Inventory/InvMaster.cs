@@ -131,6 +131,7 @@ public class InvMaster : MonoBehaviour
 
     public void ToggleInventory()
     {
+        if (GameManagerSO.Instance.IsGameFrozen) return;
         if(playerInventory.activeSelf)
         {
             ClosePlayerInventory();

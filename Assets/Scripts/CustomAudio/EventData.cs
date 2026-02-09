@@ -50,7 +50,13 @@ using UnityEditor;
         public void PopulateData()
         {
             EditorUtils.LoadPreviewBanks(); //Behövs för att EventManager och EditorUtils ska fungera
-
+            if (eventReference.IsNull)
+            {
+                Debug.LogWarning("Could not find event reference");
+                return;
+            }
+            
+            
             if (eventName == null | eventName == "") //Fyll eventName om den inte redan har ett namn
             {
                 var split = eventReference.Path.Split('/');
@@ -61,7 +67,13 @@ using UnityEditor;
             //Eftersom de bara kan nås i Editorn behöver vi själva kopiera vissa variabler,
             //som vilka banker ett event tillhör samt vilka parametrar som används av eventet.
             
-            var editorEventRef = EventManager.EventFromGUID(eventReference.Guid); 
+            var editorEventRef = EventManager.EventFromGUID(eventReference.Guid);
+
+            if (editorEventRef == null)
+            {
+                Debug.LogWarning("Could not find editorEventRef");
+                return;
+            }
 
             var tempBankList = new List<string>(); 
             foreach (var bank in editorEventRef.Banks)

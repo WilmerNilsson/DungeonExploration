@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8061342073860227278}
   - component: {fileID: 5548138156277792010}
   m_Layer: 0
-  m_Name: SceneMusic
+  m_Name: EmitOnStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57,6 +57,7 @@ MonoBehaviour:
     stopMode: 0
     parametersToSet: []
     bankName: 
+    loadSampleData: 0
   - command: 2
     path: BGM/Level1
     gameObj: {fileID: 0}
@@ -64,6 +65,7 @@ MonoBehaviour:
     stopMode: 0
     parametersToSet: []
     bankName: 
+    loadSampleData: 0
 --- !u!114 &5548138156277792010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -88,10 +90,12 @@ MonoBehaviour:
     stopMode: 0
     parametersToSet: []
     bankName: 
-  - command: 1
+    loadSampleData: 0
+  - command: 4
     path: BGM/Level1
     gameObj: {fileID: 0}
     followObject: 0
     stopMode: 0
     parametersToSet: []
     bankName: 
+    loadSampleData: 0
