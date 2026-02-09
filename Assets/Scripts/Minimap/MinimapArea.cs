@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class MinimapArea : MonoBehaviour
 {
-    private List<GameObject> children = new List<GameObject>();
+    public List<GameObject> children = new List<GameObject>();
 
+
+    public void ReturnDecendantOfParent(GameObject parent, List<GameObject> children)
+    {
+        foreach (Transform child in parent.transform)
+        {
+            if (child.gameObject.layer == LayerMask.NameToLayer("Minimap"))
+            {
+                children.Add(child.gameObject);
+            }
+            else
+            {
+                ReturnDecendantOfParent(child.gameObject, children);
+            }
+        }
+    }
     private void Awake()
     {
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            children.Add(transform.GetChild(i).gameObject);
-            children[i].SetActive(false);
-        }
+        ReturnDecendantOfParent(this.gameObject, children);
     }
 
     public void DrawArea()

@@ -4,24 +4,35 @@ using UnityEngine;
 
 public class MinimapCamera : MonoBehaviour
 {
-    [Tooltip("A list of transforms that represent the possible positions of the camera")]
-    [SerializeField] private List<Transform> cameraPositions;
+    [Tooltip("A list of cameras that view the different floors")]
+    [SerializeField] private List<GameObject> cameras;
 
     private void Awake()
     {
-        if (cameraPositions.Count > 0)
+        if (cameras.Count == 0)
         {
-            transform.position = cameraPositions[0].position;
+            Debug.LogWarning("No cameras found", this);
+            return;
+        }
+        cameras[0].SetActive(true);
+        for (int i = 1; i < cameras.Count; i++)
+        {
+            cameras[i].SetActive(false);
         }
     }
 
     public void SetFloor(int floor)
     {
-        if (floor > cameraPositions.Count - 1)
+        if (floor > cameras.Count - 1)
         {
             Debug.LogWarning("floor is out of range", this);
             return;
         }
-        transform.position = cameraPositions[floor - 1].position;
+
+        for (int i = 0; i < cameras.Count; i++)
+        {
+            cameras[i].SetActive(false);
+        }
+        cameras[floor].SetActive(true);
     }
 }
