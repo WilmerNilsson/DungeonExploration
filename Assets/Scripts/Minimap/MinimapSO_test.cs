@@ -6,13 +6,15 @@ public class MinimapSO_test : ScriptableObject
 {
     public List<GameObject> minimapObjects;
     public List<Vector3> minimapPositions;
+    public List<Vector3>  minimapScales;
 
-    public void AddToLists(GameObject objectToAdd, Vector3 positionToAdd)
+    public void AddToLists(GameObject objectToAdd, Vector3 positionToAdd, Vector3 scaleToAdd)
     {
         if (!minimapPositions.Contains(positionToAdd))
         {
             minimapObjects.Add(objectToAdd);
             minimapPositions.Add(positionToAdd);
+            minimapScales.Add(scaleToAdd);
         }
     }
 
@@ -20,5 +22,6 @@ public class MinimapSO_test : ScriptableObject
     {
         minimapObjects.Clear();
         minimapPositions.Clear();
+        minimapScales.Clear();
     }
 }
