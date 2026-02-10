@@ -4,8 +4,17 @@ using UnityEngine;
 
 public class MinimapArea : MonoBehaviour
 {
-    public List<MinimapPart> children = new List<MinimapPart>();
+    private List<MinimapPart> children = new List<MinimapPart>();
+    [Tooltip("The scriptable object belonging to this level")]
     [SerializeField] private MinimapSO_test _minimapSoTest;
+
+    private void OnValidate()
+    {
+        if (_minimapSoTest == null)
+        {
+            Debug.LogWarning("No minimap scriptable object found", this);
+        }
+    }
 
 
     public void ReturnDecendantOfParent(GameObject parent, List<MinimapPart> children)
@@ -31,7 +40,7 @@ public class MinimapArea : MonoBehaviour
     {
         foreach (MinimapPart child in children)
         {
-            _minimapSoTest.AddToLists(child.prefab, child.transform.position);
+            _minimapSoTest.AddToLists(child.prefab, child.transform.position, child.transform.localScale);
         }
     }
 }
