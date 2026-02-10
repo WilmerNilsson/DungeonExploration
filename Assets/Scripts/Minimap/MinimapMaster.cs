@@ -7,11 +7,27 @@ public class MinimapMaster : MonoBehaviour
     {
         get; private set; 
     }
+    [Tooltip("Most likely the UI where the map will be shown")]
     [SerializeField] private GameObject minimap;
 
+    [Tooltip("The scriptable object belonging to this level")]
     [SerializeField] private MinimapSO_test minimapSoTest;
     //[SerializeField] private PlayerController playerController;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    private void OnValidate()
+    {
+        if (minimap == null)
+        {
+            Debug.LogWarning("No minimap object found", this);
+        }
+
+        if (minimapSoTest == null)
+        {
+            Debug.LogWarning("No minimap scriptable object found", this);
+        }
+    }
+
     private void Start()
     {
         Instance = this;
