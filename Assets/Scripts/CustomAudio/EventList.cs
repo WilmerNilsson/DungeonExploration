@@ -29,7 +29,7 @@ public class EventList : ScriptableObject
             eventData.RefreshParameterCache();
             EventCache.Add(eventData.eventName, eventData);
 
-            PrintDebug("Added " + eventData.eventName + " to eventCache");
+            AudioDebug.Print("Added " + eventData.eventName + " to eventCache");
         }
     }
     
@@ -51,11 +51,11 @@ public class EventList : ScriptableObject
         {
             if (HasEventLoaded(eventData))
             {
-                PrintDebug("Successfully retrieved " + eventName);
+                AudioDebug.Print("Successfully retrieved " + eventName);
                 return true;
             }
         }
-        PrintDebug("Failed to get " + eventName, true);
+        AudioDebug.Print("Failed to get " + eventName, true);
         
         return false;
     }
@@ -68,11 +68,11 @@ public class EventList : ScriptableObject
         {
             if (!RuntimeManager.HasBankLoaded(bank + BankExtension))
             {
-                PrintDebug("The bank: " + bank + " for " + eventData.eventName + " isn't loaded", true);
+                AudioDebug.Print("The bank: " + bank + " for " + eventData.eventName + " isn't loaded", true);
                 hasLoaded = false;
             }
         }
-        if(hasLoaded) PrintDebug("All banks for " + eventData.eventName + " are loaded");
+        if(hasLoaded) AudioDebug.Print("All banks for " + eventData.eventName + " are loaded");
         return hasLoaded;
     }
     
@@ -84,7 +84,7 @@ public class EventList : ScriptableObject
     
     public void CleanupInstanceList() //Kallas av audioManager vid scenladdning, stoppar alla event på gameObjects som inte längre finns
     {
-        PrintDebug(category + " has " + InstanceList.Count + " instance(s) in list before cleanup");
+        AudioDebug.Print(category + " has " + InstanceList.Count + " instance(s) in list before cleanup");
         var objList = InstanceList.Select(kvp => kvp.Key).ToList(); 
         foreach (var obj in objList)
         {
@@ -92,9 +92,9 @@ public class EventList : ScriptableObject
             InstanceList[obj].stop(STOP_MODE.IMMEDIATE);
             InstanceList[obj].release();
             InstanceList.Remove(obj);
-            PrintDebug("Stopped and released eventInstance at " + obj);
+            AudioDebug.Print("Stopped and released eventInstance at " + obj);
         }
-        PrintDebug(category + " has " + InstanceList.Count + " instance(s) in list after cleanup");
+        AudioDebug.Print(category + " has " + InstanceList.Count + " instance(s) in list after cleanup");
     }
     
     public void CreateInstance(string eventName, GameObject gameObject = null, bool followObject = true)
@@ -103,13 +103,13 @@ public class EventList : ScriptableObject
         
         if (eventData.isOneShot)
         {
-            PrintDebug("Didn't create instance for " + eventName + " because it is not a looping event", true);
+            AudioDebug.Print("Didn't create instance for " + eventName + " because it is not a looping event", true);
             return;
         } //Skapa inte instans utan att släppa den om eventet är oneShot;
 
         if (eventData.is3D && gameObject == null)
         {
-            PrintDebug("Didn't create instance for " + eventName + " Since it is a 3D event and needs a gameObject to attach to", true);
+            AudioDebug.Print("Didn't create instance for " + eventName + " Since it is a 3D event and needs a gameObject to attach to", true);
             return;
         }
         
@@ -117,12 +117,12 @@ public class EventList : ScriptableObject
         {
             if (InstanceList.ContainsKey(gameObject))
             {
-                PrintDebug("Didn't create an instance for " + eventName + " at " + gameObject.name + " because " + gameObject.name + " already has an event instance", true);
+                AudioDebug.Print("Didn't create an instance for " + eventName + " at " + gameObject.name + " because " + gameObject.name + " already has an event instance", true);
                 return;
             }
             var instance = RuntimeManager.CreateInstance(eventData.eventReference);
             InstanceList.Add(gameObject, instance);
-            PrintDebug("Created instance for " + eventName + " and added it to the instance list along with " + gameObject.name);
+            AudioDebug.Print("Created instance for " + eventName + " and added it to the instance list along with " + gameObject.name);
 
             if (!eventData.is3D) return; //Om event är 3D och attachToObject, fäser vi eventet på gameObject,
                                                             //om followObject är false följer eventet inte med gameObject utan
@@ -138,29 +138,29 @@ public class EventList : ScriptableObject
                     RuntimeManager.AttachInstanceToGameObject(instance, gameObject, true);
                 }
                 
-                PrintDebug("Attached " + eventName + " to " + gameObject.name);
+                AudioDebug.Print("Attached " + eventName + " to " + gameObject.name);
             }
             else
             {
                 instance.set3DAttributes(gameObject.transform.To3DAttributes());
-                PrintDebug("Set 3D attributes of " + eventName + " to those of " + gameObject.name);
+                AudioDebug.Print("Set 3D attributes of " + eventName + " to those of " + gameObject.name);
             }
         }
         else //Om inget gameObject finns lägger vi istället instance i eventData, t.ex för musikEvent som bara har en emitter.
         {
             if (eventData.eventInstance.isValid())
             {
-                PrintDebug("Didn't create instance for " + eventName + " because it already has an instance", true);
+                AudioDebug.Print("Didn't create instance for " + eventName + " because it already has an instance", true);
                 return;
             }
 
             if (eventData.is3D)
             {
-                PrintDebug("Didn't create instance for "+ eventName + " because it's a 3D event and needs to be attached to a 3D object to work", true);
+                AudioDebug.Print("Didn't create instance for "+ eventName + " because it's a 3D event and needs to be attached to a 3D object to work", true);
                 return;
             }
             eventData.eventInstance = RuntimeManager.CreateInstance(eventData.eventReference);
-            PrintDebug("Created instance for " + eventName);
+            AudioDebug.Print("Created instance for " + eventName);
         }
     }
 
@@ -169,13 +169,13 @@ public class EventList : ScriptableObject
         if (!TryGetEvent(eventName, out var eventData)) return;
         if (eventData.isOneShot)
         {
-            PrintDebug("Didn't load samples for " + eventName + " because it is not a looping event", true);
+            AudioDebug.Print("Didn't load samples for " + eventName + " because it is not a looping event", true);
             return;
         }
         
         var eventDesc = RuntimeManager.GetEventDescription(eventData.eventReference);
         eventDesc.loadSampleData();
-        PrintDebug("Loading samples for" + eventName);
+        AudioDebug.Print("Loading samples for" + eventName);
     }
     
     public void ReleaseInstance(string eventName, GameObject gameObject = null) //Som CreateInstance fast släpper instansen istället
@@ -188,7 +188,7 @@ public class EventList : ScriptableObject
             {
                 if (!instance.isValid())
                 {
-                    PrintDebug("Didn't release instance for " + eventName + " at " + gameObject.name + " because it is not a valid instance", true);
+                    AudioDebug.Print("Didn't release instance for " + eventName + " at " + gameObject.name + " because it is not a valid instance", true);
                     return;
                 }
                 instance.getPlaybackState(out var state);
@@ -196,11 +196,11 @@ public class EventList : ScriptableObject
                 {
                     instance.release();
                     InstanceList.Remove(gameObject);
-                    PrintDebug("Releasing instance for " + eventName + " and removed from instance list");
+                    AudioDebug.Print("Releasing instance for " + eventName + " and removed from instance list");
                 }
                 else
                 {
-                    PrintDebug("Instance for " + eventData.eventName + " at " + gameObject.name + " needs to be stopped before release", true);
+                    AudioDebug.Print("Instance for " + eventData.eventName + " at " + gameObject.name + " needs to be stopped before release", true);
                 }
             }
         }
@@ -208,7 +208,7 @@ public class EventList : ScriptableObject
         {
             if (!eventData.eventInstance.isValid())
             {
-                PrintDebug("Didn't release instance for " + eventName + " because it is not a valid instance", true);
+                AudioDebug.Print("Didn't release instance for " + eventName + " because it is not a valid instance", true);
                 return;
             }
             
@@ -216,11 +216,11 @@ public class EventList : ScriptableObject
             if (state == PLAYBACK_STATE.STOPPED || state == PLAYBACK_STATE.STOPPING)
             {
                 eventData.eventInstance.release();
-                PrintDebug("Releasing instance for " + eventName);
+                AudioDebug.Print("Releasing instance for " + eventName);
             }
             else
             {
-                PrintDebug("Instance for " + eventData.eventName + " needs to be stopped before release", true);
+                AudioDebug.Print("Instance for " + eventData.eventName + " needs to be stopped before release", true);
             }
         }
     }
@@ -230,12 +230,12 @@ public class EventList : ScriptableObject
         if (!TryGetEvent(eventName, out var eventData)) return;
         if (eventData.isOneShot)
         {
-            PrintDebug("Didn't unload samples for " + eventName + " because it is not a looping event", true);
+            AudioDebug.Print("Didn't unload samples for " + eventName + " because it is not a looping event", true);
             return;
         }
         var eventDesc = RuntimeManager.GetEventDescription(eventData.eventReference);
         eventDesc.unloadSampleData();
-        PrintDebug("Unloading samples for" + eventName);
+        AudioDebug.Print("Unloading samples for" + eventName);
     }
     
     public void StartEvent(string eventName, GameObject gameObject = null) //Som CreateInstance fast startar instansen istället OM instansen inte redan spelar
@@ -247,21 +247,21 @@ public class EventList : ScriptableObject
                 if (!InstanceList.TryGetValue(gameObject, out var instance)) return;
                 if (!instance.isValid())
                 {
-                    PrintDebug("Didn't start " + eventName + " at " + gameObject.name + " because it's instance is not valid", true);
+                    AudioDebug.Print("Didn't start " + eventName + " at " + gameObject.name + " because it's instance is not valid", true);
                     return;
                 }
                 instance.getPlaybackState(out var playbackState);
                 if (playbackState != PLAYBACK_STATE.PLAYING)
                 {
                     instance.start();
-                    PrintDebug("Started event " + eventName + " on " + gameObject.name);
+                    AudioDebug.Print("Started event " + eventName + " on " + gameObject.name);
                 }
             }
             else
             {
                 if (!eventData.eventInstance.isValid())
                 {
-                    PrintDebug("Didn't start " + eventName + " because it's instance is not valid", true);
+                    AudioDebug.Print("Didn't start " + eventName + " because it's instance is not valid", true);
                     return;
                 }
                 
@@ -269,7 +269,7 @@ public class EventList : ScriptableObject
                 if (playbackState != PLAYBACK_STATE.PLAYING)
                 {
                     eventData.eventInstance.start();
-                    PrintDebug("Started event " + eventName);
+                    AudioDebug.Print("Started event " + eventName);
                 }
             }
         }
@@ -283,12 +283,12 @@ public class EventList : ScriptableObject
             {
                 if (!InstanceList.TryGetValue(gameObject, out var instance)) return;
                 instance.stop(stopMode);
-                PrintDebug("Stopped event " + eventName + " on " + gameObject.name);
+                AudioDebug.Print("Stopped event " + eventName + " on " + gameObject.name);
             }
             else
             {
                 eventData.eventInstance.stop(stopMode);
-                PrintDebug("Stopped event " + eventName);
+                AudioDebug.Print("Stopped event " + eventName);
             }
         }
     }
@@ -298,14 +298,14 @@ public class EventList : ScriptableObject
         if (!TryGetEvent(eventName, out var eventData)) return;
         if (!eventData.ParameterCache.TryGetValue(paramName, out var parameterData))
         {
-            PrintDebug("Couldn't find parameter: " + paramName, true);
+            AudioDebug.Print("Couldn't find parameter: " + paramName, true);
             return;
         }
         
         if (parameterData.isGlobal)
         {
             RuntimeManager.StudioSystem.setParameterByID(parameterData.ID(), paramValue);
-            PrintDebug("Set global parameter " + paramName + " to " + paramValue);
+            AudioDebug.Print("Set global parameter " + paramName + " to " + paramValue);
         }
         else
         {
@@ -313,12 +313,12 @@ public class EventList : ScriptableObject
             {
                 if (!InstanceList.TryGetValue(gameObject, out var instance)) return;
                 instance.setParameterByID(parameterData.ID(), paramValue);
-                PrintDebug("Set " + paramName + " in event " + eventName + " on object " + gameObject.name + " to " + paramValue);
+                AudioDebug.Print("Set " + paramName + " in event " + eventName + " on object " + gameObject.name + " to " + paramValue);
             }
             else
             {
                 eventData.eventInstance.setParameterByID(parameterData.ID(), paramValue);
-                PrintDebug("Set " + paramName + " in event " + eventName + " to " + paramValue);
+                AudioDebug.Print("Set " + paramName + " in event " + eventName + " to " + paramValue);
             }
         }
     }
@@ -332,12 +332,12 @@ public class EventList : ScriptableObject
             if (!InstanceList.TryGetValue(gameObject, out var instance)) return;
             instance.keyOff();
             
-            PrintDebug("KeyOff in event " + eventName + " on object " + gameObject.name);
+            AudioDebug.Print("KeyOff in event " + eventName + " on object " + gameObject.name);
         }
         else
         { 
             eventData.eventInstance.keyOff();
-            PrintDebug("KeyOff in event " + eventName);
+            AudioDebug.Print("KeyOff in event " + eventName);
         }
     }
     
@@ -367,13 +367,13 @@ public class EventList : ScriptableObject
             
             if (!eventData.isOneShot)
             {
-                PrintDebug(eventName + " is not a OneShot event and should not be played through this method", true);
+                AudioDebug.Print(eventName + " is not a OneShot event and should not be played through this method", true);
                 return;
             }
             
             if (eventData.is3D && gameObject == null)
             {
-                PrintDebug("Didn't play OneShot for " + eventName + " Since it is a 3D event and needs a gameObject to attach to", true);
+                AudioDebug.Print("Didn't play OneShot for " + eventName + " Since it is a 3D event and needs a gameObject to attach to", true);
                 return;
             }
             
@@ -416,7 +416,7 @@ public class EventList : ScriptableObject
             instance.start();
             instance.release();
             
-            PrintDebug("Playing OneShot: " + eventName);
+            AudioDebug.Print("Playing OneShot: " + eventName);
         }
     }
     
@@ -429,11 +429,11 @@ public class EventList : ScriptableObject
         if (!TryGetEvent(eventName, out var eventData)) return; //Om event finns & det inte redan finns en instans skapar vi en
         if (eventData.eventInstance.isValid())
         {
-            PrintDebug("Didn't create instance for dialogue event " + eventData.eventName + " since it already has a valid instance", true);
+            AudioDebug.Print("Didn't create instance for dialogue event " + eventData.eventName + " since it already has a valid instance", true);
             return;
         }
         eventData.eventInstance = RuntimeManager.CreateInstance(eventData.eventReference);
-        PrintDebug("Created instance for dialogue event " + eventData.eventName);
+        AudioDebug.Print("Created instance for dialogue event " + eventData.eventName);
     }
 
     public void SayLine(string eventName, string lineParameter, int lineIndex)
@@ -441,13 +441,13 @@ public class EventList : ScriptableObject
         if (!TryGetEvent(eventName, out var eventData)) return; 
         if (!eventData.eventInstance.isValid())
         {
-            PrintDebug("You need to create an instance for " + eventName + " before trying to start a dialogue", true);
+            AudioDebug.Print("You need to create an instance for " + eventName + " before trying to start a dialogue", true);
             return;
         } //Om event och instans finns ställer vi in parametrar(om de finns) och spelar instansen
         
         if (!eventData.ParameterCache.TryGetValue(lineParameter, out var parameterData))
         {
-            PrintDebug("Couldn't find parameter: " + lineParameter, true);
+            AudioDebug.Print("Couldn't find parameter: " + lineParameter, true);
             return;
         }
         eventData.eventInstance.setParameterByID(parameterData.ID(), lineIndex);
@@ -478,25 +478,6 @@ public class EventList : ScriptableObject
         foreach (var eventData in events)
         {
             eventData.SetDebug(debug);
-        }
-    }
-
-    private void PrintDebug(string message, bool isWarning = false)
-    {
-        if (!AudioManager.IsValid)
-        {
-            Debug.LogWarning("There is no AudioManager in the scene, please add one");
-            return;
-        }
-        if (!AudioManager.Instance.debug) return;
-        if (isWarning)
-        {
-            Debug.LogWarning(message);
-            return;
-        }
-        if (!AudioManager.Instance.showOnlyWarnings)
-        {
-            Debug.Log(message);
         }
     }
 }
