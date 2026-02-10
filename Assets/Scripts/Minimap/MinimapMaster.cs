@@ -29,7 +29,7 @@ public class MinimapMaster : MonoBehaviour
         {
             GameObject currentMinimap = Instantiate(minimapSoTest.minimapObjects[i]);
             currentMinimap.transform.position = minimapSoTest.minimapPositions[i];
-            currentMinimap.layer = LayerMask.NameToLayer("Minimap");
+            currentMinimap.transform.localScale = minimapSoTest.minimapScales[i];
         }
     }
 
