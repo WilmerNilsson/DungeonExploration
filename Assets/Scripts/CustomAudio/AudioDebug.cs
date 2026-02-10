@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 
@@ -16,15 +15,30 @@ public class AudioDebug : MonoBehaviour
         SeePerformanceMetrics
     }
 
+    public static void Print(string message, bool isWarning = false)
+    {
+        if (!AudioManager.IsValid) return;
+        if (AudioManager.Instance.debug) return;
+        if (isWarning)
+        {
+            Debug.LogWarning(message);
+        }
+        else if (!AudioManager.Instance.showOnlyWarnings)
+        {
+            Debug.Log(message);
+        }
+    }
+
     public string path;
     public Procedures procedure;
     public string text;
+    public int lines;
 
-    public void Execute(out string result, out int lines)
+    public void Execute()
     {
         if (!AudioManager.IsValid)
         {
-            result = "";
+            text = "";
             lines = 0;
             return;
         }
@@ -40,7 +54,6 @@ public class AudioDebug : MonoBehaviour
                     RuntimeManager.StudioSystem.getParameterByID(param.Value, out var value);
                     text += param.Key + ": " + value + "\n";
                 }
-                result = text;
                 return;
             case Procedures.GetInstanceList:
                 if (AudioManager.Instance.TryGetEventList(path, out var eventList, out var eventName))
@@ -50,14 +63,14 @@ public class AudioDebug : MonoBehaviour
                         if (eventData.isOneShot)
                         {
                             lines = 1;
-                            result = "Cannot fetch instances since the event is not a Looping Event";
+                            text = "Cannot fetch instances since the event is not a Looping Event";
                             return;
                         }
                         var eventDesc = RuntimeManager.GetEventDescription(eventData.eventReference);
                         if (!eventDesc.isValid())
                         {
                             lines = 1;
-                            result = "Event Description is not Valid";
+                            text = "Event Description is not Valid";
                             return;
                         }
                         eventDesc.getInstanceList(out var instanceList);
@@ -91,11 +104,10 @@ public class AudioDebug : MonoBehaviour
                                 }
                             }
                         }
-                        result = text;
                         return;
                     }
                 }
-                result = "Couldn't find Event";
+                text = "Couldn't find Event";
                 lines = 1;
                 return;
             case Procedures.GetLocalParameterList:
@@ -106,14 +118,14 @@ public class AudioDebug : MonoBehaviour
                         if (eventData.isOneShot)
                         {
                             lines = 1;
-                            result = "Cannot fetch instances since the event is not a Looping Event";
+                            text = "Cannot fetch instances since the event is not a Looping Event";
                             return;
                         }
                         var eventDesc = RuntimeManager.GetEventDescription(eventData.eventReference);
                         if (!eventDesc.isValid())
                         {
                             lines = 1;
-                            result = "Event Description is not Valid";
+                            text = "Event Description is not Valid";
                             return;
                         }
                         eventDesc.getInstanceList(out var instanceList);
@@ -149,21 +161,19 @@ public class AudioDebug : MonoBehaviour
                             lines++;
                         }
                         
-                        result = text;
                         return;
                     }
                 }
-                result = "Couldn't find Event";
+                text = "Couldn't find Event";
                 lines = 1;
                 return;
             case Procedures.GetAllVcas:
-                foreach (var VCA in AudioManager.Instance.VcaCache)
+                foreach (var vca in AudioManager.Instance.VcaCache)
                 {
                     lines++;
-                    VCA.Value.getVolume(out var volume);
-                    text += VCA.Key + ": " + volume + "\n";
+                    vca.Value.getVolume(out var volume);
+                    text += vca.Key + ": " + volume + "\n";
                 }
-                result = text;
                 return;
             case Procedures.GetLoadedBanks:
                 RuntimeManager.StudioSystem.getBankList(out var banks);
@@ -176,7 +186,6 @@ public class AudioDebug : MonoBehaviour
                     var split = bankPath.Split('/');
                     text += split[^1] + ": \n Loading state: " + loadingState  + "\n Sample loading state: " + sampleLoadingState + "\n \n";
                 }
-                result = text;
                 return;
             case Procedures.SeePerformanceMetrics:
                 RuntimeManager.StudioSystem.getMemoryUsage(out var memory);
@@ -192,7 +201,6 @@ public class AudioDebug : MonoBehaviour
                         "\n Stream: " + core.stream + 
                         "\n Geometry: " + core.geometry + 
                         "\n Update: " + core.update;
-                result = text;
                 lines = 10;
                 return;
             default:

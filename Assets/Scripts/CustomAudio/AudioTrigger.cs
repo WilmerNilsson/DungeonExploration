@@ -33,6 +33,7 @@ public class AudioTrigger : MonoBehaviour
         if (activatedBy == ActivatedBy.Start)
         {
             Activate();
+            AudioDebug.Print("Trigger activated on start");
         }
     }
 
@@ -41,6 +42,7 @@ public class AudioTrigger : MonoBehaviour
         if (activatedBy == ActivatedBy.OnTriggerEnter && other.CompareTag(tagToActivate))
         {
             Activate();
+            AudioDebug.Print("AudioTrigger activated on enter by " + other.gameObject.name);
         }
     }
 
@@ -49,6 +51,7 @@ public class AudioTrigger : MonoBehaviour
         if (activatedBy == ActivatedBy.OnTriggerExit && other.CompareTag(tagToActivate))
         {
             Activate();
+            AudioDebug.Print("AudioTrigger activated on exit by " + other.gameObject.name);
         }
     }
 
@@ -58,6 +61,7 @@ public class AudioTrigger : MonoBehaviour
         {
             activationDelay = 0;
             Activate();
+            AudioDebug.Print("AudioTrigger activated on destroy");
         }
     }
 
@@ -75,6 +79,10 @@ public class AudioTrigger : MonoBehaviour
         }
         if (activateOnce && _hasActivated) return;
         _hasActivated = true;
+        if (activatedBy == ActivatedBy.Other)
+        {
+            AudioDebug.Print("AudioTrigger activated by other script or event");
+        }
         if (activationDelay > 0)
         {
             StartCoroutine(ActivationDelay());
