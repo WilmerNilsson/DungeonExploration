@@ -10,17 +10,18 @@ public class AudioDebugEditor : Editor
     
     private SerializedProperty proceduresProperty;
     private SerializedProperty pathProperty;
+    private SerializedProperty textProperty;
+    private SerializedProperty linesProperty;
     private AudioDebug audioDebug;
     
     public void OnEnable()
     {
         proceduresProperty = serializedObject.FindProperty("procedure");
         pathProperty = serializedObject.FindProperty("path");
+        textProperty = serializedObject.FindProperty("text");
+        linesProperty = serializedObject.FindProperty("lines");
         audioDebug = (AudioDebug)target;
     }
-    
-    private string text;
-    private int lines;
     
     public override void OnInspectorGUI()
     {
@@ -39,16 +40,16 @@ public class AudioDebugEditor : Editor
             {
                 if (GUILayout.Button("Execute"))
                 {
-                    audioDebug.Execute(out text, out lines);
+                    audioDebug.Execute();
                 }
             }
             else
             {
-                audioDebug.Execute(out text, out lines);
+                audioDebug.Execute();
             }
             
-            EditorGUILayout.SelectableLabel(text, EditorStyles.textField, GUILayout.Height(
-                (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing) * lines));
+            EditorGUILayout.SelectableLabel(textProperty.stringValue, EditorStyles.textField, GUILayout.Height(
+                (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing) * linesProperty.intValue));
         }
         else
         {
