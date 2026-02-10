@@ -5,6 +5,7 @@ using UnityEngine;
 public class MinimapTrigger : MonoBehaviour
 {
     public List<MinimapArea> mapAreas = new List<MinimapArea>();
+    [SerializeField] private MinimapSO_test minimapSO;
 
     public void DrawMap()
     {
@@ -16,7 +17,6 @@ public class MinimapTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("enter");
         if (other.gameObject.TryGetComponent(out MinimapArea mapArea))
         {
             other.GetComponent<Collider>().enabled = false;

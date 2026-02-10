@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class MinimapArea : MonoBehaviour
 {
-    public List<GameObject> children = new List<GameObject>();
+    public List<MinimapPart> children = new List<MinimapPart>();
+    [SerializeField] private MinimapSO_test _minimapSoTest;
 
 
-    public void ReturnDecendantOfParent(GameObject parent, List<GameObject> children)
+    public void ReturnDecendantOfParent(GameObject parent, List<MinimapPart> children)
     {
         foreach (Transform child in parent.transform)
         {
-            if (child.gameObject.layer == LayerMask.NameToLayer("Minimap"))
+            if (child.gameObject.TryGetComponent(out MinimapPart part))
             {
-                children.Add(child.gameObject);
+                children.Add(part);
             }
             else
             {
@@ -24,17 +25,13 @@ public class MinimapArea : MonoBehaviour
     private void Awake()
     {
         ReturnDecendantOfParent(this.gameObject, children);
-        foreach (GameObject child in children)
-        {
-            child.SetActive(false);
-        }
     }
 
     public void DrawArea()
     {
-        foreach (GameObject child in children)
+        foreach (MinimapPart child in children)
         {
-            child.SetActive(true);
+            _minimapSoTest.AddToLists(child.prefab, child.transform.position);
         }
     }
 }
