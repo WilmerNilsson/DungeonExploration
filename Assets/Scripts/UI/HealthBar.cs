@@ -8,7 +8,7 @@ public class HealthBar : MonoBehaviour
 {
     //[SerializeField] bool _isPlayerHealthBar = false; //we only have the player healtbar in this game
 
-    private TextMeshProUGUI text;
+    [SerializeField] private TextMeshProUGUI optionalText;
 
     private Image image;
     private SlicedFilledImage sFImage;
@@ -22,7 +22,6 @@ public class HealthBar : MonoBehaviour
         {
             sFImage = GetComponent<SlicedFilledImage>();
         }
-        text = GetComponentInChildren<TextMeshProUGUI>();
     }
 
     private void Start()
@@ -77,6 +76,6 @@ public class HealthBar : MonoBehaviour
         {
             sFImage.fillAmount = Mathf.Clamp((float) current / max, 0, 1);
         }
-        text.SetText(current + "/" + max);
+        optionalText?.SetText(current + "/" + max);
     }
 }
