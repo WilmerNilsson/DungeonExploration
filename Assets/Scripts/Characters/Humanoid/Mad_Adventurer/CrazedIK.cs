@@ -3,94 +3,99 @@ using UnityEngine;
 
 public class CrazedIK : MonoBehaviour
 {
+    [SerializeField] private bool KeyframeAnimation = false;
+
+    public bool attack;
+    
     public Animator animator;
-    public Avatar avatar;
-
-    public Transform handObj;
-    public Transform lookObj = null;
-    public Transform Start = null;
-    public Transform End = null;
-    private Transform IKtarget = null;
+    [SerializeField, Tooltip("Where the avatar should look")] private Transform lookObj = null;
     
-    [SerializeField] private float lerpSpeed = 1.0f;
-
-    private float animationWeight;
+    [SerializeField, Tooltip("How fast the animation runs")] private float lerpSpeed = 1.0f;
     
-    [SerializeField] private Node[] nodes;
+    [Header("Hand transform targets")]
+    [SerializeField] private Vector3 currentPos;
+    [SerializeField] private Quaternion currentRot;
+    
+    [Header("Transform Animation")]
+    [SerializeField, Tooltip("List of Transforms for the animation to run through")] private Transform[] targets;
+    private Transform target;
+    private int targetIndex = 0;
+    
+    [Header("Keyframe animation")]
+    [SerializeField, Tooltip("List of keyframes for the animation to run through")] private CustomKeyframe[] Keyframes;
     private int currentNode = 0;
-
-    
-    [SerializeField] private attackPhase currentPhase = attackPhase.Neutral;
-    private enum attackPhase
-    {
-        Neutral,
-        Start,
-        Swing,
-        Reset
-    }
     
     //a callback for calculating IK
     void OnAnimatorIK(int layerIndex)
     {
         if(animator) {
-       
-            //if the IK is active, set the position and rotation directly to the goal.
-            if(animator.GetBool("Attack")) {
-                if (currentPhase == attackPhase.Neutral)
-                {
-                    currentPhase = attackPhase.Start;
-                }
-
-                // Set the look target position, if one has been assigned
+            
+            if(attack) {
                 if(lookObj != null) {
                     animator.SetLookAtWeight(1);
                     animator.SetLookAtPosition(lookObj.position);
                 }
 
-                // Set the right hand target position and rotation, if one has been assigned
-                if(currentPhase != attackPhase.Neutral) {
-                    switch (currentPhase)
+                if (KeyframeAnimation)
+                {
+                    currentPos = Vector3.Slerp(currentPos, transform.TransformDirection(Keyframes[currentNode].Position) + transform.position , lerpSpeed);
+                    currentRot = Quaternion.Slerp(currentRot, Keyframes[currentNode].Rotation, lerpSpeed);
+                    animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
+                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);  
+                    animator.SetIKPosition(AvatarIKGoal.RightHand,currentPos);
+                    animator.SetIKRotation(AvatarIKGoal.RightHand,currentRot);
+
+                    if (Vector3.Distance(currentPos, Keyframes[currentNode].Position) < 0.1f)
                     {
-                        case attackPhase.Start: // Neutral to Start
-                            IKtarget = Start;
-                            break;
-                        case attackPhase.Swing: // Start to End
-                            IKtarget = End;
-                            break;
-                        case attackPhase.Reset: // End to Neutral
-                            IKtarget = animator.GetBoneTransform(HumanBodyBones.RightHand);
-                            break;
-                    }
-                    
-                    animationWeight = Mathf.SmoothStep(animationWeight, 1, lerpSpeed);
-                    animator.SetIKPositionWeight(AvatarIKGoal.RightHand,animationWeight);
-                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand,animationWeight);  
-                    animator.SetIKPosition(AvatarIKGoal.RightHand,IKtarget.position);
-                    animator.SetIKRotation(AvatarIKGoal.RightHand,IKtarget.rotation);
-                    
-                    if (animationWeight > .95f)
-                    {
-                        animationWeight = 0;
-                        switch (currentPhase)
+                        currentNode = currentNode + 1;
+                        if (currentNode >= Keyframes.Length)
                         {
-                            case attackPhase.Start: // Neutral to Start
-                                handObj = Start;
-                                currentPhase = attackPhase.Swing;
-                                break;
-                            case attackPhase.Swing: // Start to End
-                                currentPhase = attackPhase.Reset;
-                                break;
-                            case attackPhase.Reset: // End to Neutral
-                                currentPhase = attackPhase.Neutral;
-                                animator.SetBool("Attack",false);
-                                break;
+                            currentNode = 0;
+                            animator.SetBool("Attack",false);
                         }
                     }
                 }
+                else
+                {
+                    if (target == null)
+                    {
+                        targetIndex = 0;
+                        target = targets[0];
+                    }
+                    
+                    if(target != null) {
+                        
+                        currentPos = Vector3.Slerp(currentPos, target.position, lerpSpeed);
+                        currentRot = Quaternion.Slerp(currentRot, target.rotation, lerpSpeed);
+                        
+                        animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
+                        animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);  
+                        animator.SetIKPosition(AvatarIKGoal.RightHand,currentPos);
+                        animator.SetIKRotation(AvatarIKGoal.RightHand,currentRot);
+                        
+                        if (Vector3.Distance(currentPos, target.position) < 0.1f)
+                        {
+                            targetIndex++;
+                            if (targetIndex >= targets.Length)
+                            {
+                                targetIndex = 0;
+                                target = null;
+                                animator.SetBool("Attack",false);
+                            }
+                            else
+                            {
+                                target = targets[targetIndex];
+                            }
+                        }
+                    }
+                }
+                
             }
 
             //if the IK is not active, set the position and rotation of the hand and head back to the original position
             else {          
+                currentNode = 0;
+                targetIndex = 0;
                 // animator.SetIKPositionWeight(AvatarIKGoal.RightHand,0);
                 // animator.SetIKRotationWeight(AvatarIKGoal.RightHand,0);
                 // animator.SetLookAtWeight(0);
@@ -101,11 +106,11 @@ public class CrazedIK : MonoBehaviour
 }
 
 [System.Serializable]
-class Node
+class CustomKeyframe
 {
-    public Vector3 position;
-    public Quaternion rotation;
+    [SerializeField] private Vector3 position;
+    [SerializeField] private Vector3 rotation;
     
     public Vector3 Position { get { return position; } }
-    public Quaternion Rotation { get { return rotation; } }
+    public Quaternion Rotation { get { return Quaternion.Euler(rotation); } }
 }
