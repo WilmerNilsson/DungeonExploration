@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(RectTransform))]
-public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public const int GridHeight = 4;
     public const int GridWidth = 4;
@@ -14,6 +14,9 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [HideInInspector] public bool[] itemGridSize = new bool[GridHeight*GridWidth];
     //may just have simple bool for importing the default discard use
     [SerializeField] private ItemUse[] uses;
+    [SerializeField] private string descriptionText;
+    [SerializeField] private bool descriptionTextIsLibraryName;
+    [SerializeField] private TextLibrarySO textLibrary;
 
     public RectTransform RectTransform { get { return (transform as RectTransform); } }
     private bool isDragging;
@@ -74,6 +77,30 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
                 transform.SetParent(returnParent);
             }
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if(descriptionTextIsLibraryName)
+        {
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+            if (textLibrary.TryGetTextByName(descriptionText, out BookText? book))
+            {
+                InvMaster.Instance.SetDescriptionText(book.Text);
+            }
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+        }
+        else
+        {
+            InvMaster.Instance.SetDescriptionText(descriptionText);
+        }
+
+        
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        InvMaster.Instance.SetDescriptionText(string.Empty);
     }
 }
 
