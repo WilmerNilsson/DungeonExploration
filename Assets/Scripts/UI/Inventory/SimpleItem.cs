@@ -24,6 +24,24 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     Transform returnParent;
     public Vector2Int Pivot {get{ return pivot; } }
 
+#if DEBUG
+    private void OnValidate()
+    {
+        if (descriptionText == null || descriptionText == string.Empty)
+        {
+            Debug.LogWarning("item description text is empty", this);
+        }
+        else if(descriptionTextIsLibraryName && textLibrary == null)
+        {
+            Debug.LogWarning("item description is for library, but library reference is null", this);
+        }
+        else if (descriptionTextIsLibraryName && !textLibrary.TryGetTextByName(descriptionText, out _))
+        {
+            Debug.LogWarning("item description could not find text in library by name: " + descriptionText, this);
+        }
+    }
+#endif
+
     public bool[,] GetSizeMatrix()
     {
         //small optimisazion would be to shrink the matrix if possible
