@@ -43,6 +43,7 @@ public class MinimapMaster : MonoBehaviour
     {
         for (int i = 0; i < minimapSoTest.minimapObjects.Count; i++)
         {
+            Debug.Log(i);
             GameObject currentMinimap = Instantiate(minimapSoTest.minimapObjects[i]);
             currentMinimap.transform.position = minimapSoTest.minimapPositions[i];
             currentMinimap.transform.localScale = minimapSoTest.minimapScales[i];
