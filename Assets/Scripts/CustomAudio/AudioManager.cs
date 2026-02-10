@@ -408,9 +408,10 @@ public class AudioManager : MonoBehaviour
         SetGlobalParameter("Paused", paused ? 1 : 0);
     }
 
-    private void OnHealthChange(int currentHp)
+    private void OnHealthChange(int currentHp, int maxHP) //Lägga till maxHP här så att vi kan ha en parameter som är ratio och en som är faktiskt värde
     {
         SetGlobalParameter("HP", currentHp);
+        SetGlobalParameter("hpRatio", currentHp / maxHP);
     }
     
     #endregion
