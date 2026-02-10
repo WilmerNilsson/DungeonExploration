@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class MinimapMaster : MonoBehaviour
@@ -7,6 +8,8 @@ public class MinimapMaster : MonoBehaviour
         get; private set; 
     }
     [SerializeField] private GameObject minimap;
+
+    [SerializeField] private MinimapSO_test minimapSoTest;
     //[SerializeField] private PlayerController playerController;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -19,7 +22,17 @@ public class MinimapMaster : MonoBehaviour
     {
         
     }
-    
+
+    private void Awake()
+    {
+        for (int i = 0; i < minimapSoTest.minimapObjects.Count; i++)
+        {
+            GameObject currentMinimap = Instantiate(minimapSoTest.minimapObjects[i]);
+            currentMinimap.transform.position = minimapSoTest.minimapPositions[i];
+            currentMinimap.transform.localScale = minimapSoTest.minimapScales[i];
+        }
+    }
+
     public void ToggleMinimap()
     {
         if(minimap.activeSelf)
