@@ -50,23 +50,25 @@ public class DevConsoleGha : MonoBehaviour
     [SerializeField] TMP_Text _infoTextWindow;
     [SerializeField] TMP_InputField _inputTextWindow;
 
-    private GameObject _toggleObject;
+    private GameObject toggleObject;
     public static DevConsoleGha Instance {  get; private set; }
-    private List<DebugCommand> _commandList;
+    private List<DebugCommand> commandList;
 
     //GameManagerSO gameManager;
 
     private void Awake()
     {
         Instance = this;
-        _toggleObject = transform.GetChild(0).gameObject;
+        toggleObject = transform.GetChild(0).gameObject;
 
         //gameManager = GameManagerSO.GetGameManagerSOInstance();
 
-        _commandList = new List<DebugCommand>
+        commandList = new List<DebugCommand>
         {
             new DebugCommand("help", "Shows a list of commands. Or shows info about a command", "help (command)", HelpCommand),
-            new DebugCommand("get_resolution", "shows resolution data", "get_resolution", GetResolutionCommand)
+            new DebugCommand("get_resolution", "shows resolution data", "get_resolution", GetResolutionCommand),
+            new DebugCommand("teleport", "teleports the player", "teleport x y z", TeleportCommand),
+            new DebugCommand("get_pos", "gets the player current possistion", "get_pos", GetPosCommand),
         };
     }
 
@@ -80,11 +82,11 @@ public class DevConsoleGha : MonoBehaviour
 
         string[] properties = input.Split(' ', 2);
 
-        int index = _commandList.FindIndex(item => item._commandId == properties[0]);
+        int index = commandList.FindIndex(item => item._commandId == properties[0]);
 
         if(index != -1)
         {
-            _commandList[index].Invoke(properties.Length == 2 ? properties[1] : null);
+            commandList[index].Invoke(properties.Length == 2 ? properties[1] : null);
         }
         else
         {
@@ -94,8 +96,9 @@ public class DevConsoleGha : MonoBehaviour
 
     public void ToggeDevConsole()
     {
-        //gameManager.FreezeTime(!_toggleObject.activeSelf);
-        _toggleObject.SetActive(!_toggleObject.activeSelf);
+        GameManagerSO.Instance.FreezeTime(!toggleObject.activeSelf);
+        GameManagerSO.Instance.LockMouse(!toggleObject.activeSelf);
+        toggleObject.SetActive(!toggleObject.activeSelf);
     }
 
     public static DevConsoleGha GetInstance()
@@ -103,13 +106,13 @@ public class DevConsoleGha : MonoBehaviour
         return Instance;
     }
 
-    /* #region command methods */
+    #region command methods 
 
     private void HelpCommand(string input)
     {
         if(input == null)
         {
-            foreach(DebugCommand command in _commandList)
+            foreach(DebugCommand command in commandList)
             {
                 _infoTextWindow.text += $"{command._commandFormat} - {command._commandDescription}\n";
             }
@@ -118,7 +121,7 @@ public class DevConsoleGha : MonoBehaviour
         else
         {
             bool foundCommandId = false;
-            foreach(DebugCommand command in _commandList)
+            foreach(DebugCommand command in commandList)
             {
                 if(input == command._commandId)
                 {
@@ -209,9 +212,9 @@ public class DevConsoleGha : MonoBehaviour
         int failedParamiter;
         bool success;
 
-        Vector2 endLocation;
+        Vector3 endLocation;
 
-        if(properties.Length != 2)
+        if(properties.Length != 3)
         {
             _infoTextWindow.text += "Wrong number of paramiters\n";
             return;
@@ -231,6 +234,13 @@ public class DevConsoleGha : MonoBehaviour
             goto Failed;
         }
 
+        success = float.TryParse(properties[2], out endLocation.z);
+        if (!success)
+        {
+            failedParamiter = 3;
+            goto Failed;
+        }
+
         GameObject.FindGameObjectWithTag("Player").transform.position = endLocation;
         return;
 
@@ -240,8 +250,8 @@ public class DevConsoleGha : MonoBehaviour
 
     private void GetPosCommand()
     {
-        _infoTextWindow.text += $"{(Vector2) GameObject.FindGameObjectWithTag("Player").transform.position}\n\n";
+        _infoTextWindow.text += $"{GameObject.FindGameObjectWithTag("Player").transform.position}\n\n";
     }
 
-    /* #endregion */
+    #endregion
 }

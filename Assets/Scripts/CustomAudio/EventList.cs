@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using FMOD.Studio;
 using FMODUnity;
 using Debug = UnityEngine.Debug;
@@ -17,16 +18,16 @@ public class EventList : ScriptableObject
     
     #region EventData
     
-    private Dictionary<string, EventData> _eventCache = new Dictionary<string, EventData>();
+    public Dictionary<string, EventData> EventCache = new Dictionary<string, EventData>();
 
     public void RefreshEventCache() //Lägger till alla eventData till _eventCache för snabbare lookup än foreach loop i eventData
                                     //samt refreshar ParameterCache i alla eventData
     {
-        _eventCache = new Dictionary<string, EventData>();
+        EventCache = new Dictionary<string, EventData>();
         foreach (var eventData in events)
         {
             eventData.RefreshParameterCache();
-            _eventCache.Add(eventData.eventName, eventData);
+            EventCache.Add(eventData.eventName, eventData);
 
             PrintDebug("Added " + eventData.eventName + " to eventCache");
         }
@@ -46,7 +47,7 @@ public class EventList : ScriptableObject
     
     public bool TryGetEvent(string eventName, out EventData eventData) //Om ett event finns i eventCache OCH banken eventet hör till är laddad returneras true samt EventData, annars false
     {
-        if (_eventCache.TryGetValue(eventName, out eventData))
+        if (EventCache.TryGetValue(eventName, out eventData))
         {
             if (HasEventLoaded(eventData))
             {
@@ -79,18 +80,21 @@ public class EventList : ScriptableObject
 
     #region Looping Events
     
-    public Dictionary<GameObject, EventInstance> InstanceList = new Dictionary<GameObject, EventInstance>(); //TODO: Bättre metod för att spara instanser, just nu kan ett gameObject bara ha en instans på sig.
+    public Dictionary<GameObject, EventInstance> InstanceList = new Dictionary<GameObject, EventInstance>();
     
     public void CleanupInstanceList() //Kallas av audioManager vid scenladdning, stoppar alla event på gameObjects som inte längre finns
     {
-        foreach (var instance in InstanceList)
+        PrintDebug(category + " has " + InstanceList.Count + " instance(s) in list before cleanup");
+        var objList = InstanceList.Select(kvp => kvp.Key).ToList(); 
+        foreach (var obj in objList)
         {
-            if(!instance.Key.activeInHierarchy) continue;
-            instance.Value.stop(STOP_MODE.IMMEDIATE);
-            instance.Value.release();
-            InstanceList.Remove(instance.Key);
-            PrintDebug("Stopped and removed eventInstance at " + instance.Key.name);
+            if (obj) continue;
+            InstanceList[obj].stop(STOP_MODE.IMMEDIATE);
+            InstanceList[obj].release();
+            InstanceList.Remove(obj);
+            PrintDebug("Stopped and released eventInstance at " + obj);
         }
+        PrintDebug(category + " has " + InstanceList.Count + " instance(s) in list after cleanup");
     }
     
     public void CreateInstance(string eventName, GameObject gameObject = null, bool followObject = true)
@@ -159,6 +163,20 @@ public class EventList : ScriptableObject
             PrintDebug("Created instance for " + eventName);
         }
     }
+
+    public void LoadSampleData(string eventName)
+    {
+        if (!TryGetEvent(eventName, out var eventData)) return;
+        if (eventData.isOneShot)
+        {
+            PrintDebug("Didn't load samples for " + eventName + " because it is not a looping event", true);
+            return;
+        }
+        
+        var eventDesc = RuntimeManager.GetEventDescription(eventData.eventReference);
+        eventDesc.loadSampleData();
+        PrintDebug("Loading samples for" + eventName);
+    }
     
     public void ReleaseInstance(string eventName, GameObject gameObject = null) //Som CreateInstance fast släpper instansen istället
     {
@@ -205,6 +223,19 @@ public class EventList : ScriptableObject
                 PrintDebug("Instance for " + eventData.eventName + " needs to be stopped before release", true);
             }
         }
+    }
+
+    public void UnloadSampleData(string eventName)
+    {
+        if (!TryGetEvent(eventName, out var eventData)) return;
+        if (eventData.isOneShot)
+        {
+            PrintDebug("Didn't unload samples for " + eventName + " because it is not a looping event", true);
+            return;
+        }
+        var eventDesc = RuntimeManager.GetEventDescription(eventData.eventReference);
+        eventDesc.unloadSampleData();
+        PrintDebug("Unloading samples for" + eventName);
     }
     
     public void StartEvent(string eventName, GameObject gameObject = null) //Som CreateInstance fast startar instansen istället OM instansen inte redan spelar

@@ -15,7 +15,6 @@ public class InvMaster : MonoBehaviour
     [SerializeField] private ItemContextMenu contextMenu;
     [SerializeField] private Transform worldContainerParent;
     [SerializeField] private GameObject playerInventory;
-    [SerializeField] private PlayerController playerController;
     [SerializeField] private Transform drawOntopParent;
     [Header("reading")] //Starting to feel like we may want to split this up further, but prob once we do a pause menu
     [SerializeField] private GameObject readingCanvasParent;
@@ -44,12 +43,6 @@ public class InvMaster : MonoBehaviour
         if (contextMenu == null) Debug.LogWarning("context menu is null", this);
         if (worldContainerParent == null) Debug.LogWarning("world container parent is null", this);
         if (playerInventory == null) Debug.LogWarning("player inventory object is null", this);
-
-        if(!PrefabUtility.IsPartOfPrefabAsset(this) && playerController == null)
-        {
-            //for some reason this activated constantly
-            //Debug.LogWarning("no connection to a player controller", this);
-        }
 
         if (drawOntopParent == null) Debug.LogWarning("draw ontop parent is null", this);
 
@@ -138,6 +131,7 @@ public class InvMaster : MonoBehaviour
 
     public void ToggleInventory()
     {
+        if (GameManagerSO.Instance.IsGameFrozen) return;
         if(playerInventory.activeSelf)
         {
             ClosePlayerInventory();
@@ -152,18 +146,15 @@ public class InvMaster : MonoBehaviour
     {
         contextMenu.Deselect();
         playerInventory.SetActive(true);
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined; //we need to controll curson with a pause menu once implimented
-        playerController.LockMovement(true);
+
+        GameManagerSO.Instance.LockMouse(true);
     }
 
     public void ClosePlayerInventory()
     {
         contextMenu.Deselect();
         playerInventory.SetActive(false);
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        playerController.LockMovement(false);
+        GameManagerSO.Instance.LockMouse(false);
 
         foreach (ContainerController container in openContainers)
         {
