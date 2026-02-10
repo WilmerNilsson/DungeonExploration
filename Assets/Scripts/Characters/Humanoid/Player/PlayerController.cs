@@ -107,7 +107,7 @@ public class PlayerController : MonoBehaviour
 
         if (context.performed)
         {
-            controller.Attack();
+            //controller.Attack();
         }
     }
 
