@@ -451,7 +451,7 @@ public class AudioManager : MonoBehaviour
 
     #endregion
 
-    #region Extras
+    #region Quitting / Stop All
 
     public void StopAllEvents() //Self explanatory
     {
@@ -476,8 +476,6 @@ public class AudioManager : MonoBehaviour
 
         AudioDebug.Print("Stopped and released all eventInstances");
     }
-
-    #endregion
     
     private void OnApplicationQuit()
     {
@@ -486,4 +484,6 @@ public class AudioManager : MonoBehaviour
         //StopAndReleaseAllInstances();
         StopAllEvents();
     }
+
+    #endregion
 }
