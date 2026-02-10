@@ -24,7 +24,7 @@ public class EventListEditor : Editor
         
         GUILayout.Label("Event List", EditorStyles.boldLabel);
         
-        EditorGUILayout.PropertyField(categoryProperty);
+        EditorGUILayout.PropertyField(categoryProperty, GUILayout.Height(EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing));
         
         EditorGUILayout.Separator();
         

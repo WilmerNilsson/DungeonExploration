@@ -22,20 +22,22 @@ MonoBehaviour:
         Data3: 1626284957
         Data4: -1583868598
       Path: event:/BGM/Level1
-    guid:
-      Data1: 1468106706
-      Data2: 1233904495
-      Data3: 1626284957
-      Data4: -1583868598
     banks:
     - Music
     isOneShot: 0
     is3D: 0
-    isDoppler: 0
     minDistance: 1
     maxDistance: 20
-    debug: 0
-    parameters: []
+    debug: 1
+    parameters:
+    - paramName: EnemyClose
+      isGlobal: 0
+      data1: 3160836343
+      data2: 2437519671
+    - paramName: Test
+      isGlobal: 0
+      data1: 2594965549
+      data2: 4294614124
   - eventName: Test
     eventReference:
       Guid:
@@ -44,18 +46,12 @@ MonoBehaviour:
         Data3: 1973993888
         Data4: -556861212
       Path: event:/BGM/Test
-    guid:
-      Data1: -1424829905
-      Data2: 1332609142
-      Data3: 1973993888
-      Data4: -556861212
     banks:
     - Music
-    isOneShot: 1
+    isOneShot: 0
     is3D: 0
-    isDoppler: 0
     minDistance: 1
     maxDistance: 20
-    debug: 0
+    debug: 1
     parameters: []
-  debug: 0
+  debug: 1
