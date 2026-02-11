@@ -8,14 +8,16 @@ public class MinimapSO_test : ScriptableObject
     public List<GameObject> minimapObjects;
     public List<Vector3> minimapPositions;
     public List<Vector3> minimapScales;
+    public List<Vector3> minimapRotations;
 
-    public void AddToLists(GameObject objectToAdd, Vector3 positionToAdd, Vector3 scaleToAdd)
+    public void AddToLists(GameObject objectToAdd, Transform transform, Vector3 scale)
     {
-        if (!minimapPositions.Contains(positionToAdd))
+        if (!minimapPositions.Contains(transform.position))
         {
             minimapObjects.Add(objectToAdd);
-            minimapPositions.Add(positionToAdd);
-            minimapScales.Add(scaleToAdd);
+            minimapPositions.Add(transform.position);
+            minimapScales.Add(scale);
+            minimapRotations.Add(transform.eulerAngles);
         }
     }
 
@@ -24,5 +26,6 @@ public class MinimapSO_test : ScriptableObject
         minimapObjects.Clear();
         minimapPositions.Clear();
         minimapScales.Clear();
+        minimapRotations.Clear();
     }
 }
