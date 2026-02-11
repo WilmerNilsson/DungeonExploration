@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MinimapMaster : MonoBehaviour
@@ -7,6 +8,7 @@ public class MinimapMaster : MonoBehaviour
     {
         get; private set; 
     }
+    private List<GameObject> spawnedObjects = new List<GameObject>();
     [Tooltip("Most likely the UI where the map will be shown")]
     [SerializeField] private GameObject minimap;
 
@@ -41,13 +43,23 @@ public class MinimapMaster : MonoBehaviour
 
     private void Awake()
     {
+        SpawnMinimap();
+    }
+
+    public void SpawnMinimap()
+    {
+        for (int i = 0; i < spawnedObjects.Count; i++)
+        {
+            Destroy(spawnedObjects[i]);
+        }
+        spawnedObjects.Clear();
         for (int i = 0; i < minimapSoTest.minimapObjects.Count; i++)
         {
-            Debug.Log(i);
             GameObject currentMinimap = Instantiate(minimapSoTest.minimapObjects[i]);
             currentMinimap.transform.position = minimapSoTest.minimapPositions[i];
             currentMinimap.transform.localScale = minimapSoTest.minimapScales[i];
             currentMinimap.transform.eulerAngles = minimapSoTest.minimapRotations[i];
+            spawnedObjects.Add(currentMinimap);
         }
     }
 
