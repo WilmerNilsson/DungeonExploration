@@ -255,14 +255,6 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: Corrupt_adventurer_1:L_Collar_Joint
-      humanName: LeftShoulder
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
     - boneName: Corrupt_adventurer_1:R_Collar_Joint
       humanName: RightShoulder
       limit:
@@ -271,24 +263,8 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: Corrupt_adventurer_1:L_Shoulder_Joint
-      humanName: LeftUpperArm
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
     - boneName: Corrupt_adventurer_1:R_Shoulder_Joint
       humanName: RightUpperArm
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: Corrupt_adventurer_1:L_Skeleton_Joint
-      humanName: LeftLowerArm
       limit:
         min: {x: 0, y: 0, z: 0}
         max: {x: 0, y: 0, z: 0}
@@ -319,7 +295,31 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: Corrupt_adventurer_1:L_Hand_Joint
+    - boneName: Corrupt_adventurer_1:L_Skeleton_Joint
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Corrupt_adventurer_1:L_Shoulder_Joint
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Corrupt_adventurer_1:L_Collar_Joint
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Left Hand
       humanName: LeftHand
       limit:
         min: {x: 0, y: 0, z: 0}
@@ -411,17 +411,17 @@ ModelImporter:
     - name: Corrupt_adventurer_1:L_Shoulder_Joint
       parentName: Corrupt_adventurer_1:L_Collar_Joint
       position: {x: -0.18437849, y: -4.1072524e-18, z: 8.881784e-18}
-      rotation: {x: 0.8615633, y: -3.1084607e-17, z: -0.50765014, w: -5.2755538e-17}
+      rotation: {x: 0.9919114, y: 0.00000011920926, z: 0.12693204, w: 0.000000089406946}
       scale: {x: 1, y: 1, z: 1}
     - name: Corrupt_adventurer_1:L_Skeleton_Joint
       parentName: Corrupt_adventurer_1:L_Shoulder_Joint
       position: {x: -0.13856997, y: 4.4926568e-17, z: 3.6081684e-17}
-      rotation: {x: 2.7755576e-17, y: 1.34886e-40, z: 4.1633363e-16, w: 1}
+      rotation: {x: -0.000000013963724, y: 0.15643555, z: 0.000000070924614, w: 0.98768824}
       scale: {x: 1, y: 1, z: 1}
-    - name: Corrupt_adventurer_1:R_Hand_Joint
+    - name: Left Hand
       parentName: Corrupt_adventurer_1:L_Skeleton_Joint
-      position: {x: -0.3171811, y: 0, z: -0.9410681}
-      rotation: {x: -0.9933342, y: 4.033007e-16, z: -0.11527079, w: -1.3638586e-16}
+      position: {x: -0.502, y: -0, z: -0.19}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Corrupt_adventurer_1:Neck_Joint
       parentName: Corrupt_adventurer_1:Spine5_Joint
@@ -441,7 +441,7 @@ ModelImporter:
     - name: Corrupt_adventurer_1:R_Shoulder_Joint
       parentName: Corrupt_adventurer_1:R_Collar_Joint
       position: {x: -0.18437849, y: 1.6362872e-17, z: -8.881784e-18}
-      rotation: {x: -5.0742763e-16, y: -0.55400026, z: 7.6253013e-16, w: 0.83251655}
+      rotation: {x: -0.00000011920923, y: 0.16047177, z: -0.00000007450577, w: 0.9870404}
       scale: {x: 1, y: 1, z: 1}
     - name: Corrupt_adventurer_1:R_Elbow_Joint
       parentName: Corrupt_adventurer_1:R_Shoulder_Joint
@@ -461,7 +461,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: Corrupt_adventurer_1:Root_Joint
+    rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
