@@ -16,6 +16,6 @@ public class MinimapPart : MonoBehaviour
 
     public Vector3 GetRotatedBounds()
     {
-        return Quaternion.AngleAxis(transform.rotation.eulerAngles.y, Vector3.up) * Renderer.bounds.extents * 2;
+        return Quaternion.AngleAxis(-transform.rotation.eulerAngles.y, Vector3.up) * Renderer.bounds.extents * 2;
     }
 }
