@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float stickSensitivity;
     
     private Vector2 lookVector;
+    private Vector2 lookInput;
     private Vector3 moveVector;
 
     private bool lockedMovement = false;
@@ -21,6 +22,11 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
 
         GameManagerSO.Instance.OnLockMouse += LockMovement;
+    }
+
+    private void Update()
+    {
+        Rotate(lookInput);
     }
 
     private void OnDestroy()
@@ -80,15 +86,15 @@ public class PlayerController : MonoBehaviour
     public void OnMouseLook(InputAction.CallbackContext context)
     {
         if (lockedMovement) return;
-
-        Rotate(context.ReadValue<Vector2>() * mouseSensitivity);
+        
+        lookInput = context.ReadValue<Vector2>() * mouseSensitivity;
     }
     
     public void OnStickLook(InputAction.CallbackContext context)
     {
         if (lockedMovement) return;
 
-        Rotate(context.ReadValue<Vector2>() * stickSensitivity);
+        lookInput = context.ReadValue<Vector2>() * stickSensitivity;
     }
 
     public void OnInteract(InputAction.CallbackContext context)
