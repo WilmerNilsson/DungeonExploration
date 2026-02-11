@@ -256,6 +256,7 @@ MonoBehaviour:
   meleeState:
     mad: {fileID: 4804299107720638804}
     target: {x: 0, y: 0, z: 0}
+    avatarIK: {fileID: 3950284540247109631}
     maxMeleeRange: 3
     minMeleeRange: 1
   target: {fileID: 0}
@@ -336,6 +337,16 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: bde3931042de859469387495edc1204e, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 5b8e82bc21e782e4fbb3dbc2be26eee0, type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'R_Collar_Jnt'\n\tTransform 'Head_Jnt'\n\tTransform
+        'Pelvis_Jnt'\n\tTransform 'L_Collar_Jnt'\n\tTransform 'R_PinkieFinger_02_jnt'\n\tTransform
+        'L_Wrist_Jnt'\n\tTransform 'R_Knee_Jnt'\n\tTransform 'R_Hand_Jnt'\n\tTransform
+        'L_Foot_Jnt'\n\tTransform 'R_Collar_Jnt'\n\tand more ...\n\tFrom animation
+        clip 'Idle_ANI'"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -372,21 +383,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e27947f372aebf4faecea3f063f6227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack: 0
   animator: {fileID: 5024339675474379466}
   lookObj: {fileID: 0}
   currentState: 0
-  Keyframes:
-  - position: {x: 1, y: 2, z: 0}
-    rotation: {x: -90, y: -90, z: 0}
-    duration: 2
-  - position: {x: -1, y: 0, z: 1}
-    rotation: {x: 0, y: -90, z: 180}
-    duration: 3
-  targetKeyframe:
-    position: {x: 0, y: 0, z: 0}
-    rotation: {x: 0, y: 0, z: 0}
-    duration: 0
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 0
+    m_RotationOrder: 4
+  startNode: {x: 2, y: 2, z: -2}
+  endNode: {x: -1, y: -1, z: 0}
+  curveHeight: 4
+  nodeDuration: 0.01
+  chargeDuration: 1
+  resetDuration: 1
 --- !u!95 &5024339675474379466 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 5b8e82bc21e782e4fbb3dbc2be26eee0, type: 3}

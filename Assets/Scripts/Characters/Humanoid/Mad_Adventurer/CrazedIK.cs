@@ -1,104 +1,125 @@
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CrazedIK : MonoBehaviour
 {
-    public bool attack;
-    
+    private bool attacking = false;
     public Animator animator;
     [SerializeField, Tooltip("Where the avatar should look")] private Transform lookObj = null;
     
-    [Header("Keyframe animation")]
     [SerializeField] private AttackState currentState = AttackState.Start;
-    [SerializeField, Tooltip("List of keyframes for the animation to run through")] private CustomKeyframe[] Keyframes;
-    [SerializeField] private CustomKeyframe targetKeyframe;
-    private CustomKeyframe currentKeyframe;
-    [SerializeField] private int currentKeyIndex = 0;
+    
+    [Header("Curve animation")]
+    [SerializeField, Tooltip("Might use later, shit's cool")] private AnimationCurve curve;
+    [SerializeField] private Vector3 startNode;
+    [SerializeField] private Vector3 endNode;
+    [SerializeField] private float curveHeight;
+    [SerializeField] private float nodeDuration;
+    [SerializeField] private float chargeDuration;
+    [SerializeField] private float resetDuration;
+    private Vector3[] nodes;
+    private Vector3 current;
+    private Vector3 target;
+    private int nodeIndex;
     
     private float startTime = 0;
     private float time = 0;
     
-    
-
     private enum AttackState
     {
         Start,
         Swing,
         Return
     }
-    
+
+    private void Start()
+    {
+        Attack();
+    }
+
+    public void Attack()
+    {
+        if (!attacking)
+        {
+            startNode.y = Random.Range(-1f, 2f);
+            endNode.y = -startNode.y;
+            nodes = GetQuadraticBezierPoints(startNode, endNode, curveHeight);
+            attacking = true;
+        }
+    }
+
     //a callback for calculating IK
     void OnAnimatorIK(int layerIndex)
     {
         if(animator) {
             
-            if(animator.GetBool("Attack")) {
+            if(attacking) {
+                
                 if(lookObj != null) {
                     animator.SetLookAtWeight(1);
                     animator.SetLookAtPosition(lookObj.position);
                 }
                 
-                if (currentKeyframe == null) targetKeyframe = Keyframes[0];
+                if (current == Vector3.zero) target = nodes[0];
                 if (startTime == 0) startTime = Time.time;
                 
-                time = (Time.time - startTime) / targetKeyframe.Duration;
-
                 if (currentState == AttackState.Start)
                 {
+                    time = (Time.time - startTime) / chargeDuration;
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,Mathf.SmoothStep(0, 1, time));
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,Mathf.Lerp(0, 1, time));
-                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(targetKeyframe.Position));
-                    animator.SetIKRotation(AvatarIKGoal.RightHand,RelativeRotation(targetKeyframe.Rotation));
+                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(target));
+                    //animator.SetIKRotation(AvatarIKGoal.RightHand,RelativeRotation(targetKeyframe.Rotation));
                 }
                 else if (currentState == AttackState.Swing)
                 {
+                    time = (Time.time - startTime) / nodeDuration;
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
-                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(Vector3.Slerp(currentKeyframe.Position, targetKeyframe.Position, time)));
-                    animator.SetIKRotation(AvatarIKGoal.RightHand,RelativeRotation(Quaternion.Slerp(currentKeyframe.Rotation, targetKeyframe.Rotation, time)));
+                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(Vector3.Slerp(current, target, time)));
+                    //animator.SetIKRotation(AvatarIKGoal.RightHand,RelativeRotation(Quaternion.Slerp(currentKeyframe.Rotation, targetKeyframe.Rotation, time)));
                 }
                 else if (currentState == AttackState.Return)
                 {
+                    time = (Time.time - startTime) / resetDuration;
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,Mathf.SmoothStep(1, 0, time));
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,Mathf.Lerp(1, 0, time));
-                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(currentKeyframe.Position));
-                    animator.SetIKRotation(AvatarIKGoal.RightHand,RelativeRotation(currentKeyframe.Rotation));
+                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(current));
+                    //animator.SetIKRotation(AvatarIKGoal.RightHand,RelativeRotation(currentKeyframe.Rotation));
                 }
-
-                if (time > 1f) //if its near the goal switch goal or end the attack
+                
+                if (time > 1f) //if it's near the goal switch goal or end the attack
                 {
-                    if (currentKeyIndex == 0) // Start Swing
+                    if (nodeIndex == 0) // Start Swing
                     {
-                        currentKeyframe = Keyframes[currentKeyIndex];
-                        targetKeyframe = Keyframes[currentKeyIndex + 1];
+                        current = nodes[nodeIndex];
+                        target = nodes[nodeIndex + 1];
                         currentState = AttackState.Swing;
-                        currentKeyIndex++;
+                        nodeIndex++;
                     }
-                    else if (currentKeyIndex < Keyframes.Length - 1) // Swing
+                    else if (nodeIndex < nodes.Length - 1) // Swing
                     {
-                        currentKeyframe = Keyframes[currentKeyIndex];
-                        targetKeyframe = Keyframes[currentKeyIndex + 1];
-                        currentKeyIndex++;
+                        current = nodes[nodeIndex];
+                        target = nodes[nodeIndex + 1];
+                        nodeIndex++;
                     }
-                    else if (currentKeyIndex == Keyframes.Length - 1) // return
+                    else if (nodeIndex == nodes.Length - 1) // return
                     {
-                        currentKeyframe = Keyframes[currentKeyIndex];
+                        current = nodes[nodeIndex];
                         currentState = AttackState.Return;
-                        currentKeyIndex++;
+                        nodeIndex++;
                     }
                     else // stop
                     {
                         Debug.Log("Keyframe animation finished");
-                        currentKeyIndex = 0;
-                        animator.SetBool("Attack",false);
-                        attack = false;
+                        nodeIndex = 0;
+                        attacking = false;
                         Reset();
                     }
                     startTime = Time.time;
                 }
             }
-
-            //if the IK is not active, set the position and rotation of the hand and head back to the original position
             else {          
                 animator.SetIKPositionWeight(AvatarIKGoal.RightHand,0);
                 animator.SetIKRotationWeight(AvatarIKGoal.RightHand,0);
@@ -123,11 +144,39 @@ public class CrazedIK : MonoBehaviour
     private void Reset()
     {
         currentState = AttackState.Start;
-        targetKeyframe = null;
-        currentKeyframe = null;
-        currentKeyIndex = 0;
         startTime = 0;
         time = 0;
+
+        current = Vector3.zero;
+        target = Vector3.zero;
+        nodeIndex = 0;
+    }
+    
+    public static Vector3[] GetQuadraticBezierPoints(Vector3 startpoint, Vector3 endPoint, float curveHeigh) {
+        Vector3 heighPoint = startpoint + (endPoint - startpoint) / 2 + Vector3.forward * curveHeigh;
+
+        Vector3[] res = new Vector3[100];
+        int maxT = 1;
+        int index = 0;
+
+        for (float t = 0; t <= maxT; t += 0.01f) {
+            Vector3 newPoint = (Mathf.Pow(1 - t, 2) * startpoint) + (2 * (1 - t) * t * heighPoint) + (t * t * endPoint);
+            try {
+                res[index++] = newPoint;
+            }
+            catch {
+                break;
+            }
+        }
+        return res;
+    }
+
+    private void OnDrawGizmos()
+    {
+        foreach (var node in nodes)
+        {
+            Gizmos.DrawSphere(RelativePosition(node), 0.1f);
+        }
     }
 }
 
