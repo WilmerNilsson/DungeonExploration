@@ -116,20 +116,15 @@ public class InvMaster : MonoBehaviour
 
         OpenPlayerInventory();
 
-#if DEBUG
-        if(openContainers.Count > 1)
-        {
-            Debug.LogWarning("2 or more world containers are open, but support is currently just for 1", this);
-        }
-#endif
-
-        container.Grid.transform.SetParent(worldContainerParent);
-        container.Grid.transform.localPosition = Vector3.zero;
+        container.Grid.transform.SetParent(worldContainerParent, false);
     }
 
     public void RemoveWorldContainerFromSystem(ContainerController container)
     {
-        openContainers.Remove(container);
+        if(openContainers.Remove(container))
+        {
+            container.Close();
+        }
     }
 
     public void ToggleInventory()
