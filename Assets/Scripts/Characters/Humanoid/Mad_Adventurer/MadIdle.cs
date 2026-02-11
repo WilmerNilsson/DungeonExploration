@@ -24,6 +24,12 @@ public class MadIdle : MadState
     {
         base.Enter();
         target = FindPath(getRandomPosition());
+        //CombatChecker.RemoveFromChaseList(mad.gameObject);
+    }
+
+    public override void Exit()
+    {
+        //CombatChecker.AddToChaseList(mad.gameObject);
     }
 
     public override void FixedUpdate()

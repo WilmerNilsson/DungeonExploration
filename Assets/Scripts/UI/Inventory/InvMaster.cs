@@ -19,6 +19,7 @@ public class InvMaster : MonoBehaviour
     [Header("reading")] //Starting to feel like we may want to split this up further, but prob once we do a pause menu
     [SerializeField] private GameObject readingCanvasParent;
     [SerializeField] private TextMeshProUGUI readingText;
+    [SerializeField] private TextMeshProUGUI descriptionText;
     /// <summary>
     /// collum, row
     /// </summary>
@@ -43,8 +44,10 @@ public class InvMaster : MonoBehaviour
         if (contextMenu == null) Debug.LogWarning("context menu is null", this);
         if (worldContainerParent == null) Debug.LogWarning("world container parent is null", this);
         if (playerInventory == null) Debug.LogWarning("player inventory object is null", this);
-
         if (drawOntopParent == null) Debug.LogWarning("draw ontop parent is null", this);
+        if (readingCanvasParent == null) Debug.LogWarning("reading canvas parent toggle object is null", this);
+        if (readingText == null) Debug.LogWarning("reading text field is null", this);
+        if (descriptionText == null) Debug.LogWarning("description text field is null", this);
 
         if (!PrefabUtility.IsPartOfPrefabAsset(this) && GameObject.FindAnyObjectByType<EventSystem>() == null)
             Debug.LogWarning("no event system in scene", this);
@@ -202,5 +205,10 @@ public class InvMaster : MonoBehaviour
     public void CloseText()
     {
         readingCanvasParent.SetActive(false);
+    }
+
+    public void SetDescriptionText(string newText)
+    {
+        descriptionText.text = newText;
     }
 }
