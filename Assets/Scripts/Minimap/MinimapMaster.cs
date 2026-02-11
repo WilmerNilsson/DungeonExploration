@@ -47,6 +47,7 @@ public class MinimapMaster : MonoBehaviour
             GameObject currentMinimap = Instantiate(minimapSoTest.minimapObjects[i]);
             currentMinimap.transform.position = minimapSoTest.minimapPositions[i];
             currentMinimap.transform.localScale = minimapSoTest.minimapScales[i];
+            currentMinimap.transform.eulerAngles = minimapSoTest.minimapRotations[i];
         }
     }
 
