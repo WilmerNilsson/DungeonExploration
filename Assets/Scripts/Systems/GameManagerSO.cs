@@ -40,10 +40,13 @@ public class SavefileData
 [CreateAssetMenu(fileName = "GameManagerSO", menuName = "Scriptable Objects/GameManagerSO")]
 public class GameManagerSO : ScriptableObject
 {
-    GlobalSettings globalSettings = new GlobalSettings();
-    SavefileData currentSavefileData = new SavefileData();
-    SavefileData lastSavedSavefileData = new SavefileData();
-    int currentSavefileNr = 1;
+    private const int mainMenuSceneNumber = 0;
+    private const int mainSceneNumber = 1;
+
+    private GlobalSettings globalSettings = new GlobalSettings();
+    private SavefileData currentSavefileData = new SavefileData();
+    private SavefileData lastSavedSavefileData = new SavefileData();
+    private int currentSavefileNr = 1;
 
     private static GameManagerSO instance;
     private bool hasLoadedSettings = false;
@@ -109,16 +112,22 @@ public class GameManagerSO : ScriptableObject
     }
 
     #region move to scene stuff
+
+    public void StartDemo()
+    {
+        MoveToScene(Vector2.zero, mainSceneNumber);
+    }
+
     public void MoveToScene(Vector2 newLocation, int newSceneNr)
     {
-        currentSavefileData.sceneNr = newSceneNr;
-        currentSavefileData.savePos = newLocation;
+        //currentSavefileData.sceneNr = newSceneNr;
+        //currentSavefileData.savePos = newLocation;
 
         if(newSceneNr != SceneManager.GetActiveScene().buildIndex)
         {
             ResetActions();
 
-            if(newSceneNr == 0)
+            if(newSceneNr == mainSceneNumber) // main menu
             {
                 Time.timeScale = 1;
             }
@@ -127,6 +136,7 @@ public class GameManagerSO : ScriptableObject
             {
                 OnLoadScene(newSceneNr);
             }
+
             SceneManager.LoadScene(newSceneNr);
         }
     }
