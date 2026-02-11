@@ -59,6 +59,7 @@ public class MinimapMaster : MonoBehaviour
             currentMinimap.transform.position = minimapSoTest.minimapPositions[i];
             currentMinimap.transform.localScale = minimapSoTest.minimapScales[i];
             currentMinimap.transform.eulerAngles = minimapSoTest.minimapRotations[i];
+            currentMinimap.transform.parent = transform;
             spawnedObjects.Add(currentMinimap);
         }
     }
