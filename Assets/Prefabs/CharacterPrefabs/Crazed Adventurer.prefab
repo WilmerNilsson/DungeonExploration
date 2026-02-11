@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1075947999451746801}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -59,7 +59,7 @@ Transform:
   m_GameObject: {fileID: 7644803354083671995}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: 0.7071068, w: 0}
-  m_LocalPosition: {x: -1, y: 0, z: 1}
+  m_LocalPosition: {x: -2, y: -2, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -90,7 +90,7 @@ Transform:
   m_GameObject: {fileID: 8646234047125097881}
   serializedVersion: 2
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 1, y: 2, z: 0}
+  m_LocalPosition: {x: 2, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -121,7 +121,7 @@ Transform:
   m_GameObject: {fileID: 9216025518631298522}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.2, y: 0.5, z: 0.3}
+  m_LocalPosition: {x: 3, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -256,8 +256,8 @@ MonoBehaviour:
   meleeState:
     mad: {fileID: 4804299107720638804}
     target: {x: 0, y: 0, z: 0}
-    maxMeleeRange: 2
-    minMeleeRange: 0
+    maxMeleeRange: 3
+    minMeleeRange: 1
   target: {fileID: 0}
 --- !u!114 &2156838083488555526 stripped
 MonoBehaviour:
@@ -372,22 +372,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e27947f372aebf4faecea3f063f6227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  KeyframeAnimation: 0
   attack: 0
   animator: {fileID: 5024339675474379466}
   lookObj: {fileID: 0}
-  lerpSpeed: 0.01
-  currentPos: {x: 0, y: 0, z: 0}
-  currentRot: {x: 0, y: 0, z: 0, w: 0}
-  targets:
-  - {fileID: 5772984569385316013}
-  - {fileID: 8169854758336661477}
-  - {fileID: 8177055683708818231}
+  currentState: 0
   Keyframes:
   - position: {x: 1, y: 2, z: 0}
     rotation: {x: -90, y: -90, z: 0}
+    duration: 2
   - position: {x: -1, y: 0, z: 1}
-    rotation: {x: 180, y: 90, z: 0}
+    rotation: {x: 0, y: -90, z: 180}
+    duration: 3
+  targetKeyframe:
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0}
+    duration: 0
 --- !u!95 &5024339675474379466 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 5b8e82bc21e782e4fbb3dbc2be26eee0, type: 3}
