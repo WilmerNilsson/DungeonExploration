@@ -1,5 +1,7 @@
 using UnityEditor.Graphs;
 using UnityEngine;
+using static Codice.Client.Commands.WkTree.WorkspaceTreeNode;
+using static UnityEditor.PlayerSettings;
 
 [RequireComponent(typeof(RectTransform))]
 public class InventoryGrid : MonoBehaviour
@@ -22,6 +24,38 @@ public class InventoryGrid : MonoBehaviour
         }
     }
     private SimpleItem[,] _invData;
+
+
+#if UNITY_EDITOR
+    [Header("gizmos")]
+    [SerializeField] private bool drawCenter;
+    [SerializeField] private bool drawGrid;
+
+    private void OnDrawGizmosSelected()
+    {
+        if(drawGrid)
+        {
+            for (int collum = 0; collum < collumns; collum++)
+            {
+                for (int row = 0; row < rows; row++)
+                {
+                    Rect slot = GetSlotRect(collum, row);
+
+                    Gizmos.DrawWireSphere(slot.center, slot.height / 2f);
+                }
+            }
+        }
+
+        if(drawCenter)
+        {
+            Rect globalRect = GlobalRect();
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(globalRect.center, globalRect.width / 2f);
+            Gizmos.DrawWireSphere(globalRect.center, globalRect.width / 4f);
+        }
+    }
+#endif
 
 #if DEBUG
     private void OnValidate()
@@ -52,10 +86,10 @@ public class InventoryGrid : MonoBehaviour
 
         Rect bigRect = rt.rect;
 
-        bigRect.center = rt.position;
-
         bigRect.width = bigRect.width * rt.lossyScale.x;
         bigRect.height = bigRect.height * rt.lossyScale.y;
+
+        bigRect.center = rt.position;
 
         return bigRect;
     }
@@ -171,20 +205,16 @@ public class InventoryGrid : MonoBehaviour
         {
             for (int y = 0; y < itemSlots.GetLength(1); y++)
             {
-                //todo make this legable
-                if ((InvSlotExists(collum + x - item.Pivot.x, row + y - item.Pivot.y) &&
-                    itemSlots[x, y] == true &&
-                    (InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y] == null ||
-                    InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y] == item)
-                    ) ||
-                    itemSlots[x, y] == false)
-                {
-                    //continue;
-                }
-                else
-                {
-                    return false;
-                }
+                bool itemSlotActive = itemSlots[x, y] == true;
+                if (!itemSlotActive) continue; // we can skip if not active
+
+                bool invSlotExists = InvSlotExists(collum + x - item.Pivot.x, row + y - item.Pivot.y);
+                if(! invSlotExists) return false;
+
+                bool spaceIsFreeIfItemIsAbsent = InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y] == null ||
+                    InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y] == item;
+
+                if (!spaceIsFreeIfItemIsAbsent) return false;
             }
         }
         //by this point it is clear that we can place the item
@@ -208,7 +238,7 @@ public class InventoryGrid : MonoBehaviour
                 }
             }
         }
-        item.RectTransform.SetParent(transform);
+        item.RectTransform.SetParent(transform, false);
         item.RectTransform.position = GetSlotRect(collum, row).center;
         return true;
     }
