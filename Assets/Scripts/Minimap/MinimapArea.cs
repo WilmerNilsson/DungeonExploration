@@ -40,7 +40,7 @@ public class MinimapArea : MonoBehaviour
     {
         foreach (MinimapPart child in children)
         {
-            _minimapSoTest.AddToLists(child.prefab, child.transform, child.GetBounds());
+            _minimapSoTest.AddToLists(child.prefab, child.transform, child.GetRotatedBounds());
         }
     }
 }
