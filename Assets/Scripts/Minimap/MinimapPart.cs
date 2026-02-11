@@ -14,8 +14,12 @@ public class MinimapPart : MonoBehaviour
         Renderer = GetComponent<Renderer>();
     }
 
-    public Vector3 GetBounds()
+    public Vector3 GetRotatedBounds()
     {
-        return Renderer.bounds.extents * 2;
+        float Y = transform.eulerAngles.y;
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0, transform.eulerAngles.z);
+        Vector3 bounds = Renderer.bounds.extents * 2;
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, Y, transform.eulerAngles.z);
+        return bounds;
     }
 }
