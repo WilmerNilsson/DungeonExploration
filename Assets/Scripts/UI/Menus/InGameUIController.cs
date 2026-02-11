@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem;
-using System;
-using TMPro;
 
 public class InGameUIController : MonoBehaviour, IUIController
 {
@@ -37,7 +33,7 @@ public class InGameUIController : MonoBehaviour, IUIController
         {
             Debug.LogWarning("pause menu not set", this);
         }
-        if(inGameUI == null)
+        if(inGameUI == null && gameObject.scene.rootCount != 0)
         {
             Debug.LogWarning("in game ui not set", this);
         }
