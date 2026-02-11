@@ -151,6 +151,8 @@ public class InvMaster : MonoBehaviour
     public void ClosePlayerInventory()
     {
         contextMenu.Deselect();
+        CloseText();
+
         playerInventory.SetActive(false);
         GameManagerSO.Instance.LockMouse(false);
 
