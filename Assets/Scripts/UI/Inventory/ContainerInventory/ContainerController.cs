@@ -61,7 +61,7 @@ public class ContainerController : MonoBehaviour
 
     public void Close()
     {
-        myGrid.transform.SetParent(transform);
+        myGrid.transform.SetParent(transform, false);
         myGrid.gameObject.SetActive(false);
     }
 }
