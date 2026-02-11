@@ -3,23 +3,14 @@ using UnityEngine;
 
 public class CrazedIK : MonoBehaviour
 {
-    [SerializeField] private bool KeyframeAnimation = false;
-
     public bool attack;
     
     public Animator animator;
     [SerializeField, Tooltip("Where the avatar should look")] private Transform lookObj = null;
     
-    [SerializeField, Tooltip("How fast the animation runs")] private float lerpSpeed = 1.0f;
-    
     [Header("Hand transform targets")]
     [SerializeField] private Vector3 currentPos;
     [SerializeField] private Quaternion currentRot;
-    
-    [Header("Transform Animation")]
-    [SerializeField, Tooltip("List of Transforms for the animation to run through")] private Transform[] targets;
-    private Transform target;
-    private int targetIndex = 0;
     
     [Header("Keyframe animation")]
     [SerializeField, Tooltip("List of keyframes for the animation to run through")] private CustomKeyframe[] Keyframes;
@@ -40,35 +31,33 @@ public class CrazedIK : MonoBehaviour
                     animator.SetLookAtWeight(1);
                     animator.SetLookAtPosition(lookObj.position);
                 }
-                if (currentKeyframe == null) //Lerp the weight to start
-                {
-                    targetKeyframe = Keyframes[0];
-                    startTime = Time.time;
-                }
+                if (currentKeyframe == null) targetKeyframe = Keyframes[0];
+                if (startTime == 0) startTime = Time.time;
 
-                lerpWeight = (currentKeyIndex == 0 || currentKeyIndex == targets.Length - 1);
+                lerpWeight = (currentKeyIndex == 0 || currentKeyIndex == Keyframes.Length - 1);
 
                 if (lerpWeight)
                 {
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,Mathf.SmoothStep(0, 1, (Time.time - startTime) / targetKeyframe.Duration));
-                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand,Mathf.SmoothStep(0, 1, (Time.time - startTime) / targetKeyframe.Duration));
+                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand,Mathf.Lerp(0, 1, (Time.time - startTime) / targetKeyframe.Duration));
                     animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(targetKeyframe.Position));
-                    animator.SetIKRotation(AvatarIKGoal.RightHand,targetKeyframe.Rotation);
+                    animator.SetIKRotation(AvatarIKGoal.RightHand,RelativeRotation(targetKeyframe.Rotation));
                 }
                 else
                 {
                     currentPos = Vector3.Slerp(currentKeyframe.Position, RelativePosition(targetKeyframe.Position), (Time.time - startTime) / targetKeyframe.Duration);
-                    currentRot = Quaternion.Slerp(currentKeyframe.Rotation, targetKeyframe.Rotation, (Time.time - startTime) / targetKeyframe.Duration);
+                    currentRot = Quaternion.Slerp(currentKeyframe.Rotation, RelativeRotation(targetKeyframe.Rotation), (Time.time - startTime) / targetKeyframe.Duration);
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKPosition(AvatarIKGoal.RightHand,currentPos);
                     animator.SetIKRotation(AvatarIKGoal.RightHand,currentRot);
                 }
 
-                if (Vector3.Distance(currentPos, targetKeyframe.Position) < 0.1f)
+                if (((Time.time - startTime) / targetKeyframe.Duration) > 1f) //if its near the goal switch goal or end the attack
                 {
                     currentKeyIndex++;
-                    if (currentKeyIndex >= Keyframes.Length)
+                    startTime = Time.time;
+                    if (currentKeyIndex > Keyframes.Length)
                     {
                         currentKeyIndex = 0;
                         animator.SetBool("Attack",false);
@@ -107,6 +96,7 @@ public class CrazedIK : MonoBehaviour
         targetKeyframe = null;
         currentKeyframe = null;
         currentKeyIndex = 0;
+        startTime = 0;
     }
 }
 

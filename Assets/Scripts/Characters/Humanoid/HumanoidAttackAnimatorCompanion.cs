@@ -21,8 +21,6 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     {
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {
-            Debug.Log(animator.name);
-            
             animator.SetBool("Attack",true);
         }
     }
