@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 8340747355471346599}
   - component: {fileID: 8490275448964758129}
   - component: {fileID: -8854653704836512832}
-  - component: {fileID: -3702027065416735679}
   m_Layer: 5
   m_Name: UIHealthPotion
   m_TagString: Untagged
@@ -91,8 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a9096d6276c75447a4544d7a0927ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  piviot: {x: 0, y: 0}
-  size: 0
+  pivot: {x: 0, y: 0}
   itemGridSize: 01000000000000000000000000000000
   uses:
   - text: Drink
@@ -102,22 +100,6 @@ MonoBehaviour:
         - m_Target: {fileID: 8490275448964758129}
           m_TargetAssemblyTypeName: HealthPotion, GameAssembly
           m_MethodName: Drink
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 4
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - text: Inspect
-    OnUse:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: -3702027065416735679}
-          m_TargetAssemblyTypeName: InspectItem, GameAssembly
-          m_MethodName: Read
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -143,6 +125,9 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  descriptionText: Heals 3
+  descriptionTextIsLibraryName: 0
+  textLibrary: {fileID: 11400000, guid: 1b1f8771b2a7c1940b19f8003b6ca232, type: 2}
 --- !u!114 &8490275448964758129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,16 +157,3 @@ MonoBehaviour:
   cameraDropOffset: -1
   dropPrefab: {fileID: 2949275965137294258, guid: 1adc47150215cc74eb1c2eeb1968e6b3, type: 3}
   myItem: {fileID: 8340747355471346599}
---- !u!114 &-3702027065416735679
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4294192794624958368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e556bf153e0d9de40996717735b9473e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  text: Health potion, <br> heals 3hp

@@ -26,6 +26,15 @@ public class AudioManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
         
+        if (GameManagerSO.Instance != null)
+        {
+            GameManagerSO.Instance.OnFreezeGameChange += OnPauseEvent;
+        }
+        else
+        {
+            AudioDebug.Print("Couldn't find GameManagerSO", true);
+        }
+        
         DontDestroyOnLoad(this);
         
         LoadStartBanks();
@@ -34,7 +43,7 @@ public class AudioManager : MonoBehaviour
         RefreshAllEventCaches();
         RefreshGlobalParameterCache();
 
-        PrintDebug("AudioManager Initialized");
+        AudioDebug.Print("AudioManager Initialized");
     }
 
     public static bool IsValid;
@@ -52,7 +61,7 @@ public class AudioManager : MonoBehaviour
         EventListCache = new Dictionary<string, EventList>();
         if (eventLists == null)
         {
-            PrintDebug("No eventLists found, unable to add any to the eventList cache", true);
+            AudioDebug.Print("No eventLists found, unable to add any to the eventList cache", true);
             return;
         }
         
@@ -60,7 +69,7 @@ public class AudioManager : MonoBehaviour
         {
             EventListCache.Add(list.category, list);
 
-            PrintDebug("Added " + list.category + " to eventList cache");
+            AudioDebug.Print("Added " + list.category + " to eventList cache");
         }
     }
     #if UNITY_EDITOR
@@ -86,7 +95,7 @@ public class AudioManager : MonoBehaviour
     {
         if (!path.Contains("/"))
         {
-            PrintDebug(path + " is not a valid path", true);
+            AudioDebug.Print(path + " is not a valid path", true);
             eventList = null;
             eventName = "";
             return false;
@@ -94,7 +103,7 @@ public class AudioManager : MonoBehaviour
         var split = path.Split('/');
         if (split.Length != 2 || split[1] == "")
         {
-            PrintDebug(path + " is not a valid path", true);
+            AudioDebug.Print(path + " is not a valid path", true);
             eventList = null;
             eventName = "";
             return false;
@@ -102,12 +111,12 @@ public class AudioManager : MonoBehaviour
         if (EventListCache.TryGetValue(split[0], out eventList))
         {
             eventName = split[1];
-            PrintDebug("Successfully retrieved " + path);
+            AudioDebug.Print("Successfully retrieved " + path);
             
             return true;
         }
 
-        PrintDebug("Failed to get " + path + ". Does the event or list exist?", true);
+        AudioDebug.Print("Failed to get " + path + ". Does the event or list exist?", true);
         
         eventName = null;
         return false;
@@ -126,7 +135,7 @@ public class AudioManager : MonoBehaviour
         foreach (var paramDesc in descriptionList)
         {
             GlobalParameterCache.Add(paramDesc.name, paramDesc.id);
-            PrintDebug("Added " + paramDesc.name + " to global parameter cache");
+            AudioDebug.Print("Added " + paramDesc.name + " to global parameter cache");
         }
     }
 
@@ -136,11 +145,11 @@ public class AudioManager : MonoBehaviour
         {
             RuntimeManager.StudioSystem.setParameterByID(id, paramValue);
 
-            PrintDebug("Successfully set " + paramName + " to " + paramValue);
+            AudioDebug.Print("Successfully set " + paramName + " to " + paramValue);
         }
         else
         {
-           PrintDebug("Failed to set " + paramName + " to " + paramValue, true);
+           AudioDebug.Print("Failed to set " + paramName + " to " + paramValue, true);
         }
     }
 
@@ -284,7 +293,7 @@ public class AudioManager : MonoBehaviour
             var split = path.Split('/');
             VcaCache.Add(split[^1], vca);
             
-            PrintDebug("Added " + split[^1] + " to vcaCache");
+            AudioDebug.Print("Added " + split[^1] + " to vcaCache");
         }
     }
 
@@ -293,11 +302,11 @@ public class AudioManager : MonoBehaviour
         if (VcaCache.TryGetValue(vcaName, out var vca))
         {
             vca.setVolume(volume);
-            PrintDebug("Set " + vcaName + " volume to " + volume);
+            AudioDebug.Print("Set " + vcaName + " volume to " + volume);
         }
         else
         {
-            PrintDebug("Failed to set " + vcaName + " to " + volume, true);
+            AudioDebug.Print("Failed to set " + vcaName + " to " + volume, true);
         }
     }
 
@@ -307,12 +316,12 @@ public class AudioManager : MonoBehaviour
         {
             vca.getVolume(out var volume);
             
-            PrintDebug("Successfully retrieved volume for vca: " + vcaName);
+            AudioDebug.Print("Successfully retrieved volume for vca: " + vcaName);
             
             return volume;
         }
         
-        PrintDebug("Failed to get volume for vca: " + vcaName, true);
+        AudioDebug.Print("Failed to get volume for vca: " + vcaName, true);
         
         return 0;
     }
@@ -323,7 +332,7 @@ public class AudioManager : MonoBehaviour
         {
             vca.Value.setVolume(volume);
         }
-        PrintDebug("Set volume for all VCAs to " + volume);
+        AudioDebug.Print("Set volume for all VCAs to " + volume);
     }
 
     public void SetAllVolumes(string[] vcaNames, float[] volumes) //Sätter volym på alla vcas individuellt, kan vara bra för saveLoading
@@ -343,7 +352,7 @@ public class AudioManager : MonoBehaviour
             tempNameList.Add(vca.Key);
             vca.Value.getVolume(out var volume);
             tempVolumeList.Add(volume);
-            PrintDebug("Successfully retrieved volume for " + vca.Key);
+            AudioDebug.Print("Successfully retrieved volume for " + vca.Key);
         }
         vcaNames = tempNameList.ToArray();
         volumes = tempVolumeList.ToArray();
@@ -360,14 +369,14 @@ public class AudioManager : MonoBehaviour
     {
         RuntimeManager.LoadBank(bankName + BankExtension, loadSamples);
         if (bankName == "Master") RuntimeManager.LoadBank(bankName + StringBankExtension, loadSamples);
-        PrintDebug("Loading " + bankName + BankExtension);
+        AudioDebug.Print("Loading " + bankName + BankExtension);
     }
 
     public void UnloadBank(string bankName) //Unloadar en bank
     {
         RuntimeManager.UnloadBank(bankName + BankExtension);
         if (bankName == "Master") RuntimeManager.UnloadBank(bankName + StringBankExtension);
-        PrintDebug("Unloading " + bankName + BankExtension);
+        AudioDebug.Print("Unloading " + bankName + BankExtension);
     }
 
     [Serializable]
@@ -390,6 +399,21 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    #endregion
+    
+    #region Game States
+
+    private void OnPauseEvent(bool paused) //Kallas av GameManagerSO och sätter parametern Paused till 
+    {
+        SetGlobalParameter("Paused", paused ? 1 : 0);
+    }
+
+    private void OnHealthChange(int currentHp, int maxHP) //Lägga till maxHP här så att vi kan ha en parameter som är ratio och en som är faktiskt värde
+    {
+        SetGlobalParameter("HP", currentHp);
+        SetGlobalParameter("hpRatio", currentHp / maxHP);
+    }
+    
     #endregion
 
     #region SceneLoading 
@@ -426,17 +450,9 @@ public class AudioManager : MonoBehaviour
         debug = !debug;
     }
 
-    private void PrintDebug(string message, bool isWarning = false)
-    {
-        if (!debug) return;
-        if (isWarning) Debug.LogWarning(message);
-        if (!showOnlyWarnings) Debug.Log(message);
-    }
-    
-
     #endregion
 
-    #region Extras
+    #region Quitting / Stop All
 
     public void StopAllEvents() //Self explanatory
     {
@@ -448,7 +464,7 @@ public class AudioManager : MonoBehaviour
             bus.stopAllEvents(STOP_MODE.ALLOWFADEOUT);
         }
 
-        PrintDebug("Stopped all events");
+        AudioDebug.Print("Stopped all events");
     }
 
     public void
@@ -459,12 +475,8 @@ public class AudioManager : MonoBehaviour
             eventList.StopAndReleaseAllInstances();
         }
 
-        PrintDebug("Stopped and released all eventInstances");
+        AudioDebug.Print("Stopped and released all eventInstances");
     }
-
-    #endregion
-
-    //Troligen onödigt med 3 metoder för om audioManager stängs av
     
     private void OnApplicationQuit()
     {
@@ -474,24 +486,5 @@ public class AudioManager : MonoBehaviour
         StopAllEvents();
     }
 
-    /*
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-        SceneManager.sceneUnloaded -= OnSceneUnloaded;
-        StopAndReleaseAllInstances();
-        StopAllEvents();
-    }
-    
-    
-    
-    private void OnDestroy()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-        SceneManager.sceneUnloaded -= OnSceneUnloaded;
-        StopAndReleaseAllInstances();
-        StopAllEvents();
-    }
-
-    */
+    #endregion
 }

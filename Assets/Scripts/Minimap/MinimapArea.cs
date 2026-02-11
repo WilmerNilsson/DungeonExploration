@@ -4,16 +4,26 @@ using UnityEngine;
 
 public class MinimapArea : MonoBehaviour
 {
-    public List<GameObject> children = new List<GameObject>();
+    private List<MinimapPart> children = new List<MinimapPart>();
+    [Tooltip("The scriptable object belonging to this level")]
+    [SerializeField] private MinimapSO_test _minimapSoTest;
+
+    private void OnValidate()
+    {
+        if (_minimapSoTest == null)
+        {
+            Debug.LogWarning("No minimap scriptable object found", this);
+        }
+    }
 
 
-    public void ReturnDecendantOfParent(GameObject parent, List<GameObject> children)
+    public void ReturnDecendantOfParent(GameObject parent, List<MinimapPart> children)
     {
         foreach (Transform child in parent.transform)
         {
-            if (child.gameObject.layer == LayerMask.NameToLayer("Minimap"))
+            if (child.gameObject.TryGetComponent(out MinimapPart part))
             {
-                children.Add(child.gameObject);
+                children.Add(part);
             }
             else
             {
@@ -24,17 +34,13 @@ public class MinimapArea : MonoBehaviour
     private void Awake()
     {
         ReturnDecendantOfParent(this.gameObject, children);
-        foreach (GameObject child in children)
-        {
-            child.SetActive(false);
-        }
     }
 
     public void DrawArea()
     {
-        foreach (GameObject child in children)
+        foreach (MinimapPart child in children)
         {
-            child.SetActive(true);
+            _minimapSoTest.AddToLists(child.prefab, child.transform.position, child.transform.localScale);
         }
     }
 }
