@@ -39,6 +39,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 102872593901033786, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 861456552232059256, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: headTransform
       value: 
@@ -57,7 +61,15 @@ PrefabInstance:
       objectReference: {fileID: 5024339675474379466}
     - target: {fileID: 3424193982477835333, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_Height
-      value: 4
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3424193982477835333, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3424193982477835333, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: m_Center.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3424193982477835333, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_IsTrigger
@@ -101,15 +113,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.55
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.86
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalRotation.w
@@ -207,7 +219,7 @@ MonoBehaviour:
     target: {x: 0, y: 0, z: 0}
     avatarIK: {fileID: 3950284540247109631}
     maxMeleeRange: 3
-    minMeleeRange: 1
+    minMeleeRange: 2
   target: {fileID: 0}
 --- !u!143 &5360940743188143127
 CharacterController:
@@ -383,6 +395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e27947f372aebf4faecea3f063f6227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weapon: {fileID: 1106739956473387767}
   x: 0
   z: 0
   attacking: 0
@@ -423,6 +436,7 @@ MonoBehaviour:
   nodeDuration: 0.5
   chargeDuration: 2
   resetDuration: 1
+  staggerDuration: 3
 --- !u!95 &5024339675474379466 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 5b8e82bc21e782e4fbb3dbc2be26eee0, type: 3}
@@ -507,6 +521,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+--- !u!114 &1106739956473387767 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+  m_PrefabInstance: {fileID: 2235907987567818365}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51f7f14f987392348b08c80e3260f384, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &4770899257602191030 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6715476101138585803, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}

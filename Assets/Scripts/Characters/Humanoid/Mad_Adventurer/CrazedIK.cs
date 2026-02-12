@@ -4,6 +4,8 @@ using Random = UnityEngine.Random;
 
 public class CrazedIK : MonoBehaviour
 {
+    [SerializeField] private Weapon weapon;
+    
     [SerializeField,Tooltip("the rotation of the hand, readonly as they are set in code")] private float x, z;
     
     [SerializeField] private bool attacking = false;
@@ -25,6 +27,7 @@ public class CrazedIK : MonoBehaviour
     [SerializeField] private float nodeDuration;
     [SerializeField] private float chargeDuration;
     [SerializeField] private float resetDuration;
+    [SerializeField] private float staggerDuration;
     private Vector3[] nodes;
     private Vector3 current;
     private Vector3 target;
@@ -38,11 +41,17 @@ public class CrazedIK : MonoBehaviour
     {
         Start,
         Swing,
-        Return
+        Return,
+        Interrupt,
     }
 
     public void Attack()
     {
+        if (weapon == null)
+        {
+            Debug.LogWarning("No weapon to attack with", this);
+            return;
+        }
         if (!attacking)
         {
             swingAngle = Mathf.Deg2Rad * Random.Range(-180 + angleLimit, 180 - angleLimit);
@@ -51,6 +60,13 @@ public class CrazedIK : MonoBehaviour
             nodes = GetQuadraticBezierPoints(swingStart, swingEnd, curveHeight);
             attacking = true;
         }
+    }
+
+    public void Interrupt()
+    {
+        Debug.Log("Interrupt");
+        currentState = AttackState.Interrupt;
+        weapon.SetActive(false);
     }
 
     //a callback for calculating IK
@@ -95,33 +111,60 @@ public class CrazedIK : MonoBehaviour
                     animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(current));
                     animator.SetIKRotation(AvatarIKGoal.RightHand,rotation);
                 }
+                else if (currentState == AttackState.Interrupt)
+                {
+                    time = (Time.time - startTime) / (staggerDuration/100);
+                    animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
+                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
+                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(Vector3.Slerp(current, target, time)));
+                    animator.SetIKRotation(AvatarIKGoal.RightHand,rotation);
+                }
                 
                 if (time > 1f) //if it's near the goal switch goal or end the attack
                 {
-                    if (nodeIndex == 0) // Start Swing
+                    if (currentState == AttackState.Interrupt)
                     {
-                        current = nodes[nodeIndex];
-                        target = nodes[nodeIndex + 1];
-                        currentState = AttackState.Swing;
-                        nodeIndex++;
+                        if (nodeIndex > 0)
+                        {
+                            current = nodes[nodeIndex];
+                            target = nodes[nodeIndex - 1];
+                            nodeIndex--;
+                        }
+                        else if (nodeIndex == 0)
+                        {
+                            attacking = false;
+                            Reset();
+                        }
                     }
-                    else if (nodeIndex < nodes.Length - 1) // Swing
+                    else
                     {
-                        current = nodes[nodeIndex];
-                        target = nodes[nodeIndex + 1];
-                        nodeIndex++;
-                    }
-                    else if (nodeIndex == nodes.Length - 1) // return
-                    {
-                        current = nodes[nodeIndex];
-                        currentState = AttackState.Return;
-                        nodeIndex++;
-                    }
-                    else // stop
-                    {
-                        nodeIndex = 0;
-                        attacking = false;
-                        Reset();
+                        if (nodeIndex == 0) // Start Swing
+                        {
+                            current = nodes[nodeIndex];
+                            target = nodes[nodeIndex + 1];
+                            currentState = AttackState.Swing;
+                            weapon.SetActive(true);
+                            nodeIndex++;
+                        }
+                        else if (nodeIndex < nodes.Length - 1) // Swing
+                        {
+                            current = nodes[nodeIndex];
+                            target = nodes[nodeIndex + 1];
+                            nodeIndex++;
+                        }
+                        else if (nodeIndex == nodes.Length - 1) // return
+                        {
+                            weapon.SetActive(false);
+                            current = nodes[nodeIndex];
+                            currentState = AttackState.Return;
+                            nodeIndex++;
+                        }
+                        else // stop
+                        {
+                            nodeIndex = 0;
+                            attacking = false;
+                            Reset();
+                        }
                     }
                     startTime = Time.time;
                 }
@@ -156,6 +199,8 @@ public class CrazedIK : MonoBehaviour
         current = Vector3.zero;
         target = Vector3.zero;
         nodeIndex = 0;
+        
+        weapon.SetActive(false);
     }
     
     private static Vector3[] GetQuadraticBezierPoints(Vector3 startpoint, Vector3 endPoint, float curveHeigh) {
