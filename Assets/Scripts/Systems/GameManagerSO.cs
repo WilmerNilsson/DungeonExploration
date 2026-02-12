@@ -1,47 +1,17 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
-
-public class GlobalSettings
-{
-    //savefile
-    public int lastSaveFileNr;
-
-    //Volume
-    public float masterVolume = 50f; public float effectsVolume = 100f; public float musicVolume = 100f;
-
-    //Languige is taken care of automaticly apparently
-    //Gameplay
-    public bool conflictingControllsNeutralizes = false;
-}
-
-public class SavefileData
-{
-    public int sceneNr = 1;
-    public Vector2 savePos = new Vector2(0, 0);
-
-    //settings
-    public float normalTimeScale = 1f;
-    public float playerHealthCheatValue = 1f;
-    public float enemyHealthCheatValue = 1f;
-
-    //unlocks
-    public List<int> abilities = new List<int>();
-    public List<int> cutscenes = new List<int>();
-
-    //stats
-    public List<int> hpUps = new List<int>();
-}
 
 [CreateAssetMenu(fileName = "GameManagerSO", menuName = "Scriptable Objects/GameManagerSO")]
 public class GameManagerSO : ScriptableObject
 {
     private const int mainMenuSceneNumber = 0;
     private const int mainSceneNumber = 1;
+    private const string MasterSoundName = "Master";
+    private const string SoundEffectsSoundName = "SFX";
+    private const string MusicSoundName = "Music";
 
     private GlobalSettings globalSettings = new GlobalSettings();
     private SavefileData currentSavefileData = new SavefileData();
@@ -59,9 +29,6 @@ public class GameManagerSO : ScriptableObject
     private int thingsLockingMouse = 0;
 
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
-    public event Action<IDListName, int>? OnIDAddedToListSelfReset;
-    public event Action<float>? OnPlayerHealthCheatValueChangeSelfReset;
-    public event Action<float>? OnEnemyHealthCheatValueChangeSelfReset;
     public event Action? OnSavePointSaveSelfReset;
     public event Action<bool>? OnFreezeGameChangeSelfReset;
     /// <summary>
@@ -127,7 +94,7 @@ public class GameManagerSO : ScriptableObject
         {
             ResetActions();
 
-            if(newSceneNr == mainSceneNumber) // main menu
+            if(newSceneNr == mainMenuSceneNumber) // main menu
             {
                 Time.timeScale = 1;
             }
@@ -143,9 +110,6 @@ public class GameManagerSO : ScriptableObject
 
     private void ResetActions()
     {
-        OnIDAddedToListSelfReset = null;
-        OnPlayerHealthCheatValueChangeSelfReset = null;
-        OnEnemyHealthCheatValueChangeSelfReset = null;
         OnSavePointSaveSelfReset = null;
         OnFreezeGameChangeSelfReset = null;
     }
@@ -154,114 +118,50 @@ public class GameManagerSO : ScriptableObject
     #region SaveFile ID stuff
     public enum IDListName
     {
-        abilities,
-        cutscenes,
-        hpUps
+        DialougeFound,
+        BooksInJournal,
     }
 
-    public void AddIDToList(IDListName type, int id)
+    public void AddIDToList(IDListName type, string id)
     {
-        if(type == IDListName.abilities)
+        switch (type)
         {
-            if(!currentSavefileData.abilities.Contains(id))
-            {
-                currentSavefileData.abilities.Add(id);
-            }
-        }
-        else if(type == IDListName.cutscenes)
-        {
-            if(!currentSavefileData.cutscenes.Contains(id))
-            {
-                currentSavefileData.cutscenes.Add(id);
-            }
-        }
-        else if(type == IDListName.hpUps)
-        {
-            if(!currentSavefileData.cutscenes.Contains(id))
-            {
-                currentSavefileData.hpUps.Add(id);
-            }
-        }
+            case IDListName.DialougeFound:
 
-        if(OnIDAddedToListSelfReset != null)
-        {
-            OnIDAddedToListSelfReset(type, id);
+                break;
+            case IDListName.BooksInJournal:
+
+                break;
+#if DEBUG
+            default:
+                Debug.LogError("trying to add a ID of unimplimented type: " + type, this);
+                throw new NotImplementedException("trying to add a ID of unimplimented type: " + type);
+#endif
         }
     }
 
-    public bool CheckIfIDExists(IDListName type, int id)
+    public bool CheckIfIDExists(IDListName type, string id)
     {
-        if(type == IDListName.abilities)
+        switch (type)
         {
-            return currentSavefileData.abilities.Contains(id);
-        }
-        else if(type == IDListName.cutscenes)
-        {
-            return currentSavefileData.cutscenes.Contains(id);
-        }
-        else if(type == IDListName.hpUps)
-        {
-            return currentSavefileData.hpUps.Contains(id);
-        }
-        else
-        {
-            return false;
-        }
-    }
+            case IDListName.DialougeFound:
 
-    public int GetAmountOfIDsInSaveFile(IDListName type)
-    {
-        if(type == IDListName.abilities)
-        {
-            return currentSavefileData.abilities.Count;
+                break;
+            case IDListName.BooksInJournal:
+
+                break;
+#if DEBUG
+            default:
+                Debug.LogError("trying to check a ID of unimplimented type: " + type, this);
+                throw new NotImplementedException("trying to check a ID of unimplimented type: " + type);
+#endif
         }
-        else if(type == IDListName.cutscenes)
-        {
-            return currentSavefileData.cutscenes.Count;
-        }
-        else if(type == IDListName.hpUps)
-        {
-            return currentSavefileData.hpUps.Count;
-        }
-        else
-        {
-            return -1;
-        }
+        return false;
     }
     #endregion
 
     #region  GamePlayCheats Unimplimented
-    public void SetPlayerHealthCheatValue(float newValue)
-    {
-        currentSavefileData.playerHealthCheatValue = newValue;
-        lastSavedSavefileData.playerHealthCheatValue = newValue;
 
-        if (OnPlayerHealthCheatValueChangeSelfReset != null)
-        {
-            OnPlayerHealthCheatValueChangeSelfReset(newValue);
-        }
-    }
-
-    public float GetPlayerHealthCheatValue()
-    {
-        return currentSavefileData.playerHealthCheatValue;
-    }
-
-    public void SetEnemyHealthCheatValue(float newValue)
-    {
-        currentSavefileData.enemyHealthCheatValue = newValue;
-        lastSavedSavefileData.enemyHealthCheatValue = newValue;
-
-        if (OnEnemyHealthCheatValueChangeSelfReset != null)
-        {
-            OnEnemyHealthCheatValueChangeSelfReset(newValue);
-        }
-    }
-
-    public float GetEnemyHealthCheatValue()
-    {
-        return currentSavefileData.enemyHealthCheatValue;
-    }
     #endregion
 
     #region Timescale and mouselock
@@ -366,7 +266,7 @@ public class GameManagerSO : ScriptableObject
     {
         if(AudioManager.IsValid)
         {
-            AudioManager.Instance.SetVolume("Master", globalSettings.masterVolume / 100f);
+            AudioManager.Instance.SetVolume(MasterSoundName, globalSettings.masterVolume / 100f);
         }
     }
 
@@ -380,7 +280,7 @@ public class GameManagerSO : ScriptableObject
     {
         if (AudioManager.IsValid)
         {
-            AudioManager.Instance.SetVolume("Effects", globalSettings.masterVolume / 100f);
+            AudioManager.Instance.SetVolume(SoundEffectsSoundName, globalSettings.effectsVolume / 100f);
         }
     }
 
@@ -394,7 +294,7 @@ public class GameManagerSO : ScriptableObject
     {
         if (AudioManager.IsValid)
         {
-            AudioManager.Instance.SetVolume("Music", globalSettings.masterVolume / 100f);
+            AudioManager.Instance.SetVolume(MusicSoundName, globalSettings.musicVolume / 100f);
         }
     }
     #endregion
@@ -408,12 +308,6 @@ public class GameManagerSO : ScriptableObject
         newData.savePos = dataToBeCopied.savePos;
 
         newData.normalTimeScale = dataToBeCopied.normalTimeScale;
-        newData.playerHealthCheatValue = dataToBeCopied.playerHealthCheatValue;
-        newData.enemyHealthCheatValue = dataToBeCopied.enemyHealthCheatValue;
-
-        newData.abilities = new List<int>(dataToBeCopied.abilities);
-        newData.cutscenes = new List<int>(dataToBeCopied.cutscenes);
-        newData.hpUps = new List<int>(dataToBeCopied.hpUps);
 
         return newData;
     }
