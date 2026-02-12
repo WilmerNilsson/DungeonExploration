@@ -37,6 +37,14 @@ public class HumanoidSoundLogic : MonoBehaviour
         movement.OnMoveActionChange -= HandleMovementChange;
     }
 
+    public void attackSound(PlayerIK.AttackState newState)
+    {
+        if (AudioManager.IsValid && newState == PlayerIK.AttackState.Swing)
+        {
+            AudioManager.Instance.PlayOneShot("Player/SwordSwing", null, null, gameObject, true);
+        }
+    }
+
     //since we want to keep the footsteps between states we kinda do not need to use a coroutine
     //may change if we reset it on none/airborne
     //but like i comented above, this will prob be a script we remove later,

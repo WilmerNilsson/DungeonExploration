@@ -128,7 +128,32 @@ public class PlayerController : MonoBehaviour
         if (context.canceled)
         {
             mouseEnd = Mouse.current.position.ReadValue();
+            if (Vector2.Distance(mouseStart, mouseEnd) < 10)
+            {
+                GameManagerSO.Instance.LockMouse(false);
+                return;
+            }
             IK.Attack(Vector2.SignedAngle(Vector2.left, (mouseEnd - mouseStart)));
+            GameManagerSO.Instance.LockMouse(false);
+        }
+    }
+
+    public void OnBlock(InputAction.CallbackContext context)
+    {
+        if (context.performed && !lockedMovement)
+        {
+            mouseStart = Mouse.current.position.ReadValue();
+            GameManagerSO.Instance.LockMouse(true);
+        }
+        if (context.canceled)
+        {
+            mouseEnd = Mouse.current.position.ReadValue();
+            if (Vector2.Distance(mouseStart, mouseEnd) < 10)
+            {
+                GameManagerSO.Instance.LockMouse(false);
+                return;
+            }
+            IK.Block(Vector2.SignedAngle(Vector2.right, (mouseEnd - mouseStart)));
             GameManagerSO.Instance.LockMouse(false);
         }
     }

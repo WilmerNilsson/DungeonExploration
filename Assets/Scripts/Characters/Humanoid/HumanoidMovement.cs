@@ -56,7 +56,7 @@ public class HumanoidMovement : MonoBehaviour
             doJump = false;
         }
 
-        if (rotatedVector == Vector3.zero)
+        if (moveVector == Vector3.zero)
         {
             SetMoveAction(moveActions.None);
         }
