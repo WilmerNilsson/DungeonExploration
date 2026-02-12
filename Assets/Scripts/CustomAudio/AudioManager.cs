@@ -282,7 +282,7 @@ public class AudioManager : MonoBehaviour
 
     public Dictionary<string, VCA> VcaCache; //cache med namn på vca samt VCA
 
-    private void RefreshVcaCache() //Lägger till alla vcas till _vcaCache
+    private void RefreshVcaCache() //Lägger till alla vcas till VcaCache
     { 
         VcaCache = new Dictionary<string, VCA>();
         RuntimeManager.StudioSystem.getBank(MasterBankPath, out var masterBank);
@@ -324,38 +324,6 @@ public class AudioManager : MonoBehaviour
         AudioDebug.Print("Failed to get volume for vca: " + vcaName, true);
         
         return 0;
-    }
-
-    public void SetAllToVolume(float volume) //Sätter volym på alla vcas till volume
-    {
-        foreach (var vca in VcaCache)
-        {
-            vca.Value.setVolume(volume);
-        }
-        AudioDebug.Print("Set volume for all VCAs to " + volume);
-    }
-
-    public void SetAllVolumes(string[] vcaNames, float[] volumes) //Sätter volym på alla vcas individuellt, kan vara bra för saveLoading
-    {
-        for (int i = 0; i < vcaNames.Length; i++)
-        {
-            SetVolume(vcaNames[i], volumes[i]);
-        }
-    }
-
-    public void GetAllVolumes(out string[] vcaNames, out float[] volumes) //Hämtar volym på alla vcas individuellt, kan vara bra för saving
-    {
-        var tempNameList = new List<string>();
-        var tempVolumeList = new List<float>();
-        foreach (var vca in VcaCache)
-        {
-            tempNameList.Add(vca.Key);
-            vca.Value.getVolume(out var volume);
-            tempVolumeList.Add(volume);
-            AudioDebug.Print("Successfully retrieved volume for " + vca.Key);
-        }
-        vcaNames = tempNameList.ToArray();
-        volumes = tempVolumeList.ToArray();
     }
 
     #endregion
