@@ -1,14 +1,11 @@
-using System;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-public class CrazedIK : MonoBehaviour
+public class PlayerIK : MonoBehaviour
 {
     [SerializeField,Tooltip("the rotation of the hand, readonly as they are set in code")] private float x, z;
     
     [SerializeField] private bool attacking = false;
     public Animator animator;
-    [SerializeField, Tooltip("Where the avatar should look")] private Transform lookObj = null;
     [SerializeField, Tooltip("The Shoulder node of the weapon arm")] private Transform shoulderObj = null;
     [SerializeField] private AttackState currentState = AttackState.Start;
     
@@ -21,10 +18,10 @@ public class CrazedIK : MonoBehaviour
     [SerializeField] private Vector3 swingStart;
     [SerializeField] private Vector3 swingEnd;
     [SerializeField] private float swingAngle;
-    [SerializeField] private float curveHeight;
-    [SerializeField] private float nodeDuration;
-    [SerializeField] private float chargeDuration;
-    [SerializeField] private float resetDuration;
+    [SerializeField] private float curveHeight = 2.5f;
+    [SerializeField] private float nodeDuration = 0.5f;
+    [SerializeField] private float chargeDuration = 2f;
+    [SerializeField] private float resetDuration = 1f;
     private Vector3[] nodes;
     private Vector3 current;
     private Vector3 target;
@@ -40,30 +37,25 @@ public class CrazedIK : MonoBehaviour
         Swing,
         Return
     }
-
-    public void Attack()
+    
+    public void Attack(float angle)
     {
         if (!attacking)
         {
-            swingAngle = Random.Range(-180 + angleLimit, 180 - angleLimit);
+            swingAngle = angle;
             swingStart = shoulderObj.localPosition + (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), 0).normalized * armLenght);
             swingEnd = shoulderObj.localPosition - (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), -1).normalized * armLenght);
             nodes = GetQuadraticBezierPoints(swingStart, swingEnd, curveHeight);
             attacking = true;
         }
     }
-
-    //a callback for calculating IK
+    
     void OnAnimatorIK(int layerIndex)
     {
         if(animator) {
             if(attacking) {
                 
-                if(lookObj != null) {
-                    animator.SetLookAtWeight(1);
-                    animator.SetLookAtPosition(lookObj.position);
-                }
-                
+                // Math for rotating the sword arm correctly
                 z = (Mathf.Atan2(swingStart.y - shoulderObj.localPosition.y, swingStart.x - shoulderObj.localPosition.x) * Mathf.Rad2Deg) + 180;
                 x = Mathf.Clamp(Mathf.SmoothStep(0,90,(float)nodeIndex/100), 0, 90);
                 rotation = RelativeRotation(Quaternion.AngleAxis(z, Vector3.forward) * Quaternion.AngleAxis(x, Vector3.up));
@@ -134,7 +126,7 @@ public class CrazedIK : MonoBehaviour
             }
         }
     }
-
+    
     private Vector3 RelativePosition(Vector3 position)
     {
         return transform.TransformDirection(position) + animator.rootPosition;
@@ -176,50 +168,4 @@ public class CrazedIK : MonoBehaviour
         }
         return res;
     }
-
-    private Vector3[] GetCurvePoints(Vector3 startpoint, Vector3 endPoint)
-    {
-        Vector3[] res = new Vector3[100];
-        // int maxT = 1;
-        // int index = 0;
-        //
-        // for (float t = 0; t <= maxT; t += 0.01f) {
-        //     Vector3 newPoint = (Mathf.Pow(1 - t, 2) * startpoint) + (2 * (1 - t) * t * heighPoint) + (t * t * endPoint);
-        //     try {
-        //         res[index++] = newPoint;
-        //     }
-        //     catch {
-        //         break;
-        //     }
-        // }
-        return res;
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (nodes is { Length: > 0 })
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawSphere(RelativePosition(swingStart), 0.1f);
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(RelativePosition(swingEnd), 0.1f);
-            Gizmos.color = Color.white;
-            foreach (var node in nodes)
-            {
-                Gizmos.DrawSphere(RelativePosition(node), 0.1f);
-            }
-        }
-    }
-}
-
-[System.Serializable]
-class CustomKeyframe
-{
-    [SerializeField] private Vector3 position;
-    [SerializeField] private Vector3 rotation;
-    [SerializeField] private float duration;
-    
-    public Vector3 Position { get { return position; } }
-    public Quaternion Rotation { get { return Quaternion.Euler(rotation); } }
-    public float Duration { get { return duration; } }
 }
