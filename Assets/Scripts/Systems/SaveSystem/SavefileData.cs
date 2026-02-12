@@ -26,6 +26,9 @@ public class SavefileData
 
             DialougesGotten = new(DialougesGotten),
             BooksInJournal = new(BooksInJournal),
+
+            PlayerSaveData = PlayerSaveData.Clone(),
+            DungeonSaveData = DungeonSaveData.Clone(),
         };
     }
 }

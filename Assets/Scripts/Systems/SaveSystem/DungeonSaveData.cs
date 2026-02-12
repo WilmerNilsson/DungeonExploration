@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DungeonSaveData
@@ -6,6 +8,17 @@ public class DungeonSaveData
     public List<DroppedItem> DroppedItems = new();
     public List<Enemy> Enemies = new();
     public List<Container> containers = new();
+
+    internal DungeonSaveData Clone()
+    {
+        DungeonSaveData cloneData = new();
+        cloneData.DroppedItems = new(DroppedItems);
+        cloneData.Enemies = new(Enemies);
+        cloneData.containers = new(containers.Count);
+
+        cloneData.containers.AddRange(containers.Select(i => i.Clone()));
+        return cloneData;
+    }
 
     public struct Enemy
     {
@@ -21,17 +34,22 @@ public class DungeonSaveData
         }
     }
 
-    public struct Container
+    public class Container
     {
         public Vector3 Pos;
         public Quaternion Rotation;
-        public InventorySaveData inventory;
+        public InventorySaveData Inventory;
 
         public Container(Vector3 pos, Quaternion rotation, InventorySaveData inventory)
         {
             Pos = pos;
             Rotation = rotation;
-            this.inventory = inventory;
+            Inventory = inventory;
+        }
+
+        public Container Clone()
+        {
+            return new Container(Pos, Rotation, Inventory.Clone());
         }
     }
 
