@@ -3,7 +3,8 @@ using UnityEngine;
 
 public static class CombatChecker
 {
-    private static List<GameObject> EnemiesChasing { get; set; } = new List<GameObject>();
+    private static List<GameObject> EnemiesChasing = new List<GameObject>();
+    public static bool IsCombat {get; private set;}
 
     //Lägg till objekt i EnemiesChasing OM det inte redan finns i listan eller om de är null,
     //efter det checka combatState
@@ -25,6 +26,7 @@ public static class CombatChecker
 
     private static void CheckCombatState()
     {
+        IsCombat = EnemiesChasing.Count > 0 ? true : false;
         if (AudioManager.IsValid)
         {
             AudioManager.Instance.SetGlobalParameter("Combat", EnemiesChasing.Count > 0 ? 1 : 0);
