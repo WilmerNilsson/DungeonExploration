@@ -3,15 +3,15 @@ using UnityEngine;
 
 public static class CombatChecker
 {
-    private static List<GameObject> EnemiesChasing = new List<GameObject>();
+    private static List<GameObject> _enemiesChasing = new List<GameObject>();
     public static bool IsCombat {get; private set;}
 
     //Lägg till objekt i EnemiesChasing OM det inte redan finns i listan eller om de är null,
     //efter det checka combatState
     public static void AddToChaseList(GameObject gameObject) 
     {
-        if (EnemiesChasing.Contains(gameObject) || gameObject == null) return;
-        EnemiesChasing.Add(gameObject);
+        if (_enemiesChasing.Contains(gameObject) || gameObject == null) return;
+        _enemiesChasing.Add(gameObject);
         CheckCombatState();
     }
 
@@ -20,16 +20,16 @@ public static class CombatChecker
     public static void RemoveFromChaseList(GameObject gameObject)
     {
         if (gameObject == null) return;
-        if (EnemiesChasing.Contains(gameObject)) EnemiesChasing.Remove(gameObject);
+        if (_enemiesChasing.Contains(gameObject)) _enemiesChasing.Remove(gameObject);
         CheckCombatState();
     }
 
     private static void CheckCombatState()
     {
-        IsCombat = EnemiesChasing.Count > 0 ? true : false;
+        IsCombat = _enemiesChasing.Count > 0;
         if (AudioManager.IsValid)
         {
-            AudioManager.Instance.SetGlobalParameter("Combat", EnemiesChasing.Count > 0 ? 1 : 0);
+            AudioManager.Instance.SetGlobalParameter("Combat", _enemiesChasing.Count > 0 ? 1 : 0);
         }
     }
 }
