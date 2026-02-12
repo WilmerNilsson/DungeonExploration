@@ -389,7 +389,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   emitterIsThisObject: 0
-  instructions: []
+  instructions:
+  - path: Player/SwordSwing
+    gameObject: {fileID: 443845897611985242}
+    followObject: 1
+    parametersToSet: []
 --- !u!143 &653897519548769769
 CharacterController:
   m_ObjectHideFlags: 0
@@ -631,7 +635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d931ca1dd1838a4bb460879b3218922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 0}
+  movement: {fileID: 6844093797709260482}
   walkPlayDelay: 0.5
   sprintPlayDelay: 0.25
   crouchWalkPlayDelay: 1
@@ -5853,6 +5857,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+--- !u!1 &443845897611985242 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6231285627939046001, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+  m_PrefabInstance: {fileID: 5787444643908059947}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &964627744385997792 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6715476101138585803, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}

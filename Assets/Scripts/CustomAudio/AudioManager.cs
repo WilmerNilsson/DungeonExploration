@@ -376,10 +376,15 @@ public class AudioManager : MonoBehaviour
         SetGlobalParameter("Paused", paused ? 1 : 0);
     }
 
-    private void OnHealthChange(int currentHp, int maxHP) //Lägga till maxHP här så att vi kan ha en parameter som är ratio och en som är faktiskt värde
+    private float _currentHpFloat;
+    private float _maxHpFloat;
+    
+    private void OnHealthChange(int currentHp, int maxHp) //Lägga till maxHP här så att vi kan ha en parameter som är ratio och en som är faktiskt värde
     {
         SetGlobalParameter("HP", currentHp);
-        SetGlobalParameter("hpRatio", currentHp / maxHP);
+        _currentHpFloat = currentHp;
+        _maxHpFloat = maxHp;
+        SetGlobalParameter("hpRatio", _currentHpFloat / _maxHpFloat);
     }
     
     #endregion
