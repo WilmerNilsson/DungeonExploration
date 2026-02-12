@@ -4,7 +4,10 @@ using Random = UnityEngine.Random;
 
 public class CrazedIK : MonoBehaviour
 {
-    private bool attacking = false;
+    [SerializeField,Tooltip("the rotation of the hand, readonly as they are set in code")] private float x, z;
+    
+    
+    [SerializeField] private bool attacking = false;
     public Animator animator;
     [SerializeField, Tooltip("Where the avatar should look")] private Transform lookObj = null;
     [SerializeField, Tooltip("The Shoulder node of the weapon arm")] private Transform shoulderObj = null;
@@ -27,6 +30,7 @@ public class CrazedIK : MonoBehaviour
     private Vector3 current;
     private Vector3 target;
     private int nodeIndex;
+    private Quaternion rotation;
     
     private float startTime = 0;
     private float time = 0;
@@ -49,7 +53,7 @@ public class CrazedIK : MonoBehaviour
         {
             swingAngle = Random.Range(-180 + angleLimit, 180 - angleLimit);
             swingStart = shoulderObj.localPosition + (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), 0).normalized * armLenght);
-            swingEnd = shoulderObj.localPosition - (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), 0).normalized * armLenght);
+            swingEnd = shoulderObj.localPosition - (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), -1).normalized * armLenght);
             nodes = GetQuadraticBezierPoints(swingStart, swingEnd, curveHeight);
             attacking = true;
         }
@@ -59,13 +63,16 @@ public class CrazedIK : MonoBehaviour
     void OnAnimatorIK(int layerIndex)
     {
         if(animator) {
-            
             if(attacking) {
                 
                 if(lookObj != null) {
                     animator.SetLookAtWeight(1);
                     animator.SetLookAtPosition(lookObj.position);
                 }
+                
+                z = (Mathf.Atan2(swingStart.y - shoulderObj.localPosition.y, swingStart.x - shoulderObj.localPosition.x) * Mathf.Rad2Deg) + 180;
+                x = Mathf.Clamp(Mathf.SmoothStep(0,90,(float)nodeIndex/100), 0, 90);
+                rotation = RelativeRotation(Quaternion.AngleAxis(z, Vector3.forward) * Quaternion.AngleAxis(x, Vector3.up));
                 
                 if (current == Vector3.zero) target = nodes[0];
                 if (startTime == 0) startTime = Time.time;
@@ -76,7 +83,7 @@ public class CrazedIK : MonoBehaviour
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,Mathf.SmoothStep(0, 1, time));
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,Mathf.Lerp(0, 1, time));
                     animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(target));
-                    animator.SetIKRotation(AvatarIKGoal.RightHand,RelativeRotation(Quaternion.LookRotation(target)));
+                    animator.SetIKRotation(AvatarIKGoal.RightHand,rotation);
                 }
                 else if (currentState == AttackState.Swing)
                 {
@@ -84,7 +91,7 @@ public class CrazedIK : MonoBehaviour
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(Vector3.Slerp(current, target, time)));
-                    animator.SetIKRotation(AvatarIKGoal.RightHand,RelativeRotation(Quaternion.FromToRotation(swingStart, swingEnd)));
+                    animator.SetIKRotation(AvatarIKGoal.RightHand,rotation);
                 }
                 else if (currentState == AttackState.Return)
                 {
@@ -92,7 +99,7 @@ public class CrazedIK : MonoBehaviour
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,Mathf.SmoothStep(1, 0, time));
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,Mathf.Lerp(1, 0, time));
                     animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(current));
-                    animator.SetIKRotation(AvatarIKGoal.RightHand,RelativeRotation(Quaternion.LookRotation(target)));
+                    animator.SetIKRotation(AvatarIKGoal.RightHand,rotation);
                 }
                 
                 if (time > 1f) //if it's near the goal switch goal or end the attack
@@ -130,6 +137,14 @@ public class CrazedIK : MonoBehaviour
                 animator.SetIKRotationWeight(AvatarIKGoal.RightHand,0);
                 animator.SetLookAtWeight(0);
                 Reset();
+                
+                // animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
+                // animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
+                // animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(shoulderObj.localPosition + Vector3.forward));
+                // z = Mathf.Atan2(swingStart.y - shoulderObj.localPosition.y, swingStart.x - shoulderObj.localPosition.x) * Mathf.Rad2Deg;
+                // //animator.SetIKRotation(AvatarIKGoal.RightHand,RelativeRotation(Quaternion.Euler(x, y, z)));
+                // Quaternion rotation = RelativeRotation(Quaternion.AngleAxis(z, Vector3.forward) * Quaternion.AngleAxis(x, Vector3.up));
+                // animator.SetIKRotation(AvatarIKGoal.RightHand,rotation);
             }
         }
     }
@@ -196,10 +211,17 @@ public class CrazedIK : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(RelativePosition(shoulderObj.localPosition), 0.1f);
-        foreach (var node in nodes)
+        if (nodes.Length > 0)
         {
-            Gizmos.DrawSphere(RelativePosition(node), 0.1f);
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(RelativePosition(swingStart), 0.1f);
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(RelativePosition(swingEnd), 0.1f);
+            Gizmos.color = Color.white;
+            foreach (var node in nodes)
+            {
+                Gizmos.DrawSphere(RelativePosition(node), 0.1f);
+            }
         }
     }
 }
