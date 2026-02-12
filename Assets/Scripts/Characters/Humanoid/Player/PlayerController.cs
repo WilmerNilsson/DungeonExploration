@@ -2,18 +2,26 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+[RequireComponent(typeof(HumanoidController),typeof(HumanoidMovement),typeof(HumanoidRotator))]
+[RequireComponent(typeof(HumanoidInteract),typeof(HumanoidAttackAnimatorCompanion),typeof(PlayerInput))]
+[RequireComponent(typeof(PlayerUIController),typeof(OneShotPlayer))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private HumanoidController controller;
+    [SerializeField, Tooltip("TODO add to HumanoidController instead")] private PlayerIK IK; //TODO add to HumanoidController instead
     
-    [SerializeField] private float mouseSensitivity;
-    [SerializeField] private float stickSensitivity;
+    [SerializeField] private float mouseSensitivity = 0.1f;
+    [SerializeField] private float stickSensitivity = 5f;
     
     private Vector2 lookVector;
     private Vector2 lookInput;
     private Vector3 moveVector;
 
     private bool lockedMovement = false;
+
+    private Vector2 mouseStart;
+    private Vector2 mouseEnd;
 
     void Start()
     {
@@ -26,7 +34,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        Rotate(lookInput);
+        if (!lockedMovement)
+        {
+            Rotate(lookInput);
+        }
     }
 
     private void OnDestroy()
@@ -109,11 +120,41 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (lockedMovement) return;
-
-        if (context.performed)
+        if (context.performed && !lockedMovement)
         {
-            controller.Attack();
+            mouseStart = Mouse.current.position.ReadValue();
+            GameManagerSO.Instance.LockMouse(true);
+        }
+        if (context.canceled)
+        {
+            mouseEnd = Mouse.current.position.ReadValue();
+            if (Vector2.Distance(mouseStart, mouseEnd) < 10)
+            {
+                GameManagerSO.Instance.LockMouse(false);
+                return;
+            }
+            IK.Attack(Vector2.SignedAngle(Vector2.left, (mouseEnd - mouseStart)));
+            GameManagerSO.Instance.LockMouse(false);
+        }
+    }
+
+    public void OnBlock(InputAction.CallbackContext context)
+    {
+        if (context.performed && !lockedMovement)
+        {
+            mouseStart = Mouse.current.position.ReadValue();
+            GameManagerSO.Instance.LockMouse(true);
+        }
+        if (context.canceled)
+        {
+            mouseEnd = Mouse.current.position.ReadValue();
+            if (Vector2.Distance(mouseStart, mouseEnd) < 10)
+            {
+                GameManagerSO.Instance.LockMouse(false);
+                return;
+            }
+            IK.Block(Vector2.SignedAngle(Vector2.right, (mouseEnd - mouseStart)));
+            GameManagerSO.Instance.LockMouse(false);
         }
     }
 
