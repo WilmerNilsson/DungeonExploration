@@ -2,12 +2,17 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+[RequireComponent(typeof(HumanoidController),typeof(HumanoidMovement),typeof(HumanoidRotator))]
+[RequireComponent(typeof(HumanoidInteract),typeof(HumanoidAttackAnimatorCompanion),typeof(PlayerInput))]
+[RequireComponent(typeof(PlayerUIController),typeof(OneShotPlayer))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private HumanoidController controller;
+    [SerializeField, Tooltip("TODO add to HumanoidController instead")] private PlayerIK IK; //TODO add to HumanoidController instead
     
-    [SerializeField] private float mouseSensitivity;
-    [SerializeField] private float stickSensitivity;
+    [SerializeField] private float mouseSensitivity = 0.1f;
+    [SerializeField] private float stickSensitivity = 5f;
     
     private Vector2 lookVector;
     private Vector2 lookInput;
@@ -113,7 +118,7 @@ public class PlayerController : MonoBehaviour
 
         if (context.performed)
         {
-            controller.Attack();
+            IK.Attack(45);
         }
     }
 
