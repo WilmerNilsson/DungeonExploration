@@ -116,15 +116,20 @@ public class InvMaster : MonoBehaviour
 
         OpenPlayerInventory();
 
-        container.Grid.transform.SetParent(worldContainerParent, false);
+#if DEBUG
+        if(openContainers.Count > 1)
+        {
+            Debug.LogWarning("2 or more world containers are open, but support is currently just for 1", this);
+        }
+#endif
+
+        container.Grid.transform.SetParent(worldContainerParent);
+        container.Grid.transform.localPosition = Vector3.zero;
     }
 
     public void RemoveWorldContainerFromSystem(ContainerController container)
     {
-        if(openContainers.Remove(container))
-        {
-            container.Close();
-        }
+        openContainers.Remove(container);
     }
 
     public void ToggleInventory()
@@ -151,8 +156,6 @@ public class InvMaster : MonoBehaviour
     public void ClosePlayerInventory()
     {
         contextMenu.Deselect();
-        CloseText();
-
         playerInventory.SetActive(false);
         GameManagerSO.Instance.LockMouse(false);
 

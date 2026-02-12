@@ -3,9 +3,8 @@ using UnityEngine;
 [System.Serializable]
 public class MadMelee : MadState
 {
-    [SerializeField] private CrazedIK avatarIK;
-    [SerializeField, Tooltip("max distance to target before Chasing"), Min(1f)] public float maxMeleeRange = 2.5f;
-    [SerializeField, Tooltip("minimum distance to target"), Min(0f)] private float minMeleeRange = 0.5f;
+    [SerializeField, Tooltip("max distance to target before Chasing"), Min(1f)] public float maxMeleeRange;
+    [SerializeField, Tooltip("minimum distance to target"), Min(0f)] private float minMeleeRange;
 
     private float distance;
     public override void Enter()
@@ -37,8 +36,7 @@ public class MadMelee : MadState
         else if (distance > minMeleeRange)
         {
             Stop();
-            //mad.controller.Attack();
-            avatarIK.Attack();
+            mad.controller.Attack();
             // just smack :)
         }
     }
