@@ -21,6 +21,7 @@ public class Hunger : MonoBehaviour
     public void ResetHunger()
     {
         playerHungerSO.currentHunger = playerHungerSO.maxHunger;
+        playerHungerSO.hungerDamage = 0;
     }
 
     private void Awake()
