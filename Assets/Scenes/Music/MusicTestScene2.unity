@@ -5024,6 +5024,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Crazed Adventurer
       objectReference: {fileID: 0}
+    - target: {fileID: 2061297438515249443, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8600154565869652437, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
       propertyPath: m_LocalPosition.x
       value: -41.02776
@@ -11567,14 +11571,12 @@ MonoBehaviour:
   activateOnce: 0
   activationDelay: 0
   instructions:
-  - command: 9
-    path: BGM/Level1
-    gameObj: {fileID: 0}
-    followObject: 0
+  - command: 8
+    path: Player/Footsteps
+    gameObj: {fileID: 1117420915}
+    followObject: 1
     stopMode: 0
-    parametersToSet:
-    - name: Combat
-      value: 0
+    parametersToSet: []
     bankName: 
     loadSampleData: 0
 --- !u!4 &1117420917
@@ -11586,7 +11588,7 @@ Transform:
   m_GameObject: {fileID: 1117420915}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.863779, y: 1.5018721, z: 0.9666104}
+  m_LocalPosition: {x: -48.67, y: 4.94, z: 0.9666104}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12226,9 +12228,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8893892476905510790, guid: bd6d753639a52a1479239516af94f776, type: 3}
-      propertyPath: walkPlayDelay
-      value: 0.1
+    - target: {fileID: 6955565832605297247, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6955565832605297247, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6955565832605297247, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6955565832605297247, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6955565832605297247, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6955565832605297247, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6955565832605297247, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6955565832605297247, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6955565832605297247, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20346,14 +20380,6 @@ PrefabInstance:
     - target: {fileID: 61649496702353971, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
       propertyPath: procedure
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 808863321973245351, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
-      propertyPath: debug
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 808863321973245351, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
-      propertyPath: showOnlyWarnings
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6517206634113031847, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
       propertyPath: m_LocalPosition.x
