@@ -20,6 +20,9 @@ public class PlayerController : MonoBehaviour
 
     private bool lockedMovement = false;
 
+    private Vector2 mouseStart;
+    private Vector2 mouseEnd;
+
     void Start()
     {
         //we may move this to game manager OnLoadScene
@@ -31,7 +34,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        Rotate(lookInput);
+        if (!lockedMovement)
+        {
+            Rotate(lookInput);
+        }
     }
 
     private void OnDestroy()
@@ -114,11 +120,16 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (lockedMovement) return;
-
-        if (context.performed)
+        if (context.performed && !lockedMovement)
         {
-            IK.Attack(45);
+            mouseStart = Mouse.current.position.ReadValue();
+            GameManagerSO.Instance.LockMouse(true);
+        }
+        if (context.canceled)
+        {
+            mouseEnd = Mouse.current.position.ReadValue();
+            IK.Attack(Vector2.SignedAngle(Vector2.left, (mouseEnd - mouseStart)));
+            GameManagerSO.Instance.LockMouse(false);
         }
     }
 

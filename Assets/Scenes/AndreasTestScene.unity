@@ -220,6 +220,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08d38b58f4b133f4fb87414bc1a4666c, type: 3}
+--- !u!4 &184010565 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7279710517487077824, guid: bd6d753639a52a1479239516af94f776, type: 3}
+  m_PrefabInstance: {fileID: 7195188937988694777}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &468400770
 GameObject:
   m_ObjectHideFlags: 0
@@ -590,7 +595,7 @@ PrefabInstance:
     - target: {fileID: 3950284540247109631, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
       propertyPath: lookObj
       value: 
-      objectReference: {fileID: 1553118411}
+      objectReference: {fileID: 184010565}
     - target: {fileID: 8600154565869652437, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.55
@@ -1414,11 +1419,6 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
---- !u!4 &1553118411 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1811854244061691814, guid: 3d53b488f775ee3429e2f32cfeb62719, type: 3}
-  m_PrefabInstance: {fileID: 7178295612420827210}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1782774010
 GameObject:
   m_ObjectHideFlags: 0
@@ -1894,6 +1894,18 @@ PrefabInstance:
       propertyPath: movement
       value: 
       objectReference: {fileID: 2146369609}
+    - target: {fileID: 8901949334323711285, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: nodeDuration
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8901949334323711285, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: resetDuration
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8901949334323711285, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: chargeDuration
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -42,7 +42,7 @@ public class PlayerIK : MonoBehaviour
     {
         if (!attacking)
         {
-            swingAngle = angle;
+            swingAngle = Mathf.Deg2Rad * angle;
             swingStart = shoulderObj.localPosition + (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), 0).normalized * armLenght);
             swingEnd = shoulderObj.localPosition - (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), -1).normalized * armLenght);
             nodes = GetQuadraticBezierPoints(swingStart, swingEnd, curveHeight);
