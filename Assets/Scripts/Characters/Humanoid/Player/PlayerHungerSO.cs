@@ -7,6 +7,5 @@ public class PlayerHungerSO : ScriptableObject
     [SerializeField] public int maxHunger = 100;
     public int currentHunger = 0;
     [Tooltip("The health component of the player")]
-    [SerializeField] private Health health;
     public int hungerDamage = 0;
 }
