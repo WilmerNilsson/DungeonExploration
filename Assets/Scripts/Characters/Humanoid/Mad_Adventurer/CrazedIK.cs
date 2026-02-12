@@ -45,7 +45,7 @@ public class CrazedIK : MonoBehaviour
     {
         if (!attacking)
         {
-            swingAngle = Random.Range(-180 + angleLimit, 180 - angleLimit);
+            swingAngle = Mathf.Deg2Rad * Random.Range(-180 + angleLimit, 180 - angleLimit);
             swingStart = shoulderObj.localPosition + (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), 0).normalized * armLenght);
             swingEnd = shoulderObj.localPosition - (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), -1).normalized * armLenght);
             nodes = GetQuadraticBezierPoints(swingStart, swingEnd, curveHeight);

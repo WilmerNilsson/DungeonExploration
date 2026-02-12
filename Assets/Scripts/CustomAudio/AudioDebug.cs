@@ -18,7 +18,7 @@ public class AudioDebug : MonoBehaviour
     public static void Print(string message, bool isWarning = false)
     {
         if (!AudioManager.IsValid) return;
-        if (AudioManager.Instance.debug) return;
+        if (!AudioManager.Instance.debug) return;
         if (isWarning)
         {
             Debug.LogWarning(message);
