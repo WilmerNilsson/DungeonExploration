@@ -6,25 +6,30 @@ public class Weapon : MonoBehaviour
     [SerializeField, Min(1)] private int damage = 1;
     [SerializeField, Min(1)] private int durability = 1;
     [SerializeField] private bool unbreakable;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] public bool dealDamage = true;
+    private Collider body;
+
+    private void OnEnable()
     {
-        
+        body = GetComponent<Collider>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetActive(bool value)
     {
-        
+        body.enabled = value;
     }
-
+    
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out Health health))
+        if(dealDamage && !transform.IsChildOf(other.transform) && other.TryGetComponent(out Health health))
         {
             health.TakeDamage(damage);
             LoseDurability(health.DurabilityDamage);
-            Debug.Log($"target health is " + health.CurrentHealth);
+            Debug.Log($"The target {other.gameObject.name} health is " + health.CurrentHealth);
+        }
+        if (!other.CompareTag("Player") && other.TryGetComponent(out Weapon weapon))
+        {
+            weapon.Interrupt();
         }
     }
     
@@ -39,5 +44,10 @@ public class Weapon : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void Interrupt()
+    {
+        GetComponentInParent<CrazedIK>().Interrupt();
     }
 }
