@@ -24,7 +24,7 @@ public class Weapon : MonoBehaviour
         {
             health.TakeDamage(damage);
             LoseDurability(health.DurabilityDamage);
-            Debug.Log($"target health is " + health.CurrentHealth);
+            Debug.Log($"The target {other.gameObject.name} health is " + health.CurrentHealth);
         }
     }
     
