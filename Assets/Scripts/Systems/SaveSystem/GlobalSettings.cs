@@ -3,12 +3,12 @@ using UnityEngine;
 public class GlobalSettings
 {
     //savefile
-    public int lastSaveFileNr;
+    public int LastSaveFileNr;
 
     //Volume
-    public float masterVolume = 50f; public float effectsVolume = 100f; public float musicVolume = 100f;
+    public float MasterVolume = 50f; public float EffectsVolume = 100f; public float MusicVolume = 100f;
 
     //Languige is taken care of automaticly apparently
     //Gameplay
-    public bool conflictingControllsNeutralizes = false;
+    public bool ConflictingControllsNeutralizes = false;
 }

@@ -77,7 +77,7 @@ public class InGameUIController : MonoBehaviour, IUIController
             if(gameIsPaused)
             {
                 Resume();
-                gameManager.SaveSettings();
+                gameManager.SavefileManager.SaveSettings();
             }
             else
             {
@@ -120,7 +120,7 @@ public class InGameUIController : MonoBehaviour, IUIController
 
     public void ExitToMenu()
     {
-        gameManager.SaveSettings();
+        gameManager.SavefileManager.SaveSettings();
         gameManager.FreezeTime(false);
         if(cutsceneWindowActive)
         {
@@ -131,7 +131,7 @@ public class InGameUIController : MonoBehaviour, IUIController
 
     public void ExitToDesktop()
     {
-        gameManager.SaveSettings();
+        gameManager.SavefileManager.SaveSettings();
         Application.Quit();
     }
 

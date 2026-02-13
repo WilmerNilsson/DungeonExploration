@@ -6,6 +6,8 @@ public class PlayerSaveData
 {
     public InventorySaveData Inventory = new();
 
+    public Vector3 Position;
+
     public int MaxHP;
     public int CurrentHP;
 
@@ -14,9 +16,10 @@ public class PlayerSaveData
 
     public PlayerSaveData() { }
 
-    public PlayerSaveData(InventorySaveData inventory, int maxHP, int currentHP, int sanity, int hunger)
+    public PlayerSaveData(InventorySaveData inventory, Vector3 position, int maxHP, int currentHP, int sanity, int hunger)
     {
         Inventory = inventory;
+        Position = position;
         MaxHP = maxHP;
         CurrentHP = currentHP;
         Sanity = sanity;
@@ -25,6 +28,6 @@ public class PlayerSaveData
 
     public PlayerSaveData Clone()
     {
-        return new(Inventory.Clone(), MaxHP, CurrentHP, Sanity, Hunger);
+        return new(Inventory.Clone(), Position, MaxHP, CurrentHP, Sanity, Hunger);
     }
 }

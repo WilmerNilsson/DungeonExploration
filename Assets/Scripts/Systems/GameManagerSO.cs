@@ -13,10 +13,7 @@ public class GameManagerSO : ScriptableObject
     private const string SoundEffectsSoundName = "SFX";
     private const string MusicSoundName = "Music";
 
-    private GlobalSettings globalSettings = new GlobalSettings();
-    private SavefileData currentSavefileData = new SavefileData();
-    private SavefileData lastSavedSavefileData = new SavefileData();
-    private int currentSavefileNr = 1;
+    public SaveFileManager SavefileManager = new();
 
     private static GameManagerSO instance;
     private bool hasLoadedSettings = false;
@@ -29,7 +26,6 @@ public class GameManagerSO : ScriptableObject
     private int thingsLockingMouse = 0;
 
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
-    public event Action? OnSavePointSaveSelfReset;
     public event Action<bool>? OnFreezeGameChangeSelfReset;
     /// <summary>
     /// will not reset on scene change, care for memory leaks
@@ -49,10 +45,10 @@ public class GameManagerSO : ScriptableObject
     {
         if(!hasLoadedSettings)
         {
-            //updating mixer volume is done in the music controller script since i can't make sure that the update mixer methods are called after the mixer loads
+            //updating volume is sound peoples thing, ask them if needed
             //put things here instad of OnEnable etc
 
-            instance.ReadGlobalSettings();
+            SavefileManager.ReadGlobalSettings();
             hasLoadedSettings = true;
         }
     }
@@ -85,6 +81,12 @@ public class GameManagerSO : ScriptableObject
         MoveToScene(Vector2.zero, mainSceneNumber);
     }
 
+    
+
+    /// <summary>
+    /// If we move to a new scene trough a door or passage.
+    /// </summary>
+    /// <param name="newLocation">Where te exit of said passage is.</param>
     public void MoveToScene(Vector2 newLocation, int newSceneNr)
     {
         //currentSavefileData.sceneNr = newSceneNr;
@@ -94,7 +96,7 @@ public class GameManagerSO : ScriptableObject
         {
             ResetActions();
 
-            if(newSceneNr == mainMenuSceneNumber) // main menu
+            if(newSceneNr == mainMenuSceneNumber)
             {
                 Time.timeScale = 1;
             }
@@ -110,7 +112,6 @@ public class GameManagerSO : ScriptableObject
 
     private void ResetActions()
     {
-        OnSavePointSaveSelfReset = null;
         OnFreezeGameChangeSelfReset = null;
     }
     #endregion
@@ -167,12 +168,12 @@ public class GameManagerSO : ScriptableObject
     #region Timescale and mouselock
     public float GetTimeScale()
     {
-        return currentSavefileData.normalTimeScale;
+        return SavefileManager.SavefileSettings.NormalTimescale;
     }
 
     public void SetTimeScale(float newValue)
     {
-        currentSavefileData.normalTimeScale = newValue;
+        SavefileManager.SavefileSettings.NormalTimescale = newValue;
     }
 
     public void FreezeTime(bool value)
@@ -197,7 +198,7 @@ public class GameManagerSO : ScriptableObject
         }
         else if(wasFrozen && thingsFreezingGame == 0)
         {
-            Time.timeScale = currentSavefileData.normalTimeScale;
+            Time.timeScale = SavefileManager.SavefileSettings.NormalTimescale;
 
             OnFreezeGameChangeSelfReset?.Invoke(false);
             OnFreezeGameChange?.Invoke(false);
@@ -236,17 +237,17 @@ public class GameManagerSO : ScriptableObject
     #region Sound
     public float GetMasterVolume()
     {
-        return globalSettings.masterVolume;
+        return SavefileManager.GlobalSettings.MasterVolume;
     }
 
     public float GetEffectsVolume()
     {
-        return globalSettings.effectsVolume;
+        return SavefileManager.GlobalSettings.EffectsVolume;
     }
 
     public float GetMusicVolume()
     {
-        return globalSettings.musicVolume;
+        return SavefileManager.GlobalSettings.MusicVolume;
     }
 
     public void UpdateVolumes()
@@ -258,7 +259,7 @@ public class GameManagerSO : ScriptableObject
 
     public void SetMasterVolume(float newValue)
     {
-        globalSettings.masterVolume = newValue;
+        SavefileManager.GlobalSettings.MasterVolume = newValue;
         UpdateMixerMasterVolume();
     }
 
@@ -266,13 +267,13 @@ public class GameManagerSO : ScriptableObject
     {
         if(AudioManager.IsValid)
         {
-            AudioManager.Instance.SetVolume(MasterSoundName, globalSettings.masterVolume / 100f);
+            AudioManager.Instance.SetVolume(MasterSoundName, SavefileManager.GlobalSettings.MasterVolume / 100f);
         }
     }
 
     public void SetEffectsVolume(float newValue)
     {
-        globalSettings.effectsVolume = newValue;
+        SavefileManager.GlobalSettings.EffectsVolume = newValue;
         UpdateMixerEffectsVolume();
     }
 
@@ -280,13 +281,13 @@ public class GameManagerSO : ScriptableObject
     {
         if (AudioManager.IsValid)
         {
-            AudioManager.Instance.SetVolume(SoundEffectsSoundName, globalSettings.effectsVolume / 100f);
+            AudioManager.Instance.SetVolume(SoundEffectsSoundName, SavefileManager.GlobalSettings.EffectsVolume / 100f);
         }
     }
 
     public void SetMusicVolume(float newValue)
     {
-        globalSettings.musicVolume = newValue;
+        SavefileManager.GlobalSettings.MusicVolume = newValue;
         UpdateMixerMusicVolume();
     }
 
@@ -294,162 +295,27 @@ public class GameManagerSO : ScriptableObject
     {
         if (AudioManager.IsValid)
         {
-            AudioManager.Instance.SetVolume(MusicSoundName, globalSettings.musicVolume / 100f);
+            AudioManager.Instance.SetVolume(MusicSoundName, SavefileManager.GlobalSettings.MusicVolume / 100f);
         }
     }
     #endregion
 
     #region  SavefilesStuff
-    private SavefileData CopySaveFileData(SavefileData dataToBeCopied)
+
+    /// <summary>
+    /// should only be called from SaveFileManager
+    /// </summary>
+    public void LoadSavefileScene(SavefileData data)
     {
-        SavefileData newData = new SavefileData();
-
-        newData.sceneNr = dataToBeCopied.sceneNr;
-        newData.savePos = dataToBeCopied.savePos;
-
-        newData.normalTimeScale = dataToBeCopied.normalTimeScale;
-
-        return newData;
-    }
-
-    public void LoadLastSaveFile()
-    {
-        PlaySaveFile(globalSettings.lastSaveFileNr);
-    }
-
-    public void PlaySaveFile(int saveFileNr)
-    {
-        currentSavefileNr = saveFileNr;
-        globalSettings.lastSaveFileNr = currentSavefileNr;
-
-        if (!Directory.Exists(Application.dataPath + "/Savefiles/" + currentSavefileNr))
-        {
-            CreateSaveFileDirectory(currentSavefileNr);
-        }
-        ReadSavefileSettings();
-
-        Time.timeScale = currentSavefileData.normalTimeScale;
-        if(OnLoadScene != null)
-        {
-            OnLoadScene(currentSavefileData.sceneNr);
-        }
-        SceneManager.LoadScene(currentSavefileData.sceneNr);
-    }
-
-    public void DeleteSaveFile(int saveFileNr)
-    {
-        if (File.Exists(Application.dataPath + "/Savefiles/" + saveFileNr + "/SavefileSettings.txt"))
-        {
-            File.Delete(Application.dataPath + "/Savefiles/" + saveFileNr + "/SavefileSettings.txt");
-        }
-
-        if (File.Exists(Application.dataPath + "/Savefiles/" + saveFileNr + "/SavefileSettings.txt.meta"))
-        {
-            File.Delete(Application.dataPath + "/Savefiles/" + saveFileNr + "/SavefileSettings.txt.meta");
-        }
-    }
-
-    public void SavePointSave(Vector2 saveLocation)
-    {
-        currentSavefileData.savePos = saveLocation;
-        lastSavedSavefileData = CopySaveFileData(currentSavefileData);
-        SaveSavefile();
-        if(OnSavePointSaveSelfReset != null)
-        {
-            OnSavePointSaveSelfReset();
-        }
-    }
-
-    public void ResetSave()
-    {
-        currentSavefileData = CopySaveFileData(lastSavedSavefileData);
-
-        if(OnLoadScene != null)
-        {
-            OnLoadScene(currentSavefileData.sceneNr);
-        }
-        SceneManager.LoadScene(currentSavefileData.sceneNr);
-    }
-
-    public void SaveSettings()
-    {
-        //since this doesent touch currentSavefileData it only saves lastSavedSavefileData, meaning the only thing it saves is the stuff directly editing it and global
-        //things directly edeting last save file should be save file specific settings, such as difficulty and cheats.
-        //due to this it can be used very liberally
-        SaveGlobalOptions();
-        SaveSavefile();
-    }
-
-    void CreateSaveFileDirectory(int numberValue)
-    {
-        Directory.CreateDirectory(Application.dataPath + "/Savefiles/" + numberValue);
-    }
-
-    void SaveGlobalOptions()
-    {
-        string json = JsonUtility.ToJson(globalSettings);
-
-        File.WriteAllText(Application.dataPath + "/Savefiles/" + "/GlobalSettings.txt", json);
-    }
-
-    void CreateDefaultGlobalOptions()
-    {
-        string json = JsonUtility.ToJson(new GlobalSettings());
-
-        File.WriteAllText(Application.dataPath + "/Savefiles/" + "/GlobalSettings.txt", json);
-    }
-
-    void SaveSavefile()
-    {
-        string json = JsonUtility.ToJson(lastSavedSavefileData);
-
-        File.WriteAllText(Application.dataPath + "/Savefiles/" + currentSavefileNr + "/SavefileSettings.txt", json);
-    }
-
-    void CreateDefaultSaveFileSettings()
-    {
-        string json = JsonUtility.ToJson(new SavefileData());
-
-        File.WriteAllText(Application.dataPath + "/Savefiles/" + currentSavefileNr + "/SavefileSettings.txt", json);
-    }
-
-    void ReadGlobalSettings()
-    {
-        if (!File.Exists(Application.dataPath + "/Savefiles/" + "/GlobalSettings.txt"))
-        {
-            if (!Directory.Exists(Application.dataPath + "/Savefiles/"))
-            {
-                CreateSaveFileDirectory(1);
-            }
-            CreateDefaultGlobalOptions();
-        }
-        string json = File.ReadAllText(Application.dataPath + "/Savefiles/" + "/GlobalSettings.txt");
-
-        globalSettings = JsonUtility.FromJson<GlobalSettings>(json);
-        hasLoadedSettings = true;
-    }
-
-    void ReadSavefileSettings()
-    {
-        if (!File.Exists(Application.dataPath + "/Savefiles/" + currentSavefileNr + "/SavefileSettings.txt"))
-        {
-            CreateDefaultSaveFileSettings();
-        }
-        string json = File.ReadAllText(Application.dataPath + "/Savefiles/" + currentSavefileNr + "/SavefileSettings.txt");
-
-        currentSavefileData = JsonUtility.FromJson<SavefileData>(json);
-    }
-    #endregion
-
-    #region GetOtherSavefileStuff
-    public Vector2 GetCurrentPlayerSavePos()
-    {
-        return currentSavefileData.savePos;
+        Time.timeScale = data.settings.NormalTimescale;
+        OnLoadScene?.Invoke(data.sceneNr);
+        SceneManager.LoadScene(data.sceneNr);
+        Debug.Log("todo initialize scene");
     }
 
     public bool GetConflictingControllsNeutralizes()
     {
-        return globalSettings.conflictingControllsNeutralizes;
+        return SavefileManager.GlobalSettings.ConflictingControllsNeutralizes;
     }
     #endregion
 }
