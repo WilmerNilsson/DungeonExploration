@@ -10,6 +10,8 @@ public class AudioManager : MonoBehaviour
 {
     #region Initialization
 
+    public OcclusionChecker occlusionChecker;
+    
     public static AudioManager Instance;
 
     private void Awake() //Singleton + BankLaddning + Caching
@@ -33,6 +35,12 @@ public class AudioManager : MonoBehaviour
         else
         {
             AudioDebug.Print("Couldn't find GameManagerSO", true);
+        }
+
+        if (occlusionChecker == null)
+        {
+            Debug.LogWarning("No occlusion checker is set in the inspector, please add one if you want to be able to change values");
+            occlusionChecker = new OcclusionChecker();
         }
         
         DontDestroyOnLoad(this);
@@ -386,7 +394,15 @@ public class AudioManager : MonoBehaviour
         _maxHpFloat = maxHp;
         SetGlobalParameter("hpRatio", _currentHpFloat / _maxHpFloat);
     }
-    
+
+    private void FixedUpdate()
+    {
+        foreach (var eventList in eventLists)
+        {
+            eventList.CheckOcclusions();
+        }
+    }
+
     #endregion
 
     #region SceneLoading 
