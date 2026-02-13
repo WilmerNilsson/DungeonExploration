@@ -26,7 +26,8 @@ public class HealthBar : MonoBehaviour
 
     private void Start()
     {
-        health = GameObject.FindGameObjectWithTag("Player")?.GetComponentInChildren<Health>();
+        
+        health = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Health>();
 
 #if DEBUG
         if(health == null)
@@ -37,7 +38,7 @@ public class HealthBar : MonoBehaviour
         }
 #endif
 
-        UpdateInfo(health.CurrentHealth, health.MaxHealth);
+        UpdateInfo(new HealthData(health.CurrentHealth, health.MaxHealth));
     }
 
     private void OnEnable()
@@ -49,9 +50,9 @@ public class HealthBar : MonoBehaviour
         }
 #endif
 
-        health.OnChangeHealths += UpdateInfo;
+        health.OnChangeHealths.AddListener(UpdateInfo);
 
-        UpdateInfo(health.CurrentHealth, health.MaxHealth);
+        UpdateInfo(new HealthData(health.CurrentHealth, health.MaxHealth));
     }
 
     private void OnDisable()
@@ -63,11 +64,13 @@ public class HealthBar : MonoBehaviour
         }
 #endif
 
-        health.OnChangeHealths -= UpdateInfo;
+        health.OnChangeHealths.RemoveListener(UpdateInfo);
     }
 
-    void UpdateInfo(int current, int max)
+    void UpdateInfo(HealthData healthData)
     {
+        float current = healthData.CurrentHealth;
+        float max = healthData.MaxHealth;
         if(isNormalImage)
         {
             image.fillAmount = Mathf.Clamp((float) current / max, 0, 1);

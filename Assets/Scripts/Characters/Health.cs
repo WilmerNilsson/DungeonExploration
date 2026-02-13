@@ -11,21 +11,17 @@ public class Health : MonoBehaviour
     [SerializeField] private int currentHealth;
     [SerializeField, Min(1)] private int maxHealth = 1;
     [SerializeField, Min(0)] public int DurabilityDamage;
-    
-    [SerializeField, Min(0f)] private float minTimeBetweenDamage;
 
     public static Health PlayerHealthInstance { get; private set;  }
-
-#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
-    public event Action<int>? OnTakeDamage;
+    
+    public UnityEvent<HealthData> OnChangeHealths;
+    public UnityEvent<int> OnTakeDamage;
     public UnityEvent OnDeath;
     /// <summary>
     /// if health or max health changes this will activate.<br/>
     /// order is: current health, max health. <br/>
     /// it is the new values that are given, not the difference in values.
     /// </summary>
-    public event Action<int, int>? OnChangeHealths;
-#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 
     public bool Dead { private set; get; } = false;
     public int CurrentHealth { 
@@ -116,7 +112,7 @@ public class Health : MonoBehaviour
             CurrentHealth = MaxHealth;
         }
 
-        OnChangeHealths?.Invoke(CurrentHealth, MaxHealth);
+        OnChangeHealths?.Invoke(new HealthData(currentHealth, MaxHealth));
 
         return true;
     }

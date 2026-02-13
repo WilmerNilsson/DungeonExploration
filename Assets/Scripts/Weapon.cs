@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Weapon : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class Weapon : MonoBehaviour
     [SerializeField] private bool unbreakable;
     [SerializeField] public bool dealDamage = true;
     private Collider body;
+    
+    public UnityEvent onDamage;
+    public UnityEvent onBlocked;
 
     private void OnEnable()
     {
@@ -23,13 +27,15 @@ public class Weapon : MonoBehaviour
     {
         if(dealDamage && !transform.IsChildOf(other.transform) && other.TryGetComponent(out Health health))
         {
+            onDamage?.Invoke();
             health.TakeDamage(damage);
             LoseDurability(health.DurabilityDamage);
+            SetActive(false);
             Debug.Log($"The target {other.gameObject.name} health is " + health.CurrentHealth);
         }
-        if (!other.CompareTag("Player") && other.TryGetComponent(out Weapon weapon))
+        if (other.TryGetComponent(out Weapon weapon))
         {
-            weapon.Interrupt();
+            onBlocked?.Invoke();
         }
     }
     
@@ -44,10 +50,5 @@ public class Weapon : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-
-    public void Interrupt()
-    {
-        GetComponentInParent<CrazedIK>().Interrupt();
     }
 }
