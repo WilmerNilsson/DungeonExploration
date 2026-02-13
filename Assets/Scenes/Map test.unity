@@ -250387,7 +250387,7 @@ GameObject:
   - component: {fileID: 1482468767}
   - component: {fileID: 1482468766}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Campfire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -250405,6 +250405,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cc970ee58a841342962a5edebef9445, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnRest:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1482468767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253091,7 +253094,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 822202894608450755, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1897411139}
   m_SourcePrefab: {fileID: 100100000, guid: bd6d753639a52a1479239516af94f776, type: 3}
 --- !u!43 &1516790747
 Mesh:
@@ -424092,6 +424098,43 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1897411125 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 822202894608450755, guid: bd6d753639a52a1479239516af94f776, type: 3}
+  m_PrefabInstance: {fileID: 1515057215}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1897411126 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1354050652585229241, guid: bd6d753639a52a1479239516af94f776, type: 3}
+  m_PrefabInstance: {fileID: 1515057215}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1897411125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f5d5a35e66ca5d4bbe0b26356fe7551, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1897411139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1897411125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7927d7b62ed874549b70ca71e6ac3fae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHungerSO: {fileID: 11400000, guid: daa365354eb550f4b8ba0bdd35400db2, type: 2}
+  health: {fileID: 1897411126}
+  hungerCooldown: 10
+  OnHunger:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEat:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!43 &1897605969
 Mesh:
   m_ObjectHideFlags: 0
