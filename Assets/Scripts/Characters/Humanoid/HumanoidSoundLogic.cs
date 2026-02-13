@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class HumanoidSoundLogic : MonoBehaviour
 {
-    [SerializeField] private HumanoidMovement movement;
     [SerializeField, Min(0)] private float walkPlayDelay = 0.5f;
     [SerializeField, Min(0)] private float sprintPlayDelay = 0.25f;
     [SerializeField, Min(0)] private float crouchWalkPlayDelay = 1f;
@@ -16,25 +15,19 @@ public class HumanoidSoundLogic : MonoBehaviour
 #if DEBUG
     private void OnValidate()
     {
-        if(movement == null)
-        {
-            Debug.LogWarning("movement is null", this);
-        }
         if(walkPlayDelay == 0 || sprintPlayDelay == 0 || crouchWalkPlayDelay == 0)
         {
             Debug.LogWarning("one or more delays are 0", this);
         }
     }
 #endif
-
-    private void OnEnable()
+    
+    public void attackSound(HumanoidIK.AttackState newState)
     {
-        movement.OnMoveActionChange += HandleMovementChange;
-    }
-
-    private void OnDisable()
-    {
-        movement.OnMoveActionChange -= HandleMovementChange;
+        if (AudioManager.IsValid && newState == PlayerIK.AttackState.Swing)
+        {
+            AudioManager.Instance.PlayOneShot("Player/SwordSwing", null, null, gameObject, true);
+        }
     }
 
     //since we want to keep the footsteps between states we kinda do not need to use a coroutine
@@ -66,7 +59,7 @@ public class HumanoidSoundLogic : MonoBehaviour
         }
     }
 
-    private void HandleMovementChange(HumanoidMovement.moveActions actions)
+    public void HandleMovementChange(HumanoidMovement.moveActions actions)
     {
         switch (actions)
         {

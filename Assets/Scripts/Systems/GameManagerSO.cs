@@ -24,6 +24,7 @@ public class GameManagerSO : ScriptableObject
         get { return thingsFreezingGame > 0; }
     }
     private int thingsLockingMouse = 0;
+    private int thingsLockingCamera = 0;
 
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public event Action<bool>? OnFreezeGameChangeSelfReset;
@@ -39,6 +40,7 @@ public class GameManagerSO : ScriptableObject
     /// will not reset on scene change, care for memory leaks
     /// </summary>
     public event Action<bool>? OnLockMouse;
+    public event Action<bool>? OnLockCamera;
 #pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 
     private void FirstAcces()
@@ -71,6 +73,7 @@ public class GameManagerSO : ScriptableObject
     {
         thingsFreezingGame = 0;
         thingsLockingMouse = 0;
+        thingsLockingCamera = 0;
         hasLoadedSettings = false;
     }
 
@@ -220,15 +223,40 @@ public class GameManagerSO : ScriptableObject
 
         if(!wasLocked && thingsLockingMouse != 0)
         {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.Confined; //we need to controll curson with a pause menu once implimented
+            LockCamera(true);
             OnLockMouse?.Invoke(true);
         }
         else if (wasLocked && thingsLockingMouse == 0)
         {
+            LockCamera(false);
+            OnLockMouse?.Invoke(false);
+        }
+    }
+
+    public void LockCamera(bool value)
+    {
+        bool wasLocked = thingsLockingCamera != 0;
+        
+        if (value)
+        {
+            thingsLockingCamera++;
+        }
+        else
+        {
+            thingsLockingCamera--;
+        }
+        
+        if(!wasLocked && thingsLockingCamera != 0)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined; //we need to controll curson with a pause menu once implimented
+            OnLockCamera?.Invoke(true);
+        }
+        else if (wasLocked && thingsLockingCamera == 0)
+        {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
-            OnLockMouse?.Invoke(false);
+            OnLockCamera?.Invoke(false);
         }
     }
 

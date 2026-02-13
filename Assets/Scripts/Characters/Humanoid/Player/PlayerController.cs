@@ -2,18 +2,30 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+[RequireComponent(typeof(HumanoidController),typeof(HumanoidMovement),typeof(HumanoidRotator))]
+[RequireComponent(typeof(HumanoidInteract),typeof(HumanoidAttackAnimatorCompanion),typeof(PlayerInput))]
+[RequireComponent(typeof(PlayerUIController),typeof(OneShotPlayer))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private HumanoidController controller;
+    [SerializeField, Tooltip("TODO add to HumanoidController instead")] private PlayerIK IK; //TODO add to HumanoidController instead
     
-    [SerializeField] private float mouseSensitivity;
-    [SerializeField] private float stickSensitivity;
+    [SerializeField] private float mouseSensitivity = 0.1f;
+    [SerializeField] private float stickSensitivity = 5f;
     
     private Vector2 lookVector;
     private Vector2 lookInput;
     private Vector3 moveVector;
 
-    private bool lockedMovement = false;
+    [SerializeField]private bool lockedMovement = false;
+    [SerializeField]private bool lockedCamera = false;
+    
+    [SerializeField]bool startedAttack = false;
+    [SerializeField]bool startedBlock = false;
+
+    private Vector2 mouseStart;
+    private Vector2 mouseEnd;
 
     void Start()
     {
@@ -22,16 +34,31 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
 
         GameManagerSO.Instance.OnLockMouse += LockMovement;
+        GameManagerSO.Instance.OnLockCamera += LockCamera;
+    }
+    
+    private void LockMovement(bool newValue)
+    {
+        lockedMovement = newValue;
+    }
+    
+    private void LockCamera(bool newValue)
+    {
+        lockedCamera = newValue;
     }
 
     private void Update()
     {
-        Rotate(lookInput);
+        if (!lockedCamera)
+        {
+            Rotate(lookInput);
+        }
     }
 
     private void OnDestroy()
     {
         GameManagerSO.Instance.OnLockMouse -= LockMovement;
+        GameManagerSO.Instance.OnLockCamera -= LockCamera;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -110,10 +137,42 @@ public class PlayerController : MonoBehaviour
     public void OnAttack(InputAction.CallbackContext context)
     {
         if (lockedMovement) return;
-
-        if (context.performed)
+        if (context.performed && !lockedCamera)
         {
-            controller.Attack();
+            mouseStart = Mouse.current.position.ReadValue();
+            startedAttack = true;
+            GameManagerSO.Instance.LockCamera(true);
+        }
+        if (context.canceled && startedAttack)
+        {
+            mouseEnd = Mouse.current.position.ReadValue();
+            startedAttack = false;
+            if (Vector2.Distance(mouseStart, mouseEnd) > 10)
+            {
+                IK.Attack(Vector2.SignedAngle(Vector2.left, (mouseEnd - mouseStart)));
+            }
+            GameManagerSO.Instance.LockCamera(false);
+        }
+    }
+
+    public void OnBlock(InputAction.CallbackContext context)
+    {
+        if (lockedMovement) return;
+        if (context.performed && !lockedCamera)
+        {
+            mouseStart = Mouse.current.position.ReadValue();
+            startedBlock = true;
+            GameManagerSO.Instance.LockCamera(true);
+        }
+        if (context.canceled && startedBlock)
+        {
+            mouseEnd = Mouse.current.position.ReadValue();
+            startedBlock = false;
+            if (Vector2.Distance(mouseStart, mouseEnd) > 10)
+            {
+                IK.Block(Vector2.SignedAngle(Vector2.right, (mouseEnd - mouseStart)));
+            }
+            GameManagerSO.Instance.LockCamera(false);
         }
     }
 
@@ -125,12 +184,5 @@ public class PlayerController : MonoBehaviour
         lookVector.x = Mathf.Clamp(lookVector.x, -70f, 70f);
         
         controller.Rotate(Quaternion.AngleAxis(lookVector.y, Vector3.up) * Quaternion.AngleAxis(lookVector.x, Vector3.right));
-    }
-
-    private void LockMovement(bool newValue)
-    {
-        lockedMovement = newValue;
-
-        //controller.ResetMovement();
     }
 }

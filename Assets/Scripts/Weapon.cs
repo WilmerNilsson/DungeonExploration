@@ -1,30 +1,41 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Weapon : MonoBehaviour
 {
     [SerializeField, Min(1)] private int damage = 1;
     [SerializeField, Min(1)] private int durability = 1;
     [SerializeField] private bool unbreakable;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] public bool dealDamage = true;
+    private Collider body;
+    
+    public UnityEvent onDamage;
+    public UnityEvent onBlocked;
+
+    private void OnEnable()
     {
-        
+        body = GetComponent<Collider>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetActive(bool value)
     {
-        
+        body.enabled = value;
     }
-
+    
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out Health health))
+        if(dealDamage && !transform.IsChildOf(other.transform) && other.TryGetComponent(out Health health))
         {
+            onDamage?.Invoke();
             health.TakeDamage(damage);
             LoseDurability(health.DurabilityDamage);
-            Debug.Log($"target health is " + health.CurrentHealth);
+            SetActive(false);
+            Debug.Log($"The target {other.gameObject.name} health is " + health.CurrentHealth);
+        }
+        if (other.TryGetComponent(out Weapon weapon))
+        {
+            onBlocked?.Invoke();
         }
     }
     
