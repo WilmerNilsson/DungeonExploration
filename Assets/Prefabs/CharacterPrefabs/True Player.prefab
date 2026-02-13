@@ -96,7 +96,7 @@ MonoBehaviour:
   moveSpeed: 3
   sprintSpeed: 6
   crouchSpeed: 2
-  airMoveMod: 0.1
+  airMoveMod: 0.5
   jumpHeight: 5
   doJump: 0
   grounded: 0
@@ -358,6 +358,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9fe0d599-82bf-45f2-9520-a720f2003376
     m_ActionName: 'Player/DevConsole[/Keyboard/backquote]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7696982201766261837}
+        m_TargetAssemblyTypeName: PlayerController, GameAssembly
+        m_MethodName: OnBlock
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0ea1335d-f280-47f0-bd12-7de40be0babd
+    m_ActionName: 'Player/Block[/Mouse/rightButton]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -613,7 +629,7 @@ Transform:
   m_GameObject: {fileID: 8329409515068079808}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.6330733, y: 21.844807, z: -62.33898}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -631,7 +647,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d931ca1dd1838a4bb460879b3218922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 0}
+  movement: {fileID: 6844093797709260482}
   walkPlayDelay: 0.5
   sprintPlayDelay: 0.25
   crouchWalkPlayDelay: 1
@@ -5585,27 +5601,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c123482b80a6bd4db2def74b949e26e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onAttackStateChange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8893892476905510790}
+        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
+        m_MethodName: attackSound
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  weapon: {fileID: 4615422614276632481}
   x: 0
   z: 0
   attacking: 0
+  blocking: 0
   animator: {fileID: 8583122998059479642}
   shoulderObj: {fileID: 412638037322040316}
-  currentState: 0
+  attackState: 0
+  blockState: 0
   angleLimit: 30
   armLenght: 2
-  curve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   swingStart: {x: 0, y: 0, z: 0}
   swingEnd: {x: 0, y: 0, z: 0}
   swingAngle: 0
   curveHeight: 2.5
-  nodeDuration: 0.05
-  chargeDuration: 0.2
-  resetDuration: 0.1
+  nodeTime: 0.1
+  chargeTime: 1
+  resetTime: 0.5
+  blockChargeTime: 0.1
+  blockTime: 1
+  blockResetTime: 0.1
+  handOffset: 1.2
 --- !u!4 &6188856160139636480 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8328508861762691275, guid: 5b8e82bc21e782e4fbb3dbc2be26eee0, type: 3}
@@ -5792,6 +5824,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Basic_Sword
       objectReference: {fileID: 0}
+    - target: {fileID: 6231285627939046001, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 6715476101138585803, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.02
@@ -5858,3 +5894,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6715476101138585803, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
   m_PrefabInstance: {fileID: 5787444643908059947}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4615422614276632481 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+  m_PrefabInstance: {fileID: 5787444643908059947}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51f7f14f987392348b08c80e3260f384, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
