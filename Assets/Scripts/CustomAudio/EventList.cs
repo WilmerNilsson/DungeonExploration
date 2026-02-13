@@ -80,6 +80,7 @@ public class EventList : ScriptableObject
     #region Looping Events
     
     public Dictionary<GameObject, EventInstance> InstanceList = new Dictionary<GameObject, EventInstance>();
+    public Dictionary<EventInstance, EventData> InstanceToEventData = new Dictionary<EventInstance, EventData>();
     
     public void CleanupInstanceList() //Kallas av audioManager vid scenladdning, stoppar alla event på gameObjects som inte längre finns
     {
@@ -90,6 +91,7 @@ public class EventList : ScriptableObject
             if (obj) continue;
             InstanceList[obj].stop(STOP_MODE.IMMEDIATE);
             InstanceList[obj].release();
+            InstanceToEventData.Remove(InstanceList.Single(kvp => kvp.Key == obj).Value);
             InstanceList.Remove(obj);
             AudioDebug.Print("Stopped and released eventInstance at " + obj);
         }
@@ -121,6 +123,7 @@ public class EventList : ScriptableObject
             }
             var instance = RuntimeManager.CreateInstance(eventData.eventReference);
             InstanceList.Add(gameObject, instance);
+            InstanceToEventData.Add(instance, eventData);
             AudioDebug.Print("Created instance for " + eventName + " and added it to the instance list along with " + gameObject.name);
 
             if (!eventData.is3D) return; //Om event är 3D och attachToObject, fäser vi eventet på gameObject,
@@ -194,6 +197,7 @@ public class EventList : ScriptableObject
                 if (state == PLAYBACK_STATE.STOPPED || state == PLAYBACK_STATE.STOPPING)
                 {
                     instance.release();
+                    InstanceToEventData.Remove(instance);
                     InstanceList.Remove(gameObject);
                     AudioDebug.Print("Releasing instance for " + eventName + " and removed from instance list");
                 }
@@ -353,6 +357,21 @@ public class EventList : ScriptableObject
             }
         }
     }
+
+    public void CheckOcclusions()
+    {
+        foreach (var kvp in InstanceList)
+        {
+            if (!InstanceToEventData.TryGetValue(kvp.Value, out var eventData)) continue;
+            if (!eventData.isOcclusion) continue;
+            AudioManager.Instance.occlusionChecker.CheckOcclusion(kvp.Key, Camera.main.gameObject, out var occlusion);
+            if (eventData.ParameterCache.TryGetValue("Occluded", out var parameterData))
+            {
+                kvp.Value.setParameterByID(parameterData.ID(), occlusion);
+            }
+            
+        }
+    }
     
     #endregion
 
@@ -392,6 +411,23 @@ public class EventList : ScriptableObject
                     }
                 }
                 else instance.set3DAttributes(gameObject.transform.To3DAttributes());
+
+                if (eventData.isOcclusion)
+                {
+                    if (Camera.main)
+                    {
+                        AudioManager.Instance.occlusionChecker.CheckOcclusion(gameObject, Camera.main.gameObject, out var occlusion);
+                        if (eventData.ParameterCache.TryGetValue("Occlusion", out var parameterData))
+                        {
+                            instance.setParameterByID(parameterData.ID(), occlusion);
+                            AudioDebug.Print("Successfully set occlusion for " + eventName);
+                        }
+                    }
+                    else
+                    {
+                        AudioDebug.Print("Couldn't find main camera", true);
+                    }
+                }
             }
             
             if (paramNames != null && paramValues != null)
