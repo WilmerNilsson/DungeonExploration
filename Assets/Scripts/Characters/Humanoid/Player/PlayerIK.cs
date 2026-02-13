@@ -1,68 +1,11 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerIK : MonoBehaviour
+public class PlayerIK : HumanoidIK
 {
-    public UnityEvent<AttackState> onAttackStateChange;
     
-    [SerializeField] private Weapon weapon;
     
-    [SerializeField,Tooltip("the rotation of the hand, readonly as they are set in code")] private float x, z;
-    
-    [SerializeField] private bool attacking = false;
-    [SerializeField] private bool blocking = false;
-    public Animator animator;
-    [SerializeField, Tooltip("The Shoulder node of the weapon arm")] private Transform shoulderObj = null;
-    [SerializeField] private AttackState attackState = AttackState.Start;
-    [SerializeField] private BlockState blockState = BlockState.Start;
-    
-    [Header("Attack Settings")]
-    [SerializeField, Tooltip("the min angle between the attack and straight up/down")] private float angleLimit = 30f;
-    [SerializeField, Tooltip("the lenght of the weapon arm")] private float armLenght = 2f;
-    
-    [Header("Attacking")]
-    //[SerializeField, Tooltip("Might use later, shit's cool")] private AnimationCurve curve;
-    [SerializeField] private Vector3 swingStart;
-    [SerializeField] private Vector3 swingEnd;
-    [SerializeField] private float swingAngle;
-    [SerializeField] private float curveHeight = 2.5f;
-    [SerializeField] private float nodeTime = 0.5f;
-    [SerializeField] private float chargeTime = 2f;
-    [SerializeField] private float resetTime = 1f;
-    private Vector3[] nodes;
-    private Vector3 current;
-    private Vector3 target;
-    private int nodeIndex;
-    private Quaternion rotation;
-
-    [Header("Blocking")]
-    [SerializeField] private float blockChargeTime = .5f;
-    [SerializeField] private float blockTime = 1f;
-    [SerializeField] private float blockResetTime = .5f;
-    [SerializeField] private float handOffset = .5f;
-    private float blockAngle;
-    private Vector3 blockPos;
-    private Quaternion blockRot;
-    private Vector3 blockPosMod;
-    
-    private float startTime = 0;
-    private float time = 0;
-    
-    public enum AttackState
-    {
-        Start,
-        Swing,
-        Return
-    }
-
-    private enum BlockState
-    {
-        Start,
-        Block,
-        Return
-    }
-    
-    public void Attack(float angle)
+    public override void Attack(float angle = 0)
     {
         if (weapon == null)
         {
@@ -81,7 +24,7 @@ public class PlayerIK : MonoBehaviour
         }
     }
 
-    public void Block(float angle)
+    public override void Block(float angle = 0)
     {
         if (weapon == null)
         {
@@ -97,7 +40,7 @@ public class PlayerIK : MonoBehaviour
         }
     }
     
-    void OnAnimatorIK(int layerIndex)
+    protected override void OnAnimatorIK(int layerIndex)
     {
         if(animator) {
             if(attacking && !blocking) {
