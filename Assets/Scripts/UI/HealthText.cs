@@ -11,17 +11,17 @@ public class HealthText : MonoBehaviour
     void Start()
     {
         myText = GetComponent<TextMeshProUGUI>();
-        UpdateText(playerHealth.CurrentHealth, playerHealth.CurrentHealth);
-        playerHealth.OnChangeHealths += UpdateText;
+        UpdateText(new HealthData(playerHealth.CurrentHealth, playerHealth.MaxHealth));
+        playerHealth.OnChangeHealths.AddListener(UpdateText);
     }
 
-    private void UpdateText(int current, int max)
+    private void UpdateText(HealthData healthData)
     {
-        myText.text = $"{current}/{max}";
+        myText.text = $"{healthData.CurrentHealth}/{healthData.MaxHealth}";
     }
 
     private void OnDestroy()
     {
-        playerHealth.OnChangeHealths -= UpdateText;
+        playerHealth.OnChangeHealths.RemoveListener(UpdateText);
     }
 }
