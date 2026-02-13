@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using FMOD.Studio;
 using FMODUnity;
-using UnityEngine;
-using GUID = FMOD.GUID;
+using Debug = UnityEngine.Debug;
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 [Serializable]
@@ -17,9 +15,13 @@ using UnityEditor;
         public string[] banks;
         public bool isOneShot;
         public bool is3D;
+        public USER_PROPERTY[] Properties;
+        public bool isOcclusion;
         public float minDistance;
         public float maxDistance;
         public bool debug;
+        
+        private const string OccludedString = "isOccluded";
         
         public EventInstance eventInstance;
         
@@ -75,32 +77,34 @@ using UnityEditor;
                 return;
             }
 
-            var tempBankList = new List<string>(); 
-            foreach (var bank in editorEventRef.Banks)
+            banks = new string[editorEventRef.Banks.Count];
+            for (int i = 0; i < banks.Length; i++)
             {
-                tempBankList.Add(bank.Name);
+                banks[i] = editorEventRef.Banks[i].Name;
             }
-            banks = tempBankList.ToArray();
             
             isOneShot = editorEventRef.IsOneShot;
             is3D = editorEventRef.Is3D;
             minDistance = editorEventRef.MinDistance;
             maxDistance = editorEventRef.MaxDistance;
-
-             //Fyll i parameters
-            var tempParamList = new List<ParameterData>();
-            foreach (var paramRef in editorEventRef.Parameters)
+            isOcclusion = false;
+            //Fyll i parameters och checka om eventet behöver occlusionChecks
+            parameters = new ParameterData[editorEventRef.Parameters.Count];
+            for (var i = 0; i < editorEventRef.Parameters.Count; i++)
             {
                 var tempParam = new ParameterData
                 {
-                    paramName = paramRef.Name,
-                    isGlobal = paramRef.IsGlobal,
-                    data1 = paramRef.ID.data1,
-                    data2 = paramRef.ID.data2,
+                    paramName = editorEventRef.Parameters[i].Name,
+                    isGlobal = editorEventRef.Parameters[i].IsGlobal,
+                    data1 = editorEventRef.Parameters[i].ID.data1,
+                    data2 = editorEventRef.Parameters[i].ID.data2,
                 };
-                tempParamList.Add(tempParam);
+                parameters[i] = tempParam;
+                if (tempParam.paramName == "Occluded")
+                {
+                    isOcclusion = true;
+                }
             }
-            parameters = tempParamList.ToArray();
             
             EditorUtils.UnloadPreviewBanks();
         }

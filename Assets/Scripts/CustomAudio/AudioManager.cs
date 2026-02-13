@@ -348,13 +348,13 @@ public class AudioManager : MonoBehaviour
     }
 
     [Serializable]
-    public struct bankToLoadOnStart
+    public struct BankToLoadOnStart
     {
         public string bankName;
         public bool loadSamples;
     }
     
-    public bankToLoadOnStart[] banksToLoadOnStart =
+    public BankToLoadOnStart[] banksToLoadOnStart =
     {
         new() { bankName = "Master", loadSamples = false },
     };

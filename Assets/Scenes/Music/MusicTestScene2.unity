@@ -12240,6 +12240,34 @@ PrefabInstance:
       propertyPath: m_ActionEvents.Array.data[14].m_ActionName
       value: 'Player/Block[/Mouse/rightButton]'
       objectReference: {fileID: 0}
+    - target: {fileID: 2616489918536357648, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616489918536357648, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616489918536357648, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2016961197}
+    - target: {fileID: 2616489918536357648, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616489918536357648, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnBlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616489918536357648, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerController, GameAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 2616489918536357648, guid: bd6d753639a52a1479239516af94f776, type: 3}
+      propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3990542204748243330, guid: bd6d753639a52a1479239516af94f776, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
@@ -19472,6 +19500,17 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &2016961197 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7696982201766261837, guid: bd6d753639a52a1479239516af94f776, type: 3}
+  m_PrefabInstance: {fileID: 1225644828}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be7280be7f1e7e643a6d3e17dd2a062c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &2021036268
 Mesh:
   m_ObjectHideFlags: 0
@@ -19911,7 +19950,10 @@ MonoBehaviour:
   meanDistance: 0
   shortestDistance: 0
   longestDistance: 0
-  roomSizeMultiplier: 0.5
+  useMean: 0
+  debug: 1
+  roomSizeMultiplier: 1.165
+  currentRoomSize: 0
 --- !u!43 &2117238379
 Mesh:
   m_ObjectHideFlags: 0

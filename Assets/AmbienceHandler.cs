@@ -1,6 +1,4 @@
-using System;
 using FMOD.Studio;
-using UnityEditor;
 using UnityEngine;
 
 public class AmbienceHandler : MonoBehaviour
@@ -47,8 +45,14 @@ public class AmbienceHandler : MonoBehaviour
    [SerializeField] private float shortestDistance;
    
    [SerializeField] private float longestDistance;
+
+   [SerializeField] private bool useMean;
+
+   [SerializeField] private bool debug;
    
    [Range(0.5f, 2f)][SerializeField] private float roomSizeMultiplier;
+   
+   [SerializeField] private float currentRoomSize;
    
    private void FixedUpdate()
    {
@@ -66,18 +70,39 @@ public class AmbienceHandler : MonoBehaviour
       }
       
       medianDistance = (_hits[3].distance + _hits[4].distance) * 0.5f;
-      meanDistance = (_hits[0].distance + _hits[1].distance + _hits[2].distance + _hits[3].distance + _hits[4].distance + _hits[5].distance + _hits[6].distance + _hits[7].distance) * 0.125f;
+      float totalDistances = 0;
+      for (var i = 0; i < 8; i++)
+      {
+         totalDistances += distances[i];
+      }
+      meanDistance = totalDistances * 0.125f;
       shortestDistance = _hits[0].distance;
       longestDistance = _hits[^1].distance;
 
       if (AudioManager.IsValid)
       {
-         AudioManager.Instance.SetGlobalParameter("RoomSize", meanDistance * roomSizeMultiplier);
+         if (useMean)
+         {
+            AudioManager.Instance.SetGlobalParameter("RoomSize", meanDistance * roomSizeMultiplier);
+            currentRoomSize = meanDistance * roomSizeMultiplier;
+         }
+         else
+         {
+            AudioManager.Instance.SetGlobalParameter("RoomSize", medianDistance * roomSizeMultiplier);
+            currentRoomSize = medianDistance * roomSizeMultiplier;
+         }
       }
    }
 
    private void OnDrawGizmos()
    {
+      if (!debug) return;
+      if (Camera.main != null) _cameraTransform = Camera.main.transform;
+      else
+      {
+         Debug.LogWarning("No main camera found");
+         return;
+      }
       foreach (var hit in _hits)
       {
          Gizmos.DrawLine(_cameraTransform.position, hit.point);
