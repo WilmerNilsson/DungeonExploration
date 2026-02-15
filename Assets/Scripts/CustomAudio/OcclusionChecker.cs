@@ -1,68 +1,75 @@
+using System;
+using Unity.Plastic.Newtonsoft.Json.Serialization;
 using UnityEngine;
 
 public class OcclusionChecker : MonoBehaviour
 {
     private static float _hits;
     [SerializeField] private LayerMask layerMask;
-    private GameObject _lastSource;
-    private GameObject _lastTarget;
-    [SerializeField] private float spread;
+    [Range(0, 4)][SerializeField] private float spread = 1f;
+    [Range(0, 1)] [SerializeField] private float bounceValue = 0.5f;
     
-    private bool[] _linesHit = new bool[5];
-    public void CheckOcclusion(GameObject source, GameObject target, out float occlusion) //TODO gör detta bättre, med wheights för alla lines och liknande
-    {
-        _lastSource = source;
-        _lastTarget = target;
-        occlusion = 0;
-        _hits = 0;
-        _linesHit = new bool[5];
-        if (Physics.Linecast(source.transform.position, target.transform.position + target.transform.right * (-spread*2), layerMask))
-        {
-            _hits++;
-            _linesHit[0] = true;
-        }
-        if (Physics.Linecast(source.transform.position, target.transform.position + target.transform.right * -spread, layerMask))
-        {
-            _hits++;
-            _linesHit[1] = true;
-        }
-        if (Physics.Linecast(source.transform.position, target.transform.position, layerMask))
-        {
-            _hits++;
-            _linesHit[2] = true;
-        }
-        if (Physics.Linecast(source.transform.position, target.transform.position + target.transform.right * spread, layerMask))
-        {
-            _hits++;
-            _linesHit[3] = true;
-        }
-        if (Physics.Linecast(source.transform.position, target.transform.position + target.transform.right * (spread * 2), layerMask))
-        {
-            _hits++;
-            _linesHit[4] = true;
-        }
-        
-        occlusion = _hits / 5;
-    }
+    [Range(0,3)][SerializeField] private int linesOnEitherSide;
+    
+    private int lineCount;
+    private int posModifier;
+    private Vector3 sourcePos;
+    private Vector3 targetPos;
 
-    public void OnDrawGizmos()
+    private struct HitData
     {
-        if (!Application.isPlaying) return;
-        if (AudioManager.IsValid)
+        public bool Hit1;
+        public RaycastHit Hit1Info;
+        public bool Hit2;
+        public RaycastHit Hit2Info;
+    }
+    
+    
+    //TODO: punkterna följer inte spelarens rotation, utan istället emittern? prob inte göra detta
+    //TODO: weighting på normalkurva? baserat på spread?
+    //TODO: kolla ovan och under spelaren också?
+    
+    public void CheckOcclusion(GameObject sourceGo, GameObject targetGo, out float occlusion)
+    {
+        lineCount = linesOnEitherSide * 2 + 1;
+        var hits = new HitData[lineCount];
+        posModifier = -linesOnEitherSide - 1;
+        occlusion = 0f;
+        _hits = 0;
+        sourcePos = sourceGo.transform.position;
+        for (int i = 0; i < lineCount; i++)
         {
-            if (AudioManager.Instance.debug)
+            posModifier++;
+            targetPos = targetGo.transform.position + targetGo.transform.right * (spread * posModifier);
+            hits[i].Hit1 = Physics.Linecast(sourcePos, targetPos, out hits[i].Hit1Info, layerMask);
+            if (hits[i].Hit1)
             {
-                Gizmos.color = _linesHit[0] ? Color.red : Color.green;
-                Gizmos.DrawLine(_lastSource.transform.position, _lastTarget.transform.position + _lastTarget.transform.right * (-spread*2));
-                Gizmos.color = _linesHit[1] ? Color.red : Color.green;
-                Gizmos.DrawLine(_lastSource.transform.position, _lastTarget.transform.position + _lastTarget.transform.right * -spread);
-                Gizmos.color = _linesHit[2] ? Color.red : Color.green;
-                Gizmos.DrawLine(_lastSource.transform.position, _lastTarget.transform.position);
-                Gizmos.color = _linesHit[3] ? Color.red : Color.green;
-                Gizmos.DrawLine(_lastSource.transform.position, _lastTarget.transform.position + _lastTarget.transform.right * spread);
-                Gizmos.color = _linesHit[4] ? Color.red : Color.green;
-                Gizmos.DrawLine(_lastSource.transform.position, _lastTarget.transform.position + _lastTarget.transform.right * (spread * 2));
+                hits[i].Hit2 = Physics.Linecast(hits[i].Hit1Info.point, targetGo.transform.position, out hits[i].Hit2Info, layerMask);
+                if (hits[i].Hit2) _hits++;
+                else _hits += bounceValue;
+            }
+            
+            //Draw lines
+            if (!AudioManager.IsValid) return;
+            if (!AudioManager.Instance.debug) return;
+
+            if (hits[i].Hit1)
+            {
+                if (!hits[i].Hit2)
+                {
+                    Debug.DrawLine(sourcePos, hits[i].Hit1Info.point, Color.cyan);
+                    Debug.DrawLine(hits[i].Hit1Info.point, targetGo.transform.position, Color.green);
+                }
+                else
+                {
+                    Debug.DrawLine(sourcePos, hits[i].Hit1Info.point, Color.red);
+                }
+            }
+            else
+            {
+                Debug.DrawLine(sourcePos, targetPos, Color.green);
             }
         }
+        occlusion = _hits / lineCount;
     }
 }
