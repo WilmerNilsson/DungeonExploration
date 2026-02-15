@@ -4,27 +4,41 @@ using UnityEngine;
 
 public class SavefileData
 {
-    public int sceneNr = 1; //where player is
+    public int sceneNr; //where player is
 
-    public List<int> DialougesGotten = new();
-    public List<string> BooksInJournal = new();
+    public List<int> DialougesGotten;
+    public List<string> BooksInJournal;
 
-    public SavefileSettings settings = new();
-    public PlayerSaveData PlayerSaveData = new();
-    public DungeonSaveData DungeonSaveData = new();
+    public SavefileSettings Settings;
+
+    public WorldData World;
+
+    public SavefileData(int sceneNr, List<int> dialougesGotten, List<string> booksInJournal, SavefileSettings settings, WorldData world)
+    {
+        this.sceneNr = sceneNr;
+        DialougesGotten = dialougesGotten;
+        BooksInJournal = booksInJournal;
+        Settings = settings;
+        World = world;
+    }
 
     public SavefileData Clone()
     {
-        return new SavefileData()
+        return new SavefileData(sceneNr, new(DialougesGotten), new(BooksInJournal), Settings.Clone(), World.Clone());
+    }
+
+    public class WorldData
+    {
+        public PlayerSaveData PlayerSaveData = new();
+        public DungeonSaveData DungeonSaveData = new();
+
+        public WorldData Clone()
         {
-            sceneNr = sceneNr,
-
-            DialougesGotten = new(DialougesGotten),
-            BooksInJournal = new(BooksInJournal),
-
-            settings = settings.Clone(),
-            PlayerSaveData = PlayerSaveData.Clone(),
-            DungeonSaveData = DungeonSaveData.Clone(),
-        };
+            return new WorldData()
+            {
+                PlayerSaveData = PlayerSaveData.Clone(),
+                DungeonSaveData = DungeonSaveData.Clone()
+            };
+        }
     }
 }

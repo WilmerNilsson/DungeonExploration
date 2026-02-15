@@ -116,7 +116,7 @@ public class SaveFileManager
         // but i feel like the most work is just reading and writing att all.
         // if it is a problem just have the settings seperate in thier own file
         SavefileData data = ReadSavefile(CurrentSavefileNr); 
-        data.settings = SavefileSettings;
+        data.Settings = SavefileSettings;
         SaveSavefile(data);
     }
 
@@ -129,7 +129,7 @@ public class SaveFileManager
         string json = File.ReadAllText(Application.dataPath + SaveFileFolderName + saveFileNr + SaveFileName);
 
         SavefileData data = JsonUtility.FromJson<SavefileData>(json);
-        SavefileSettings = data.settings;
+        SavefileSettings = data.Settings;
 
         return data;
     }

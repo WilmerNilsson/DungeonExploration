@@ -25,6 +25,7 @@ public class DungeonSaveData
         public Vector3 Pos;
         public Quaternion Rotation;
         public int CurrentHP;
+        //enum or string ID for type
 
         public Enemy(Vector3 pos, Quaternion rotation, int currentHP)
         {
