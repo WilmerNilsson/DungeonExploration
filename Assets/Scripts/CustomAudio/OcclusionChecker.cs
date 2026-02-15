@@ -6,10 +6,9 @@ public class OcclusionChecker : MonoBehaviour
 {
     private static float _hits;
     [SerializeField] private LayerMask layerMask;
-    [Range(0, 4)][SerializeField] private float spread = 1f;
+    [Range(0, 3)][SerializeField] private float spread = 1f;
     [Range(0, 1)] [SerializeField] private float bounceValue = 0.5f;
-    
-    [Range(0,3)][SerializeField] private int linesOnEitherSide;
+    [Range(0,4)][SerializeField] private int linesOnEitherSide;
     
     private int lineCount;
     private int posModifier;
@@ -23,7 +22,6 @@ public class OcclusionChecker : MonoBehaviour
         public bool Hit2;
         public RaycastHit Hit2Info;
     }
-    
     
     //TODO: punkterna följer inte spelarens rotation, utan istället emittern? prob inte göra detta
     //TODO: weighting på normalkurva? baserat på spread?

@@ -369,7 +369,6 @@ public class EventList : ScriptableObject
             {
                 kvp.Value.setParameterByID(parameterData.ID(), occlusion);
             }
-            
         }
     }
     

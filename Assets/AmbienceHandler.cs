@@ -96,7 +96,7 @@ public class AmbienceHandler : MonoBehaviour
 
    private void OnDrawGizmos()
    {
-      if (!debug) return;
+      if (!Application.isPlaying || !debug) return;
       if (Camera.main != null) _cameraTransform = Camera.main.transform;
       else
       {
