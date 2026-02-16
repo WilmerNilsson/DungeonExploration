@@ -696,10 +696,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d931ca1dd1838a4bb460879b3218922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  footstepsActivatedBy: 0
   walkPlayDelay: 0.5
   sprintPlayDelay: 0.25
   crouchWalkPlayDelay: 1
-  footstepSound: Player/Footsteps
+  weaponObject: {fileID: 443845897611985242}
+  footstepPaths:
+    sneak: Player/Sneak
+    walk: Player/Walk
+    sprint: Player/Run
   SwingSound: Player/SwordSwing
 --- !u!114 &288142176733751095
 MonoBehaviour:
@@ -5698,7 +5703,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8893892476905510790}
         m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
-        m_MethodName: AttackSound
+        m_MethodName: HandleAttackStateChange
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5986,6 +5991,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+--- !u!1 &443845897611985242 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6231285627939046001, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+  m_PrefabInstance: {fileID: 5787444643908059947}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &964627744385997792 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6715476101138585803, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
@@ -5996,7 +6006,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
   m_PrefabInstance: {fileID: 5787444643908059947}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 443845897611985242}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 51f7f14f987392348b08c80e3260f384, type: 3}

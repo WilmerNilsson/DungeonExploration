@@ -1,16 +1,45 @@
 using System;
+using FMOD.Studio;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class HumanoidSoundLogic : MonoBehaviour
 {
+    private enum HumanoidType {Player, CrazedAdventurer}
+    [Header("Type")]
+    [SerializeField] private HumanoidType type;
+    [SerializeField] private int voiceActorAmount;
+    private int _currentVoiceActor;
+    
+    private enum FootstepsActivatedBy {Timer, Animation}
+    [Header("Footsteps")]   
+    [SerializeField] private FootstepsActivatedBy footstepsActivatedBy;
+    
     [SerializeField, Min(0)] private float walkPlayDelay = 0.5f;
     [SerializeField, Min(0)] private float sprintPlayDelay = 0.25f;
     [SerializeField, Min(0)] private float crouchWalkPlayDelay = 1f;
+
+    [Serializable]
+    public struct FootstepPaths
+    {
+        public string sneak;
+        public string walk;
+        public string sprint;
+    }
+    [SerializeField] private FootstepPaths footstepPaths;
+    private string _currentFootstepSound;
+    
+    [Header("Weapons")]
     [SerializeField] private GameObject weaponObject;
+    [SerializeField] private string swingPath;
+   
+    [Header("Damage & Death")]
+    [SerializeField] private string damagePath;
+    [SerializeField] private string deathPath;
 
-    [SerializeField] private string footstepSound;
-
-    [SerializeField] private string SwingSound;
+    [Header("Enemy VO")] 
+    [SerializeField] private string enemyVoPath;
+    
     //possibly just reference the speed, would work well with speed pots
     //altough once animations are implimented we can just use them, even if we remove the physical rig for the player
 
@@ -27,11 +56,11 @@ public class HumanoidSoundLogic : MonoBehaviour
     }
 #endif
     
-    public void AttackSound(HumanoidIK.AttackState newState)
+    public void HandleAttackStateChange(HumanoidIK.AttackState newState)
     {
-        if (AudioManager.IsValid && newState == PlayerIK.AttackState.Swing)
+        if (AudioManager.IsValid && newState == HumanoidIK.AttackState.Swing)
         {
-            AudioManager.Instance.PlayOneShot(SwingSound, null, null, gameObject, true);
+            AudioManager.Instance.PlayOneShot(swingPath, null, null, weaponObject, true);
         }
     }
 
@@ -41,7 +70,7 @@ public class HumanoidSoundLogic : MonoBehaviour
     //so no need to think about optimizing it to that degree
     private void Update()
     {
-        if (currentDelay == 0f) return;
+        if (currentDelay == 0f || footstepsActivatedBy == FootstepsActivatedBy.Animation) return;
 
         float diff = Time.deltaTime * (1f / currentDelay);
 
@@ -59,11 +88,47 @@ public class HumanoidSoundLogic : MonoBehaviour
 
             if (AudioManager.IsValid)
             {
-                AudioManager.Instance.PlayOneShot(footstepSound, null, null, gameObject);
+                AudioManager.Instance.PlayOneShot(_currentFootstepSound, null, null, gameObject);
             }
         }
     }
 
+    private void Start()
+    {
+        if (type != HumanoidType.CrazedAdventurer) return;
+        if (!AudioManager.IsValid) return;
+        _currentVoiceActor = Random.Range(0, voiceActorAmount - 1);
+        AudioManager.Instance.CreateInstance(enemyVoPath, gameObject);
+        AudioManager.Instance.SetParameter(enemyVoPath, "EnemyVO", _currentVoiceActor, gameObject);
+        AudioManager.Instance.StartEvent(enemyVoPath, gameObject);
+    }
+
+    public void PlayFootstepSound(string path)
+    {
+        if (AudioManager.IsValid)
+        {
+            AudioManager.Instance.PlayOneShot(path, null, null, gameObject);
+        }
+    }
+
+    public void PlayDamageSound() //TODO: enemy vo parameter
+    {
+        if (AudioManager.IsValid)
+        {
+            AudioManager.Instance.PlayOneShot(damagePath, null, null, gameObject);
+        }
+    }
+
+    public void PlayDeathSound() //TODO: enemy vo parameter
+    {
+        if (!AudioManager.IsValid) return;
+        AudioManager.Instance.PlayOneShot(deathPath, null, null, gameObject);
+
+        if (type != HumanoidType.CrazedAdventurer) return;
+        AudioManager.Instance.StopEvent(enemyVoPath, STOP_MODE.ALLOWFADEOUT, gameObject);
+        AudioManager.Instance.ReleaseInstance(enemyVoPath, gameObject);
+    }
+    
     public void HandleMovementChange(HumanoidMovement.moveActions actions)
     {
         switch (actions)
@@ -71,18 +136,23 @@ public class HumanoidSoundLogic : MonoBehaviour
             case HumanoidMovement.moveActions.None:
             default:
                 currentDelay = 0f;
+                _currentFootstepSound = footstepPaths.walk;
                 break;
             case HumanoidMovement.moveActions.Walking:
                 currentDelay = walkPlayDelay;
+                _currentFootstepSound = footstepPaths.walk;
                 break;
             case HumanoidMovement.moveActions.Sprinting:
                 currentDelay = sprintPlayDelay;
+                _currentFootstepSound = footstepPaths.sprint;
                 break;
             case HumanoidMovement.moveActions.CrouchWalk:
                 currentDelay = crouchWalkPlayDelay;
+                _currentFootstepSound = footstepPaths.sneak;
                 break;
             case HumanoidMovement.moveActions.Airborne:
                 currentDelay = 0f;
+                _currentFootstepSound = footstepPaths.walk;
                 break;
         }
     }
