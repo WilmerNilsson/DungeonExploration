@@ -3754,6 +3754,17 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &525225906 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8333663504928874694, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+  m_PrefabInstance: {fileID: 557124204}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d931ca1dd1838a4bb460879b3218922, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!43 &535087251
 Mesh:
   m_ObjectHideFlags: 0
@@ -3935,6 +3946,70 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3948215804208490561, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 525225906}
+    - target: {fileID: 3948215804208490561, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PlayDeathSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 3948215804208490561, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+      propertyPath: OnTakeDamage.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 525225906}
+    - target: {fileID: 3948215804208490561, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+      propertyPath: OnTakeDamage.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayDamageSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 3948215804208490561, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: HumanoidSoundLogic, GameAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 3948215804208490561, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+      propertyPath: OnTakeDamage.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HumanoidSoundLogic, GameAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 3950284540247109631, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+      propertyPath: onAttackStateChange.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3950284540247109631, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+      propertyPath: onAttackStateChange.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 525225906}
+    - target: {fileID: 3950284540247109631, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+      propertyPath: onAttackStateChange.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HandleAttackStateChange
+      objectReference: {fileID: 0}
+    - target: {fileID: 3950284540247109631, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+      propertyPath: onAttackStateChange.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HumanoidSoundLogic, GameAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 4941026645624781222, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+      propertyPath: OnMoveActionChange.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4941026645624781222, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+      propertyPath: OnMoveActionChange.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 525225906}
+    - target: {fileID: 4941026645624781222, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+      propertyPath: OnMoveActionChange.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4941026645624781222, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+      propertyPath: OnMoveActionChange.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HandleMovementChange
+      objectReference: {fileID: 0}
+    - target: {fileID: 4941026645624781222, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+      propertyPath: OnMoveActionChange.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HumanoidSoundLogic, GameAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 4941026645624781222, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+      propertyPath: OnMoveActionChange.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8600154565869652437, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
       propertyPath: m_LocalPosition.x
       value: -41.02776
@@ -3976,7 +4051,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6472970405392510797, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+    - {fileID: 6496305494625066120, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+    - {fileID: 8151420576755554602, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
@@ -4831,6 +4909,30 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 634121398357313706, guid: 08d38b58f4b133f4fb87414bc1a4666c, type: 3}
       propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2593647906163937364, guid: 08d38b58f4b133f4fb87414bc1a4666c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2593647906163937364, guid: 08d38b58f4b133f4fb87414bc1a4666c, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2593647906163937364, guid: 08d38b58f4b133f4fb87414bc1a4666c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2593647906163937364, guid: 08d38b58f4b133f4fb87414bc1a4666c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2593647906163937364, guid: 08d38b58f4b133f4fb87414bc1a4666c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2593647906163937364, guid: 08d38b58f4b133f4fb87414bc1a4666c, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3445919728142463490, guid: 08d38b58f4b133f4fb87414bc1a4666c, type: 3}
@@ -21915,7 +22017,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: AudioManager
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1241207898650518369, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
