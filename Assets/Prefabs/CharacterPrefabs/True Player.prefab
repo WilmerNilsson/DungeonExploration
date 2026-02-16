@@ -503,7 +503,19 @@ MonoBehaviour:
   DurabilityDamage: 0
   OnChangeHealths:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8893892476905510790}
+        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
+        m_MethodName: OnHealthChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnTakeDamage:
     m_PersistentCalls:
       m_Calls: []
@@ -649,6 +661,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6955565832605297247}
   - component: {fileID: 8893892476905510790}
+  - component: {fileID: 288142176733751095}
   m_Layer: 12
   m_Name: SoundLogic
   m_TagString: Untagged
@@ -664,9 +677,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8329409515068079808}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1879338547510664418}
@@ -686,6 +699,50 @@ MonoBehaviour:
   walkPlayDelay: 0.5
   sprintPlayDelay: 0.25
   crouchWalkPlayDelay: 1
+  footstepSound: Player/Footsteps
+  SwingSound: Player/SpearSwing
+--- !u!114 &288142176733751095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8329409515068079808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01d9a3d5802c1704cab51e6ee5c0ff53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1280
+  ambiencePath: Ambiance/Dungeon_Ambiance
+  distances:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  directions:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  medianDistance: 0
+  meanDistance: 0
+  shortestDistance: 0
+  longestDistance: 0
+  useMean: 0
+  debug: 1
+  roomSizeMultiplier: 1.165
+  currentRoomSize: 0
 --- !u!1 &8550023200733367340
 GameObject:
   m_ObjectHideFlags: 0

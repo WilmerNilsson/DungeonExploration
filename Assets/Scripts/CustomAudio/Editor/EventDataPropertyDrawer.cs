@@ -6,8 +6,6 @@ using UnityEngine.UIElements;
 [CustomPropertyDrawer(typeof(EventData))]
 public class EventDataPropertyDrawer : PropertyDrawer
 {
-    public bool Show;
-    public bool ShowDebug;
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         var eventName = property.FindPropertyRelative("eventName");
@@ -78,14 +76,8 @@ public class EventDataPropertyDrawer : PropertyDrawer
     
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
-        var eventName = property.FindPropertyRelative("eventName");
         var eventReference = property.FindPropertyRelative("eventReference");
-        var guid = property.FindPropertyRelative("guid");
         var banks = property.FindPropertyRelative("banks");
-        var isOneShot = property.FindPropertyRelative("isOneShot");
-        var is3D = property.FindPropertyRelative("is3D");
-        var minDistance = property.FindPropertyRelative("minDistance");
-        var maxDistance = property.FindPropertyRelative("maxDistance");
         var debug = property.FindPropertyRelative("debug");
         var parameters = property.FindPropertyRelative("parameters");
         

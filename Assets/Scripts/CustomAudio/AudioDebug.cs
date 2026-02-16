@@ -129,14 +129,14 @@ public class AudioDebug : MonoBehaviour
                             return;
                         }
                         eventDesc.getInstanceList(out var instanceList);
-                        if (eventData.eventInstance.isValid())
+                        if (eventData.EventInstance.isValid())
                         {
                             lines++;
                             text += "The instance in EventData has these parameters: \n";
                             foreach (var paramData in eventData.parameters)
                             {
                                 lines++;
-                                eventData.eventInstance.getParameterByID(paramData.ID(), out var value);
+                                eventData.EventInstance.getParameterByID(paramData.ID(), out var value);
                                 text += paramData.paramName + ": " + value + "\n";
                             }
 

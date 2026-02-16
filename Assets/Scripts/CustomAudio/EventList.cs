@@ -150,7 +150,7 @@ public class EventList : ScriptableObject
         }
         else //Om inget gameObject finns lägger vi istället instance i eventData, t.ex för musikEvent som bara har en emitter.
         {
-            if (eventData.eventInstance.isValid())
+            if (eventData.EventInstance.isValid())
             {
                 AudioDebug.Print("Didn't create instance for " + eventName + " because it already has an instance", true);
                 return;
@@ -161,7 +161,7 @@ public class EventList : ScriptableObject
                 AudioDebug.Print("Didn't create instance for "+ eventName + " because it's a 3D event and needs to be attached to a 3D object to work", true);
                 return;
             }
-            eventData.eventInstance = RuntimeManager.CreateInstance(eventData.eventReference);
+            eventData.EventInstance = RuntimeManager.CreateInstance(eventData.eventReference);
             AudioDebug.Print("Created instance for " + eventName);
         }
     }
@@ -209,16 +209,16 @@ public class EventList : ScriptableObject
         }
         else
         {
-            if (!eventData.eventInstance.isValid())
+            if (!eventData.EventInstance.isValid())
             {
                 AudioDebug.Print("Didn't release instance for " + eventName + " because it is not a valid instance", true);
                 return;
             }
             
-            eventData.eventInstance.getPlaybackState(out var state);
+            eventData.EventInstance.getPlaybackState(out var state);
             if (state == PLAYBACK_STATE.STOPPED || state == PLAYBACK_STATE.STOPPING)
             {
-                eventData.eventInstance.release();
+                eventData.EventInstance.release();
                 AudioDebug.Print("Releasing instance for " + eventName);
             }
             else
@@ -262,16 +262,16 @@ public class EventList : ScriptableObject
             }
             else
             {
-                if (!eventData.eventInstance.isValid())
+                if (!eventData.EventInstance.isValid())
                 {
                     AudioDebug.Print("Didn't start " + eventName + " because it's instance is not valid", true);
                     return;
                 }
                 
-                eventData.eventInstance.getPlaybackState(out var playbackState);
+                eventData.EventInstance.getPlaybackState(out var playbackState);
                 if (playbackState != PLAYBACK_STATE.PLAYING)
                 {
-                    eventData.eventInstance.start();
+                    eventData.EventInstance.start();
                     AudioDebug.Print("Started event " + eventName);
                 }
             }
@@ -290,7 +290,7 @@ public class EventList : ScriptableObject
             }
             else
             {
-                eventData.eventInstance.stop(stopMode);
+                eventData.EventInstance.stop(stopMode);
                 AudioDebug.Print("Stopped event " + eventName);
             }
         }
@@ -320,7 +320,7 @@ public class EventList : ScriptableObject
             }
             else
             {
-                eventData.eventInstance.setParameterByID(parameterData.ID(), paramValue);
+                eventData.EventInstance.setParameterByID(parameterData.ID(), paramValue);
                 AudioDebug.Print("Set " + paramName + " in event " + eventName + " to " + paramValue);
             }
         }
@@ -339,7 +339,7 @@ public class EventList : ScriptableObject
         }
         else
         { 
-            eventData.eventInstance.keyOff();
+            eventData.EventInstance.keyOff();
             AudioDebug.Print("KeyOff in event " + eventName);
         }
     }
@@ -360,11 +360,12 @@ public class EventList : ScriptableObject
 
     public void CheckOcclusions()
     {
+        if (!AudioManager.Listener) return;
         foreach (var kvp in InstanceList)
         {
             if (!InstanceToEventData.TryGetValue(kvp.Value, out var eventData)) continue;
             if (!eventData.isOcclusion) continue;
-            AudioManager.Instance.occlusionChecker.CheckOcclusion(kvp.Key, Camera.main.gameObject, out var occlusion);
+            AudioManager.Instance.occlusionChecker.CheckOcclusion(kvp.Key, out var occlusion);
             if (eventData.ParameterCache.TryGetValue("Occluded", out var parameterData))
             {
                 kvp.Value.setParameterByID(parameterData.ID(), occlusion);
@@ -396,7 +397,7 @@ public class EventList : ScriptableObject
             
             var instance = RuntimeManager.CreateInstance(eventData.eventReference);
             
-            if (gameObject != null && eventData.is3D)
+            if (gameObject && eventData.is3D)
             {
                 if (followObject)
                 {
@@ -413,18 +414,11 @@ public class EventList : ScriptableObject
 
                 if (eventData.isOcclusion)
                 {
-                    if (Camera.main)
+                    AudioManager.Instance.occlusionChecker.CheckOcclusion(gameObject, out var occlusion);
+                    if (eventData.ParameterCache.TryGetValue("Occlusion", out var parameterData))
                     {
-                        AudioManager.Instance.occlusionChecker.CheckOcclusion(gameObject, Camera.main.gameObject, out var occlusion);
-                        if (eventData.ParameterCache.TryGetValue("Occlusion", out var parameterData))
-                        {
-                            instance.setParameterByID(parameterData.ID(), occlusion);
-                            AudioDebug.Print("Successfully set occlusion for " + eventName);
-                        }
-                    }
-                    else
-                    {
-                        AudioDebug.Print("Couldn't find main camera", true);
+                        instance.setParameterByID(parameterData.ID(), occlusion);
+                        AudioDebug.Print("Successfully set occlusion for " + eventName);
                     }
                 }
             }
@@ -461,19 +455,19 @@ public class EventList : ScriptableObject
     public void InitializeDialogue(string eventName)
     {
         if (!TryGetEvent(eventName, out var eventData)) return; //Om event finns & det inte redan finns en instans skapar vi en
-        if (eventData.eventInstance.isValid())
+        if (eventData.EventInstance.isValid())
         {
             AudioDebug.Print("Didn't create instance for dialogue event " + eventData.eventName + " since it already has a valid instance", true);
             return;
         }
-        eventData.eventInstance = RuntimeManager.CreateInstance(eventData.eventReference);
+        eventData.EventInstance = RuntimeManager.CreateInstance(eventData.eventReference);
         AudioDebug.Print("Created instance for dialogue event " + eventData.eventName);
     }
 
     public void SayLine(string eventName, string lineParameter, int lineIndex)
     {
         if (!TryGetEvent(eventName, out var eventData)) return; 
-        if (!eventData.eventInstance.isValid())
+        if (!eventData.EventInstance.isValid())
         {
             AudioDebug.Print("You need to create an instance for " + eventName + " before trying to start a dialogue", true);
             return;
@@ -484,22 +478,22 @@ public class EventList : ScriptableObject
             AudioDebug.Print("Couldn't find parameter: " + lineParameter, true);
             return;
         }
-        eventData.eventInstance.setParameterByID(parameterData.ID(), lineIndex);
+        eventData.EventInstance.setParameterByID(parameterData.ID(), lineIndex);
         
-        eventData.eventInstance.start();
+        eventData.EventInstance.start();
     }
 
     public void StopLine(string eventName) //Stoppa instansen om event finns
     {
         if (!TryGetEvent(eventName, out var eventData)) return;
-        eventData.eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
+        eventData.EventInstance.stop(STOP_MODE.ALLOWFADEOUT);
     }
 
     public void EndDialogue(string eventName) //Stoppa och släpp instans
     {
         if (!TryGetEvent(eventName, out var eventData)) return;
-        eventData.eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
-        eventData.eventInstance.release();
+        eventData.EventInstance.stop(STOP_MODE.ALLOWFADEOUT);
+        eventData.EventInstance.release();
     }
     
     #endregion

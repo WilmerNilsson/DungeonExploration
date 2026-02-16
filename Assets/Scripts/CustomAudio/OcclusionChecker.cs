@@ -10,10 +10,10 @@ public class OcclusionChecker : MonoBehaviour
     [Range(0, 1)] [SerializeField] private float bounceValue = 0.5f;
     [Range(0,4)][SerializeField] private int linesOnEitherSide;
     
-    private int lineCount;
-    private int posModifier;
-    private Vector3 sourcePos;
-    private Vector3 targetPos;
+    private int _lineCount;
+    private int _posModifier;
+    private Vector3 _sourcePos;
+    private Vector3 _targetPos;
 
     private struct HitData
     {
@@ -27,22 +27,27 @@ public class OcclusionChecker : MonoBehaviour
     //TODO: weighting på normalkurva? baserat på spread?
     //TODO: kolla ovan och under spelaren också?
     
-    public void CheckOcclusion(GameObject sourceGo, GameObject targetGo, out float occlusion)
+    public void CheckOcclusion(GameObject sourceGo, out float occlusion)
     {
-        lineCount = linesOnEitherSide * 2 + 1;
-        var hits = new HitData[lineCount];
-        posModifier = -linesOnEitherSide - 1;
+        if (!AudioManager.Listener)
+        {
+            occlusion = 0f;
+            return;
+        }
+        _lineCount = linesOnEitherSide * 2 + 1;
+        var hits = new HitData[_lineCount];
+        _posModifier = -linesOnEitherSide - 1;
         occlusion = 0f;
         _hits = 0;
-        sourcePos = sourceGo.transform.position;
-        for (int i = 0; i < lineCount; i++)
+        _sourcePos = sourceGo.transform.position;
+        for (int i = 0; i < _lineCount; i++)
         {
-            posModifier++;
-            targetPos = targetGo.transform.position + targetGo.transform.right * (spread * posModifier);
-            hits[i].Hit1 = Physics.Linecast(sourcePos, targetPos, out hits[i].Hit1Info, layerMask);
+            _posModifier++;
+            _targetPos = AudioManager.Listener.transform.position + AudioManager.Listener.transform.right * (spread * _posModifier);
+            hits[i].Hit1 = Physics.Linecast(_sourcePos, _targetPos, out hits[i].Hit1Info, layerMask);
             if (hits[i].Hit1)
             {
-                hits[i].Hit2 = Physics.Linecast(hits[i].Hit1Info.point, targetGo.transform.position, out hits[i].Hit2Info, layerMask);
+                hits[i].Hit2 = Physics.Linecast(hits[i].Hit1Info.point, AudioManager.Listener.transform.position, out hits[i].Hit2Info, layerMask);
                 if (hits[i].Hit2) _hits++;
                 else _hits += bounceValue;
             }
@@ -55,19 +60,19 @@ public class OcclusionChecker : MonoBehaviour
             {
                 if (!hits[i].Hit2)
                 {
-                    Debug.DrawLine(sourcePos, hits[i].Hit1Info.point, Color.cyan);
-                    Debug.DrawLine(hits[i].Hit1Info.point, targetGo.transform.position, Color.green);
+                    Debug.DrawLine(_sourcePos, hits[i].Hit1Info.point, Color.cyan);
+                    Debug.DrawLine(hits[i].Hit1Info.point, AudioManager.Listener.transform.position, Color.green);
                 }
                 else
                 {
-                    Debug.DrawLine(sourcePos, hits[i].Hit1Info.point, Color.red);
+                    Debug.DrawLine(_sourcePos, hits[i].Hit1Info.point, Color.red);
                 }
             }
             else
             {
-                Debug.DrawLine(sourcePos, targetPos, Color.green);
+                Debug.DrawLine(_sourcePos, _targetPos, Color.green);
             }
         }
-        occlusion = _hits / lineCount;
+        occlusion = _hits / _lineCount;
     }
 }

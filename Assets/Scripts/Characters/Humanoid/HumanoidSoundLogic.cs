@@ -85,4 +85,11 @@ public class HumanoidSoundLogic : MonoBehaviour
                 break;
         }
     }
+    
+    public void OnHealthChange(HealthData healthData)
+    {
+        if (!AudioManager.IsValid) return;
+        AudioManager.Instance.SetGlobalParameter("HP", healthData.CurrentHealth);
+        AudioManager.Instance.SetGlobalParameter("hpRatio", (float)healthData.CurrentHealth / healthData.MaxHealth);
+    }
 }

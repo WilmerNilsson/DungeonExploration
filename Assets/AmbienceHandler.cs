@@ -3,30 +3,16 @@ using UnityEngine;
 
 public class AmbienceHandler : MonoBehaviour
 {
-   private LayerMask _layerMask;
-   private Transform _cameraTransform;
-
-   private void Awake()
-   {
-      _layerMask = LayerMask.GetMask("Walls", "Ground");
-   }
+   [SerializeField] private LayerMask layerMask;
 
    private void Start()
    {
-      if (AudioManager.IsValid)
-      {
-         AudioManager.Instance.CreateInstance(AmbiencePath, gameObject);
-         AudioManager.Instance.StartEvent(AmbiencePath, gameObject);
-      }
-
-      if (Camera.main != null) _cameraTransform = Camera.main.transform;
-      else
-      {
-         Debug.LogWarning("No main camera found");
-      }
+      if (!AudioManager.IsValid) return;
+      AudioManager.Instance.CreateInstance(ambiencePath, gameObject);
+      AudioManager.Instance.StartEvent(ambiencePath, gameObject);
    }
 
-   [SerializeField] private string AmbiencePath;
+   [SerializeField] private string ambiencePath;
 
    private RaycastHit[] _hits = new RaycastHit[8];
 
@@ -56,12 +42,13 @@ public class AmbienceHandler : MonoBehaviour
    
    private void FixedUpdate()
    {
+      if (!AudioManager.Listener) return;
       for (var i = 0; i < 8; i++)
       {
-         _flatForward = new Vector3(_cameraTransform.forward.x, 0, _cameraTransform.forward.z);
+         _flatForward = new Vector3(AudioManager.Listener.transform.forward.x, 0, AudioManager.Listener.transform.forward.z);
          _direction = Quaternion.AngleAxis(45 * (i + 1), transform.up) * _flatForward;
          directions[i] = _direction * 45; //För att visualisera directions
-         Physics.Raycast(_cameraTransform.position, _direction, out _hits[i], Mathf.Infinity, _layerMask);
+         Physics.Raycast(AudioManager.Listener.transform.position, _direction, out _hits[i], Mathf.Infinity, layerMask);
       }
       OnSort(_hits);
       for (var i = 0; i < 8; i++)
@@ -97,15 +84,10 @@ public class AmbienceHandler : MonoBehaviour
    private void OnDrawGizmos()
    {
       if (!Application.isPlaying || !debug) return;
-      if (Camera.main != null) _cameraTransform = Camera.main.transform;
-      else
-      {
-         Debug.LogWarning("No main camera found");
-         return;
-      }
+      if (!AudioManager.Listener) return;
       foreach (var hit in _hits)
       {
-         Gizmos.DrawLine(_cameraTransform.position, hit.point);
+         Gizmos.DrawLine(AudioManager.Listener.transform.position, hit.point);
       }
    }
 
@@ -131,7 +113,7 @@ public class AmbienceHandler : MonoBehaviour
    private void OnDestroy()
    {
       if (!AudioManager.IsValid) return;
-      AudioManager.Instance.StopEvent(AmbiencePath, STOP_MODE.ALLOWFADEOUT, gameObject);
-      AudioManager.Instance.ReleaseInstance(AmbiencePath, gameObject);
+      AudioManager.Instance.StopEvent(ambiencePath, STOP_MODE.ALLOWFADEOUT, gameObject);
+      AudioManager.Instance.ReleaseInstance(ambiencePath, gameObject);
    }
 }

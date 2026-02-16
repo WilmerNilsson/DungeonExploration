@@ -14,6 +14,8 @@ public class AudioManager : MonoBehaviour
     
     public static AudioManager Instance;
 
+    private Health _playerHealth;
+
     private void Awake() //Singleton + BankLaddning + Caching
     {
         if (Instance != null && Instance != this)
@@ -50,6 +52,7 @@ public class AudioManager : MonoBehaviour
         RefreshEventListCache();
         RefreshAllEventCaches();
         RefreshGlobalParameterCache();
+        GetMainCamera();
 
         AudioDebug.Print("AudioManager Initialized");
     }
@@ -384,17 +387,6 @@ public class AudioManager : MonoBehaviour
         SetGlobalParameter("Paused", paused ? 1 : 0);
     }
 
-    private float _currentHpFloat;
-    private float _maxHpFloat;
-    
-    private void OnHealthChange(int currentHp, int maxHp) //Lägga till maxHP här så att vi kan ha en parameter som är ratio och en som är faktiskt värde
-    {
-        SetGlobalParameter("HP", currentHp);
-        _currentHpFloat = currentHp;
-        _maxHpFloat = maxHp;
-        SetGlobalParameter("hpRatio", _currentHpFloat / _maxHpFloat);
-    }
-
     private void FixedUpdate()
     {
         foreach (var eventList in eventLists)
@@ -409,7 +401,7 @@ public class AudioManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        
+        GetMainCamera();
     }
 
     private void OnSceneUnloaded(Scene scene)
@@ -422,6 +414,21 @@ public class AudioManager : MonoBehaviour
         foreach (var eventList in eventLists)
         {
             eventList.CleanupInstanceList(); 
+        }
+    }
+
+    public static GameObject Listener;
+
+    private static void GetMainCamera()
+    {
+        if (Camera.main != null)
+        {
+            Listener = Camera.main.gameObject;
+            AudioDebug.Print("Main camera found");
+        }
+        else
+        {
+            AudioDebug.Print("No main camera found", true);
         }
     }
     
