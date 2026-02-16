@@ -10,6 +10,8 @@ using UnityEngine.InputSystem;
 
 public class DialogueManager : MonoBehaviour
 {
+    [SerializeField] private bool playOnStart = false;
+    [SerializeField] private TextAsset startTextAsset;
     [Header("Dialogue UI")] 
     [SerializeField] private GameObject dialoguePanel;
 
@@ -67,6 +69,10 @@ public class DialogueManager : MonoBehaviour
     {
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
+        if (playOnStart)
+        {
+            EnterDialogueMode(startTextAsset);
+        }
         /*if (data.playStoryAtStart)
         {
             PlayIntroStory.Invoke();
