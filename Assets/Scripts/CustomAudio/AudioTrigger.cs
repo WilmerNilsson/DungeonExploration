@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioTrigger : MonoBehaviour
@@ -133,14 +132,14 @@ public class AudioTrigger : MonoBehaviour
                     AudioManager.Instance.KeyOff(instruction.path, instruction.gameObj);
                     break;
                 case Instruction.Command.PlayOneShot:
-                    var nameList = new List<string>();
-                    var valueList = new List<float>();
-                    foreach (var paramToSet in instruction.parametersToSet)
+                    var nameList = new string[instruction.parametersToSet.Length];
+                    var valueList = new float[instruction.parametersToSet.Length];
+                    for (int i = 0; i < instruction.parametersToSet.Length; i++)
                     {
-                        nameList.Add(paramToSet.name);
-                        valueList.Add(paramToSet.value);
+                        nameList[i] = instruction.parametersToSet[i].name;
+                        valueList[i] = instruction.parametersToSet[i].value;
                     }
-                    AudioManager.Instance.PlayOneShot(instruction.path, nameList.ToArray(), valueList.ToArray(), instruction.gameObj, instruction.followObject);
+                    AudioManager.Instance.PlayOneShot(instruction.path, nameList, valueList, instruction.gameObj, instruction.followObject);
                     break;
                 case Instruction.Command.SetGlobalParameter:
                     foreach (var paramToSet in instruction.parametersToSet)
