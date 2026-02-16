@@ -13,9 +13,7 @@ public class AudioManager : MonoBehaviour
     public OcclusionChecker occlusionChecker = new OcclusionChecker();
     
     public static AudioManager Instance;
-
-    private Health _playerHealth;
-
+    
     private void Awake() //Singleton + BankLaddning + Caching
     {
         if (Instance != null && Instance != this)
