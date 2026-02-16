@@ -21,10 +21,10 @@ public class PlayerHungerSO : ScriptableObject
     
     public bool ChangeHunger(int amount)
     {
-        OnChangeHunger?.Invoke();
         currentHunger += amount;
+        OnChangeHunger?.Invoke();
 
-        if (currentHunger <= 0)
+        if (currentHunger < 0)
         {
             currentHunger = 0;
             return false;
