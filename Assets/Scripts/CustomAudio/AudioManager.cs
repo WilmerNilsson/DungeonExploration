@@ -10,7 +10,11 @@ public class AudioManager : MonoBehaviour
 {
     #region Initialization
 
+    public OcclusionChecker occlusionChecker;
+    
     public static AudioManager Instance;
+
+    private Health _playerHealth;
 
     private void Awake() //Singleton + BankLaddning + Caching
     {
@@ -34,6 +38,12 @@ public class AudioManager : MonoBehaviour
         {
             AudioDebug.Print("Couldn't find GameManagerSO", true);
         }
+
+        if (occlusionChecker == null)
+        {
+            Debug.LogWarning("No occlusion checker is set in the inspector, please add one if you want to be able to change values");
+            occlusionChecker = new OcclusionChecker();
+        }
         
         DontDestroyOnLoad(this);
         
@@ -42,6 +52,7 @@ public class AudioManager : MonoBehaviour
         RefreshEventListCache();
         RefreshAllEventCaches();
         RefreshGlobalParameterCache();
+        GetMainCamera();
 
         AudioDebug.Print("AudioManager Initialized");
     }
@@ -282,7 +293,7 @@ public class AudioManager : MonoBehaviour
 
     public Dictionary<string, VCA> VcaCache; //cache med namn på vca samt VCA
 
-    private void RefreshVcaCache() //Lägger till alla vcas till _vcaCache
+    private void RefreshVcaCache() //Lägger till alla vcas till VcaCache
     { 
         VcaCache = new Dictionary<string, VCA>();
         RuntimeManager.StudioSystem.getBank(MasterBankPath, out var masterBank);
@@ -326,38 +337,6 @@ public class AudioManager : MonoBehaviour
         return 0;
     }
 
-    public void SetAllToVolume(float volume) //Sätter volym på alla vcas till volume
-    {
-        foreach (var vca in VcaCache)
-        {
-            vca.Value.setVolume(volume);
-        }
-        AudioDebug.Print("Set volume for all VCAs to " + volume);
-    }
-
-    public void SetAllVolumes(string[] vcaNames, float[] volumes) //Sätter volym på alla vcas individuellt, kan vara bra för saveLoading
-    {
-        for (int i = 0; i < vcaNames.Length; i++)
-        {
-            SetVolume(vcaNames[i], volumes[i]);
-        }
-    }
-
-    public void GetAllVolumes(out string[] vcaNames, out float[] volumes) //Hämtar volym på alla vcas individuellt, kan vara bra för saving
-    {
-        var tempNameList = new List<string>();
-        var tempVolumeList = new List<float>();
-        foreach (var vca in VcaCache)
-        {
-            tempNameList.Add(vca.Key);
-            vca.Value.getVolume(out var volume);
-            tempVolumeList.Add(volume);
-            AudioDebug.Print("Successfully retrieved volume for " + vca.Key);
-        }
-        vcaNames = tempNameList.ToArray();
-        volumes = tempVolumeList.ToArray();
-    }
-
     #endregion
 
     #region Banks
@@ -380,13 +359,13 @@ public class AudioManager : MonoBehaviour
     }
 
     [Serializable]
-    public struct bankToLoadOnStart
+    public struct BankToLoadOnStart
     {
         public string bankName;
         public bool loadSamples;
     }
     
-    public bankToLoadOnStart[] banksToLoadOnStart =
+    public BankToLoadOnStart[] banksToLoadOnStart =
     {
         new() { bankName = "Master", loadSamples = false },
     };
@@ -408,19 +387,21 @@ public class AudioManager : MonoBehaviour
         SetGlobalParameter("Paused", paused ? 1 : 0);
     }
 
-    private void OnHealthChange(int currentHp, int maxHP) //Lägga till maxHP här så att vi kan ha en parameter som är ratio och en som är faktiskt värde
+    private void FixedUpdate()
     {
-        SetGlobalParameter("HP", currentHp);
-        SetGlobalParameter("hpRatio", currentHp / maxHP);
+        foreach (var eventList in eventLists)
+        {
+            eventList.CheckOcclusions();
+        }
     }
-    
+
     #endregion
 
     #region SceneLoading 
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        
+        GetMainCamera();
     }
 
     private void OnSceneUnloaded(Scene scene)
@@ -433,6 +414,21 @@ public class AudioManager : MonoBehaviour
         foreach (var eventList in eventLists)
         {
             eventList.CleanupInstanceList(); 
+        }
+    }
+
+    public static GameObject Listener;
+
+    private static void GetMainCamera()
+    {
+        if (Camera.main != null)
+        {
+            Listener = Camera.main.gameObject;
+            AudioDebug.Print("Main camera found");
+        }
+        else
+        {
+            AudioDebug.Print("No main camera found", true);
         }
     }
     

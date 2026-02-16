@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Hunger : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class Hunger : MonoBehaviour
     
     [Tooltip("The amount of time between hunger ticks in seconds")]
     [SerializeField] private float hungerCooldown = 10;
+
+    public UnityEvent OnHunger;
+    public UnityEvent OnEat;
 
     public static Hunger instance;
     
@@ -33,6 +37,7 @@ public class Hunger : MonoBehaviour
     public void LoseHunger(int amount)
     {
         playerHungerSO.currentHunger -= amount;
+        OnHunger?.Invoke();
         if (playerHungerSO.currentHunger < 0)
         {
             playerHungerSO.currentHunger = 0;
@@ -48,6 +53,7 @@ public class Hunger : MonoBehaviour
         StopAllCoroutines();
         playerHungerSO.hungerDamage = 0;
         playerHungerSO.currentHunger += amount;
+        OnEat?.Invoke();
         if (playerHungerSO.currentHunger > playerHungerSO.maxHunger)
         {
             playerHungerSO.currentHunger = playerHungerSO.maxHunger;
