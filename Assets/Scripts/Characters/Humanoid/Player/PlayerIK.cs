@@ -85,8 +85,7 @@ public class PlayerIK : HumanoidIK
                         weapon.SetActive(true);
                         current = nodes[nodeIndex];
                         target = nodes[nodeIndex + 1];
-                        attackState = AttackState.Swing;
-                        onAttackStateChange.Invoke(attackState);
+                        ChangeAttackState(AttackState.Swing);
                         nodeIndex++;
                     }
                     else if (nodeIndex < nodes.Length - 1) // Swing
@@ -99,7 +98,7 @@ public class PlayerIK : HumanoidIK
                     {
                         weapon.SetActive(false);
                         current = nodes[nodeIndex];
-                        attackState = AttackState.Return;
+                        ChangeAttackState(AttackState.Return);
                         nodeIndex++;
                     }
                     else // stop
@@ -149,13 +148,13 @@ public class PlayerIK : HumanoidIK
                     {
                         weapon.dealDamage = false;
                         weapon.SetActive(true);
-                        blockState = BlockState.Block;
+                        ChangeBlockState(BlockState.Block);
                     }
                     else if (blockState == BlockState.Block) // Block
                     {
                         weapon.SetActive(false);
                         weapon.dealDamage = true;
-                        blockState = BlockState.Return;
+                        ChangeBlockState(BlockState.Return);
                     }
                     else if (blockState == BlockState.Return) // Return
                     {
