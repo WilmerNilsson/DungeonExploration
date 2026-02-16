@@ -1,6 +1,8 @@
 using UnityEngine;
 
-public class OcclusionChecker : MonoBehaviour
+
+[System.Serializable]
+public class OcclusionChecker
 {
     private static float _hits;
     [SerializeField] private LayerMask layerMask;
