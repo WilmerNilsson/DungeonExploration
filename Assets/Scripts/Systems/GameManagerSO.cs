@@ -118,10 +118,16 @@ public class GameManagerSO : ScriptableObject
 
     public void StartDemo()
     {
-        MoveToScene(Vector2.zero, mainSceneNumber);
+        MoveToScene(Vector3.zero, mainSceneNumber);
     }
 
-    public void MoveToScene(Vector2 newLocation, int newSceneNr)
+    public void MoveToScene(string sceneName)
+    {
+        MoveToScene(Vector3.zero, SceneManager.GetSceneByName(sceneName).buildIndex);
+    }
+
+
+    public void MoveToScene(Vector3 newLocation, int newSceneNr)
     {
         //currentSavefileData.sceneNr = newSceneNr;
         //currentSavefileData.savePos = newLocation;
