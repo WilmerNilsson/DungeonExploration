@@ -641,6 +641,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collumns: 5
   rows: 7
+  drawCenter: 0
+  drawGrid: 0
 --- !u!1 &1853672695038420530
 GameObject:
   m_ObjectHideFlags: 0
@@ -1494,6 +1496,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collumns: 5
   rows: 6
+  drawCenter: 0
+  drawGrid: 0
 --- !u!1 &2778863131527033231
 GameObject:
   m_ObjectHideFlags: 0
@@ -1919,6 +1923,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collumns: 5
   rows: 5
+  drawCenter: 0
+  drawGrid: 0
 --- !u!1 &3826607836647602764
 GameObject:
   m_ObjectHideFlags: 0
@@ -4651,6 +4657,54 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7808856875421024696}
     m_Modifications:
+    - target: {fileID: 2922738649696293316, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2922738649696293316, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2922738649696293316, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2922738649696293316, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2922738650124813593, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2922738650124813593, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2922738650124813593, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2922738650124813593, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2922738650704950378, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2922738650704950378, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2922738650704950378, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2922738650704950378, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2922738651004570261, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
       propertyPath: inGameUI
       value: 
@@ -4738,6 +4792,30 @@ PrefabInstance:
     - target: {fileID: 2922738651004570270, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
       propertyPath: m_Name
       value: Paus Menu (pixelPerfectUIv3.5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2922738651019451690, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: TogglePauseMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 2922738651019451690, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: InGameUIController, GameAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 2922738651019451692, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2922738651019451692, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2922738651019451692, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2922738651019451692, guid: 4c5989585d763b94bbed7492a883e65b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
