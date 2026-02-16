@@ -471,10 +471,34 @@ MonoBehaviour:
         m_CallState: 2
   OnTakeDamage:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8893892476905510790}
+        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
+        m_MethodName: PlayDamageSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnDeath:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8893892476905510790}
+        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
+        m_MethodName: PlayDeathSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &9035760162703884139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,7 +514,6 @@ MonoBehaviour:
   visionSpots:
   - {fileID: 7279710517487077824}
   - {fileID: 7706963743702007596}
-  visionPositions: []
 --- !u!143 &653897519548769769
 CharacterController:
   m_ObjectHideFlags: 0
@@ -713,12 +736,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d931ca1dd1838a4bb460879b3218922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
+  voiceActorAmount: 0
+  footstepsActivatedBy: 0
   walkPlayDelay: 0.5
   sprintPlayDelay: 0.25
   crouchWalkPlayDelay: 1
-  weaponObject: {fileID: 0}
-  footstepSound: Player/Footsteps
-  SwingSound: Player/SwordSwing
+  footstepPaths:
+    sneak: Player/Sneak
+    walk: Player/Walk
+    sprint: Player/Run
+  crouchPath: Player/Crouch
+  jumpPath: Player/Jump
+  weaponObject: {fileID: 443845897611985242}
+  swingPath: Player/SwordSwing
+  blockPath: Player/SwordBlock
+  damagePath: Player/Take_Damage
+  deathPath: Player/Death
+  enemyVoPath: 
 --- !u!114 &288142176733751095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5716,7 +5751,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8893892476905510790}
         m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
-        m_MethodName: AttackSound
+        m_MethodName: HandleAttackStateChange
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5940,6 +5975,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7156714915519819900}
     m_Modifications:
+    - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: onBlocked.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: onBlocked.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: onBlocked.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8893892476905510790}
+    - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: onBlocked.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: onBlocked.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayBlockSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: onBlocked.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HumanoidSoundLogic, GameAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: onBlocked.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6231285627939046001, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
       propertyPath: m_Name
       value: Basic_Sword
@@ -6009,6 +6072,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+--- !u!1 &443845897611985242 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6231285627939046001, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+  m_PrefabInstance: {fileID: 5787444643908059947}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &964627744385997792 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6715476101138585803, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
@@ -6019,7 +6087,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
   m_PrefabInstance: {fileID: 5787444643908059947}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 443845897611985242}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 51f7f14f987392348b08c80e3260f384, type: 3}
