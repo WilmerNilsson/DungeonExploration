@@ -18,10 +18,10 @@ GameObject:
   - component: {fileID: 2616489918536357648}
   - component: {fileID: 2570910179104288855}
   - component: {fileID: 2303909128371297629}
-  - component: {fileID: 1354050652585229241}
-  - component: {fileID: 9035760162703884139}
   - component: {fileID: 653897519548769769}
   - component: {fileID: 761204284509048953}
+  - component: {fileID: 1354050652585229241}
+  - component: {fileID: 3689962434181300810}
   m_Layer: 12
   m_Name: True Player
   m_TagString: Player
@@ -438,59 +438,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   emitterIsThisObject: 0
   instructions: []
---- !u!114 &1354050652585229241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 822202894608450755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f5d5a35e66ca5d4bbe0b26356fe7551, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerHealth: {fileID: 0}
-  currentHealth: 0
-  maxHealth: 10
-  DurabilityDamage: 0
-  OnChangeHealths:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8893892476905510790}
-        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
-        m_MethodName: OnHealthChange
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnTakeDamage:
-    m_PersistentCalls:
-      m_Calls: []
-  OnDeath:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &9035760162703884139
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 822202894608450755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 441cae00df82be640ae8e295bf1a2e96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  visionSpots:
-  - {fileID: 7279710517487077824}
-  - {fileID: 7706963743702007596}
-  visionPositions: []
 --- !u!143 &653897519548769769
 CharacterController:
   m_ObjectHideFlags: 0
@@ -539,6 +486,64 @@ CapsuleCollider:
   m_Height: 4
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1354050652585229241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822202894608450755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f5d5a35e66ca5d4bbe0b26356fe7551, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHealth: {fileID: 0}
+  currentHealth: 0
+  maxHealth: 10
+  DurabilityDamage: 0
+  OnChangeHealths:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8893892476905510790}
+        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
+        m_MethodName: OnHealthChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &3689962434181300810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822202894608450755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7927d7b62ed874549b70ca71e6ac3fae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHungerSO: {fileID: 11400000, guid: daa365354eb550f4b8ba0bdd35400db2, type: 2}
+  health: {fileID: 1354050652585229241}
+  hungerCooldown: 10
+  OnHunger:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEat:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &3712848921488717313
 GameObject:
   m_ObjectHideFlags: 0
@@ -5766,11 +5771,6 @@ Transform:
 --- !u!4 &7279710517487077824 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4363619252906981877, guid: 5b8e82bc21e782e4fbb3dbc2be26eee0, type: 3}
-  m_PrefabInstance: {fileID: 2771953810104553419}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &7706963743702007596 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -3710024924535017241, guid: 5b8e82bc21e782e4fbb3dbc2be26eee0, type: 3}
   m_PrefabInstance: {fileID: 2771953810104553419}
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &8583122998059479642 stripped
