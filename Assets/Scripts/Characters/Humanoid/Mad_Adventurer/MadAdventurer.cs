@@ -15,7 +15,9 @@ public class MadAdventurer : MonoBehaviour
     public MadIdle idleState = new MadIdle();
     public MadChasing chasingState = new MadChasing();
     public MadMelee meleeState = new MadMelee();
+    public MadSearching searchingState = new MadSearching();
     
+    [HideInInspector] public Transform player;
     [HideInInspector] public Transform target;
 
     private void OnValidate()
@@ -23,14 +25,27 @@ public class MadAdventurer : MonoBehaviour
         idleState.OnValidate(this);
         chasingState.OnValidate(this);
         meleeState.OnValidate(this);
+        searchingState.OnValidate(this);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player").transform;
+
+            if (player == null)
+            {
+                Debug.LogWarning("Cant find Player", this);
+                return;
+            }
+        }
+
         idleState.Start();
         chasingState.Start();
         meleeState.Start();
+        searchingState.Start();
         currentState = idleState;
         currentState.Enter();
     }
@@ -38,25 +53,7 @@ public class MadAdventurer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        currentState.FixedUpdate();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            target = other.transform;
-            Transit(chasingState);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            target = null;
-            Transit(idleState);
-        }
+        currentState.Update();
     }
     
     public void Transit(MadState targetState)
@@ -69,11 +66,15 @@ public class MadAdventurer : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-
-        Gizmos.DrawSphere(currentState.target, 0.1f);
-        Gizmos.DrawLine(transform.position, currentState.target);
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position, transform.position + transform.forward);
+        if (currentState.path != null)
+        {
+            Vector3[] nodes = currentState.path.corners;
+            for (int i = 0; i < nodes.Length - 1; i++)
+            {
+                Gizmos.DrawSphere(nodes[i], 0.1f);
+                Gizmos.DrawLine(nodes[i], nodes[i + 1]);
+            }
+            Gizmos.DrawSphere(nodes[^1], 0.1f);
+        }
     }
 }

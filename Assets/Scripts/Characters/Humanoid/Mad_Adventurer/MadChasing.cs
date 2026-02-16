@@ -19,7 +19,7 @@ public class MadChasing : MadState
         mad.controller.isSprinting = false;
     }
 
-    public override void FixedUpdate()
+    public override void Update()
     {
         if (Vector3.Distance(target, mad.transform.position) <= mad.meleeState.maxMeleeRange)
         {
@@ -31,7 +31,7 @@ public class MadChasing : MadState
             {
                 target = path.corners[1];
             }
-            base.FixedUpdate();
+            base.Update();
         }
         
     }

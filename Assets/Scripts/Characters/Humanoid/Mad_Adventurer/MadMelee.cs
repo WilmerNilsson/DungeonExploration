@@ -17,7 +17,7 @@ public class MadMelee : MadState
         }
     }
     
-    public override void FixedUpdate()
+    public override void Update()
     {
         if (mad.animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
         {

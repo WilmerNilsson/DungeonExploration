@@ -9,7 +9,8 @@ public class MadState
     [HideInInspector] public MadAdventurer mad = null;
     
     public Vector3 target;
-    protected NavMeshPath path;
+    public NavMeshPath path;
+    protected int pathIndex;
 
 
     public virtual void OnValidate(MadAdventurer madAdventurer)
@@ -25,18 +26,24 @@ public class MadState
     
     public virtual void Exit(){}
 
-    public virtual void FixedUpdate()
+    public virtual void Update()
     {
-        mad.controller.Rotate(Quaternion.LookRotation((target-mad.transform.position)+Vector3.up));
-        mad.controller.Move(Vector3.forward);
+        Move();
     }
     
-    public virtual void OnHit(){}
+    protected virtual void OnHit(){}
     
-    public virtual void OnDeath(){}
+    protected virtual void OnDeath(){}
 
     protected void Stop()
     {
         mad.controller.Move(Vector3.zero);
+    }
+
+    protected virtual void Move()
+    {
+        target = path.corners[pathIndex+1];
+        mad.controller.Rotate(Quaternion.LookRotation((target-mad.transform.position)+Vector3.up));
+        mad.controller.Move(Vector3.forward);
     }
 }
