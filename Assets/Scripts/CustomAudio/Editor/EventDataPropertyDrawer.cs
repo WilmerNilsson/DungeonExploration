@@ -6,8 +6,6 @@ using UnityEngine.UIElements;
 [CustomPropertyDrawer(typeof(EventData))]
 public class EventDataPropertyDrawer : PropertyDrawer
 {
-    public bool Show;
-    public bool ShowDebug;
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
     {
         var eventName = property.FindPropertyRelative("eventName");
@@ -15,7 +13,7 @@ public class EventDataPropertyDrawer : PropertyDrawer
         var banks = property.FindPropertyRelative("banks");
         var isOneShot = property.FindPropertyRelative("isOneShot");
         var is3D = property.FindPropertyRelative("is3D");
-        var isDoppler = property.FindPropertyRelative("isDoppler");
+        var isOcclusion = property.FindPropertyRelative("isOcclusion");
         var minDistance = property.FindPropertyRelative("minDistance");
         var maxDistance = property.FindPropertyRelative("maxDistance");
         var debug = property.FindPropertyRelative("debug");
@@ -56,6 +54,10 @@ public class EventDataPropertyDrawer : PropertyDrawer
                 EditorGUI.PropertyField(pos, is3D, lbl);
                 
                 pos.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
+                lbl.text = "isOcclusion";
+                EditorGUI.PropertyField(pos, isOcclusion, lbl);
+                
+                pos.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
                 lbl.text = "minDistance";
                 EditorGUI.PropertyField(pos, minDistance, lbl);
             
@@ -74,14 +76,8 @@ public class EventDataPropertyDrawer : PropertyDrawer
     
     public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
     {
-        var eventName = property.FindPropertyRelative("eventName");
         var eventReference = property.FindPropertyRelative("eventReference");
-        var guid = property.FindPropertyRelative("guid");
         var banks = property.FindPropertyRelative("banks");
-        var isOneShot = property.FindPropertyRelative("isOneShot");
-        var is3D = property.FindPropertyRelative("is3D");
-        var minDistance = property.FindPropertyRelative("minDistance");
-        var maxDistance = property.FindPropertyRelative("maxDistance");
         var debug = property.FindPropertyRelative("debug");
         var parameters = property.FindPropertyRelative("parameters");
         
@@ -92,7 +88,7 @@ public class EventDataPropertyDrawer : PropertyDrawer
         height += EditorGUI.GetPropertyHeight(eventReference);
         if (debug.boolValue)
         {
-            height += 3 * (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2);
+            height += 4 * (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2);
             height += 0.5f * (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2);
             height += EditorGUI.GetPropertyHeight(banks) + EditorGUIUtility.standardVerticalSpacing * 2;
             height += EditorGUI.GetPropertyHeight(parameters) + EditorGUIUtility.standardVerticalSpacing * 2;

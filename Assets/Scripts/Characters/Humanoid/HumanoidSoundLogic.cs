@@ -6,6 +6,11 @@ public class HumanoidSoundLogic : MonoBehaviour
     [SerializeField, Min(0)] private float walkPlayDelay = 0.5f;
     [SerializeField, Min(0)] private float sprintPlayDelay = 0.25f;
     [SerializeField, Min(0)] private float crouchWalkPlayDelay = 1f;
+    [SerializeField] private GameObject weaponObject;
+
+    [SerializeField] private string footstepSound;
+
+    [SerializeField] private string SwingSound;
     //possibly just reference the speed, would work well with speed pots
     //altough once animations are implimented we can just use them, even if we remove the physical rig for the player
 
@@ -22,11 +27,11 @@ public class HumanoidSoundLogic : MonoBehaviour
     }
 #endif
     
-    public void attackSound(HumanoidIK.AttackState newState)
+    public void AttackSound(HumanoidIK.AttackState newState)
     {
         if (AudioManager.IsValid && newState == PlayerIK.AttackState.Swing)
         {
-            AudioManager.Instance.PlayOneShot("Player/SwordSwing", null, null, gameObject, true);
+            AudioManager.Instance.PlayOneShot(SwingSound, null, null, gameObject, true);
         }
     }
 
@@ -54,7 +59,7 @@ public class HumanoidSoundLogic : MonoBehaviour
 
             if (AudioManager.IsValid)
             {
-                AudioManager.Instance.PlayOneShot("Player/Footsteps", null, null, gameObject, true);
+                AudioManager.Instance.PlayOneShot(footstepSound, null, null, gameObject);
             }
         }
     }
@@ -80,5 +85,12 @@ public class HumanoidSoundLogic : MonoBehaviour
                 currentDelay = 0f;
                 break;
         }
+    }
+    
+    public void OnHealthChange(HealthData healthData)
+    {
+        if (!AudioManager.IsValid) return;
+        AudioManager.Instance.SetGlobalParameter("HP", healthData.CurrentHealth);
+        AudioManager.Instance.SetGlobalParameter("hpRatio", (float)healthData.CurrentHealth / healthData.MaxHealth);
     }
 }
