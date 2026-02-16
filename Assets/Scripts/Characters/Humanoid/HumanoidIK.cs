@@ -73,4 +73,22 @@ public class HumanoidIK : MonoBehaviour
     {
         
     }
+
+    protected virtual void ChangeAttackState(AttackState newState)
+    {
+        if(newState != attackState)
+        {
+            attackState = newState; 
+            onAttackStateChange?.Invoke(attackState);
+        }
+    }
+    
+    protected virtual void ChangeBlockState(BlockState newState)
+    {
+        if(newState != blockState)
+        {
+            blockState = newState; 
+            onBlockStateChange?.Invoke(blockState);
+        }
+    }
 }
