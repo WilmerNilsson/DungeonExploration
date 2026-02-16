@@ -117,51 +117,6 @@ public class GameManagerSO : ScriptableObject
     }
     #endregion
 
-    #region SaveFile ID stuff
-    public enum IDListName
-    {
-        DialougeFound,
-        BooksInJournal,
-    }
-
-    public void AddIDToList(IDListName type, string id)
-    {
-        switch (type)
-        {
-            case IDListName.DialougeFound:
-
-                break;
-            case IDListName.BooksInJournal:
-
-                break;
-#if DEBUG
-            default:
-                Debug.LogError("trying to add a ID of unimplimented type: " + type, this);
-                throw new NotImplementedException("trying to add a ID of unimplimented type: " + type);
-#endif
-        }
-    }
-
-    public bool CheckIfIDExists(IDListName type, string id)
-    {
-        switch (type)
-        {
-            case IDListName.DialougeFound:
-
-                break;
-            case IDListName.BooksInJournal:
-
-                break;
-#if DEBUG
-            default:
-                Debug.LogError("trying to check a ID of unimplimented type: " + type, this);
-                throw new NotImplementedException("trying to check a ID of unimplimented type: " + type);
-#endif
-        }
-        return false;
-    }
-    #endregion
-
     #region  GamePlayCheats Unimplimented
 
     #endregion

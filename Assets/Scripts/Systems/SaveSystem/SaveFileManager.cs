@@ -124,7 +124,7 @@ public class SaveFileManager
     {
         if (!File.Exists(Application.dataPath + SaveFileFolderName + saveFileNr + SaveFileName))
         {
-            CreateDefaultSavefile();
+            CreateNullWorldSavefile();
         }
         string json = File.ReadAllText(Application.dataPath + SaveFileFolderName + saveFileNr + SaveFileName);
 
@@ -134,11 +134,10 @@ public class SaveFileManager
         return data;
     }
 
-    private void CreateDefaultSavefile()
+    private void CreateNullWorldSavefile()
     {
         SavefileSettings = new();
         SaveSavefile(new SavefileData(SavefileSettings));
-        //since world is empty this will be fucked, need to fix down the line
     }
 
     public void DeleteSavefile(int saveFileNr)

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+#nullable enable
+
 public class SavefileData
 {
     public int SceneNr; //where player is
@@ -11,7 +13,16 @@ public class SavefileData
 
     public SavefileSettings Settings;
 
-    public WorldData World;
+    public WorldData? World;
+
+    public SavefileData(SavefileSettings settings)
+    {
+        SceneNr = 0;
+        DialougesGotten = new();
+        BooksInJournal = new();
+        Settings = settings;
+        World = null;
+    }
 
     public SavefileData(int sceneNr, List<int> dialougesGotten, List<string> booksInJournal, SavefileSettings settings, WorldData world)
     {
