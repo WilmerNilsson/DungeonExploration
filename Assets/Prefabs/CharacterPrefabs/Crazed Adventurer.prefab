@@ -95,6 +95,30 @@ PrefabInstance:
       propertyPath: sprintSpeed
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4698545371277439629, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: OnMoveActionChange.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4698545371277439629, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: OnMoveActionChange.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8333663504928874694}
+    - target: {fileID: 4698545371277439629, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: OnMoveActionChange.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4698545371277439629, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: OnMoveActionChange.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: HandleMovementChange
+      objectReference: {fileID: 0}
+    - target: {fileID: 4698545371277439629, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: OnMoveActionChange.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HumanoidSoundLogic, GameAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 4698545371277439629, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: OnMoveActionChange.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5956875272125161806, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: head
       value: 
@@ -156,11 +180,47 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8503224205508373485, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503224205508373485, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: deathPath
+      value: CrazedHumanoid/Die
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503224205508373485, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: swingPath
+      value: CrazedHumanoid/Basic_Attack
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503224205508373485, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: SwingSound
       value: CrazedHumanoid/Basic_Attack
       objectReference: {fileID: 0}
     - target: {fileID: 8503224205508373485, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: damagePath
+      value: CrazedHumanoid/Take_Damage
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503224205508373485, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: enemyVoPath
+      value: CrazedHumanoid/VO
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503224205508373485, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: weaponObject
+      value: 
+      objectReference: {fileID: 5295796880859329548}
+    - target: {fileID: 8503224205508373485, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: footstepSound
+      value: CrazedHumanoid/Walk
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503224205508373485, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: footstepPaths.walk
+      value: CrazedHumanoid/Walk
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503224205508373485, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: footstepPaths.sneak
+      value: CrazedHumanoid/Walk
+      objectReference: {fileID: 0}
+    - target: {fileID: 8503224205508373485, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: footstepPaths.sprint
       value: CrazedHumanoid/Walk
       objectReference: {fileID: 0}
     m_RemovedComponents:
@@ -175,15 +235,6 @@ PrefabInstance:
     - {fileID: 5433678307611902022, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
     - {fileID: 1330585171551707061, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-      insertIndex: 0
-      addedObject: {fileID: 7800696818890404542}
-    - targetCorrespondingSourceObject: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 5150304687670687516}
-    - targetCorrespondingSourceObject: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-      insertIndex: 2
-      addedObject: {fileID: 4938920431561278681}
     - targetCorrespondingSourceObject: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1394469383386994864}
@@ -218,6 +269,7 @@ MonoBehaviour:
   agent: {fileID: 8400783789577022165}
   controller: {fileID: 2156838083488555526}
   animator: {fileID: 5024339675474379466}
+  vision: {fileID: 0}
   currentState:
     mad: {fileID: 0}
     target: {x: 0, y: 0, z: 0}
@@ -285,9 +337,9 @@ MonoBehaviour:
   OnTakeDamage:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7753516765129513915}
-        m_TargetAssemblyTypeName: AudioTrigger, GameAssembly
-        m_MethodName: Activate
+      - m_Target: {fileID: 8333663504928874694}
+        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
+        m_MethodName: PlayDamageSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -312,9 +364,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 4657334258972237337}
-        m_TargetAssemblyTypeName: AudioTrigger, GameAssembly
-        m_MethodName: Activate
+      - m_Target: {fileID: 8333663504928874694}
+        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
+        m_MethodName: PlayDeathSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -335,6 +387,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe29fd6fdb86bf94784e00448707c5ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8333663504928874694 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8503224205508373485, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+  m_PrefabInstance: {fileID: 407183864440048427}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d931ca1dd1838a4bb460879b3218922, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!195 &8400783789577022165 stripped
 NavMeshAgent:
   m_CorrespondingSourceObject: {fileID: 8156880709594735102, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
@@ -344,103 +407,6 @@ NavMeshAgent:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
   m_PrefabInstance: {fileID: 407183864440048427}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &1202075366928118869
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 8600154565869652437}
-    m_Modifications:
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: activatedBy
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: instructions.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: instructions.Array.data[0].path
-      value: CrazedHumanoid/Die
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: instructions.Array.data[0].command
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: instructions.Array.data[0].gameObj
-      value: 
-      objectReference: {fileID: 2061297438515249443}
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: instructions.Array.data[0].followObject
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7039417583642897791, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_Name
-      value: DeathSound
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
---- !u!114 &4657334258972237337 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-  m_PrefabInstance: {fileID: 1202075366928118869}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a814d164a17170438a13d63660122b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &7800696818890404542 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-  m_PrefabInstance: {fileID: 1202075366928118869}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1499874569459990363
 PrefabInstance:
@@ -541,10 +507,10 @@ MonoBehaviour:
   onAttackStateChange:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7523572481623746686}
-        m_TargetAssemblyTypeName: AudioTrigger, GameAssembly
-        m_MethodName: Activate
-        m_Mode: 1
+      - m_Target: {fileID: 8333663504928874694}
+        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
+        m_MethodName: HandleAttackStateChange
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -697,7 +663,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
   m_PrefabInstance: {fileID: 2235907987567818365}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 5295796880859329548}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 51f7f14f987392348b08c80e3260f384, type: 3}
@@ -708,201 +674,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6715476101138585803, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
   m_PrefabInstance: {fileID: 2235907987567818365}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &4063817753103237682
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 8600154565869652437}
-    m_Modifications:
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: activatedBy
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: instructions.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: instructions.Array.data[0].path
-      value: CrazedHumanoid/Basic_Attack
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: instructions.Array.data[0].command
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: instructions.Array.data[0].gameObj
-      value: 
-      objectReference: {fileID: 2061297438515249443}
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: instructions.Array.data[0].followObject
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7039417583642897791, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_Name
-      value: AttackSound
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
---- !u!4 &4938920431561278681 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-  m_PrefabInstance: {fileID: 4063817753103237682}
+--- !u!1 &5295796880859329548 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6231285627939046001, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+  m_PrefabInstance: {fileID: 2235907987567818365}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7523572481623746686 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-  m_PrefabInstance: {fileID: 4063817753103237682}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a814d164a17170438a13d63660122b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1001 &4293772759783698935
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 8600154565869652437}
-    m_Modifications:
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: activatedBy
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: instructions.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: instructions.Array.data[0].path
-      value: CrazedHumanoid/Take_Damage
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: instructions.Array.data[0].command
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: instructions.Array.data[0].gameObj
-      value: 
-      objectReference: {fileID: 2061297438515249443}
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: instructions.Array.data[0].followObject
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: instructions.Array.data[0].parametersToSet.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7039417583642897791, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_Name
-      value: DamageSound
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
---- !u!4 &5150304687670687516 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-  m_PrefabInstance: {fileID: 4293772759783698935}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &7753516765129513915 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
-  m_PrefabInstance: {fileID: 4293772759783698935}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a814d164a17170438a13d63660122b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
