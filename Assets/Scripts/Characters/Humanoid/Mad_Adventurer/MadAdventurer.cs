@@ -8,6 +8,7 @@ public class MadAdventurer : MonoBehaviour
     [SerializeField] public NavMeshAgent agent;
     [SerializeField] public HumanoidController controller;
     [SerializeField] public Animator animator;
+    [SerializeField] public DetectPlayer vision;
     
     [Header("States")]
     public MadState currentState;

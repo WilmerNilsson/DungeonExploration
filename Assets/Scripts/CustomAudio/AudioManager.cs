@@ -10,7 +10,7 @@ public class AudioManager : MonoBehaviour
 {
     #region Initialization
 
-    public OcclusionChecker occlusionChecker;
+    public OcclusionChecker occlusionChecker = new OcclusionChecker();
     
     public static AudioManager Instance;
 
@@ -37,12 +37,6 @@ public class AudioManager : MonoBehaviour
         else
         {
             AudioDebug.Print("Couldn't find GameManagerSO", true);
-        }
-
-        if (occlusionChecker == null)
-        {
-            Debug.LogWarning("No occlusion checker is set in the inspector, please add one if you want to be able to change values");
-            occlusionChecker = new OcclusionChecker();
         }
         
         DontDestroyOnLoad(this);
