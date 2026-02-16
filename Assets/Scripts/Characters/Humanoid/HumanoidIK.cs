@@ -4,6 +4,7 @@ using UnityEngine.Events;
 
 public class HumanoidIK : MonoBehaviour
 {
+    [SerializeField] protected bool debug = false;
     public UnityEvent<AttackState> onAttackStateChange;
     public UnityEvent<BlockState> onBlockStateChange;
     [SerializeField] protected AttackState attackState = AttackState.Start;
@@ -90,5 +91,49 @@ public class HumanoidIK : MonoBehaviour
             blockState = newState; 
             onBlockStateChange?.Invoke(blockState);
         }
+    }
+    
+    protected Vector3 RelativePosition(Vector3 position)
+    {
+        return transform.TransformDirection(position) + animator.rootPosition;
+    }
+
+    protected Quaternion RelativeRotation(Quaternion rotation)
+    {
+        Vector3 euler = rotation.eulerAngles;
+        euler.y += transform.parent.eulerAngles.y;
+        return Quaternion.Euler(euler);
+    }
+    
+    protected virtual void Reset()
+    {
+        attackState = AttackState.Start;
+        startTime = 0;
+        time = 0;
+
+        current = Vector3.zero;
+        target = Vector3.zero;
+        nodeIndex = 0;
+        
+        weapon.SetActive(false);
+    }
+    
+    protected static Vector3[] GetQuadraticBezierPoints(Vector3 startpoint, Vector3 endPoint, float curveHeigh) {
+        Vector3 heighPoint = startpoint + (endPoint - startpoint) / 2 + Vector3.forward * curveHeigh;
+
+        Vector3[] res = new Vector3[100];
+        int maxT = 1;
+        int index = 0;
+
+        for (float t = 0; t <= maxT; t += 0.01f) {
+            Vector3 newPoint = (Mathf.Pow(1 - t, 2) * startpoint) + (2 * (1 - t) * t * heighPoint) + (t * t * endPoint);
+            try {
+                res[index++] = newPoint;
+            }
+            catch {
+                break;
+            }
+        }
+        return res;
     }
 }
