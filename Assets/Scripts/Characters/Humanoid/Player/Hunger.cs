@@ -24,8 +24,7 @@ public class Hunger : MonoBehaviour
 
     public void ResetHunger()
     {
-        playerHungerSO.currentHunger = playerHungerSO.maxHunger;
-        playerHungerSO.hungerDamage = 0;
+        playerHungerSO.ResetValues();
     }
 
     private void Awake()
@@ -36,13 +35,10 @@ public class Hunger : MonoBehaviour
 
     public void LoseHunger(int amount)
     {
-        playerHungerSO.currentHunger -= amount;
         OnHunger?.Invoke();
-        if (playerHungerSO.currentHunger < 0)
+        if (!playerHungerSO.ChangeHunger(-1))
         {
-            playerHungerSO.currentHunger = 0;
-            playerHungerSO.hungerDamage++;
-            health.TakeDamage(playerHungerSO.hungerDamage);
+            health.TakeDamage(1);
         }
 
         StartCoroutine(HungerCoroutine());
@@ -51,13 +47,8 @@ public class Hunger : MonoBehaviour
     public void Eat(int amount)
     {
         StopAllCoroutines();
-        playerHungerSO.hungerDamage = 0;
-        playerHungerSO.currentHunger += amount;
+        playerHungerSO.ChangeHunger(amount);
         OnEat?.Invoke();
-        if (playerHungerSO.currentHunger > playerHungerSO.maxHunger)
-        {
-            playerHungerSO.currentHunger = playerHungerSO.maxHunger;
-        }
 
         StartCoroutine(HungerCoroutine());
     }
