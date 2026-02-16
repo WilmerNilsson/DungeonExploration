@@ -1,7 +1,4 @@
-using UnityEditor.Graphs;
 using UnityEngine;
-using static Codice.Client.Commands.WkTree.WorkspaceTreeNode;
-using static UnityEditor.PlayerSettings;
 
 [RequireComponent(typeof(RectTransform))]
 public class InventoryGrid : MonoBehaviour

@@ -2,50 +2,9 @@ using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class CrazedIK : MonoBehaviour
+public class CrazedIK : HumanoidIK
 {
-    [SerializeField] private Weapon weapon;
-    
-    [SerializeField,Tooltip("the rotation of the hand, readonly as they are set in code")] private float x, z;
-    
-    [SerializeField] private bool attacking = false;
-    public Animator animator;
-    [SerializeField, Tooltip("Where the avatar should look")] private Transform lookObj = null;
-    [SerializeField, Tooltip("The Shoulder node of the weapon arm")] private Transform shoulderObj = null;
-    [SerializeField] private AttackState currentState = AttackState.Start;
-    
-    [Header("Attack Settings")]
-    [SerializeField, Tooltip("the min angle between the attack and straight up/down")] private float angleLimit = 30f;
-    [SerializeField, Tooltip("the lenght of the weapon arm")] private float armLenght = 2f;
-    
-    [Header("Curve animation")]
-    [SerializeField, Tooltip("Might use later, shit's cool")] private AnimationCurve curve;
-    [SerializeField] private Vector3 swingStart;
-    [SerializeField] private Vector3 swingEnd;
-    [SerializeField] private float swingAngle;
-    [SerializeField] private float curveHeight;
-    [SerializeField] private float nodeDuration;
-    [SerializeField] private float chargeDuration;
-    [SerializeField] private float resetDuration;
-    [SerializeField] private float staggerDuration;
-    private Vector3[] nodes;
-    private Vector3 current;
-    private Vector3 target;
-    private int nodeIndex;
-    private Quaternion rotation;
-    
-    private float startTime = 0;
-    private float time = 0;
-    
-    private enum AttackState
-    {
-        Start,
-        Swing,
-        Return,
-        Interrupt,
-    }
-
-    public void Attack()
+    public override void Attack(float angle = 0)
     {
         if (weapon == null)
         {
@@ -65,12 +24,12 @@ public class CrazedIK : MonoBehaviour
     public void Interrupt()
     {
         Debug.Log("Interrupt");
-        currentState = AttackState.Interrupt;
+        attackState = AttackState.Interrupt;
         weapon.SetActive(false);
     }
 
     //a callback for calculating IK
-    void OnAnimatorIK(int layerIndex)
+    protected override void OnAnimatorIK(int layerIndex)
     {
         if(animator) {
             if(attacking) {
@@ -87,33 +46,33 @@ public class CrazedIK : MonoBehaviour
                 if (current == Vector3.zero) target = nodes[0];
                 if (startTime == 0) startTime = Time.time;
                 
-                if (currentState == AttackState.Start)
+                if (attackState == AttackState.Start)
                 {
-                    time = (Time.time - startTime) / chargeDuration;
+                    time = (Time.time - startTime) / chargeTime;
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,Mathf.SmoothStep(0, 1, time));
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,Mathf.Lerp(0, 1, time));
                     animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(target));
                     animator.SetIKRotation(AvatarIKGoal.RightHand,rotation);
                 }
-                else if (currentState == AttackState.Swing)
+                else if (attackState == AttackState.Swing)
                 {
-                    time = (Time.time - startTime) / (nodeDuration/100);
+                    time = (Time.time - startTime) / (nodeTime/100);
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(Vector3.Slerp(current, target, time)));
                     animator.SetIKRotation(AvatarIKGoal.RightHand,rotation);
                 }
-                else if (currentState == AttackState.Return)
+                else if (attackState == AttackState.Return)
                 {
-                    time = (Time.time - startTime) / resetDuration;
+                    time = (Time.time - startTime) / resetTime;
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,Mathf.SmoothStep(1, 0, time));
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,Mathf.Lerp(1, 0, time));
                     animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(current));
                     animator.SetIKRotation(AvatarIKGoal.RightHand,rotation);
                 }
-                else if (currentState == AttackState.Interrupt)
+                else if (attackState == AttackState.Interrupt)
                 {
-                    time = (Time.time - startTime) / (staggerDuration/100);
+                    time = (Time.time - startTime) / (staggerTime/100);
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(Vector3.Slerp(current, target, time)));
@@ -122,7 +81,7 @@ public class CrazedIK : MonoBehaviour
                 
                 if (time > 1f) //if it's near the goal switch goal or end the attack
                 {
-                    if (currentState == AttackState.Interrupt)
+                    if (attackState == AttackState.Interrupt)
                     {
                         if (nodeIndex > 0)
                         {
@@ -142,7 +101,7 @@ public class CrazedIK : MonoBehaviour
                         {
                             current = nodes[nodeIndex];
                             target = nodes[nodeIndex + 1];
-                            currentState = AttackState.Swing;
+                            attackState = AttackState.Swing;
                             weapon.SetActive(true);
                             nodeIndex++;
                         }
@@ -156,7 +115,7 @@ public class CrazedIK : MonoBehaviour
                         {
                             weapon.SetActive(false);
                             current = nodes[nodeIndex];
-                            currentState = AttackState.Return;
+                            attackState = AttackState.Return;
                             nodeIndex++;
                         }
                         else // stop
@@ -192,7 +151,7 @@ public class CrazedIK : MonoBehaviour
 
     private void Reset()
     {
-        currentState = AttackState.Start;
+        attackState = AttackState.Start;
         startTime = 0;
         time = 0;
 
@@ -262,9 +221,9 @@ class CustomKeyframe
 {
     [SerializeField] private Vector3 position;
     [SerializeField] private Vector3 rotation;
-    [SerializeField] private float duration;
+    [SerializeField] private float time;
     
     public Vector3 Position { get { return position; } }
     public Quaternion Rotation { get { return Quaternion.Euler(rotation); } }
-    public float Duration { get { return duration; } }
+    public float Time { get { return time; } }
 }

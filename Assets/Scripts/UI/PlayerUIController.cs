@@ -1,26 +1,27 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerUIController : MonoBehaviour
 {
     [SerializeField] private PlayerController playerController;
 
-    public void OnInventory()
+    public void OnInventory(InputAction.CallbackContext context)
     {
-        InvMaster.Instance.ToggleInventory();
+        if (context.canceled) InvMaster.Instance.ToggleInventory();
     }
 
-    public void OnMinimap()
+    public void OnMinimap(InputAction.CallbackContext context)
     {
-        MinimapMaster.Instance.ToggleMinimap();
+        if (context.canceled) MinimapMaster.Instance.ToggleMinimap();
     }
 
-    public void OnPause()
+    public void OnPause(InputAction.CallbackContext context)
     {
-        GameObject.FindGameObjectWithTag("MainUI").GetComponent<InGameUIController>().TogglePauseMenu();
+        if (context.canceled) GameObject.FindGameObjectWithTag("MainUI").GetComponent<InGameUIController>().TogglePauseMenu();
     }
 
-    public void OnDevConsole()
+    public void OnDevConsole(InputAction.CallbackContext context)
     {
-        DevConsoleGha.Instance.ToggeDevConsole();
+        if (context.canceled) DevConsoleGha.Instance.ToggeDevConsole();
     }
 }

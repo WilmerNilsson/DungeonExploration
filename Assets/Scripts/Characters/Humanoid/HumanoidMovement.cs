@@ -1,8 +1,11 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class HumanoidMovement : MonoBehaviour
 {
+    public UnityEvent<moveActions> OnMoveActionChange;
+    
     [SerializeField] HumanoidController controller;
     [SerializeField] CharacterController CC;
     
@@ -20,12 +23,7 @@ public class HumanoidMovement : MonoBehaviour
     [SerializeField] private bool doJump;
     [SerializeField] private bool grounded;
     
-    
     private float currentSpeed;
-
-#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
-    public event Action<moveActions>? OnMoveActionChange;
-#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 
     private moveActions currentAction = moveActions.None;
 
@@ -56,12 +54,12 @@ public class HumanoidMovement : MonoBehaviour
             doJump = false;
         }
 
+        
         if (moveVector == Vector3.zero)
         {
             SetMoveAction(moveActions.None);
         }
-        
-        if (controller.isCrouching)
+        else if (controller.isCrouching)
         {
             currentSpeed = crouchSpeed;
             SetMoveAction(moveActions.CrouchWalk);
@@ -77,7 +75,7 @@ public class HumanoidMovement : MonoBehaviour
             SetMoveAction(moveActions.Walking);
         }
 
-        if (!grounded)
+        if (!grounded) //TODO fix air movement, maybe save initial movement and edit it while in the air?
         {
             currentSpeed *= airMoveMod;
             SetMoveAction(moveActions.Airborne);
