@@ -309,6 +309,10 @@ public class DialogueManager : MonoBehaviour
 
     private void DisplayChoices()
     {
+        if (choices.Length == 0)
+        {
+            return;
+        }
         List<Choice> currentChoices = currentStory.currentChoices;
 
         if (currentChoices.Count > choices.Length)
