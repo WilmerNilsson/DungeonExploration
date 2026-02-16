@@ -136,7 +136,9 @@ public class SaveFileManager
 
     private void CreateDefaultSavefile()
     {
-        SaveSavefile(new SavefileData());
+        SavefileSettings = new();
+        SaveSavefile(new SavefileData(SavefileSettings));
+        //since world is empty this will be fucked, need to fix down the line
     }
 
     public void DeleteSavefile(int saveFileNr)

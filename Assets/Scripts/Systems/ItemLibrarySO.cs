@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ItemMasterSO", menuName = "Scriptable Objects/ItemMasterSO")]
-public class ItemMasterSO : ScriptableObject
+public class ItemLibrarySO : ScriptableObject
 {
     [SerializeField] private ItemPairing[] itemPairs = { };
 
@@ -40,7 +40,7 @@ public class ItemMasterSO : ScriptableObject
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public bool TryGetItemPairByName(string name,[NotNullWhen(true)] out ItemPairing? pair)
     {
-        pair = itemPairs.First(x => x.Name == name);
+        pair = itemPairs.FirstOrDefault(x => x.Name == name);
         return pair != null;
     }
 #pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.

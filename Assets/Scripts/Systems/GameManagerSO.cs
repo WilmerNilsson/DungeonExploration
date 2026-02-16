@@ -84,8 +84,6 @@ public class GameManagerSO : ScriptableObject
         MoveToScene(Vector2.zero, mainSceneNumber);
     }
 
-    
-
     /// <summary>
     /// If we move to a new scene trough a door or passage.
     /// </summary>
@@ -336,8 +334,8 @@ public class GameManagerSO : ScriptableObject
     public void LoadSavefileScene(SavefileData data)
     {
         Time.timeScale = data.Settings.NormalTimescale;
-        OnLoadScene?.Invoke(data.sceneNr);
-        SceneManager.LoadScene(data.sceneNr);
+        OnLoadScene?.Invoke(data.SceneNr);
+        SceneManager.LoadScene(data.SceneNr);
         Debug.Log("todo initialize scene");
     }
 

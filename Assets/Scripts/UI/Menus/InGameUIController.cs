@@ -8,7 +8,6 @@ public class InGameUIController : MonoBehaviour, IUIController
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject inGameUI;
 
-
     private GameObject currentScreen;
 
     private GameManagerSO gameManager;
