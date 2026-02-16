@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 653897519548769769}
   - component: {fileID: 761204284509048953}
   - component: {fileID: 1354050652585229241}
+  - component: {fileID: 3689962434181300810}
   m_Layer: 12
   m_Name: True Player
   m_TagString: Player
@@ -522,6 +523,27 @@ MonoBehaviour:
   OnDeath:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3689962434181300810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822202894608450755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7927d7b62ed874549b70ca71e6ac3fae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHungerSO: {fileID: 11400000, guid: daa365354eb550f4b8ba0bdd35400db2, type: 2}
+  health: {fileID: 1354050652585229241}
+  hungerCooldown: 10
+  OnHunger:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEat:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &3712848921488717313
 GameObject:
   m_ObjectHideFlags: 0
@@ -699,6 +721,7 @@ MonoBehaviour:
   walkPlayDelay: 0.5
   sprintPlayDelay: 0.25
   crouchWalkPlayDelay: 1
+  weaponObject: {fileID: 0}
   footstepSound: Player/Footsteps
   SwingSound: Player/SwordSwing
 --- !u!114 &288142176733751095
