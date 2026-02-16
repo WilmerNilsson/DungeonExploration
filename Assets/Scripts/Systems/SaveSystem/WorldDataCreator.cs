@@ -7,23 +7,27 @@ public static class WorldDataCreator
     /// </summary>
     public static void CreateWorldData()
     {
-        SavefileData.WorldData worldData = new();
+        DungeonSaveData dungeonSaveData = new();
 
-        AddContainerData(worldData);
-        AddDroppedItemData(worldData);
-        AddEnemyData(worldData);
+        AddContainerData(dungeonSaveData);
+        AddDroppedItemData(dungeonSaveData);
+        AddEnemyData(dungeonSaveData);
 
-        static void AddEnemyData(SavefileData.WorldData worldData)
+        PlayerSaveData playerSaveData = GameObject.FindAnyObjectByType<SaveFileHelperPlayer>().GetData();
+
+        SavefileData.WorldData worldData = new(playerSaveData, dungeonSaveData);
+
+        static void AddEnemyData(DungeonSaveData dungeonSaveData)
         {
             SaveFileHelperEnemy[] enemies = GameObject.FindObjectsByType<SaveFileHelperEnemy>(FindObjectsSortMode.None);
 
             foreach (SaveFileHelperEnemy enemy in enemies)
             {
-                worldData.DungeonSaveData.Enemies.Add(enemy.GetData());
+                dungeonSaveData.Enemies.Add(enemy.GetData());
             }
         }
 
-        static void AddDroppedItemData(SavefileData.WorldData worldData)
+        static void AddDroppedItemData(DungeonSaveData dungeonSaveData)
         {
             ItemPickup[] itemPickups = GameObject.FindObjectsByType<ItemPickup>(FindObjectsSortMode.None);
 
@@ -34,18 +38,18 @@ public static class WorldDataCreator
                 data.Name = pickup.PrefabID;
                 data.Pos = pickup.transform.position;
 
-                worldData.DungeonSaveData.DroppedItems.Add(data);
+                dungeonSaveData.DroppedItems.Add(data);
             }
         }
 
-        static void AddContainerData(SavefileData.WorldData worldData)
+        static void AddContainerData(DungeonSaveData dungeonSaveData)
         {
             //we may just subscribe them to some sort of list when they spawn instead of doing this, since it can be slow
             SaveFileHelperContainer[] saveFileHelperContainers = GameObject.FindObjectsByType<SaveFileHelperContainer>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
             foreach (SaveFileHelperContainer helper in saveFileHelperContainers)
             {
-                worldData.DungeonSaveData.Containers.Add(helper.GetData());
+                dungeonSaveData.Containers.Add(helper.GetData());
             }
         }
     }

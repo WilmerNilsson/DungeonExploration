@@ -57,9 +57,7 @@ public class SaveFileHelperContainer : MonoBehaviour
     {
         Vector3 pos = spawnTransform.position;
         Quaternion rot = spawnTransform.rotation;
-        InventorySaveData inv = new();
-
-        inv.Items = grid.GetInventoryData();
+        InventorySaveData inv = new(grid.GetInventoryData());
 
         DungeonSaveData.Container data = new(pos, rot, inv, prefabID);
 

@@ -24,13 +24,14 @@ public class DungeonSaveData
         public Vector3 Pos;
         public Quaternion Rotation;
         public int CurrentHP;
-        //enum or string ID for type
+        public string PrefabID;
 
-        public Enemy(Vector3 pos, Quaternion rotation, int currentHP)
+        public Enemy(Vector3 pos, Quaternion rotation, int currentHP, string prefabID)
         {
             Pos = pos;
             Rotation = rotation;
             CurrentHP = currentHP;
+            PrefabID = prefabID;
         }
     }
 

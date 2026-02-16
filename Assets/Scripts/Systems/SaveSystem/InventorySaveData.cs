@@ -5,12 +5,16 @@ using UnityEngine;
 [Serializable]
 public class InventorySaveData
 {
-    public List<InventoryItem> Items = new();
+    public List<InventoryItem> Items;
+
+    public InventorySaveData(List<InventoryItem> items)
+    {
+        Items = items;
+    }
 
     public InventorySaveData Clone()
     {
-        InventorySaveData cloneData = new InventorySaveData();
-        cloneData.Items = new(Items);
+        InventorySaveData cloneData = new InventorySaveData(new(Items));
         return cloneData;
     }
 

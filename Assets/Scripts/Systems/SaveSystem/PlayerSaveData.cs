@@ -4,9 +4,10 @@ using UnityEngine;
 [Serializable]
 public class PlayerSaveData
 {
-    public InventorySaveData Inventory = new();
+    public InventorySaveData Inventory;
 
     public Vector3 Position;
+    public Quaternion Rotation;
 
     public int MaxHP;
     public int CurrentHP;
@@ -14,12 +15,11 @@ public class PlayerSaveData
     public int Sanity;
     public int Hunger;
 
-    public PlayerSaveData() { }
-
-    public PlayerSaveData(InventorySaveData inventory, Vector3 position, int maxHP, int currentHP, int sanity, int hunger)
+    public PlayerSaveData(InventorySaveData inventory, Vector3 position, Quaternion rotation, int maxHP, int currentHP, int sanity, int hunger)
     {
         Inventory = inventory;
         Position = position;
+        Rotation = rotation;
         MaxHP = maxHP;
         CurrentHP = currentHP;
         Sanity = sanity;
@@ -28,6 +28,6 @@ public class PlayerSaveData
 
     public PlayerSaveData Clone()
     {
-        return new(Inventory.Clone(), Position, MaxHP, CurrentHP, Sanity, Hunger);
+        return new(Inventory.Clone(), Position, Rotation, MaxHP, CurrentHP, Sanity, Hunger);
     }
 }

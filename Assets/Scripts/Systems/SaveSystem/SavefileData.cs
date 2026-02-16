@@ -22,16 +22,6 @@ public class SavefileData
         World = world;
     }
 
-    public SavefileData(SavefileSettings settings)
-    {
-        Settings = settings;
-
-        SceneNr = 0;
-        DialougesGotten = new();
-        BooksInJournal = new();
-        World = new();
-    }
-
     public SavefileData Clone()
     {
         return new SavefileData(SceneNr, new(DialougesGotten), new(BooksInJournal), Settings.Clone(), World.Clone());
@@ -39,16 +29,18 @@ public class SavefileData
 
     public class WorldData
     {
-        public PlayerSaveData PlayerSaveData = new();
-        public DungeonSaveData DungeonSaveData = new();
+        public PlayerSaveData PlayerSaveData;
+        public DungeonSaveData DungeonSaveData;
+
+        public WorldData(PlayerSaveData playerSaveData, DungeonSaveData dungeonSaveData)
+        {
+            PlayerSaveData = playerSaveData;
+            DungeonSaveData = dungeonSaveData;
+        }
 
         public WorldData Clone()
         {
-            return new WorldData()
-            {
-                PlayerSaveData = PlayerSaveData.Clone(),
-                DungeonSaveData = DungeonSaveData.Clone()
-            };
+            return new WorldData(PlayerSaveData.Clone(), DungeonSaveData.Clone());
         }
     }
 }
