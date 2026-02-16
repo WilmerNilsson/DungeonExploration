@@ -408,7 +408,7 @@ public class GameManagerSO : ScriptableObject
     {
         if (AudioManager.IsValid)
         {
-            AudioManager.Instance.SetVolume("Effects", globalSettings.masterVolume / 100f);
+            AudioManager.Instance.SetVolume("SFX", globalSettings.effectsVolume / 100f);
         }
     }
 
@@ -422,7 +422,7 @@ public class GameManagerSO : ScriptableObject
     {
         if (AudioManager.IsValid)
         {
-            AudioManager.Instance.SetVolume("Music", globalSettings.masterVolume / 100f);
+            AudioManager.Instance.SetVolume("Music", globalSettings.musicVolume / 100f);
         }
     }
     #endregion

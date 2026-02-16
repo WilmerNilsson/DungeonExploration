@@ -141,6 +141,7 @@ public class Health : MonoBehaviour
     private void Die()
     {
         Dead = true;
+        CombatChecker.RemoveFromChaseList(gameObject);
         OnDeath?.Invoke();
     }
 }
