@@ -365,7 +365,7 @@ public class EventList : ScriptableObject
         {
             if (!InstanceToEventData.TryGetValue(kvp.Value, out var eventData)) continue;
             if (!eventData.isOcclusion) continue;
-            AudioManager.Instance.occlusionChecker.CheckOcclusion(kvp.Key, out var occlusion);
+            AudioManager.Instance.occlusionChecker.CheckOcclusion(kvp.Key, AudioManager.Listener,out var occlusion);
             if (eventData.ParameterCache.TryGetValue("Occluded", out var parameterData))
             {
                 kvp.Value.setParameterByID(parameterData.ID(), occlusion);
@@ -414,7 +414,7 @@ public class EventList : ScriptableObject
 
                 if (eventData.isOcclusion)
                 {
-                    AudioManager.Instance.occlusionChecker.CheckOcclusion(gameObject, out var occlusion);
+                    AudioManager.Instance.occlusionChecker.CheckOcclusion(gameObject,AudioManager.Listener, out var occlusion);
                     if (eventData.ParameterCache.TryGetValue("Occlusion", out var parameterData))
                     {
                         instance.setParameterByID(parameterData.ID(), occlusion);

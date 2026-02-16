@@ -66,18 +66,16 @@ public class AmbienceHandler : MonoBehaviour
       shortestDistance = _hits[0].distance;
       longestDistance = _hits[^1].distance;
 
-      if (AudioManager.IsValid)
+      if (!AudioManager.IsValid) return;
+      if (useMean)
       {
-         if (useMean)
-         {
-            AudioManager.Instance.SetGlobalParameter("RoomSize", meanDistance * roomSizeMultiplier);
-            currentRoomSize = meanDistance * roomSizeMultiplier;
-         }
-         else
-         {
-            AudioManager.Instance.SetGlobalParameter("RoomSize", medianDistance * roomSizeMultiplier);
-            currentRoomSize = medianDistance * roomSizeMultiplier;
-         }
+         AudioManager.Instance.SetGlobalParameter("RoomSize", meanDistance * roomSizeMultiplier);
+         currentRoomSize = meanDistance * roomSizeMultiplier;
+      }
+      else
+      {
+         AudioManager.Instance.SetGlobalParameter("RoomSize", medianDistance * roomSizeMultiplier);
+         currentRoomSize = medianDistance * roomSizeMultiplier;
       }
    }
 

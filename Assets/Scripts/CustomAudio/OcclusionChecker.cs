@@ -1,5 +1,3 @@
-using System;
-using Unity.Plastic.Newtonsoft.Json.Serialization;
 using UnityEngine;
 
 public class OcclusionChecker : MonoBehaviour
@@ -15,6 +13,9 @@ public class OcclusionChecker : MonoBehaviour
     private Vector3 _sourcePos;
     private Vector3 _targetPos;
 
+    [SerializeField] private bool allowBounce;
+    [SerializeField] private bool drawDebug;
+
     private struct HitData
     {
         public bool Hit1;
@@ -27,13 +28,8 @@ public class OcclusionChecker : MonoBehaviour
     //TODO: weighting på normalkurva? baserat på spread?
     //TODO: kolla ovan och under spelaren också?
     
-    public void CheckOcclusion(GameObject sourceGo, out float occlusion)
+    public void CheckOcclusion(GameObject sourceGo, GameObject targetGo, out float occlusion)
     {
-        if (!AudioManager.Listener)
-        {
-            occlusion = 0f;
-            return;
-        }
         _lineCount = linesOnEitherSide * 2 + 1;
         var hits = new HitData[_lineCount];
         _posModifier = -linesOnEitherSide - 1;
@@ -43,25 +39,31 @@ public class OcclusionChecker : MonoBehaviour
         for (int i = 0; i < _lineCount; i++)
         {
             _posModifier++;
-            _targetPos = AudioManager.Listener.transform.position + AudioManager.Listener.transform.right * (spread * _posModifier);
+            _targetPos = targetGo.transform.position + targetGo.transform.right * (spread * _posModifier);
             hits[i].Hit1 = Physics.Linecast(_sourcePos, _targetPos, out hits[i].Hit1Info, layerMask);
             if (hits[i].Hit1)
             {
-                hits[i].Hit2 = Physics.Linecast(hits[i].Hit1Info.point, AudioManager.Listener.transform.position, out hits[i].Hit2Info, layerMask);
-                if (hits[i].Hit2) _hits++;
-                else _hits += bounceValue;
+                if (allowBounce)
+                {
+                    hits[i].Hit2 = Physics.Linecast(hits[i].Hit1Info.point, targetGo.transform.position, out hits[i].Hit2Info, layerMask);
+                    if (hits[i].Hit2) _hits++;
+                    else _hits += bounceValue;
+                }
+                else
+                {
+                    _hits++;
+                }
             }
             
             //Draw lines
-            if (!AudioManager.IsValid) return;
-            if (!AudioManager.Instance.debug) return;
+            if (!drawDebug) continue;
 
             if (hits[i].Hit1)
             {
-                if (!hits[i].Hit2)
+                if (!hits[i].Hit2 && allowBounce)
                 {
                     Debug.DrawLine(_sourcePos, hits[i].Hit1Info.point, Color.cyan);
-                    Debug.DrawLine(hits[i].Hit1Info.point, AudioManager.Listener.transform.position, Color.green);
+                    Debug.DrawLine(hits[i].Hit1Info.point, targetGo.transform.position, Color.green);
                 }
                 else
                 {

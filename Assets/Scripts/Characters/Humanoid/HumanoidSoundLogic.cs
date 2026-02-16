@@ -6,6 +6,7 @@ public class HumanoidSoundLogic : MonoBehaviour
     [SerializeField, Min(0)] private float walkPlayDelay = 0.5f;
     [SerializeField, Min(0)] private float sprintPlayDelay = 0.25f;
     [SerializeField, Min(0)] private float crouchWalkPlayDelay = 1f;
+    [SerializeField] private GameObject weaponObject;
 
     [SerializeField] private string footstepSound;
 
@@ -26,7 +27,7 @@ public class HumanoidSoundLogic : MonoBehaviour
     }
 #endif
     
-    public void attackSound(HumanoidIK.AttackState newState)
+    public void AttackSound(HumanoidIK.AttackState newState)
     {
         if (AudioManager.IsValid && newState == PlayerIK.AttackState.Swing)
         {
@@ -58,7 +59,7 @@ public class HumanoidSoundLogic : MonoBehaviour
 
             if (AudioManager.IsValid)
             {
-                AudioManager.Instance.PlayOneShot(footstepSound, null, null, gameObject, true);
+                AudioManager.Instance.PlayOneShot(footstepSound, null, null, gameObject);
             }
         }
     }
