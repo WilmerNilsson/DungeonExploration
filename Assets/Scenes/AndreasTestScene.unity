@@ -220,6 +220,39 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08d38b58f4b133f4fb87414bc1a4666c, type: 3}
+--- !u!1 &181764290 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2061297438515249443, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+  m_PrefabInstance: {fileID: 638246654}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &181764303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 181764290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be2ae89949a241640b1ff0ecf5ed0729, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  head: {fileID: 969095433}
+  maxSightDistance: 1000
+  sightAngle: 360
+  visionMask:
+    serializedVersion: 2
+    m_Bits: 5376
+  occlusionChecker:
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 0
+    spread: 1
+    bounceValue: 0.5
+    linesOnEitherSide: 0
+    allowBounce: 0
+    drawDebug: 0
 --- !u!1 &468400770
 GameObject:
   m_ObjectHideFlags: 0
@@ -625,7 +658,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2061297438515249443, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 181764303}
   m_SourcePrefab: {fileID: 100100000, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
 --- !u!1 &667923092
 GameObject:
@@ -882,11 +918,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: AudioManager
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1241207898650518369, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
+--- !u!4 &969095433 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6314557477079841104, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
+  m_PrefabInstance: {fileID: 638246654}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1011329521
 GameObject:
   m_ObjectHideFlags: 0

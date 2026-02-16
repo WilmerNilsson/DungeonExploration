@@ -429,7 +429,15 @@ MonoBehaviour:
   currentHealth: 0
   maxHealth: 10
   DurabilityDamage: 0
-  minTimeBetweenDamage: 0
+  OnChangeHealths:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2166940929212969290
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,10 +624,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d931ca1dd1838a4bb460879b3218922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 1878137323481184442}
+  type: 0
+  voiceActorAmount: 0
+  footstepsActivatedBy: 0
   walkPlayDelay: 0.5
   sprintPlayDelay: 0.25
   crouchWalkPlayDelay: 1
+  footstepPaths:
+    sneak: 
+    walk: 
+    sprint: 
+  crouchPath: 
+  jumpPath: 
+  weaponObject: {fileID: 0}
+  swingPath: 
+  blockPath: 
+  damagePath: 
+  deathPath: 
+  enemyVoPath: 
 --- !u!1 &4072767237738320272
 GameObject:
   m_ObjectHideFlags: 0
@@ -760,21 +782,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b62cb79775680864fbe12c086a03398d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnMoveActionChange:
+    m_PersistentCalls:
+      m_Calls: []
   controller: {fileID: 4858494153439666970}
-  rb: {fileID: 4612578766106565978}
+  CC: {fileID: 0}
   moveSpeed: 1
   sprintSpeed: 2
   crouchSpeed: 0.5
-  airMoveSpeed: 0.1
-  jumpForce: 5
-  upperRaycast: {fileID: 8599579805407107823}
-  lowerRaycast: {fileID: 3079550100083710755}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  raycastDistance: 0.5
-  raycastAngle: 45
-  stepSmooth: 0.2
+  airMoveMod: 0.1
+  jumpHeight: 5
+  doJump: 0
+  grounded: 0
 --- !u!114 &5823277211771865935
 MonoBehaviour:
   m_ObjectHideFlags: 0
