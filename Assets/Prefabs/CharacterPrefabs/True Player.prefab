@@ -61,6 +61,10 @@ MonoBehaviour:
   IK: {fileID: 8901949334323711285}
   mouseSensitivity: 0.1
   stickSensitivity: 5
+  lockedMovement: 0
+  lockedCamera: 0
+  startedAttack: 0
+  startedBlock: 0
 --- !u!114 &460348200128992605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,6 +95,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b62cb79775680864fbe12c086a03398d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnMoveActionChange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8893892476905510790}
+        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
+        m_MethodName: HandleMovementChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   controller: {fileID: 460348200128992605}
   CC: {fileID: 653897519548769769}
   moveSpeed: 3
@@ -130,7 +149,7 @@ MonoBehaviour:
   interactDistance: 5
   layerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 9473
 --- !u!114 &643573880868424566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,7 +306,7 @@ MonoBehaviour:
       - m_Target: {fileID: 2570910179104288855}
         m_TargetAssemblyTypeName: PlayerUIController, GameAssembly
         m_MethodName: OnPause
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -303,7 +322,7 @@ MonoBehaviour:
       - m_Target: {fileID: 2570910179104288855}
         m_TargetAssemblyTypeName: PlayerUIController, GameAssembly
         m_MethodName: OnInventory
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -343,7 +362,7 @@ MonoBehaviour:
       - m_Target: {fileID: 2570910179104288855}
         m_TargetAssemblyTypeName: PlayerUIController, GameAssembly
         m_MethodName: OnMinimap
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -355,7 +374,19 @@ MonoBehaviour:
     m_ActionId: bf89488c-19f8-43a1-90be-53439bc4178d
     m_ActionName: 'Player/Map[/Keyboard/m]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2570910179104288855}
+        m_TargetAssemblyTypeName: PlayerUIController, GameAssembly
+        m_MethodName: OnDevConsole
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 9fe0d599-82bf-45f2-9520-a720f2003376
     m_ActionName: 'Player/DevConsole[/Keyboard/backquote]'
   - m_PersistentCalls:
@@ -470,7 +501,12 @@ MonoBehaviour:
   currentHealth: 0
   maxHealth: 10
   DurabilityDamage: 0
-  minTimeBetweenDamage: 0
+  OnChangeHealths:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
   OnDeath:
     m_PersistentCalls:
       m_Calls: []
@@ -647,7 +683,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d931ca1dd1838a4bb460879b3218922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 6844093797709260482}
   walkPlayDelay: 0.5
   sprintPlayDelay: 0.25
   crouchWalkPlayDelay: 1
@@ -5616,15 +5651,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  weapon: {fileID: 4615422614276632481}
-  x: 0
-  z: 0
+  onBlockStateChange:
+    m_PersistentCalls:
+      m_Calls: []
+  attackState: 0
+  blockState: 0
   attacking: 0
   blocking: 0
   animator: {fileID: 8583122998059479642}
+  weapon: {fileID: 4615422614276632481}
   shoulderObj: {fileID: 412638037322040316}
-  attackState: 0
-  blockState: 0
+  lookObj: {fileID: 0}
+  x: 0
+  z: 0
   angleLimit: 30
   armLenght: 2
   swingStart: {x: 0, y: 0, z: 0}
@@ -5634,6 +5673,7 @@ MonoBehaviour:
   nodeTime: 0.1
   chargeTime: 1
   resetTime: 0.5
+  staggerTime: 3
   blockChargeTime: 0.1
   blockTime: 1
   blockResetTime: 0.1
@@ -5826,7 +5866,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6231285627939046001, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 6715476101138585803, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
       propertyPath: m_LocalScale.x

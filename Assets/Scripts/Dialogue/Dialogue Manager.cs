@@ -34,9 +34,11 @@ public class DialogueManager : MonoBehaviour
     private const string SIZE_TAG = "font_size";
     private const string SPEED_TAG = "speed";
     private const string INDEX_TAG = "index";
+    private const string EVENT_TAG = "event";
 
 
     public UnityEvent onDialogueEnter, onStartLine, onEndLine, onDialogueExit;
+    public List<UnityEvent> storyEvents = new List<UnityEvent>();
     private int lineIndex = 0;
 
     //[Header("Choices UI")] 
@@ -250,6 +252,17 @@ public class DialogueManager : MonoBehaviour
                     else
                     {
                         Debug.LogWarning($"Couldn't parse index: {tagValue}");
+                    }
+                    break;
+                
+                case EVENT_TAG:
+                    if (int.TryParse(tagValue, out int eventIndex))
+                    {
+                        storyEvents[eventIndex]?.Invoke();
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Couldn't parse event: {tagValue}");
                     }
                     break;
                 

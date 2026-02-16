@@ -18,7 +18,11 @@ public class PlayerController : MonoBehaviour
     private Vector2 lookInput;
     private Vector3 moveVector;
 
-    private bool lockedMovement = false;
+    [SerializeField]private bool lockedMovement = false;
+    [SerializeField]private bool lockedCamera = false;
+    
+    [SerializeField]bool startedAttack = false;
+    [SerializeField]bool startedBlock = false;
 
     private Vector2 mouseStart;
     private Vector2 mouseEnd;
@@ -30,11 +34,22 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
 
         GameManagerSO.Instance.OnLockMouse += LockMovement;
+        GameManagerSO.Instance.OnLockCamera += LockCamera;
+    }
+    
+    private void LockMovement(bool newValue)
+    {
+        lockedMovement = newValue;
+    }
+    
+    private void LockCamera(bool newValue)
+    {
+        lockedCamera = newValue;
     }
 
     private void Update()
     {
-        if (!lockedMovement)
+        if (!lockedCamera)
         {
             Rotate(lookInput);
         }
@@ -43,6 +58,7 @@ public class PlayerController : MonoBehaviour
     private void OnDestroy()
     {
         GameManagerSO.Instance.OnLockMouse -= LockMovement;
+        GameManagerSO.Instance.OnLockCamera -= LockCamera;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -120,41 +136,43 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (context.performed && !lockedMovement)
+        if (lockedMovement) return;
+        if (context.performed && !lockedCamera)
         {
             mouseStart = Mouse.current.position.ReadValue();
-            GameManagerSO.Instance.LockMouse(true);
+            startedAttack = true;
+            GameManagerSO.Instance.LockCamera(true);
         }
-        if (context.canceled)
+        if (context.canceled && startedAttack)
         {
             mouseEnd = Mouse.current.position.ReadValue();
-            if (Vector2.Distance(mouseStart, mouseEnd) < 10)
+            startedAttack = false;
+            if (Vector2.Distance(mouseStart, mouseEnd) > 10)
             {
-                GameManagerSO.Instance.LockMouse(false);
-                return;
+                IK.Attack(Vector2.SignedAngle(Vector2.left, (mouseEnd - mouseStart)));
             }
-            IK.Attack(Vector2.SignedAngle(Vector2.left, (mouseEnd - mouseStart)));
-            GameManagerSO.Instance.LockMouse(false);
+            GameManagerSO.Instance.LockCamera(false);
         }
     }
 
     public void OnBlock(InputAction.CallbackContext context)
     {
-        if (context.performed && !lockedMovement)
+        if (lockedMovement) return;
+        if (context.performed && !lockedCamera)
         {
             mouseStart = Mouse.current.position.ReadValue();
-            GameManagerSO.Instance.LockMouse(true);
+            startedBlock = true;
+            GameManagerSO.Instance.LockCamera(true);
         }
-        if (context.canceled)
+        if (context.canceled && startedBlock)
         {
             mouseEnd = Mouse.current.position.ReadValue();
-            if (Vector2.Distance(mouseStart, mouseEnd) < 10)
+            startedBlock = false;
+            if (Vector2.Distance(mouseStart, mouseEnd) > 10)
             {
-                GameManagerSO.Instance.LockMouse(false);
-                return;
+                IK.Block(Vector2.SignedAngle(Vector2.right, (mouseEnd - mouseStart)));
             }
-            IK.Block(Vector2.SignedAngle(Vector2.right, (mouseEnd - mouseStart)));
-            GameManagerSO.Instance.LockMouse(false);
+            GameManagerSO.Instance.LockCamera(false);
         }
     }
 
@@ -166,12 +184,5 @@ public class PlayerController : MonoBehaviour
         lookVector.x = Mathf.Clamp(lookVector.x, -70f, 70f);
         
         controller.Rotate(Quaternion.AngleAxis(lookVector.y, Vector3.up) * Quaternion.AngleAxis(lookVector.x, Vector3.right));
-    }
-
-    private void LockMovement(bool newValue)
-    {
-        lockedMovement = newValue;
-
-        //controller.ResetMovement();
     }
 }
