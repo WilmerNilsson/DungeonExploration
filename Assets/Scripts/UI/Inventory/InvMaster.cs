@@ -17,8 +17,7 @@ public class InvMaster : MonoBehaviour
     [SerializeField] private GameObject playerInventory;
     [SerializeField] private Transform drawOntopParent;
     [Header("reading")] //Starting to feel like we may want to split this up further, but prob once we do a pause menu
-    [SerializeField] private GameObject readingCanvasParent;
-    [SerializeField] private TextMeshProUGUI readingText;
+    [SerializeField] private OpenBookController openBookController;
     [SerializeField] private TextMeshProUGUI descriptionText;
     /// <summary>
     /// collum, row
@@ -45,8 +44,7 @@ public class InvMaster : MonoBehaviour
         if (worldContainerParent == null) Debug.LogWarning("world container parent is null", this);
         if (playerInventory == null) Debug.LogWarning("player inventory object is null", this);
         if (drawOntopParent == null) Debug.LogWarning("draw ontop parent is null", this);
-        if (readingCanvasParent == null) Debug.LogWarning("reading canvas parent toggle object is null", this);
-        if (readingText == null) Debug.LogWarning("reading text field is null", this);
+        if (openBookController == null) Debug.LogWarning("open book controller is null", this);
         if (descriptionText == null) Debug.LogWarning("description text field is null", this);
 
         if (!PrefabUtility.IsPartOfPrefabAsset(this) && GameObject.FindAnyObjectByType<EventSystem>() == null)
@@ -195,13 +193,12 @@ public class InvMaster : MonoBehaviour
     public void OpenText(string newText)
     {
         contextMenu.Deselect();
-        readingCanvasParent.SetActive(true);
-        readingText.text = newText;
+        openBookController.OpenText(newText);
     }
 
     public void CloseText()
     {
-        readingCanvasParent.SetActive(false);
+        openBookController.CloseText();
     }
 
     public void SetDescriptionText(string newText)

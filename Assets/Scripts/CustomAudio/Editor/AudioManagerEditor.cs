@@ -5,49 +5,55 @@ using UnityEditor;
 [CustomEditor(typeof(AudioManager))]
 public class AudioManagerEditor : Editor
 {
-    private SerializedProperty eventLists;
-    private SerializedProperty banksToLoadOnStart;
-    private SerializedProperty debug;
-    private SerializedProperty showOnlyWarnings;
-    private AudioManager audioManager;
+    private SerializedProperty _eventLists;
+    private SerializedProperty _banksToLoadOnStart;
+    private SerializedProperty _debug;
+    private SerializedProperty _showOnlyWarnings;
+    private AudioManager _audioManager;
+    private SerializedProperty _occlusionChecker;
     
     public void OnEnable()
     {
-        eventLists = serializedObject.FindProperty("eventLists");
-        banksToLoadOnStart = serializedObject.FindProperty("banksToLoadOnStart");
-        debug = serializedObject.FindProperty("debug");
-        showOnlyWarnings = serializedObject.FindProperty("showOnlyWarnings");
-        audioManager = (AudioManager)target;
+        _eventLists = serializedObject.FindProperty("eventLists");
+        _banksToLoadOnStart = serializedObject.FindProperty("banksToLoadOnStart");
+        _debug = serializedObject.FindProperty("debug");
+        _showOnlyWarnings = serializedObject.FindProperty("showOnlyWarnings");
+        _audioManager = (AudioManager)target;
+        _occlusionChecker = serializedObject.FindProperty("occlusionChecker");
     }
 
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
         
-        EditorGUILayout.PropertyField(eventLists);
+        EditorGUILayout.PropertyField(_eventLists);
 
         if (GUILayout.Button("Fill Eventdata"))
         {
-            audioManager.FillAllEventData();
+            _audioManager.FillAllEventData();
         }
         
         EditorGUILayout.Separator();
         
-        EditorGUILayout.PropertyField(banksToLoadOnStart);
+        EditorGUILayout.PropertyField(_banksToLoadOnStart);
+        
+        EditorGUILayout.Separator();
+        
+        EditorGUILayout.PropertyField(_occlusionChecker);
         
         EditorGUILayout.Separator();
         
         if (GUILayout.Button("Toggle Debug"))
         {
-            audioManager.ToggleDebug();
+            _audioManager.ToggleDebug();
         }
 
-        if (debug.boolValue)
+        if (_debug.boolValue)
         {
             EditorGUILayout.Separator();
             
-            EditorGUILayout.PropertyField(debug);
-            EditorGUILayout.PropertyField(showOnlyWarnings);
+            EditorGUILayout.PropertyField(_debug);
+            EditorGUILayout.PropertyField(_showOnlyWarnings);
             
         }
         
