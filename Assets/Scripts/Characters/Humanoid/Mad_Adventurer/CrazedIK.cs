@@ -24,7 +24,7 @@ public class CrazedIK : HumanoidIK
     public void Interrupt()
     {
         Debug.Log("Interrupt");
-        attackState = AttackState.Interrupt;
+        ChangeAttackState(AttackState.Interrupt);
         weapon.SetActive(false);
     }
 
@@ -101,7 +101,7 @@ public class CrazedIK : HumanoidIK
                         {
                             current = nodes[nodeIndex];
                             target = nodes[nodeIndex + 1];
-                            attackState = AttackState.Swing;
+                            ChangeAttackState(AttackState.Swing);
                             weapon.SetActive(true);
                             nodeIndex++;
                         }
@@ -115,7 +115,7 @@ public class CrazedIK : HumanoidIK
                         {
                             weapon.SetActive(false);
                             current = nodes[nodeIndex];
-                            attackState = AttackState.Return;
+                            ChangeAttackState(AttackState.Return);
                             nodeIndex++;
                         }
                         else // stop
