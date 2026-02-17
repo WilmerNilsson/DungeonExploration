@@ -10,6 +10,8 @@ public class PlayerHungerSO : ScriptableObject
     [SerializeField] public int maxHunger = 100;
     public int currentHunger = 0;
     public int hungerDamage = 0;
+    [Tooltip("The amount of time between hunger ticks in seconds")]
+    public float hungerCooldown = 10f;
     public UnityEvent OnChangeHunger;
 
 
