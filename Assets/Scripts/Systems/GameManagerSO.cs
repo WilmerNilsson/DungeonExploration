@@ -21,8 +21,8 @@ public class GlobalSettings
 
 public class SavefileData
 {
-    public int sceneNr = 1;
-    public Vector2 savePos = new Vector2(0, 0);
+    public string sceneName = "MainMenu";
+    public Vector3 savePos = new Vector3(0, 0, 0);
 
     //settings
     public float normalTimeScale = 1f;
@@ -40,8 +40,8 @@ public class SavefileData
 [CreateAssetMenu(fileName = "GameManagerSO", menuName = "Scriptable Objects/GameManagerSO")]
 public class GameManagerSO : ScriptableObject
 {
-    private const int mainMenuSceneNumber = 0;
-    private const int mainSceneNumber = 1;
+    private const string mainMenuSceneNumber = "MainMenu";
+    //private const int mainSceneNumber = 1;
 
     private GlobalSettings globalSettings = new GlobalSettings();
     private SavefileData currentSavefileData = new SavefileData();
@@ -58,6 +58,7 @@ public class GameManagerSO : ScriptableObject
     }
     private int thingsLockingMouse = 0;
     private int thingsLockingCamera = 0;
+    private Vector3 spawnPosition = new Vector3();
 
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public event Action<IDListName, int>? OnIDAddedToListSelfReset;
@@ -72,7 +73,7 @@ public class GameManagerSO : ScriptableObject
     /// <summary>
     /// will not reset on scene change, care for memory leaks
     /// </summary>
-    public event Action<int>? OnLoadScene;
+    public event Action<string>? OnLoadScene;
     /// <summary>
     /// will not reset on scene change, care for memory leaks
     /// </summary>
@@ -116,37 +117,42 @@ public class GameManagerSO : ScriptableObject
 
     #region move to scene stuff
 
-    public void StartDemo()
+    /*public void StartDemo()
     {
         MoveToScene(Vector3.zero, mainSceneNumber);
+    }*/
+
+    public void SetSpawnPosition(Vector3 pos)
+    {
+        spawnPosition  = pos;
     }
 
     public void MoveToScene(string sceneName)
     {
-        MoveToScene(Vector3.zero, SceneManager.GetSceneByName(sceneName).buildIndex);
+        MoveToScene(spawnPosition, sceneName);
     }
 
 
-    public void MoveToScene(Vector3 newLocation, int newSceneNr)
+    public void MoveToScene(Vector3 newLocation, string newSceneName)
     {
         //currentSavefileData.sceneNr = newSceneNr;
         //currentSavefileData.savePos = newLocation;
 
-        if(newSceneNr != SceneManager.GetActiveScene().buildIndex)
+        if(newSceneName != SceneManager.GetActiveScene().name)
         {
             ResetActions();
 
-            if(newSceneNr == mainSceneNumber) // main menu
+            /*if(newSceneName == mainSceneNumber) // main menu
             {
                 Time.timeScale = 1;
-            }
+            }*/
 
             if(OnLoadScene != null)
             {
-                OnLoadScene(newSceneNr);
+                OnLoadScene(newSceneName);
             }
 
-            SceneManager.LoadScene(newSceneNr);
+            SceneManager.LoadScene(newSceneName);
         }
     }
 
@@ -438,7 +444,7 @@ public class GameManagerSO : ScriptableObject
     {
         SavefileData newData = new SavefileData();
 
-        newData.sceneNr = dataToBeCopied.sceneNr;
+        newData.sceneName = dataToBeCopied.sceneName;
         newData.savePos = dataToBeCopied.savePos;
 
         newData.normalTimeScale = dataToBeCopied.normalTimeScale;
@@ -471,9 +477,9 @@ public class GameManagerSO : ScriptableObject
         Time.timeScale = currentSavefileData.normalTimeScale;
         if(OnLoadScene != null)
         {
-            OnLoadScene(currentSavefileData.sceneNr);
+            OnLoadScene(currentSavefileData.sceneName);
         }
-        SceneManager.LoadScene(currentSavefileData.sceneNr);
+        SceneManager.LoadScene(currentSavefileData.sceneName);
     }
 
     public void DeleteSaveFile(int saveFileNr)
@@ -506,9 +512,9 @@ public class GameManagerSO : ScriptableObject
 
         if(OnLoadScene != null)
         {
-            OnLoadScene(currentSavefileData.sceneNr);
+            OnLoadScene(currentSavefileData.sceneName);
         }
-        SceneManager.LoadScene(currentSavefileData.sceneNr);
+        SceneManager.LoadScene(currentSavefileData.sceneName);
     }
 
     public void SaveSettings()
