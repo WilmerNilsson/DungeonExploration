@@ -40,6 +40,7 @@ public class EventList : ScriptableObject
         {
             eventData.PopulateData();
         }
+        EditorUtility.SetDirty(this);
         AssetDatabase.SaveAssetIfDirty(this);
     }
     #endif
