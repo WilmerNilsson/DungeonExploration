@@ -372,6 +372,11 @@ public class EventList : ScriptableObject
             {
                 kvp.Value.setParameterByID(parameterData.ID(), occlusion);
             }
+            if (eventData.ParameterCache.TryGetValue("Walls", out parameterData))
+            {
+                instance.setParameterByID(parameterData.ID(), walls);
+                AudioDebug.Print("Successfully set walls for " + eventName);
+            }
         }
     }
     
