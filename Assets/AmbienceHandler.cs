@@ -69,12 +69,12 @@ public class AmbienceHandler : MonoBehaviour
       if (!AudioManager.IsValid) return;
       if (useMean)
       {
-         AudioManager.Instance.SetGlobalParameter("RoomSize", meanDistance * roomSizeMultiplier);
+         AudioManager.Instance.SetGlobalParameter("RoomSize", meanDistance * roomSizeMultiplier, false);
          currentRoomSize = meanDistance * roomSizeMultiplier;
       }
       else
       {
-         AudioManager.Instance.SetGlobalParameter("RoomSize", medianDistance * roomSizeMultiplier);
+         AudioManager.Instance.SetGlobalParameter("RoomSize", medianDistance * roomSizeMultiplier, false);
          currentRoomSize = medianDistance * roomSizeMultiplier;
       }
    }
