@@ -49,7 +49,7 @@ PrefabInstance:
       objectReference: {fileID: 6314557477079841104}
     - target: {fileID: 861456552232059256, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: bodyRotationSpeed
-      value: 0.01
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 861456552232059256, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: headRotationSpeed
@@ -107,6 +107,10 @@ PrefabInstance:
       propertyPath: head
       value: 
       objectReference: {fileID: 6314557477079841104}
+    - target: {fileID: 8156880709594735102, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: m_BaseOffset
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -121,11 +125,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalPosition.z
@@ -233,31 +237,21 @@ MonoBehaviour:
   vision: {fileID: 5052887151189221112}
   currentState:
     mad: {fileID: 0}
-    target: {x: 0, y: 0, z: 0}
+    minDistanceToCorner: 0
   idleState:
     mad: {fileID: 4804299107720638804}
-    target: {x: 0, y: 0, z: 0}
+    minDistanceToCorner: 0.1
     wanderRange: 5
-    turnSize: 5
-    dodgeRange: 5
-    dodgeRays: 1
-    rayAngle: 5
-    dodgeMask:
-      serializedVersion: 2
-      m_Bits: 5120
-    wanderWeight: 1
-    dodgeWeight: 1
-    containWeight: 1
     minWaitTime: 1
     maxWaitTime: 2
     minWalkTime: 2
     maxWalkTime: 3
   chasingState:
     mad: {fileID: 4804299107720638804}
-    target: {x: 0, y: 0, z: 0}
+    minDistanceToCorner: 0
   meleeState:
     mad: {fileID: 4804299107720638804}
-    target: {x: 0, y: 0, z: 0}
+    minDistanceToCorner: 0
     avatarIK: {fileID: 3950284540247109631}
     maxMeleeRange: 3
     minMeleeRange: 2
@@ -280,7 +274,6 @@ MonoBehaviour:
   checkSight: 0
   player: {fileID: 0}
   head: {fileID: 6314557477079841104}
-  maxSightDistance: 1000
   sightAngle: 360
   visionMask:
     serializedVersion: 2

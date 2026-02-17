@@ -66,7 +66,7 @@ public class MadAdventurer : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        if (currentState.path != null)
+        if (currentState.path != null && currentState.path.corners.Length > 0)
         {
             Vector3[] nodes = currentState.path.corners;
             for (int i = 0; i < nodes.Length - 1; i++)
