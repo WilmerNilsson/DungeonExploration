@@ -43,7 +43,11 @@ public class WorldFromDataCreator : MonoBehaviour
 
     }
 
+#if UNITY_INCLUDE_TESTS
+    public void InitializeWorld(SavefileData.WorldData worldData)
+#else
     private void InitializeWorld(SavefileData.WorldData worldData)
+#endif
     {
         InitializeContainers(worldData);
         InitializeEnemies(worldData);

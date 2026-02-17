@@ -5,7 +5,7 @@ public static class WorldDataCreator
     /// <summary>
     /// without settings
     /// </summary>
-    public static void CreateWorldData()
+    public static SavefileData.WorldData CreateWorldData()
     {
         DungeonSaveData dungeonSaveData = new();
 
@@ -16,6 +16,8 @@ public static class WorldDataCreator
         PlayerSaveData playerSaveData = GameObject.FindAnyObjectByType<SaveFileHelperPlayer>().GetData();
 
         SavefileData.WorldData worldData = new(playerSaveData, dungeonSaveData);
+
+        return worldData;
 
         static void AddEnemyData(DungeonSaveData dungeonSaveData)
         {
