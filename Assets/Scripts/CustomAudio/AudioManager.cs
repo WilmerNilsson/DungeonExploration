@@ -18,6 +18,7 @@ public class AudioManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
+            AudioDebug.Print("AudioManager has an instance, destroying this one");
             Destroy(this.gameObject);
         } else 
         {
@@ -142,17 +143,22 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void SetGlobalParameter(string paramName, float paramValue) //Om Global parameter finns sätts vi den till paramValue;
+    public void SetGlobalParameter(string paramName, float paramValue, bool printDebug = true) //Om Global parameter finns sätts vi den till paramValue;
     {
         if (GlobalParameterCache.TryGetValue(paramName, out var id))
         {
             RuntimeManager.StudioSystem.setParameterByID(id, paramValue);
-
-            AudioDebug.Print("Successfully set " + paramName + " to " + paramValue);
+            if (printDebug)
+            {
+                AudioDebug.Print("Successfully set " + paramName + " to " + paramValue);
+            }
         }
         else
         {
-           AudioDebug.Print("Failed to set " + paramName + " to " + paramValue, true);
+            if (printDebug)
+            {
+                AudioDebug.Print("Failed to set " + paramName + " to " + paramValue, true);
+            }
         }
     }
 
