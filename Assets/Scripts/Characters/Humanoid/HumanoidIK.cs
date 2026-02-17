@@ -13,7 +13,7 @@ public class HumanoidIK : MonoBehaviour
     [SerializeField] protected bool blocking = false;
     
     public Animator animator;
-    [SerializeField] protected Weapon weapon;
+    protected Weapon weapon;
     [SerializeField, Tooltip("The Shoulder node of the weapon arm")] protected Transform shoulderObj = null;
     [SerializeField, Tooltip("Where the avatar should look")] protected Transform lookObj = null;
     
@@ -49,8 +49,13 @@ public class HumanoidIK : MonoBehaviour
     
     protected float startTime = 0;
     protected float time = 0;
-    
-    
+
+
+    private void Start()
+    {
+        weapon = GetComponentInChildren<Weapon>();
+    }
+
     public enum AttackState
     {
         Start,
