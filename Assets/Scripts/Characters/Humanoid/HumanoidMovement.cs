@@ -5,6 +5,7 @@ using UnityEngine.Events;
 public class HumanoidMovement : MonoBehaviour
 {
     public UnityEvent<moveActions> OnMoveActionChange;
+    public UnityEvent OnJump;
     
     [SerializeField] HumanoidController controller;
     [SerializeField] CharacterController CC;
@@ -41,7 +42,7 @@ public class HumanoidMovement : MonoBehaviour
         Airborne
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         grounded = CC.isGrounded;
         rotatedVector = Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * moveVector;
@@ -50,12 +51,19 @@ public class HumanoidMovement : MonoBehaviour
 
         if (doJump)
         {
+            OnJump.Invoke();
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
             doJump = false;
         }
-
         
-        if (moveVector == Vector3.zero)
+        currentSpeed = moveSpeed;
+
+        if (!grounded) //TODO fix air movement, maybe save initial movement and edit it while in the air?
+        {
+            currentSpeed *= airMoveMod;
+            SetMoveAction(moveActions.Airborne);
+        }
+        else if (moveVector == Vector3.zero)
         {
             SetMoveAction(moveActions.None);
         }
@@ -74,17 +82,11 @@ public class HumanoidMovement : MonoBehaviour
             currentSpeed = moveSpeed;
             SetMoveAction(moveActions.Walking);
         }
-
-        if (!grounded) //TODO fix air movement, maybe save initial movement and edit it while in the air?
-        {
-            currentSpeed *= airMoveMod;
-            SetMoveAction(moveActions.Airborne);
-        }
         
-        playerVelocity.y += Physics.gravity.y * Time.deltaTime;
+        playerVelocity.y += Physics.gravity.y * Time.fixedDeltaTime;
         
         Vector3 finalMove = rotatedVector * currentSpeed + playerVelocity;
-        CC.Move(finalMove * Time.deltaTime);
+        CC.Move(finalMove * Time.fixedDeltaTime);
     }
 
     void SetMoveAction(moveActions newAction)
