@@ -47,6 +47,14 @@ PrefabInstance:
       propertyPath: headTransform
       value: 
       objectReference: {fileID: 6314557477079841104}
+    - target: {fileID: 861456552232059256, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: bodyRotationSpeed
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 861456552232059256, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: headRotationSpeed
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1818795128226548232, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_Name
       value: Crazed Adventurer
@@ -85,7 +93,7 @@ PrefabInstance:
       objectReference: {fileID: 5360940743188143127}
     - target: {fileID: 4698545371277439629, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: moveSpeed
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4698545371277439629, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: crouchSpeed
@@ -101,15 +109,15 @@ PrefabInstance:
       objectReference: {fileID: 6314557477079841104}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.65
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.65
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.65
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalPosition.x
@@ -117,11 +125,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.86
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalRotation.w
@@ -214,7 +222,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2061297438515249443}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ea107c8abef7ba94da20fef4aa14aa0d, type: 3}
   m_Name: 
@@ -222,17 +230,28 @@ MonoBehaviour:
   agent: {fileID: 8400783789577022165}
   controller: {fileID: 2156838083488555526}
   animator: {fileID: 5024339675474379466}
-  vision: {fileID: 0}
+  vision: {fileID: 5052887151189221112}
   currentState:
     mad: {fileID: 0}
     target: {x: 0, y: 0, z: 0}
   idleState:
     mad: {fileID: 4804299107720638804}
     target: {x: 0, y: 0, z: 0}
-    xWanderRange: 5
-    zWanderRange: 5
-    minWaitTime: 0
-    maxWaitTime: 1
+    wanderRange: 5
+    turnSize: 5
+    dodgeRange: 5
+    dodgeRays: 1
+    rayAngle: 5
+    dodgeMask:
+      serializedVersion: 2
+      m_Bits: 5120
+    wanderWeight: 1
+    dodgeWeight: 1
+    containWeight: 1
+    minWaitTime: 1
+    maxWaitTime: 2
+    minWalkTime: 2
+    maxWalkTime: 3
   chasingState:
     mad: {fileID: 4804299107720638804}
     target: {x: 0, y: 0, z: 0}
@@ -242,6 +261,7 @@ MonoBehaviour:
     avatarIK: {fileID: 3950284540247109631}
     maxMeleeRange: 3
     minMeleeRange: 2
+  player: {fileID: 0}
   target: {fileID: 0}
 --- !u!114 &5052887151189221112
 MonoBehaviour:
@@ -256,7 +276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 0
-  checkSound: 1
+  checkSound: 0
   checkSight: 0
   player: {fileID: 0}
   head: {fileID: 6314557477079841104}

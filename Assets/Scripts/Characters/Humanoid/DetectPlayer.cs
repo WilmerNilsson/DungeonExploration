@@ -8,9 +8,8 @@ public class DetectPlayer : MonoBehaviour
     [SerializeField] private bool checkSight;
     [SerializeField, Tooltip("Automatically detects player on Start")] Transform player;
     [SerializeField, Tooltip("Where to look/hear from")] Transform head;
-    
-    [Header("Vision")]
-    [SerializeField] private float maxSightDistance;
+
+    [Header("Vision")] 
     [SerializeField] private float sightAngle;
     [SerializeField] private LayerMask visionMask;
 
@@ -45,20 +44,14 @@ public class DetectPlayer : MonoBehaviour
         }
     }
 
-    private void Update()
+    public float SoundDetection(float soundRange) // returns the percentage of how well the enemy can "hear" the player
     {
-        if (checkSound) Debug.Log(SoundDetection());
-        if (checkSight) Debug.Log(SightDetection());
-    }
-
-    private float SoundDetection() // returns the percentage of how well the enemy can "hear" the player
-    {
-        if(Vector3.Distance(player.position, transform.position) > maxSightDistance) return 0; // return if the player is too far away
+        if(Vector3.Distance(player.position, transform.position) > soundRange) return 0; // return if the player is too far away
         occlusionChecker.CheckOcclusion(head.gameObject,player.gameObject,out float occlusion); // run sound occlusion in reverse
         return 1-occlusion;
     }
 
-    private float SightDetection() // returns what percentage of the player that can be seen based on the PlayerVisionData
+    public float SightDetection(float maxSightDistance) // returns what percentage of the player that can be seen based on the PlayerVisionData
     {
         if (Vector3.Distance(head.position, player.position) > maxSightDistance) return 0; //return if player too far away
         if (Vector3.Angle(head.forward, player.position) > sightAngle/2) return 0; // return if player outside line of sight
