@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6517206634113031847}
   - component: {fileID: 61649496702353971}
   - component: {fileID: 808863321973245351}
-  - component: {fileID: 1241207898650518369}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -62,7 +61,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3ca42f564943b546802d1481427811e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  occlusionChecker: {fileID: 1241207898650518369}
+  occlusionChecker:
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 1280
+    spread: 1
+    bounceValue: 0.5
+    linesOnEitherSide: 2
+    allowBounce: 1
+    drawDebug: 1
   eventLists:
   - {fileID: 11400000, guid: 371522e06991fd44abf60e3ceba8a624, type: 2}
   - {fileID: 11400000, guid: 9a3242fb20bb84949ba1d41d858e53f1, type: 2}
@@ -82,23 +89,3 @@ MonoBehaviour:
     loadSamples: 1
   debug: 1
   showOnlyWarnings: 1
---- !u!114 &1241207898650518369
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9088536847596784133}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1db11237fc4026e47b77558bd2b0fbd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 1280
-  spread: 1.5
-  bounceValue: 0.5
-  linesOnEitherSide: 2
-  allowBounce: 1
-  drawDebug: 1

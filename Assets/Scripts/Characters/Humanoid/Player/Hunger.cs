@@ -8,8 +8,8 @@ public class Hunger : MonoBehaviour
     [SerializeField] private PlayerHungerSO playerHungerSO;
     [SerializeField] private Health health;
     
-    [Tooltip("The amount of time between hunger ticks in seconds")]
-    [SerializeField] private float hungerCooldown = 10;
+    //[Tooltip("The amount of time between hunger ticks in seconds")]
+    //[SerializeField] private float hungerCooldown = 10;
 
     public UnityEvent OnHunger;
     public UnityEvent OnEat;
@@ -18,7 +18,7 @@ public class Hunger : MonoBehaviour
     
     private IEnumerator HungerCoroutine()
     {
-        yield return new WaitForSeconds(hungerCooldown);
+        yield return new WaitForSeconds(playerHungerSO.hungerCooldown);
         LoseHunger(1);
     }
 
@@ -31,6 +31,7 @@ public class Hunger : MonoBehaviour
     {
         instance = this;
         StartCoroutine(HungerCoroutine());
+        ResetHunger();
     }
 
     public void LoseHunger(int amount)
