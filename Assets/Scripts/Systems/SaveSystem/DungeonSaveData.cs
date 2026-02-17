@@ -60,13 +60,13 @@ public class DungeonSaveData
     {
         public Vector3 Position;
         public Quaternion Rotation;
-        public string ID;
+        public string ItemID;
 
         public DroppedItem(Vector3 pos, Quaternion rotation, string ID)
         {
             Position = pos;
             Rotation = rotation;
-            this.ID = ID;
+            this.ItemID = ID;
         }
     }
 }

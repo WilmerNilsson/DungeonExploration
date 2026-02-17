@@ -5,7 +5,7 @@ public class ItemPickup : MonoBehaviour
     [SerializeField] private string prefabID;
     [SerializeField] private ItemLibrarySO itemLibrary;
 
-    public string PrefabID
+    public string ItemID
     {
         get { return prefabID; }
     }

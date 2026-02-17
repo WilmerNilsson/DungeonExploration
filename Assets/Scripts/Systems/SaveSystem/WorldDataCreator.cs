@@ -13,7 +13,7 @@ public static class WorldDataCreator
         AddDroppedItemData(dungeonSaveData);
         AddEnemyData(dungeonSaveData);
 
-        PlayerSaveData playerSaveData = GameObject.FindAnyObjectByType<SaveFileHelperPlayer>().GetData();
+        PlayerSaveData playerSaveData = GameObject.FindAnyObjectByType<SaveFileHelperPlayer>(FindObjectsInactive.Exclude).GetData();
 
         SavefileData.WorldData worldData = new(playerSaveData, dungeonSaveData);
 
@@ -37,7 +37,7 @@ public static class WorldDataCreator
             {
                 DungeonSaveData.DroppedItem data = new();
 
-                data.ID = pickup.PrefabID;
+                data.ItemID = pickup.ItemID;
                 data.Rotation = pickup.transform.rotation;
                 data.Position = pickup.transform.position;
 

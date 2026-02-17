@@ -18,6 +18,9 @@ public class InventorySaveData
         return cloneData;
     }
 
+    //if we want to add a check for equality like: bool Equal(InventorySaveData a, InventorySaveData b)
+    //check tests, since it is already done.
+
     [Serializable]
     public struct InventoryItem
     {

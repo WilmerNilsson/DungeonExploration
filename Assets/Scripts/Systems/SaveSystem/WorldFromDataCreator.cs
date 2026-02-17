@@ -30,7 +30,7 @@ public class WorldFromDataCreator : MonoBehaviour
                 CreateNewWorld();
             }
         }
-#if DEBUG
+#if DEBUG && !UNITY_INCLUDE_TESTS
         else
         {
             Debug.LogError("World from data creator tried to consume save file data, but it failed", this);
@@ -74,14 +74,14 @@ public class WorldFromDataCreator : MonoBehaviour
         {
             foreach(DungeonSaveData.DroppedItem item in worldData.DungeonSaveData.DroppedItems)
             {
-                if(itemLibrary.TryGetItemPairByName(item.ID, out ItemPairing? pair))
+                if(itemLibrary.TryGetItemPairByName(item.ItemID, out ItemPairing? pair))
                 {
                     Instantiate(pair.WorldPrefab, item.Position, item.Rotation);
                 }
 #if DEBUG
                 else
                 {
-                    Debug.LogError("could not get item pair from save file ID: " + item.ID, this);
+                    Debug.LogError("could not get item pair from save file ID: " + item.ItemID, this);
                     continue;
                 }
 #endif
