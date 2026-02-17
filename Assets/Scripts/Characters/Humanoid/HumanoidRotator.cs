@@ -5,6 +5,9 @@ public class HumanoidRotator : MonoBehaviour
     [SerializeField] Transform bodyTransform;
     [SerializeField] Transform headTransform;
     
+    [SerializeField, Range(0,1)] float bodyRotationSpeed = .5f;
+    [SerializeField, Range(0,1)] float headRotationSpeed = .5f;
+    
     private Vector3 rotationVector;
 
     private Quaternion targetHeadQuaternion;
@@ -18,8 +21,8 @@ public class HumanoidRotator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        headTransform.rotation = Quaternion.Lerp(headTransform.rotation, targetHeadQuaternion, 0.5f);
-        bodyTransform.rotation = Quaternion.Lerp(bodyTransform.rotation, targetBodyQuaternion, 0.5f);
+        headTransform.rotation = Quaternion.Lerp(headTransform.rotation, targetHeadQuaternion, headRotationSpeed);
+        bodyTransform.rotation = Quaternion.Lerp(bodyTransform.rotation, targetBodyQuaternion, bodyRotationSpeed);
     }
     
     public void Rotate(Quaternion rotationQuaternion)
