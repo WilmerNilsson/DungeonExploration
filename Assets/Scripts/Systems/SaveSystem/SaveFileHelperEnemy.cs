@@ -23,8 +23,7 @@ public class SaveFileHelperEnemy : MonoBehaviour
         spawnTransform.position = data.Position;
         spawnTransform.rotation = data.Rotation;
 
-        //should prob be a set health
-        health.ChangeHealth(data.CurrentHP - health.MaxHealth);
+        health.SetCurrentHealth(data.CurrentHP);
     }
 
     public DungeonSaveData.Enemy GetData()

@@ -49,6 +49,23 @@ public class WorldFromDataCreator : MonoBehaviour
         InitializeEnemies(worldData);
         InitializeDroppedItems(worldData);
 
+        InitializePlayer(worldData);
+
+        void InitializePlayer(SavefileData.WorldData worldData)
+        {
+            SaveFileHelperPlayer helper = FindFirstObjectByType<SaveFileHelperPlayer>();
+
+#if DEBUG
+            if(helper == null)
+            {
+                Debug.LogError("could not find player save file helper in scene", this);
+                return;
+            }
+#endif
+
+            helper.Initialize(worldData.PlayerSaveData);
+        }
+
         void InitializeDroppedItems(SavefileData.WorldData worldData)
         {
             foreach(DungeonSaveData.DroppedItem item in worldData.DungeonSaveData.DroppedItems)

@@ -94,6 +94,35 @@ public class Health : MonoBehaviour
     }
 
     /// <summary>
+    /// fails and returns false if dead already.
+    /// </summary>
+    public bool SetCurrentHealth(int newValue)
+    {
+        return ChangeHealth(newValue - CurrentHealth);
+    }
+
+    /// <summary>
+    /// fails and returns false if dead already.
+    /// </summary>
+    public bool SetMaxHealth(int newValue)
+    {
+        if(Dead) return false;
+        if (newValue == MaxHealth) return true;
+
+        MaxHealth = newValue;
+
+        if(CurrentHealth > MaxHealth)
+        {
+            return SetCurrentHealth(maxHealth);
+        }
+        else
+        {
+            OnChangeHealths?.Invoke(new HealthData(CurrentHealth, MaxHealth));
+            return true;
+        }
+    }
+
+    /// <summary>
     /// positive number heals, negative damages. <br/>
     /// fails and returns false if dead already.
     /// </summary>
@@ -112,7 +141,7 @@ public class Health : MonoBehaviour
             CurrentHealth = MaxHealth;
         }
 
-        OnChangeHealths?.Invoke(new HealthData(currentHealth, MaxHealth));
+        OnChangeHealths?.Invoke(new HealthData(CurrentHealth, MaxHealth));
 
         return true;
     }
