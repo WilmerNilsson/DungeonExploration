@@ -10,7 +10,9 @@ public class AudioManager : MonoBehaviour
 {
     #region Initialization
 
-    public OcclusionChecker occlusionChecker = new OcclusionChecker();
+    public OcclusionChecker occlusionChecker = new();
+    
+    public WallChecker wallChecker = new();
     
     public static AudioManager Instance;
     
