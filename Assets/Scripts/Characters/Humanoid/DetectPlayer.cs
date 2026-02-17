@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class DetectPlayer : MonoBehaviour
 {
-    [SerializeField] private bool debug = false;
-    [SerializeField] private bool checkSound;
-    [SerializeField] private bool checkSight;
     [SerializeField, Tooltip("Automatically detects player on Start")] Transform player;
     [SerializeField, Tooltip("Where to look/hear from")] Transform head;
 
@@ -17,7 +14,6 @@ public class DetectPlayer : MonoBehaviour
     private RaycastHit[] sightHits;
     
     [Header("Sound")]
-    [SerializeField] private float maxHearingDistance;
     [SerializeField] private OcclusionChecker occlusionChecker = new OcclusionChecker();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

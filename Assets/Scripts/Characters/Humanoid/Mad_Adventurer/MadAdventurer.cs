@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 public class MadAdventurer : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class MadAdventurer : MonoBehaviour
     
     [HideInInspector] public Transform player;
     [HideInInspector] public Transform target;
+
+    public UnityEvent<MadState> onMadState;
 
     private void OnValidate()
     {
@@ -60,6 +63,7 @@ public class MadAdventurer : MonoBehaviour
     {
         currentState.Exit();
         currentState = targetState;
+        onMadState.Invoke(currentState);
         currentState.Enter();
     }
 

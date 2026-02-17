@@ -10,36 +10,25 @@ public class MadMelee : MadState
     private float distance;
     public override void Enter()
     {
-        base.Enter();
-        if (mad.agent.CalculatePath(mad.target.position, path))
-        {
-            target = path.corners[1];
-        }
+        target = mad.player.position;
     }
     
     public override void Update()
     {
-        if (mad.animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-        {
-            if (mad.agent.CalculatePath(mad.target.position, path))
-            {
-                target = path.corners[1];
-            }
-            mad.controller.Rotate(Quaternion.LookRotation((target-mad.transform.position)+Vector3.up));
-        }
+        target = mad.player.position;
+        mad.controller.Rotate(Quaternion.LookRotation((target-mad.transform.position)+Vector3.up));
         
-        distance = Vector3.Distance(mad.transform.position, mad.target.position);
+        distance = Vector3.Distance(mad.transform.position, mad.player.position);
         
         if (distance > maxMeleeRange)
         {
             mad.Transit(mad.chasingState);
         }
-        else if (distance > minMeleeRange)
+        else if (distance > minMeleeRange) // just smack :)
         {
-            Stop();
-            //mad.controller.Attack();
             avatarIK.Attack();
-            // just smack :)
         }
+        
+        Stop();
     }
 }

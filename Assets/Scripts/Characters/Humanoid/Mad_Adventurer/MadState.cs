@@ -7,9 +7,9 @@ using UnityEngine.AI;
 public class MadState
 {
     [HideInInspector] public MadAdventurer mad = null;
-    [SerializeField] protected float minDistanceToCorner;
+    [SerializeField] protected float minDistanceToCorner = 0.1f;
     public NavMeshPath path;
-    protected Vector3 target;
+    [SerializeField] protected Vector3 target;
     protected Vector2 position;
     protected int pathIndex;
 
@@ -47,8 +47,15 @@ public class MadState
         mad.controller.Move(Vector3.forward);
     }
     
+    protected void FindPath(Vector3 pos)
+    {
+        pathIndex = 1;
+        mad.agent.CalculatePath(pos, path);
+    }
+    
     protected Vector3 GetNextCorner()
     {
+        if (path.status == NavMeshPathStatus.PathInvalid) return target;
         Vector2 corner = new Vector2(path.corners[pathIndex].x, path.corners[pathIndex].z);
         
         if (Vector2.Distance(position, corner) <= minDistanceToCorner)

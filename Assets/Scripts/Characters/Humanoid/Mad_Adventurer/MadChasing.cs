@@ -3,14 +3,12 @@ using UnityEngine;
 [System.Serializable]
 public class MadChasing : MadState
 {
+    [SerializeField] private float minDistanceToPlayer;
     public override void Enter()
     {
-        base.Enter();
         mad.controller.isSprinting = true;
-        if (mad.agent.CalculatePath(mad.target.position, path))
-        {
-            target = path.corners[1];
-        }
+        FindPath(mad.player.position);
+        target = GetNextCorner();
     }
 
     public override void Exit()
@@ -21,17 +19,15 @@ public class MadChasing : MadState
 
     public override void Update()
     {
-        if (Vector3.Distance(target, mad.transform.position) <= mad.meleeState.maxMeleeRange)
+        if (Vector3.Distance(mad.player.position, mad.transform.position) <= minDistanceToPlayer)
         {
             mad.Transit(mad.meleeState);
         }
         else
         {
-            if (mad.agent.CalculatePath(mad.target.position, path))
-            {
-                target = path.corners[1];
-            }
-            base.Update();
+            FindPath(mad.player.position);
+            target = GetNextCorner();
+            Move();
         }
         
     }

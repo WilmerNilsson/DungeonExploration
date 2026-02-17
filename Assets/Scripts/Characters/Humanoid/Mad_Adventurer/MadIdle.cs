@@ -16,6 +16,12 @@ public class MadIdle : MadState
     private float walkTime;
     private bool walking;
 
+    [Header("Player detection")] 
+    [SerializeField] private float maxSightRange;
+    [SerializeField] private float maxSoundRange;
+    [SerializeField] private float sightThreshold;
+    [SerializeField] private float soundThreshold;
+
     public override void OnValidate(MadAdventurer madAdventurer)
     {
         base.OnValidate(madAdventurer);
@@ -26,7 +32,6 @@ public class MadIdle : MadState
     public override void Enter()
     {
         FindPath(GetRandomPosition());
-        pathIndex = 0;
         target = GetNextCorner();
         Reset();
         CombatChecker.RemoveFromChaseList(mad.gameObject);
@@ -41,10 +46,11 @@ public class MadIdle : MadState
     {
         position = new Vector2(mad.transform.position.x, mad.transform.position.z);
         
+        if(DetectPlayer())mad.Transit(mad.chasingState);
+        
         if (path.status == NavMeshPathStatus.PathInvalid || Vector2.Distance(position, new Vector2(path.corners[^1].x, path.corners[^1].z)) < minDistanceToCorner)
         {
             FindPath(GetRandomPosition());
-            pathIndex = 0;
         }
         
         if (walking)
@@ -74,9 +80,9 @@ public class MadIdle : MadState
         }
     }
 
-    private void FindPath(Vector3 pos)
+    private bool DetectPlayer()
     {
-        mad.agent.CalculatePath(pos, path);
+        return mad.vision.SightDetection(maxSightRange) > sightThreshold || mad.vision.SoundDetection(maxSoundRange) > soundThreshold;
     }
 
     private void Reset()
