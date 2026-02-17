@@ -7,7 +7,6 @@ public class SaveFileHelperContainer : MonoBehaviour
     [SerializeField] private InventoryGrid grid;
     [SerializeField] private Transform spawnTransform;
     [SerializeField] private string prefabID;
-    [SerializeField] private ContainerDLibrarySO containerLibrary;
     [SerializeField] private ItemLibrarySO itemLibrary;
 
 #if UNITY_EDITOR
@@ -15,18 +14,13 @@ public class SaveFileHelperContainer : MonoBehaviour
     {
         if (grid == null) Debug.LogWarning("Helper grid is null", this);
         if (spawnTransform == null) Debug.LogWarning("Helper spawn tranform is null", this);
-
-        bool nameEmpty = prefabID == null || prefabID == string.Empty;
-
-        if (nameEmpty) Debug.LogWarning("Helper prefab ID is empty", this);
-        if (containerLibrary == null) Debug.LogWarning("Helper library is null", this);
-        else if (!nameEmpty && !containerLibrary.TryGetPrefabByName(prefabID, out _)) Debug.LogWarning("library has no id of " + prefabID, this);
+        if (prefabID == null || prefabID == string.Empty) Debug.LogWarning("Helper prefab ID is empty", this);
     }
 #endif
 
     public void Intialize(DungeonSaveData.Container data)
     {
-        spawnTransform.position = data.Pos;
+        spawnTransform.position = data.Position;
         spawnTransform.rotation = data.Rotation;
 
         foreach(var item in data.Inventory.Items)
@@ -47,10 +41,7 @@ public class SaveFileHelperContainer : MonoBehaviour
             itemLibrary.TryGetItemPairByName(item.Name, out var pair);
             grid.TryInstantiateItemInSlot(item.Slot, pair.UIPrefab);
 #endif
-
-
         }
-
     }
 
     public DungeonSaveData.Container GetData()

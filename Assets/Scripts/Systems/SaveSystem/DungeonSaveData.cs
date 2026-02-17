@@ -21,14 +21,14 @@ public class DungeonSaveData
 
     public struct Enemy
     {
-        public Vector3 Pos;
+        public Vector3 Position;
         public Quaternion Rotation;
         public int CurrentHP;
         public string PrefabID;
 
         public Enemy(Vector3 pos, Quaternion rotation, int currentHP, string prefabID)
         {
-            Pos = pos;
+            Position = pos;
             Rotation = rotation;
             CurrentHP = currentHP;
             PrefabID = prefabID;
@@ -37,14 +37,14 @@ public class DungeonSaveData
 
     public class Container
     {
-        public Vector3 Pos;
+        public Vector3 Position;
         public Quaternion Rotation;
         public InventorySaveData Inventory;
         public string PrefabID;
 
         public Container(Vector3 pos, Quaternion rotation, InventorySaveData inventory, string prefabID)
         {
-            Pos = pos;
+            Position = pos;
             Rotation = rotation;
             Inventory = inventory;
             PrefabID = prefabID;
@@ -52,19 +52,21 @@ public class DungeonSaveData
 
         public Container Clone()
         {
-            return new Container(Pos, Rotation, Inventory.Clone(), PrefabID);
+            return new Container(Position, Rotation, Inventory.Clone(), PrefabID);
         }
     }
 
     public struct DroppedItem
     {
-        public Vector3 Pos;
-        public string Name;
+        public Vector3 Position;
+        public Quaternion Rotation;
+        public string ID;
 
-        public DroppedItem(Vector3 pos, string name)
+        public DroppedItem(Vector3 pos, Quaternion rotation, string ID)
         {
-            Pos = pos;
-            Name = name;
+            Position = pos;
+            Rotation = rotation;
+            this.ID = ID;
         }
     }
 }

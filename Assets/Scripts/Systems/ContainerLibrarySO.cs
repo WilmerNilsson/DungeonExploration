@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ContainerIDLibrarySO", menuName = "Scriptable Objects/ContainerIDLibrarySO")]
-public class ContainerDLibrarySO : ScriptableObject
+public class ContainerLibrarySO : ScriptableObject
 {
     [SerializeField] private Pair[] Containers;
 

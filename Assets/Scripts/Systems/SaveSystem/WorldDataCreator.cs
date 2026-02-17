@@ -35,8 +35,9 @@ public static class WorldDataCreator
             {
                 DungeonSaveData.DroppedItem data = new();
 
-                data.Name = pickup.PrefabID;
-                data.Pos = pickup.transform.position;
+                data.ID = pickup.PrefabID;
+                data.Rotation = pickup.transform.rotation;
+                data.Position = pickup.transform.position;
 
                 dungeonSaveData.DroppedItems.Add(data);
             }

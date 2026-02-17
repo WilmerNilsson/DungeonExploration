@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "EnemyIDLibrarySO", menuName = "Scriptable Objects/EnemyIDLibrarySO")]
-public class EnemyIDLibrarySO : ScriptableObject
+public class EnemyLibrarySO : ScriptableObject
 {
     [SerializeField] private Pair[] Enemies;
 

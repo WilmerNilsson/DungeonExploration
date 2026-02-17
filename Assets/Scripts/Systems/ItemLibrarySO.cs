@@ -25,6 +25,7 @@ public class ItemLibrarySO : ScriptableObject
             {
                 Debug.LogWarning($"pair index {i} UI prefab has no SimpleItem Script", this);
             }
+
             if (pair.WorldPrefab == null)
             {
                 Debug.LogWarning($"pair index {i} lacks World prefab", this);
