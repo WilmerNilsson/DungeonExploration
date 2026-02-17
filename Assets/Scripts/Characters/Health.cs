@@ -70,7 +70,7 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
-        ChangeHealth(maxHealth - currentHealth);
+        ChangeHealth(MaxHealth - CurrentHealth);
 
         if (!(playerHealth == null))
         {
@@ -112,7 +112,7 @@ public class Health : MonoBehaviour
             CurrentHealth = MaxHealth;
         }
 
-        OnChangeHealths?.Invoke(new HealthData(currentHealth, MaxHealth));
+        OnChangeHealths?.Invoke(new HealthData(CurrentHealth, MaxHealth));
 
         return true;
     }
