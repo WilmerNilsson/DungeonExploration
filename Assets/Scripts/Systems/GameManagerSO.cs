@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+#nullable enable
 
 [CreateAssetMenu(fileName = "GameManagerSO", menuName = "Scriptable Objects/GameManagerSO")]
 public class GameManagerSO : ScriptableObject
@@ -14,8 +17,9 @@ public class GameManagerSO : ScriptableObject
     private const string MusicSoundName = "Music";
 
     public SaveFileManager SavefileManager = new();
+    private SavefileData? tempSavefile;
 
-    private static GameManagerSO instance;
+    private static GameManagerSO? instance;
     private bool hasLoadedSettings = false;
 
     private int thingsFreezingGame = 0;
@@ -282,6 +286,13 @@ public class GameManagerSO : ScriptableObject
     #endregion
 
     #region  SavefilesStuff
+
+    public bool TryConsumeSavefileData([NotNullWhen(true)] out SavefileData? data)
+    {
+        data = tempSavefile;
+        tempSavefile = null;
+        return data != null;
+    }
 
     /// <summary>
     /// should only be called from SaveFileManager
