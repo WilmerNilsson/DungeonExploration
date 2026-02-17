@@ -113,6 +113,7 @@ public class HumanoidIK : MonoBehaviour
     protected virtual void Reset()
     {
         attackState = AttackState.Start;
+        blockState = BlockState.Start;
         startTime = 0;
         time = 0;
 

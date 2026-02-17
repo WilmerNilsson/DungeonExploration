@@ -8,6 +8,7 @@ public class MadMelee : MadState
     [SerializeField, Tooltip("minimum distance to target"), Min(0f)] private float minMeleeRange = 0.5f;
 
     private float distance;
+
     public override void Enter()
     {
         target = mad.player.position;
