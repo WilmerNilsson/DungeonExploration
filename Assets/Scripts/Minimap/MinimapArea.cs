@@ -33,11 +33,12 @@ public class MinimapArea : MonoBehaviour
     }
     private void Awake()
     {
-        ReturnDecendantOfParent(this.gameObject, children);
+        //ReturnDecendantOfParent(this.gameObject, children);
     }
 
     public void DrawArea()
     {
+        ReturnDecendantOfParent(gameObject, children);
         foreach (MinimapPart child in children)
         {
             _minimapSoTest.AddToLists(child.prefab, child.transform, child.GetRotatedBounds());
