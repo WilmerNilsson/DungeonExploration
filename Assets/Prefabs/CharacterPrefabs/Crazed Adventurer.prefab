@@ -85,7 +85,7 @@ PrefabInstance:
       objectReference: {fileID: 5360940743188143127}
     - target: {fileID: 4698545371277439629, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: moveSpeed
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4698545371277439629, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: crouchSpeed
@@ -93,7 +93,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4698545371277439629, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: sprintSpeed
-      value: 4
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 4698545371277439629, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: OnMoveActionChange.m_PersistentCalls.m_Calls.Array.size
@@ -282,6 +282,9 @@ MonoBehaviour:
   controller: {fileID: 2156838083488555526}
   animator: {fileID: 5024339675474379466}
   vision: {fileID: 7744887755716445363}
+  onMadState:
+    m_PersistentCalls:
+      m_Calls: []
   currentState:
     mad: {fileID: 0}
     minDistanceToCorner: 0.1
@@ -313,9 +316,6 @@ MonoBehaviour:
     minMeleeRange: 2
   player: {fileID: 0}
   target: {fileID: 0}
-  onMadState:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &7744887755716445363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -581,7 +581,6 @@ MonoBehaviour:
   attacking: 0
   blocking: 0
   animator: {fileID: 5024339675474379466}
-  weapon: {fileID: 1106739956473387767}
   shoulderObj: {fileID: 4468135245117505082}
   lookObj: {fileID: 0}
   x: 0
@@ -592,10 +591,10 @@ MonoBehaviour:
   swingEnd: {x: 0, y: 0, z: 0}
   swingAngle: 0
   curveHeight: 2.5
-  nodeTime: 0.5
+  nodeTime: 0.0000001
   chargeTime: 2
   resetTime: 1
-  staggerTime: 3
+  staggerTime: 4
   blockChargeTime: 0.5
   blockTime: 1
   blockResetTime: 0.5
@@ -712,17 +711,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
---- !u!114 &1106739956473387767 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
-  m_PrefabInstance: {fileID: 2235907987567818365}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5295796880859329548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51f7f14f987392348b08c80e3260f384, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &4770899257602191030 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6715476101138585803, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
