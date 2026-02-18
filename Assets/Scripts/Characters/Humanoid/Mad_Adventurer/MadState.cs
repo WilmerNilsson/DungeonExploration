@@ -63,7 +63,7 @@ public abstract class MadState
         
         if (Vector2.Distance(position, corner) <= minDistanceToCorner)
         {
-            if (pathIndex < path.corners.Length) pathIndex++;
+            if (pathIndex < path.corners.Length-1) pathIndex++;
         }
         
         return path.corners[pathIndex];
