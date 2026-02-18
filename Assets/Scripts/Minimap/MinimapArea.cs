@@ -44,4 +44,16 @@ public class MinimapArea : MonoBehaviour
             _minimapSoTest.AddToLists(child.prefab, child.transform, child.GetRotatedBounds());
         }
     }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            foreach (Collider collider in GetComponents<Collider>())
+            {
+                collider.enabled = false;
+            }
+            DrawArea();
+        }
+    }
 }

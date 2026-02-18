@@ -69,7 +69,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3424193982477835333, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_Center.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3424193982477835333, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_IsTrigger
@@ -123,17 +123,21 @@ PrefabInstance:
       propertyPath: head
       value: 
       objectReference: {fileID: 6314557477079841104}
+    - target: {fileID: 8156880709594735102, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: m_BaseOffset
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.65
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.65
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.65
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalPosition.x
@@ -233,6 +237,7 @@ PrefabInstance:
     - {fileID: 513255025225036784, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
     - {fileID: 7946524190593886917, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
     - {fileID: 1956750394884953965, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+    - {fileID: 102872593901033786, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
     m_RemovedGameObjects:
     - {fileID: 6451861325668462267, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
     - {fileID: 901651338984696099, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
@@ -247,7 +252,10 @@ PrefabInstance:
       insertIndex: 1
       addedObject: {fileID: 4804299107720638804}
     - targetCorrespondingSourceObject: {fileID: 1818795128226548232, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-      insertIndex: 7
+      insertIndex: 2
+      addedObject: {fileID: 7744887755716445363}
+    - targetCorrespondingSourceObject: {fileID: 1818795128226548232, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      insertIndex: 8
       addedObject: {fileID: 5360940743188143127}
     - targetCorrespondingSourceObject: {fileID: 1818795128226548232, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       insertIndex: -1
@@ -273,27 +281,68 @@ MonoBehaviour:
   agent: {fileID: 8400783789577022165}
   controller: {fileID: 2156838083488555526}
   animator: {fileID: 5024339675474379466}
-  vision: {fileID: 0}
+  vision: {fileID: 7744887755716445363}
   currentState:
     mad: {fileID: 0}
+    minDistanceToCorner: 0.1
     target: {x: 0, y: 0, z: 0}
   idleState:
     mad: {fileID: 4804299107720638804}
+    minDistanceToCorner: 0.1
     target: {x: 0, y: 0, z: 0}
-    xWanderRange: 5
-    zWanderRange: 5
-    minWaitTime: 0
-    maxWaitTime: 1
+    wanderRange: 7
+    minWaitTime: 1
+    maxWaitTime: 2
+    minWalkTime: 2
+    maxWalkTime: 3
+    maxSightRange: 10
+    maxSoundRange: 5
+    sightThreshold: 0
+    soundThreshold: 0
   chasingState:
     mad: {fileID: 4804299107720638804}
+    minDistanceToCorner: 0.1
     target: {x: 0, y: 0, z: 0}
+    minDistanceToPlayer: 3
   meleeState:
     mad: {fileID: 4804299107720638804}
+    minDistanceToCorner: 0.1
     target: {x: 0, y: 0, z: 0}
     avatarIK: {fileID: 3950284540247109631}
     maxMeleeRange: 3
     minMeleeRange: 2
+  player: {fileID: 0}
   target: {fileID: 0}
+  onMadState:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &7744887755716445363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061297438515249443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be2ae89949a241640b1ff0ecf5ed0729, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  head: {fileID: 6314557477079841104}
+  sightAngle: 90
+  visionMask:
+    serializedVersion: 2
+    m_Bits: 5376
+  occlusionChecker:
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 1280
+    spread: 1
+    bounceValue: 0.5
+    linesOnEitherSide: 0
+    allowBounce: 0
+    drawDebug: 0
 --- !u!143 &5360940743188143127
 CharacterController:
   m_ObjectHideFlags: 0
@@ -312,7 +361,7 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 4
+  m_Height: 2
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.5
@@ -508,6 +557,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e27947f372aebf4faecea3f063f6227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   onAttackStateChange:
     m_PersistentCalls:
       m_Calls:
