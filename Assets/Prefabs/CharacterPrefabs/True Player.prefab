@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7929286171431266012}
   - component: {fileID: 2291378432833029802}
-  - component: {fileID: 7127151928790750573}
+  - component: {fileID: 2406618670215298806}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -84,14 +84,20 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &7127151928790750573
-AudioListener:
+--- !u!114 &2406618670215298806
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 271289363439776972}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nonRigidbodyVelocity: 0
+  attenuationObject: {fileID: 0}
 --- !u!1 &822202894608450755
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,18 +213,6 @@ MonoBehaviour:
       - m_Target: {fileID: 8893892476905510790}
         m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
         m_MethodName: HandleMovementChange
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 5184059298476392953}
-        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
-        m_MethodName: 
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -780,7 +774,7 @@ MonoBehaviour:
   jumpPath: Player/Jump
   landPath: Player/Land
   hungerPath: Player/Hunger
-  weaponObject: {fileID: 0}
+  weaponObject: {fileID: 1266521669441595960}
   swingPath: Player/SwordSwing
   blockPath: Player/SwordBlock
   damagePath: Player/Take_Damage
@@ -800,7 +794,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   layerMask:
     serializedVersion: 2
-    m_Bits: 1280
+    m_Bits: 17664
   ambiencePath: Ambiance/Dungeon_Ambiance
   distances:
   - 0
@@ -828,6 +822,109 @@ MonoBehaviour:
   debug: 0
   roomSizeMultiplier: 1.165
   currentRoomSize: 0
+--- !u!1001 &21491868067463813
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4229444106205551951}
+    m_Modifications:
+    - target: {fileID: 3729396877774979792, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: m_Name
+      value: EmitOnStart
+      objectReference: {fileID: 0}
+    - target: {fileID: 5548138156277792010, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: instructions.Array.data[0].path
+      value: Ambiance/Torch
+      objectReference: {fileID: 0}
+    - target: {fileID: 5548138156277792010, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: instructions.Array.data[1].path
+      value: Ambiance/Torch
+      objectReference: {fileID: 0}
+    - target: {fileID: 5548138156277792010, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: instructions.Array.data[0].gameObj
+      value: 
+      objectReference: {fileID: 3714660512278118485}
+    - target: {fileID: 5548138156277792010, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: instructions.Array.data[1].gameObj
+      value: 
+      objectReference: {fileID: 3714660512278118485}
+    - target: {fileID: 7191505763866726232, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191505763866726232, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191505763866726232, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191505763866726232, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191505763866726232, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191505763866726232, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191505763866726232, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191505763866726232, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191505763866726232, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7191505763866726232, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8061342073860227278, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: instructions.Array.data[0].path
+      value: Ambiance/Torch
+      objectReference: {fileID: 0}
+    - target: {fileID: 8061342073860227278, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: instructions.Array.data[1].path
+      value: Ambiance/Torch
+      objectReference: {fileID: 0}
+    - target: {fileID: 8061342073860227278, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: instructions.Array.data[0].gameObj
+      value: 
+      objectReference: {fileID: 3714660512278118485}
+    - target: {fileID: 8061342073860227278, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: instructions.Array.data[1].gameObj
+      value: 
+      objectReference: {fileID: 3714660512278118485}
+    - target: {fileID: 8061342073860227278, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: instructions.Array.data[0].followObject
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+--- !u!1 &3714660512278118485 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3729396877774979792, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+  m_PrefabInstance: {fileID: 21491868067463813}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7170019635235638749 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7191505763866726232, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+  m_PrefabInstance: {fileID: 21491868067463813}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4561574992140784756
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -882,7 +979,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 432338180996008251, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7170019635235638749}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
 --- !u!4 &4229444106205551951 stripped
@@ -898,6 +998,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5946369356162777952}
     m_Modifications:
+    - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: onBlocked.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8893892476905510790}
+    - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: onBlocked.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayBlockSound
+      objectReference: {fileID: 0}
     - target: {fileID: 6231285627939046001, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
       propertyPath: m_Name
       value: Basic_Sword
@@ -947,6 +1055,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+--- !u!1 &1266521669441595960 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6231285627939046001, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+  m_PrefabInstance: {fileID: 5182077453462104137}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1934373091230019714 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6715476101138585803, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
@@ -1074,7 +1187,19 @@ MonoBehaviour:
   debug: 0
   onAttackStateChange:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8893892476905510790}
+        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
+        m_MethodName: HandleAttackStateChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onBlockStateChange:
     m_PersistentCalls:
       m_Calls: []
