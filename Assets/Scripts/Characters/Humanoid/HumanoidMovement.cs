@@ -72,7 +72,7 @@ public class HumanoidMovement : MonoBehaviour
             currentSpeed = crouchSpeed;
             SetMoveAction(moveActions.CrouchWalk);
         }
-        else if (controller.isSprinting)
+        else if (controller.isSprinting && Vector3.Dot(transform.forward, rotatedVector) >= 0)
         {
             currentSpeed = sprintSpeed;
             SetMoveAction(moveActions.Sprinting);

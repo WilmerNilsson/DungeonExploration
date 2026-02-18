@@ -69,6 +69,7 @@ public class DevConsoleGha : MonoBehaviour
             new DebugCommand("get_resolution", "shows resolution data", "get_resolution", GetResolutionCommand),
             new DebugCommand("teleport", "teleports the player", "teleport x y z", TeleportCommand),
             new DebugCommand("get_pos", "gets the player current possistion", "get_pos", GetPosCommand),
+            new DebugCommand("log_path", "gets the debug log path of the appöication", "log_path", LogPathCommand)
         };
     }
 
@@ -104,6 +105,12 @@ public class DevConsoleGha : MonoBehaviour
     public static DevConsoleGha GetInstance()
     {
         return Instance;
+    }
+
+    private void AddLine(string line)
+    {
+        _infoTextWindow.text += line;
+        _infoTextWindow.text += "\n";
     }
 
     #region command methods 
@@ -198,6 +205,11 @@ public class DevConsoleGha : MonoBehaviour
     private void GetResolutionCommand()
     {
         _infoTextWindow.text += $"{Screen.width} x {Screen.height}, {Screen.fullScreenMode}, {Screen.currentResolution.refreshRateRatio}\n\n"; 
+    }
+
+    private void LogPathCommand()
+    {
+        AddLine(Application.consoleLogPath);
     }
 
     private void TeleportCommand(string input)
