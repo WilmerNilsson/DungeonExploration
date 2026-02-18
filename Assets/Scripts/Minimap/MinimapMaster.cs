@@ -45,6 +45,14 @@ public class MinimapMaster : MonoBehaviour
         SpawnMinimap();
     }
 
+    public void AddToSO(List<MinimapPart> children)
+    {
+        foreach (MinimapPart child in children)
+        {
+            minimapSoTest.AddToLists(child.prefab, child.transform, child.GetRotatedBounds());
+        }
+    }
+
     public void SpawnMinimap()
     {
         for (int i = 0; i < spawnedObjects.Count; i++)
