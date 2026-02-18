@@ -115,7 +115,19 @@ MonoBehaviour:
         m_CallState: 2
   OnJump:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8893892476905510790}
+        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
+        m_MethodName: PlayJumpSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   controller: {fileID: 460348200128992605}
   CC: {fileID: 653897519548769769}
   moveSpeed: 3.5
@@ -571,7 +583,19 @@ MonoBehaviour:
   health: {fileID: 1354050652585229241}
   OnHunger:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8893892476905510790}
+        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
+        m_MethodName: OnHungerChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnEat:
     m_PersistentCalls:
       m_Calls: []
@@ -962,7 +986,7 @@ MonoBehaviour:
   voiceActorAmount: 0
   footstepsActivatedBy: 0
   walkPlayDelay: 0.5
-  sprintPlayDelay: 0.25
+  sprintPlayDelay: 0.31
   crouchWalkPlayDelay: 1
   footstepPaths:
     sneak: Player/Sneak
@@ -970,6 +994,8 @@ MonoBehaviour:
     sprint: Player/Run
   crouchPath: Player/Crouch
   jumpPath: Player/Jump
+  landPath: Player/Land
+  hungerPath: Player/Hunger
   weaponObject: {fileID: 443845897611985242}
   swingPath: Player/SwordSwing
   blockPath: Player/SwordBlock
