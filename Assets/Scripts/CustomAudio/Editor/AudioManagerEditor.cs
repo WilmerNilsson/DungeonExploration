@@ -11,6 +11,7 @@ public class AudioManagerEditor : Editor
     private SerializedProperty _showOnlyWarnings;
     private AudioManager _audioManager;
     private SerializedProperty _occlusionChecker;
+    private SerializedProperty _wallChecker;
     
     public void OnEnable()
     {
@@ -20,6 +21,7 @@ public class AudioManagerEditor : Editor
         _showOnlyWarnings = serializedObject.FindProperty("showOnlyWarnings");
         _audioManager = (AudioManager)target;
         _occlusionChecker = serializedObject.FindProperty("occlusionChecker");
+        _wallChecker = serializedObject.FindProperty("wallChecker");
     }
 
     public override void OnInspectorGUI()
@@ -40,6 +42,8 @@ public class AudioManagerEditor : Editor
         EditorGUILayout.Separator();
         
         EditorGUILayout.PropertyField(_occlusionChecker);
+        
+        EditorGUILayout.PropertyField(_wallChecker);
         
         EditorGUILayout.Separator();
         
