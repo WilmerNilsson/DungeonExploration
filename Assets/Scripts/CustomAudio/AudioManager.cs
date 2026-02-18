@@ -386,6 +386,7 @@ public class AudioManager : MonoBehaviour
     private void OnPauseEvent(bool paused) //Kallas av GameManagerSO och sätter parametern Paused till 
     {
         SetGlobalParameter("Paused", paused ? 1 : 0);
+        SetPause(paused);
     }
 
     private void FixedUpdate()
@@ -463,6 +464,23 @@ public class AudioManager : MonoBehaviour
         }
 
         AudioDebug.Print("Stopped all events");
+    }
+
+    public void SetPause(bool paused)
+    {
+        RuntimeManager.StudioSystem.getBank(MasterBankPath, out var masterBank);
+        masterBank.getBusList(out var busList);
+
+        foreach (var bus in busList)
+        {
+            bus.getPath(out var path);
+            if (path == "bus:/Sound")
+            {
+                bus.setPaused(paused);
+            }
+        }
+
+        AudioDebug.Print("Set pause to " + paused);
     }
 
     public void
