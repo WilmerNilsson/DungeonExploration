@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -55,7 +56,7 @@ public class MadAdventurer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        currentState.Update();
+        currentState?.Update();
     }
     
     public void Transit(MadState targetState)
@@ -68,6 +69,8 @@ public class MadAdventurer : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (currentState == null) return;
+
         Gizmos.color = Color.red;
         if (currentState.path != null && currentState.path.corners.Length > 0)
         {

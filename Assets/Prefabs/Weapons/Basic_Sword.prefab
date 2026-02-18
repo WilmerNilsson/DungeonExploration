@@ -9,6 +9,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: b47b7c880dc2fed4da98aaa42ad43889, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.015
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b47b7c880dc2fed4da98aaa42ad43889, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.015
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b47b7c880dc2fed4da98aaa42ad43889, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.015
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b47b7c880dc2fed4da98aaa42ad43889, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.414421
       objectReference: {fileID: 0}
@@ -47,6 +59,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: b47b7c880dc2fed4da98aaa42ad43889, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b47b7c880dc2fed4da98aaa42ad43889, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: b47b7c880dc2fed4da98aaa42ad43889, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -91,10 +107,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51f7f14f987392348b08c80e3260f384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  body: {fileID: 5448549735390694311}
   damage: 1
   durability: 10
   unbreakable: 0
+  dealDamage: 1
+  unblockable: 0
+  onDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  onBlocked:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!136 &5448549735390694311
 CapsuleCollider:
   m_ObjectHideFlags: 0
