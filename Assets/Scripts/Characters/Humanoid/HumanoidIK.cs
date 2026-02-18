@@ -4,6 +4,7 @@ using UnityEngine.Events;
 
 public class HumanoidIK : MonoBehaviour
 {
+    [SerializeField] protected bool debug = false;
     public UnityEvent<AttackState> onAttackStateChange;
     public UnityEvent<BlockState> onBlockStateChange;
     [SerializeField] protected AttackState attackState = AttackState.Start;

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -21,7 +22,12 @@ public class MadAdventurer : MonoBehaviour
     
     [HideInInspector] public Transform player;
     [HideInInspector] public Transform target;
+<<<<<<< HEAD
     
+=======
+
+#if DEBUG
+>>>>>>> NewNewMain
     private void OnValidate()
     {
         idleState.OnValidate(this);
@@ -29,6 +35,7 @@ public class MadAdventurer : MonoBehaviour
         meleeState.OnValidate(this);
         searchingState.OnValidate(this);
     }
+#endif
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -44,18 +51,32 @@ public class MadAdventurer : MonoBehaviour
             }
         }
 
+<<<<<<< HEAD
+=======
+        idleState.Intialize(this);
+        chasingState.Intialize(this);
+        meleeState.Intialize(this);
+        searchingState.Intialize(this);
+
+>>>>>>> NewNewMain
         idleState.Start();
         chasingState.Start();
         meleeState.Start();
         searchingState.Start();
         currentState = idleState;
         currentState.Enter();
+
+        //agent
     }
 
     // Update is called once per frame
     void Update()
     {
+<<<<<<< HEAD
         currentState.Update();
+=======
+        currentState?.Update();
+>>>>>>> NewNewMain
     }
     
     public void Transit(MadState targetState)
@@ -68,6 +89,8 @@ public class MadAdventurer : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (currentState == null) return;
+
         Gizmos.color = Color.red;
         if (currentState.path != null && currentState.path.corners.Length > 0)
         {

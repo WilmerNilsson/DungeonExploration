@@ -6,15 +6,6 @@ public class MinimapArea : MonoBehaviour
 {
     private List<MinimapPart> children = new List<MinimapPart>();
     [Tooltip("The scriptable object belonging to this level")]
-    [SerializeField] private MinimapSO_test _minimapSoTest;
-
-    private void OnValidate()
-    {
-        if (_minimapSoTest == null)
-        {
-            Debug.LogWarning("No minimap scriptable object found", this);
-        }
-    }
 
 
     public void ReturnDecendantOfParent(GameObject parent, List<MinimapPart> children)
@@ -39,9 +30,22 @@ public class MinimapArea : MonoBehaviour
     public void DrawArea()
     {
         ReturnDecendantOfParent(gameObject, children);
+<<<<<<< HEAD
         foreach (MinimapPart child in children)
+=======
+        MinimapMaster.Instance.AddToSO(children);
+    }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+>>>>>>> NewNewMain
         {
-            _minimapSoTest.AddToLists(child.prefab, child.transform, child.GetRotatedBounds());
+            foreach (Collider collider in GetComponents<Collider>())
+            {
+                collider.enabled = false;
+            }
+            DrawArea();
         }
     }
     
