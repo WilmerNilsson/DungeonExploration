@@ -359,9 +359,6 @@ public class EventList : ScriptableObject
         }
     }
 
-    private float _occlusion;
-    private int _walls;
-    
     public void CheckOcclusions()
     {
         if (!AudioManager.Listener) return;
@@ -369,25 +366,11 @@ public class EventList : ScriptableObject
         {
             if (!InstanceToEventData.TryGetValue(kvp.Value, out var eventData)) continue;
             if (!eventData.isOcclusion) continue;
-<<<<<<< HEAD
             AudioManager.Instance.occlusionChecker.CheckOcclusion(kvp.Key, AudioManager.Listener,out var occlusion);
             AudioManager.Instance.wallChecker.CheckWalls(kvp.Key, AudioManager.Listener, out int walls);
             if (eventData.ParameterCache.TryGetValue("Occluded", out var parameterData))
-=======
-            if (Vector3.Distance(kvp.Key.transform.position, AudioManager.Listener.transform.position) <
-                eventData.maxDistance + 1) //gör inte raycast om distance är för långt, vi lägger till +1 på maxDistance så värden hinner sättas innan ljudet börjar bli audible
->>>>>>> NewNewMain
             {
-                AudioManager.Instance.occlusionChecker.CheckOcclusion(kvp.Key, AudioManager.Listener,out _occlusion);
-                AudioManager.Instance.wallChecker.CheckWalls(kvp.Key, AudioManager.Listener, out _walls);
-                if (eventData.ParameterCache.TryGetValue("Occluded", out var parameterData))
-                {
-                    kvp.Value.setParameterByID(parameterData.ID(), _occlusion);
-                }
-                if (eventData.ParameterCache.TryGetValue("Walls", out parameterData))
-                {
-                    kvp.Value.setParameterByID(parameterData.ID(), _walls);
-                }
+                kvp.Value.setParameterByID(parameterData.ID(), occlusion);
             }
             if (eventData.ParameterCache.TryGetValue("Walls", out parameterData))
             {
@@ -437,27 +420,12 @@ public class EventList : ScriptableObject
 
                 if (eventData.isOcclusion)
                 {
-<<<<<<< HEAD
                     AudioManager.Instance.occlusionChecker.CheckOcclusion(gameObject,AudioManager.Listener, out var occlusion);
                     AudioManager.Instance.wallChecker.CheckWalls(gameObject,AudioManager.Listener, out var walls);
                     if (eventData.ParameterCache.TryGetValue("Occlusion", out var parameterData))
-=======
-                    if (Vector3.Distance(gameObject.transform.position, AudioManager.Listener.transform.position) <
-                        eventData.maxDistance + 1)
->>>>>>> NewNewMain
                     {
-                        AudioManager.Instance.occlusionChecker.CheckOcclusion(gameObject,AudioManager.Listener, out var occlusion);
-                        AudioManager.Instance.wallChecker.CheckWalls(gameObject,AudioManager.Listener, out var walls);
-                        if (eventData.ParameterCache.TryGetValue("Occlusion", out var parameterData))
-                        {
-                            instance.setParameterByID(parameterData.ID(), occlusion);
-                            AudioDebug.Print("Successfully set occlusion for " + eventName);
-                        }
-                        if (eventData.ParameterCache.TryGetValue("Walls", out parameterData))
-                        {
-                            instance.setParameterByID(parameterData.ID(), walls);
-                            AudioDebug.Print("Successfully set walls for " + eventName);
-                        }
+                        instance.setParameterByID(parameterData.ID(), occlusion);
+                        AudioDebug.Print("Successfully set occlusion for " + eventName);
                     }
                     if (eventData.ParameterCache.TryGetValue("Walls", out parameterData))
                     {

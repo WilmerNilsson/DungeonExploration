@@ -69,8 +69,6 @@ public class DevConsoleGha : MonoBehaviour
             new DebugCommand("get_resolution", "shows resolution data", "get_resolution", GetResolutionCommand),
             new DebugCommand("teleport", "teleports the player", "teleport x y z", TeleportCommand),
             new DebugCommand("get_pos", "gets the player current possistion", "get_pos", GetPosCommand),
-            new DebugCommand("log_path", "gets the debug log path of the application", "log_path", LogPathCommand),
-            new DebugCommand("kill_player", "deals 1000 damage to player", "kill_player", KillPlayerCommand)
         };
     }
 
@@ -108,18 +106,7 @@ public class DevConsoleGha : MonoBehaviour
         return Instance;
     }
 
-    private void AddLine(string line)
-    {
-        _infoTextWindow.text += line;
-        _infoTextWindow.text += "\n";
-    }
-
     #region command methods 
-
-    private void KillPlayerCommand()
-    {
-        GameObject.FindGameObjectWithTag("Player").GetComponent<Health>().TakeDamage(1000);
-    }
 
     private void HelpCommand(string input)
     {
@@ -211,11 +198,6 @@ public class DevConsoleGha : MonoBehaviour
     private void GetResolutionCommand()
     {
         _infoTextWindow.text += $"{Screen.width} x {Screen.height}, {Screen.fullScreenMode}, {Screen.currentResolution.refreshRateRatio}\n\n"; 
-    }
-
-    private void LogPathCommand()
-    {
-        AddLine(Application.consoleLogPath);
     }
 
     private void TeleportCommand(string input)

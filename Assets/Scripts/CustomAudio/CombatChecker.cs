@@ -32,18 +32,4 @@ public static class CombatChecker
             AudioManager.Instance.SetGlobalParameter("Combat", _enemiesChasing.Count > 0 ? 1 : 0);
         }
     }
-
-    public static void RefreshCombatList()
-    {
-        for (int i = 0; i < _enemiesChasing.Count; i++)
-        {
-            if (!_enemiesChasing[i]) _enemiesChasing.Remove(_enemiesChasing[i]);
-        }
-    }
-
-    public static void ResetCombatList()
-    {
-        _enemiesChasing = new List<GameObject>();
-        CheckCombatState();
-    }
 }

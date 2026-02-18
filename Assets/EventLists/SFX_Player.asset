@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7493b6246a18ce4ca3407bc85a819a4, type: 3}
+  m_Name: SFX_Player
+  m_EditorClassIdentifier: 
+  category: SFX_Player
+  events:
+  - eventName: Eating
+    eventReference:
+      Guid:
+        Data1: 1655501131
+        Data2: 1107906845
+        Data3: 994653878
+        Data4: 1131485022
+      Path: event:/Sound/UI/Player/Eating
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Hunger
+    eventReference:
+      Guid:
+        Data1: -1937690854
+        Data2: 1267517978
+        Data3: 467999671
+        Data4: 331976063
+      Path: event:/Sound/UI/Player/Hunger
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Low_HP
+    eventReference:
+      Guid:
+        Data1: 51949675
+        Data2: 1214113737
+        Data3: -1499154040
+        Data4: 770145969
+      Path: event:/Sound/UI/Player/Low_HP
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Sanity_Depletion
+    eventReference:
+      Guid:
+        Data1: 1138682245
+        Data2: 1297785148
+        Data3: -2050440514
+        Data4: -404897597
+      Path: event:/Sound/UI/Player/Sanity_Depletion
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  debug: 0

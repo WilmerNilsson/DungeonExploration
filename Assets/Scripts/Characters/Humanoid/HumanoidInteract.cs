@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class HumanoidInteract : MonoBehaviour
 {
@@ -12,12 +11,10 @@ public class HumanoidInteract : MonoBehaviour
     [Tooltip("The layers that will block the ray, including the interactable object")]
     [SerializeField] private LayerMask layerMask;
     private RaycastHit hit;
-
-    public UnityEvent OnSee, OnUnSee;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        //layerMask = LayerMask.GetMask("Interactable");
     }
 
     // Update is called once per frame
@@ -32,13 +29,8 @@ public class HumanoidInteract : MonoBehaviour
                 //Debug.Log("Did Hit");
                 if (interactable != newInteractable)
                 {
-                    if (interactable)
-                    {
-                        interactable.OnView(false);
-                    }
                     interactable = newInteractable;
                     interactable.OnView(true);
-                    OnSee?.Invoke();
                 }
                 //UIText.SetActive(true);
             }
@@ -49,7 +41,6 @@ public class HumanoidInteract : MonoBehaviour
                 if (interactable)
                 {
                     interactable.OnView(false);
-                    OnUnSee?.Invoke();
                 }
                 interactable = null;
                 //UIText.SetActive(false);
@@ -62,7 +53,6 @@ public class HumanoidInteract : MonoBehaviour
             if (interactable)
             {
                 interactable.OnView(false);
-                OnUnSee?.Invoke();
             }
             interactable = null;
             //UIText.SetActive(false);

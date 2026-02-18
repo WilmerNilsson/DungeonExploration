@@ -11,7 +11,7 @@ public class Hunger : MonoBehaviour
     //[Tooltip("The amount of time between hunger ticks in seconds")]
     //[SerializeField] private float hungerCooldown = 10;
 
-    public UnityEvent<float> OnHunger;
+    public UnityEvent OnHunger;
     public UnityEvent OnEat;
 
     public static Hunger instance;
@@ -36,7 +36,7 @@ public class Hunger : MonoBehaviour
 
     public void LoseHunger(int amount)
     {
-        OnHunger?.Invoke((float)playerHungerSO.currentHunger / playerHungerSO.maxHunger);
+        OnHunger?.Invoke();
         if (!playerHungerSO.ChangeHunger(-1))
         {
             health.TakeDamage(1);

@@ -2,11 +2,8 @@ using UnityEngine;
 
 public class HumanoidRotator : MonoBehaviour
 {
-    [SerializeField] private Transform bodyTransform;
-    [SerializeField] private Transform headTransform;
-    
-    [SerializeField, Range(0,1)] private float bodyRotationSpeed = .5f;
-    [SerializeField, Range(0,1)] private float headRotationSpeed = .5f;
+    [SerializeField] Transform bodyTransform;
+    [SerializeField] Transform headTransform;
     
     [SerializeField, Range(0,1)] float bodyRotationSpeed = .5f;
     [SerializeField, Range(0,1)] float headRotationSpeed = .5f;
@@ -18,8 +15,7 @@ public class HumanoidRotator : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        targetHeadQuaternion = headTransform.rotation;
-        targetHeadQuaternion = bodyTransform.rotation;
+        
     }
 
     // Update is called once per frame

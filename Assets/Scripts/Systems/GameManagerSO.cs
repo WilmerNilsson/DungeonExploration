@@ -40,12 +40,8 @@ public class SavefileData
 [CreateAssetMenu(fileName = "GameManagerSO", menuName = "Scriptable Objects/GameManagerSO")]
 public class GameManagerSO : ScriptableObject
 {
-<<<<<<< HEAD
     private const string mainMenuSceneNumber = "MainMenu";
     //private const int mainSceneNumber = 1;
-=======
-    [SerializeField] private string mainMenuSceneName = "MainMenu";
->>>>>>> NewNewMain
 
     private GlobalSettings globalSettings = new GlobalSettings();
     private SavefileData currentSavefileData = new SavefileData();
@@ -136,10 +132,7 @@ public class GameManagerSO : ScriptableObject
         MoveToScene(spawnPosition, sceneName);
     }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> NewNewMain
     public void MoveToScene(Vector3 newLocation, string newSceneName)
     {
         //currentSavefileData.sceneNr = newSceneNr;
@@ -149,22 +142,10 @@ public class GameManagerSO : ScriptableObject
         {
             ResetActions();
 
-<<<<<<< HEAD
             /*if(newSceneName == mainSceneNumber) // main menu
             {
                 Time.timeScale = 1;
             }*/
-=======
-            if(newSceneName == mainMenuSceneName) // main menu
-            {
-                Time.timeScale = 1;
-            }
-            else //else game file speed, which is 1 for now cause not implimented
-            {
-                Time.timeScale = 1;
-            }
-            
->>>>>>> NewNewMain
 
             if(OnLoadScene != null)
             {

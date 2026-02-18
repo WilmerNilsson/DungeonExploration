@@ -192,12 +192,9 @@ public class PlayerIK : HumanoidIK
         base.Reset();
         weapon.dealDamage = false;
     }
-<<<<<<< HEAD
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawSphere(blockPos, 0.1f);
     }
-=======
->>>>>>> NewNewMain
 }
