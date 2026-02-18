@@ -117,11 +117,11 @@ MonoBehaviour:
       m_Calls: []
   controller: {fileID: 460348200128992605}
   CC: {fileID: 653897519548769769}
-  moveSpeed: 3
+  moveSpeed: 3.5
   sprintSpeed: 6
   crouchSpeed: 2
-  airMoveMod: 0.5
-  jumpHeight: 5
+  airMoveMod: 1.4
+  jumpHeight: 0.9
   doJump: 0
   grounded: 0
 --- !u!114 &4104227061447592378
@@ -466,7 +466,7 @@ CharacterController:
   m_Height: 4
   m_Radius: 0.5
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.6
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
@@ -5797,7 +5797,6 @@ MonoBehaviour:
   attacking: 0
   blocking: 0
   animator: {fileID: 8583122998059479642}
-  weapon: {fileID: 4615422614276632481}
   shoulderObj: {fileID: 412638037322040316}
   lookObj: {fileID: 0}
   x: 0
@@ -5808,12 +5807,12 @@ MonoBehaviour:
   swingEnd: {x: 0, y: 0, z: 0}
   swingAngle: 0
   curveHeight: 2.5
-  nodeTime: 0.1
+  nodeTime: 0.000000001
   chargeTime: 1
   resetTime: 0.5
   staggerTime: 3
   blockChargeTime: 0.1
-  blockTime: 1
+  blockTime: 1.1
   blockResetTime: 0.1
   handOffset: 1.2
 --- !u!4 &6188856160139636480 stripped
@@ -6110,14 +6109,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6715476101138585803, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
   m_PrefabInstance: {fileID: 5787444643908059947}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4615422614276632481 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
-  m_PrefabInstance: {fileID: 5787444643908059947}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 443845897611985242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51f7f14f987392348b08c80e3260f384, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
