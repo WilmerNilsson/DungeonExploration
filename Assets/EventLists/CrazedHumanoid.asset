@@ -91,7 +91,7 @@ MonoBehaviour:
     is3D: 1
     isOcclusion: 1
     minDistance: 1
-    maxDistance: 60
+    maxDistance: 50
     debug: 0
     parameters:
     - paramName: EnemyVO
@@ -102,6 +102,10 @@ MonoBehaviour:
       isGlobal: 0
       data1: 2996130905
       data2: 1527690840
+    - paramName: Walls
+      isGlobal: 0
+      data1: 3996502556
+      data2: 1746408966
   - eventName: Walk
     eventReference:
       Guid:
@@ -116,11 +120,15 @@ MonoBehaviour:
     is3D: 1
     isOcclusion: 1
     minDistance: 1
-    maxDistance: 20
+    maxDistance: 30
     debug: 0
     parameters:
     - paramName: Occluded
       isGlobal: 0
       data1: 2996130905
       data2: 1527690840
+    - paramName: Walls
+      isGlobal: 0
+      data1: 3996502556
+      data2: 1746408966
   debug: 0
