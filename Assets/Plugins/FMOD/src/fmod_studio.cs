@@ -960,7 +960,7 @@ namespace FMOD.Studio
         #endregion
     }
 
-    public struct EventDescription : IEquatable<EventDescription>
+    public struct EventDescription
     {
         public RESULT getID(out GUID id)
         {
@@ -1300,24 +1300,9 @@ namespace FMOD.Studio
         }
 
         #endregion
-
-        public bool Equals(EventDescription other)
-        {
-            return handle.Equals(other.handle);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is EventDescription other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return handle.GetHashCode();
-        }
     }
 
-    public struct EventInstance : IEquatable<EventInstance>
+    public struct EventInstance
     {
         public RESULT getDescription(out EventDescription description)
         {
@@ -1601,21 +1586,6 @@ namespace FMOD.Studio
         }
 
         #endregion
-
-        public bool Equals(EventInstance other)
-        {
-            return handle.Equals(other.handle);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is EventInstance other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return handle.GetHashCode();
-        }
     }
 
     public struct Bus
