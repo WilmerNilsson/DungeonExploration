@@ -126,6 +126,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: bde3931042de859469387495edc1204e, type: 2}
+    - target: {fileID: 5866666021909216657, guid: 158bf6404f43d4f4992b14d60613b4b1, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -174,6 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e27947f372aebf4faecea3f063f6227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   onAttackStateChange:
     m_PersistentCalls:
       m_Calls: []
@@ -230,6 +235,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9209436760628890261}
     - target: {fileID: 1878137323481184442, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 1357664741972358889}
+    - target: {fileID: 1878137323481184442, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: moveSpeed
       value: 1
       objectReference: {fileID: 0}
@@ -279,7 +288,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -287,7 +296,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -504,10 +513,6 @@ MonoBehaviour:
   onMadState:
     m_PersistentCalls:
       m_Calls: []
-  currentState:
-    mad: {fileID: 0}
-    minDistanceToCorner: 0.1
-    target: {x: 0, y: 0, z: 0}
   idleState:
     mad: {fileID: 3467929583550465738}
     minDistanceToCorner: 0.1
@@ -603,7 +608,7 @@ NavMeshAgent:
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 3
   m_BaseOffset: 0
@@ -646,16 +651,16 @@ MonoBehaviour:
   OnDeath:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1818795128226548232}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1357664741972358889}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Die
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 8503224205508373485}
