@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 
 [System.Serializable]
-public class MadState
+public abstract class MadState
 {
     [HideInInspector] public MadAdventurer mad = null;
     [SerializeField] protected float minDistanceToCorner = 0.1f;
