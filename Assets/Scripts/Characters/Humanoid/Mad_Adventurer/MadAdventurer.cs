@@ -12,6 +12,7 @@ public class MadAdventurer : MonoBehaviour
     [SerializeField] public DetectPlayer vision;
     
     [Header("States")]
+    public UnityEvent<MadState> onMadState;
     public MadState currentState;
     public MadIdle idleState = new MadIdle();
     public MadChasing chasingState = new MadChasing();
@@ -20,9 +21,7 @@ public class MadAdventurer : MonoBehaviour
     
     [HideInInspector] public Transform player;
     [HideInInspector] public Transform target;
-
-    public UnityEvent<MadState> onMadState;
-
+    
     private void OnValidate()
     {
         idleState.OnValidate(this);

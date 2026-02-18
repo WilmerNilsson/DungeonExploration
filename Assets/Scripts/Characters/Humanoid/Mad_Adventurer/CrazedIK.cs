@@ -56,7 +56,7 @@ public class CrazedIK : HumanoidIK
                 }
                 else if (attackState == AttackState.Swing)
                 {
-                    time = (Time.time - startTime) / (nodeTime/100);
+                    time = (Time.time - startTime) / (nodeTime/100f);
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(Vector3.Slerp(current, target, time)));
