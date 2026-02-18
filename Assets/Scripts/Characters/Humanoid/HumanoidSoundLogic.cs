@@ -29,7 +29,9 @@ public class HumanoidSoundLogic : MonoBehaviour
     [SerializeField] private FootstepPaths footstepPaths;
     [SerializeField] private string crouchPath;
     [SerializeField] private string jumpPath;
+    [SerializeField] private string landPath;
     private string _currentFootstepSound;
+    [SerializeField] private string hungerPath;
     
     [Header("Weapons")]
     [SerializeField] private GameObject weaponObject;
@@ -48,6 +50,8 @@ public class HumanoidSoundLogic : MonoBehaviour
 
     private float currentTimer = 1f;
     private float currentDelay = 0f;
+    
+    private HumanoidMovement.moveActions _lastMoveAction;
 
 #if DEBUG
     private void OnValidate()
@@ -108,13 +112,14 @@ public class HumanoidSoundLogic : MonoBehaviour
 
     public void PlayFootstepSound(string path)
     {
+        if (path is "" or null) return;
         if (AudioManager.IsValid)
         {
             AudioManager.Instance.PlayOneShot(path, null, null, gameObject);
         }
     }
 
-    public void PlayDamageSound() //TODO: enemy vo parameter
+    public void PlayDamageSound() //TODO: enemy vo parameter när de finns
     {
         if (AudioManager.IsValid)
         {
@@ -122,7 +127,7 @@ public class HumanoidSoundLogic : MonoBehaviour
         }
     }
 
-    public void PlayDeathSound() //TODO: enemy vo parameter
+    public void PlayDeathSound() //TODO: enemy vo parameter när de finns
     {
         if (!AudioManager.IsValid) return;
         AudioManager.Instance.PlayOneShot(deathPath, null, null, gameObject);
@@ -159,6 +164,14 @@ public class HumanoidSoundLogic : MonoBehaviour
                 _currentFootstepSound = footstepPaths.walk;
                 break;
         }
+
+        if (_lastMoveAction == HumanoidMovement.moveActions.Airborne &&
+            actions != HumanoidMovement.moveActions.Airborne)
+        {
+            PlayLandSound();
+        }
+        
+        _lastMoveAction = actions;
     }
     
     public void OnHealthChange(HealthData healthData)
@@ -168,8 +181,16 @@ public class HumanoidSoundLogic : MonoBehaviour
         AudioManager.Instance.SetGlobalParameter("hpRatio", (float)healthData.CurrentHealth / healthData.MaxHealth);
     }
 
+    public void OnHungerChange(float hungerRatio)
+    {
+        if (!AudioManager.IsValid) return;
+        AudioManager.Instance.SetGlobalParameter("Hunger", hungerRatio);
+        AudioManager.Instance.PlayOneShot(hungerPath, null, null, weaponObject);
+    }
+
     public void PlayBlockSound()
     {
+        if (blockPath is "" or null) return;
         if (AudioManager.IsValid)
         {
             AudioManager.Instance.PlayOneShot(blockPath, null, null, weaponObject);
@@ -178,6 +199,7 @@ public class HumanoidSoundLogic : MonoBehaviour
 
     public void PlayCrouchSound()
     {
+        if (crouchPath is "" or null) return;
         if (AudioManager.IsValid)
         {
             AudioManager.Instance.PlayOneShot(crouchPath, null, null, gameObject);
@@ -186,14 +208,39 @@ public class HumanoidSoundLogic : MonoBehaviour
 
     public void PlayJumpSound()
     {
+        if (jumpPath is "" or null) return;
         if (AudioManager.IsValid)
         {
             AudioManager.Instance.PlayOneShot(jumpPath, null, null, gameObject);
         }
     }
 
+    public void PlayLandSound()
+    {
+        if (landPath is "" or null) return;
+        if (AudioManager.IsValid)
+        {
+            AudioManager.Instance.PlayOneShot(landPath, null, null, gameObject);
+        }
+    }
+
     public void PlayParrySound()
     {
-        
+
+    }
+
+    private MadState lastState = new MadIdle();
+    
+    public void OnMadStateChange(MadState newState)
+    {
+        if (newState.GetType() == typeof(MadChasing) && lastState.GetType() == typeof(MadIdle))
+        {
+            AudioManager.Instance.KeyOff(enemyVoPath, gameObject);
+        }
+        if (lastState.GetType() == typeof(MadChasing) && newState.GetType() == typeof(MadIdle))
+        {
+            AudioManager.Instance.KeyOff(enemyVoPath, gameObject);
+        }
+        lastState = newState;
     }
 }
