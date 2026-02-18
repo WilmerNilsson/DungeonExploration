@@ -22,7 +22,8 @@ public class MadAdventurer : MonoBehaviour
     
     [HideInInspector] public Transform player;
     [HideInInspector] public Transform target;
-    
+
+#if DEBUG
     private void OnValidate()
     {
         idleState.OnValidate(this);
@@ -30,6 +31,7 @@ public class MadAdventurer : MonoBehaviour
         meleeState.OnValidate(this);
         searchingState.OnValidate(this);
     }
+#endif
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -45,12 +47,19 @@ public class MadAdventurer : MonoBehaviour
             }
         }
 
+        idleState.Intialize(this);
+        chasingState.Intialize(this);
+        meleeState.Intialize(this);
+        searchingState.Intialize(this);
+
         idleState.Start();
         chasingState.Start();
         meleeState.Start();
         searchingState.Start();
         currentState = idleState;
         currentState.Enter();
+
+        //agent
     }
 
     // Update is called once per frame

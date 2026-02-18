@@ -14,12 +14,14 @@ public abstract class MadState
     protected int pathIndex;
 
 
-    public virtual void OnValidate(MadAdventurer madAdventurer)
+    public virtual void OnValidate(MadAdventurer madAdventurer) { }
+    
+    public virtual void Intialize(MadAdventurer madAdventurer)
     {
         mad = madAdventurer;
         path = new NavMeshPath();
     }
-    
+
     public virtual void Awake(){}
     public virtual void Start(){}
 
@@ -50,6 +52,7 @@ public abstract class MadState
     protected void FindPath(Vector3 pos)
     {
         pathIndex = 1;
+
         mad.agent.CalculatePath(pos, path);
     }
     
