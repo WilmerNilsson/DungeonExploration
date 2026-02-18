@@ -53,11 +53,6 @@ public abstract class MadState
     {
         pathIndex = 1;
 
-        Debug.Log("mad null? " + (mad == null));
-        Debug.Log("agent null? " + (mad.agent == null));
-        Debug.Log("path null? " + (path == null));
-        Debug.Log("pos null? " + (pos == null));
-
         mad.agent.CalculatePath(pos, path);
     }
     
