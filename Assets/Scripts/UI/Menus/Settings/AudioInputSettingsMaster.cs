@@ -4,19 +4,17 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
+[System.Serializable]
 public class AudioInputPair
 {
-    public TMP_InputField inputField; public Slider slider;
+    public TMP_InputField InputField; public Slider Slider;
 }
 
 public class AudioInputSettingsMaster : MonoBehaviour
 {
-    [SerializeField] GameObject masterAudioParent;
-    AudioInputPair masterAudioPair = new AudioInputPair();
-    [SerializeField] GameObject effectsAudioParent;
-    AudioInputPair effectsAudioPair = new AudioInputPair();
-    [SerializeField] GameObject musicAudioParent;
-    AudioInputPair musicAudioPair = new AudioInputPair();
+    [SerializeField] private AudioInputPair masterAudioPair;
+    [SerializeField] private AudioInputPair effectsAudioPair;
+    [SerializeField] private AudioInputPair musicAudioPair;
 
     [SerializeField] float overNewValueWarningThreshhold = 100f;
 
@@ -27,38 +25,27 @@ public class AudioInputSettingsMaster : MonoBehaviour
     GameManagerSO gameManager;
     IUIController uIController;
 
-    private void Awake()
-    {
-        masterAudioPair.inputField = masterAudioParent.GetComponentInChildren<TMP_InputField>();
-        masterAudioPair.slider = masterAudioParent.GetComponentInChildren<Slider>();
-
-        effectsAudioPair.inputField = effectsAudioParent.GetComponentInChildren<TMP_InputField>();
-        effectsAudioPair.slider = effectsAudioParent.GetComponentInChildren<Slider>();
-
-        musicAudioPair.inputField = musicAudioParent.GetComponentInChildren<TMP_InputField>();
-        musicAudioPair.slider = musicAudioParent.GetComponentInChildren<Slider>();
-    }
-
     private void Start() 
     {
         gameManager = GameManagerSO.Instance;
         uIController = GameObject.FindGameObjectWithTag("MainUI").GetComponent<IUIController>();
 
-        masterAudioPair.inputField.SetTextWithoutNotify(gameManager.GetMasterVolume().ToString());
-        masterAudioPair.slider.SetValueWithoutNotify(gameManager.GetMasterVolume());
+        masterAudioPair.InputField?.SetTextWithoutNotify(gameManager.GetMasterVolume().ToString());
+        masterAudioPair.Slider?.SetValueWithoutNotify(gameManager.GetMasterVolume());
 
-        effectsAudioPair.inputField.SetTextWithoutNotify(gameManager.GetEffectsVolume().ToString());
-        effectsAudioPair.slider.SetValueWithoutNotify(gameManager.GetEffectsVolume());
+        effectsAudioPair.InputField?.SetTextWithoutNotify(gameManager.GetEffectsVolume().ToString());
+        effectsAudioPair.Slider?.SetValueWithoutNotify(gameManager.GetEffectsVolume());
 
-        musicAudioPair.inputField.SetTextWithoutNotify(gameManager.GetMusicVolume().ToString());
-        musicAudioPair.slider.SetValueWithoutNotify(gameManager.GetMusicVolume());
+        musicAudioPair.InputField?.SetTextWithoutNotify(gameManager.GetMusicVolume().ToString());
+        musicAudioPair.Slider?.SetValueWithoutNotify(gameManager.GetMusicVolume());
     }
 
+    //untested since we can't put it above 100 rn
     public void WarningWindowAnswer(bool wantToChange)
     {
         if(wantToChange == true)
         {
-            currentWarningPair.slider.SetValueWithoutNotify(currentWarningAudioLevel);
+            currentWarningPair.Slider.SetValueWithoutNotify(currentWarningAudioLevel);
             if(currentWarningPair == masterAudioPair)
             {
                 gameManager.SetMasterVolume(currentWarningAudioLevel);
@@ -74,14 +61,14 @@ public class AudioInputSettingsMaster : MonoBehaviour
         }
         else
         {
-            currentWarningPair.inputField.SetTextWithoutNotify(currentWarningPair.slider.value.ToString());
+            currentWarningPair.InputField?.SetTextWithoutNotify(currentWarningPair.Slider.value.ToString());
         }
 
         warningWindow.SetActive(false);
         uIController.ChangeCanUnpause(true);
     }
 
-    void ActivateSoundWarning()
+    private void ActivateSoundWarning()
     {
         uIController.ChangeCanUnpause(false);
         warningWindow.SetActive(true);
@@ -100,14 +87,14 @@ public class AudioInputSettingsMaster : MonoBehaviour
         else
         {
             gameManager.SetMasterVolume(newValue);
-            masterAudioPair.slider.SetValueWithoutNotify(newValue);
+            masterAudioPair.Slider?.SetValueWithoutNotify(newValue);
         }
     }
 
     public void ChangeMasterAudioByFloat(float newValue)
     {
         gameManager.SetMasterVolume(newValue);
-        masterAudioPair.inputField.SetTextWithoutNotify(newValue.ToString());
+        masterAudioPair.InputField?.SetTextWithoutNotify(newValue.ToString());
     }
 
     public void ChangeEffectsAudioValueByString(string newValueString)
@@ -123,14 +110,14 @@ public class AudioInputSettingsMaster : MonoBehaviour
         else
         {
             gameManager.SetEffectsVolume(newValue);
-            effectsAudioPair.slider.SetValueWithoutNotify(newValue);
+            effectsAudioPair.Slider?.SetValueWithoutNotify(newValue);
         }
     }
 
     public void ChangeEffectsAudioByFloat(float newValue)
     {
         gameManager.SetEffectsVolume(newValue);
-        effectsAudioPair.inputField.SetTextWithoutNotify(newValue.ToString());
+        effectsAudioPair.InputField?.SetTextWithoutNotify(newValue.ToString());
     }
 
     public void ChangeMusicAudioValueByString(string newValueString)
@@ -146,13 +133,13 @@ public class AudioInputSettingsMaster : MonoBehaviour
         else
         {
             gameManager.SetMusicVolume(newValue);
-            musicAudioPair.slider.SetValueWithoutNotify(newValue);
+            musicAudioPair.Slider?.SetValueWithoutNotify(newValue);
         }
     }
 
     public void ChangeMusicAudioByFloat(float newValue)
     {
         gameManager.SetMusicVolume(newValue);
-        musicAudioPair.inputField.SetTextWithoutNotify(newValue.ToString());
+        musicAudioPair.InputField?  .SetTextWithoutNotify(newValue.ToString());
     }
 }

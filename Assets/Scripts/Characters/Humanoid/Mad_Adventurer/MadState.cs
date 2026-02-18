@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 
 [System.Serializable]
-public class MadState
+public abstract class MadState
 {
     [HideInInspector] public MadAdventurer mad = null;
     [SerializeField] protected float minDistanceToCorner = 0.1f;
@@ -14,12 +14,14 @@ public class MadState
     protected int pathIndex;
 
 
-    public virtual void OnValidate(MadAdventurer madAdventurer)
+    public virtual void OnValidate(MadAdventurer madAdventurer) { }
+    
+    public virtual void Intialize(MadAdventurer madAdventurer)
     {
         mad = madAdventurer;
         path = new NavMeshPath();
     }
-    
+
     public virtual void Awake(){}
     public virtual void Start(){}
 
@@ -50,6 +52,7 @@ public class MadState
     protected void FindPath(Vector3 pos)
     {
         pathIndex = 1;
+
         mad.agent.CalculatePath(pos, path);
     }
     
@@ -60,7 +63,7 @@ public class MadState
         
         if (Vector2.Distance(position, corner) <= minDistanceToCorner)
         {
-            if (pathIndex < path.corners.Length) pathIndex++;
+            if (pathIndex < path.corners.Length-1) pathIndex++;
         }
         
         return path.corners[pathIndex];
