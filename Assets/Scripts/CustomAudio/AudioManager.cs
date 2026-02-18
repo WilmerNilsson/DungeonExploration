@@ -48,6 +48,7 @@ public class AudioManager : MonoBehaviour
         RefreshAllEventCaches();
         RefreshGlobalParameterCache();
         GetMainCamera();
+        CombatChecker.ResetCombatList();
 
         AudioDebug.Print("AudioManager Initialized");
     }
@@ -402,6 +403,7 @@ public class AudioManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         GetMainCamera();
+        CombatChecker.ResetCombatList();
     }
 
     private void OnSceneUnloaded(Scene scene)
