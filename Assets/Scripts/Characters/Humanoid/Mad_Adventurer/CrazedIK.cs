@@ -136,23 +136,6 @@ public class CrazedIK : HumanoidIK
             }
         }
     }
-
-    private void OnDrawGizmos()
-    {
-        if (!debug) return;
-        if (nodes is { Length: > 0 })
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawSphere(RelativePosition(swingStart), 0.1f);
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(RelativePosition(swingEnd), 0.1f);
-            Gizmos.color = Color.white;
-            foreach (var node in nodes)
-            {
-                Gizmos.DrawSphere(RelativePosition(node), 0.1f);
-            }
-        }
-    }
 }
 
 [System.Serializable]
