@@ -8,9 +8,6 @@ public class HumanoidRotator : MonoBehaviour
     [SerializeField, Range(0,1)] private float bodyRotationSpeed = .5f;
     [SerializeField, Range(0,1)] private float headRotationSpeed = .5f;
     
-    [SerializeField, Range(0,1)] float bodyRotationSpeed = .5f;
-    [SerializeField, Range(0,1)] float headRotationSpeed = .5f;
-    
     private Vector3 rotationVector;
 
     private Quaternion targetHeadQuaternion;

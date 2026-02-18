@@ -9,6 +9,7 @@ public class HumanoidMovement : MonoBehaviour
     
     [SerializeField] HumanoidController controller;
     [SerializeField] CharacterController CC;
+    [SerializeField] Animator animator;
     
     [Header("Stats")]
     [SerializeField] private float moveSpeed = 1;
@@ -46,6 +47,7 @@ public class HumanoidMovement : MonoBehaviour
     {
         grounded = CC.isGrounded;
         rotatedVector = Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * moveVector;
+        
 
         if (grounded && playerVelocity.y < -2f) playerVelocity.y = -2f; // stays to the ground
 
@@ -93,6 +95,14 @@ public class HumanoidMovement : MonoBehaviour
     {
         if(newAction != currentAction)
         {
+            if (newAction == moveActions.Sprinting)
+            {
+                animator.SetFloat("RunSpeed", 2);
+            }
+            else
+            {
+                animator.SetFloat("RunSpeed", 1);
+            }
             currentAction = newAction; 
             OnMoveActionChange?.Invoke(currentAction);
         }
@@ -101,6 +111,7 @@ public class HumanoidMovement : MonoBehaviour
     public void Move(Vector3 direction)
     {
         moveVector = direction;
+        animator.SetBool("Moving", direction != Vector3.zero);
     }
 
     public void Jump()
