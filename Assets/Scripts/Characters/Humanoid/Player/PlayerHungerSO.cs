@@ -13,6 +13,13 @@ public class PlayerHungerSO : ScriptableObject
     [Tooltip("The amount of time between hunger ticks in seconds")]
     public float hungerCooldown = 10f;
     public UnityEvent OnChangeHunger;
+    [Tooltip("The calculated amount of time the player can survive in seconds, based on max hunger and hunger cooldown")]
+    public float SurvivalTime = 0;
+
+    private void OnValidate()
+    {
+        SurvivalTime = maxHunger * hungerCooldown;
+    }
 
 
     public void ResetValues()
