@@ -13,7 +13,7 @@ public class CrazedIK : HumanoidIK
         }
         if (!attacking)
         {
-            swingAngle = Mathf.Deg2Rad * Random.Range(-180 + angleLimit, 180 - angleLimit);
+            swingAngle = Mathf.Deg2Rad * (Random.Range(angleLimit, 360 - angleLimit) - 90);
             swingStart = shoulderObj.localPosition + (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), 0).normalized * armLenght);
             swingEnd = shoulderObj.localPosition - (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), -1).normalized * armLenght);
             nodes = GetQuadraticBezierPoints(swingStart, swingEnd, curveHeight);
