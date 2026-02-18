@@ -47,7 +47,7 @@ public class AudioManager : MonoBehaviour
         RefreshEventListCache();
         RefreshAllEventCaches();
         RefreshGlobalParameterCache();
-        GetMainCamera();
+        GetListener();
         CombatChecker.ResetCombatList();
 
         AudioDebug.Print("AudioManager Initialized");
@@ -403,7 +403,7 @@ public class AudioManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        GetMainCamera();
+        GetListener();
         CombatChecker.ResetCombatList();
         OnPauseEvent(false);
     }
@@ -423,17 +423,19 @@ public class AudioManager : MonoBehaviour
 
     public static GameObject Listener;
 
-    private static void GetMainCamera()
+    private static void GetListener()
     {
-        if (Camera.main != null)
+        var cameras = GameObject.FindObjectsByType<Camera>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (var camera in cameras)
         {
-            Listener = Camera.main.gameObject;
-            AudioDebug.Print("Main camera found");
+            if (camera.TryGetComponent(typeof(StudioListener), out var studioListener))
+            {
+                Listener = camera.gameObject;
+                AudioDebug.Print("Successfully found listener");
+                return;
+            }
         }
-        else
-        {
-            AudioDebug.Print("No main camera found", true);
-        }
+        AudioDebug.Print("No listener found", true);
     }
     
     #endregion
