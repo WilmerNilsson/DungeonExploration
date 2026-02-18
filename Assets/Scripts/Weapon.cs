@@ -26,6 +26,7 @@ public class Weapon : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log($"OnTriggerEnter {other.gameObject.name}");
         if(dealDamage && !transform.IsChildOf(other.transform) && other.TryGetComponent(out Health health))
         {
             onDamage?.Invoke();
