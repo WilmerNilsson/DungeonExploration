@@ -92,6 +92,11 @@ public class AudioTrigger : MonoBehaviour
         }
     }
 
+    private void ActivatePrivate()
+    {
+        InterpretInstructions();
+    }
+
     private IEnumerator ActivationDelay()
     {
         yield return new WaitForSeconds(activationDelay);
