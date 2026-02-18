@@ -61,11 +61,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
---- !u!1 &8414235524528813927 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6231285627939046001, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
-  m_PrefabInstance: {fileID: 2503060084218590486}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9191440078456712669 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6715476101138585803, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
@@ -356,10 +351,6 @@ PrefabInstance:
       value: CrazedHumanoid/VO
       objectReference: {fileID: 0}
     - target: {fileID: 3253121419754070490, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
-      propertyPath: weaponObject
-      value: 
-      objectReference: {fileID: 8414235524528813927}
-    - target: {fileID: 3253121419754070490, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: voiceActorAmount
       value: 3
       objectReference: {fileID: 0}
@@ -521,19 +512,7 @@ MonoBehaviour:
   vision: {fileID: 3879916398111493942}
   onMadState:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8503224205508373485}
-        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
-        m_MethodName: OnMadStateChange
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   idleState:
     mad: {fileID: 3467929583550465738}
     minDistanceToCorner: 0.1
