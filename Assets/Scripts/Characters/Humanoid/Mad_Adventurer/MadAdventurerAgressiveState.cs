@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class MadMelee : MadState
+public class MadAdventurerAgressiveState : MadAventurerBaseState
 {
     [SerializeField] private CrazedIK avatarIK;
     [SerializeField, Tooltip("max distance to target before Chasing"), Min(1f)] public float maxMeleeRange = 2.5f;
@@ -11,19 +11,19 @@ public class MadMelee : MadState
 
     public override void Enter()
     {
-        target = mad.player.position;
+        target = MyMadAdventurerStateMachine.PlayerTransform.position;
     }
     
     public override void Update()
     {
-        target = mad.player.position;
-        mad.controller.Rotate(Quaternion.LookRotation((target-mad.transform.position)+Vector3.up));
+        target = MyMadAdventurerStateMachine.PlayerTransform.position;
+        MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((target-MyMadAdventurerStateMachine.transform.position)+Vector3.up));
         
-        distance = Vector3.Distance(mad.transform.position, mad.player.position);
+        distance = Vector3.Distance(MyMadAdventurerStateMachine.transform.position, MyMadAdventurerStateMachine.PlayerTransform.position);
         
         if (distance > maxMeleeRange)
         {
-            mad.Transit(mad.chasingState);
+            MyMadAdventurerStateMachine.Transit(MyMadAdventurerStateMachine.ChasingState);
         }
         else if (distance > minMeleeRange) // just smack :)
         {

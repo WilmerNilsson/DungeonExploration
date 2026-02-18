@@ -229,15 +229,15 @@ public class HumanoidSoundLogic : MonoBehaviour
 
     }
 
-    private MadState lastState = new MadIdle();
+    private MadAventurerBaseState lastState = new MadAdventurerIdleState();
     
-    public void OnMadStateChange(MadState newState)
+    public void OnMadStateChange(MadAventurerBaseState newState)
     {
-        if (newState.GetType() == typeof(MadChasing) && lastState.GetType() == typeof(MadIdle))
+        if (newState.GetType() == typeof(MadAdventurerChasingState) && lastState.GetType() == typeof(MadAdventurerIdleState))
         {
             AudioManager.Instance.KeyOff(enemyVoPath, gameObject);
         }
-        if (lastState.GetType() == typeof(MadChasing) && newState.GetType() == typeof(MadIdle))
+        if (lastState.GetType() == typeof(MadAdventurerChasingState) && newState.GetType() == typeof(MadAdventurerIdleState))
         {
             AudioManager.Instance.KeyOff(enemyVoPath, gameObject);
         }

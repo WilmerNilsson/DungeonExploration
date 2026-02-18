@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 
 [System.Serializable]
-public class MadIdle : MadState
+public class MadAdventurerIdleState : MadAventurerBaseState
 {
     [SerializeField, Tooltip("how far away in x it can move from its spawn"), Min(0f)] private float wanderRange = 5;
     [SerializeField, Tooltip("minimum wait time in seconds"), Min(0f)] private float minWaitTime = 0;
@@ -22,10 +22,15 @@ public class MadIdle : MadState
     [SerializeField] private float sightThreshold;
     [SerializeField] private float soundThreshold;
 
-    public override void OnValidate(MadAdventurer madAdventurer)
+    public override void OnValidate(MadAdventurerStateMachine madAdventurer)
     {
         base.OnValidate(madAdventurer);
-        Physics.Raycast(mad.transform.position, Vector3.down,out RaycastHit hit, LayerMask.GetMask("Ground"));
+    }
+
+    public override void Intialize(MadAdventurerStateMachine madAdventurer)
+    {
+        base.Intialize(madAdventurer);
+        Physics.Raycast(MyMadAdventurerStateMachine.transform.position, Vector3.down, out RaycastHit hit, LayerMask.GetMask("Ground"));
         spawnPosition = hit.point;
     }
 
@@ -34,21 +39,21 @@ public class MadIdle : MadState
         FindPath(GetRandomPosition());
         target = GetNextCorner();
         Reset();
-        CombatChecker.RemoveFromChaseList(mad.gameObject);
+        CombatChecker.RemoveFromChaseList(MyMadAdventurerStateMachine.gameObject);
     }
 
     public override void Exit()
     {
-        CombatChecker.AddToChaseList(mad.gameObject);
+        CombatChecker.AddToChaseList(MyMadAdventurerStateMachine.gameObject);
     }
 
     public override void Update()
     {
-        position = new Vector2(mad.transform.position.x, mad.transform.position.z);
+        position = new Vector2(MyMadAdventurerStateMachine.transform.position.x, MyMadAdventurerStateMachine.transform.position.z);
         
-        if(DetectPlayer())mad.Transit(mad.chasingState);
+        if(DetectPlayer())MyMadAdventurerStateMachine.Transit(MyMadAdventurerStateMachine.ChasingState);
         
-        if (path.status == NavMeshPathStatus.PathInvalid || Vector2.Distance(position, new Vector2(path.corners[^1].x, path.corners[^1].z)) < minDistanceToCorner)
+        if (NavMeshPath.status == NavMeshPathStatus.PathInvalid || Vector2.Distance(position, new Vector2(NavMeshPath.corners[^1].x, NavMeshPath.corners[^1].z)) < minDistanceToCorner)
         {
             FindPath(GetRandomPosition());
         }
@@ -82,7 +87,7 @@ public class MadIdle : MadState
 
     private bool DetectPlayer()
     {
-        return mad.vision.SightDetection(maxSightRange) > sightThreshold || mad.vision.SoundDetection(maxSoundRange) > soundThreshold;
+        return MyMadAdventurerStateMachine.Vision.SightDetection(maxSightRange) > sightThreshold || MyMadAdventurerStateMachine.Vision.SoundDetection(maxSoundRange) > soundThreshold;
     }
 
     private void Reset()
