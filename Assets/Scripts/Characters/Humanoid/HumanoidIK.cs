@@ -15,6 +15,7 @@ public class HumanoidIK : MonoBehaviour
     public Animator animator;
     protected Weapon weapon;
     [SerializeField, Tooltip("The Shoulder node of the weapon arm")] protected Transform shoulderObj = null;
+    [SerializeField, Tooltip("The Avatars head")] protected Transform headObj = null;
     [SerializeField, Tooltip("Where the avatar should look")] protected Transform lookObj = null;
     
     [SerializeField,Tooltip("the rotation of the hand, readonly as they are set in code")] protected float x, z;

@@ -13,7 +13,7 @@ public class CrazedIK : HumanoidIK
         }
         if (!attacking)
         {
-            swingAngle = Mathf.Deg2Rad * Random.Range(-180 + angleLimit, 180 - angleLimit);
+            swingAngle = Mathf.Deg2Rad * (Random.Range(angleLimit, 360 - angleLimit) - 90);
             swingStart = shoulderObj.localPosition + (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), 0).normalized * armLenght);
             swingEnd = shoulderObj.localPosition - (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), -1).normalized * armLenght);
             nodes = GetQuadraticBezierPoints(swingStart, swingEnd, curveHeight);
@@ -133,23 +133,6 @@ public class CrazedIK : HumanoidIK
                 animator.SetIKRotationWeight(AvatarIKGoal.RightHand,0);
                 animator.SetLookAtWeight(0);
                 Reset();
-            }
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (!debug) return;
-        if (nodes is { Length: > 0 })
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawSphere(RelativePosition(swingStart), 0.1f);
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(RelativePosition(swingEnd), 0.1f);
-            Gizmos.color = Color.white;
-            foreach (var node in nodes)
-            {
-                Gizmos.DrawSphere(RelativePosition(node), 0.1f);
             }
         }
     }
