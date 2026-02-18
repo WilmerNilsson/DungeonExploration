@@ -27421,9 +27421,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddd80c1df0bac994890d9cf9db8d80b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  masterAudioParent: {fileID: 6914840342809890333}
-  effectsAudioParent: {fileID: 5275675524320075894}
-  musicAudioParent: {fileID: 1747108102539745454}
+  masterAudioPair:
+    InputField: {fileID: 8146695320963925660}
+    Slider: {fileID: 6144293428022534791}
+  effectsAudioPair:
+    InputField: {fileID: 8631556795506141414}
+    Slider: {fileID: 5780673189014599318}
+  musicAudioPair:
+    InputField: {fileID: 947183528819656101}
+    Slider: {fileID: 5034052279124586754}
   overNewValueWarningThreshhold: 150
   warningWindow: {fileID: 3018715960700438581}
 --- !u!222 &1914258555230912533
@@ -42043,7 +42049,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &8330001560471099537
 CanvasRenderer:
   m_ObjectHideFlags: 0
