@@ -168,7 +168,7 @@ public class HumanoidSoundLogic : MonoBehaviour
         if (_lastMoveAction == HumanoidMovement.moveActions.Airborne &&
             actions != HumanoidMovement.moveActions.Airborne)
         {
-            //PlayLandSound();
+            PlayLandSound();
         }
         
         _lastMoveAction = actions;

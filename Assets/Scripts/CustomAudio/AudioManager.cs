@@ -405,6 +405,7 @@ public class AudioManager : MonoBehaviour
     {
         GetMainCamera();
         CombatChecker.ResetCombatList();
+        OnPauseEvent(false);
     }
 
     private void OnSceneUnloaded(Scene scene)
