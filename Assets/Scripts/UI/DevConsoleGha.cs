@@ -69,7 +69,7 @@ public class DevConsoleGha : MonoBehaviour
             new DebugCommand("get_resolution", "shows resolution data", "get_resolution", GetResolutionCommand),
             new DebugCommand("teleport", "teleports the player", "teleport x y z", TeleportCommand),
             new DebugCommand("get_pos", "gets the player current possistion", "get_pos", GetPosCommand),
-            new DebugCommand("log_path", "gets the debug log path of the appöication", "log_path", LogPathCommand)
+            new DebugCommand("log_path", "gets the debug log path of the application", "log_path", LogPathCommand)
         };
     }
 
