@@ -85,7 +85,7 @@ PrefabInstance:
       objectReference: {fileID: 5360940743188143127}
     - target: {fileID: 4698545371277439629, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: moveSpeed
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4698545371277439629, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: crouchSpeed
@@ -285,10 +285,6 @@ MonoBehaviour:
   onMadState:
     m_PersistentCalls:
       m_Calls: []
-  currentState:
-    mad: {fileID: 0}
-    minDistanceToCorner: 0.1
-    target: {x: 0, y: 0, z: 0}
   idleState:
     mad: {fileID: 4804299107720638804}
     minDistanceToCorner: 0.1
@@ -298,7 +294,7 @@ MonoBehaviour:
     maxWaitTime: 2
     minWalkTime: 2
     maxWalkTime: 3
-    maxSightRange: 10
+    maxSightRange: 15
     maxSoundRange: 5
     sightThreshold: 0
     soundThreshold: 0

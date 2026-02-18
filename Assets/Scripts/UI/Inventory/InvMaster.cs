@@ -140,6 +140,8 @@ public class InvMaster : MonoBehaviour
 
     public void OpenPlayerInventory()
     {
+        if (playerInventory.activeSelf) return;
+
         contextMenu.Deselect();
         playerInventory.SetActive(true);
 
@@ -148,6 +150,8 @@ public class InvMaster : MonoBehaviour
 
     public void ClosePlayerInventory()
     {
+        if (!playerInventory.activeSelf) return;
+
         contextMenu.Deselect();
         CloseText();
 
