@@ -184,8 +184,8 @@ public class HumanoidSoundLogic : MonoBehaviour
     public void OnHungerChange(float hungerRatio)
     {
         if (!AudioManager.IsValid) return;
-        //AudioManager.Instance.SetGlobalParameter("hungerRatio", hungerRatio);
-        //Play hunger sound
+        AudioManager.Instance.SetGlobalParameter("Hunger", hungerRatio);
+        AudioManager.Instance.PlayOneShot(hungerPath, null, null, weaponObject);
     }
 
     public void PlayBlockSound()
