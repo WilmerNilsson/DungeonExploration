@@ -152,7 +152,14 @@ public class GameManagerSO : ScriptableObject
                 OnLoadScene(newSceneName);
             }
 
-            SceneManager.LoadScene(newSceneName);
+            if (SceneTransition.GetInstance())
+            {
+                SceneTransition.GetInstance().ChangeScene(newSceneName);
+            }
+            else
+            {
+                SceneManager.LoadScene(newSceneName);
+            }
         }
     }
 
