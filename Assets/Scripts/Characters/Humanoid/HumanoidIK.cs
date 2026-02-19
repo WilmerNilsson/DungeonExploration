@@ -4,7 +4,6 @@ using UnityEngine.Events;
 
 public class HumanoidIK : MonoBehaviour
 {
-    [SerializeField] protected bool debug = false;
     public UnityEvent<AttackState> onAttackStateChange;
     public UnityEvent<BlockState> onBlockStateChange;
     [SerializeField] protected AttackState attackState = AttackState.Start;
@@ -31,11 +30,7 @@ public class HumanoidIK : MonoBehaviour
     [SerializeField] protected float nodeTime = 0.5f;
     [SerializeField] protected float chargeTime = 2f;
     [SerializeField] protected float resetTime = 1f;
-    [SerializeField] protected float staggerTime = 3f;
-    protected Vector3[] nodes;
-    protected Vector3 current;
-    protected Vector3 target;
-    protected int nodeIndex;
+    [SerializeField] protected float recoilTime = 3f;
     protected Quaternion rotation;
     
     [Header("Blocking")]
@@ -117,30 +112,13 @@ public class HumanoidIK : MonoBehaviour
         blockState = BlockState.Start;
         startTime = 0;
         time = 0;
-
-        current = Vector3.zero;
-        target = Vector3.zero;
-        nodeIndex = 0;
         
         weapon.SetActive(false);
     }
-    
-    protected static Vector3[] GetQuadraticBezierPoints(Vector3 startpoint, Vector3 endPoint, float curveHeigh) {
-        Vector3 heighPoint = startpoint + (endPoint - startpoint) / 2 + Vector3.forward * curveHeigh;
 
-        Vector3[] res = new Vector3[100];
-        int maxT = 1;
-        int index = 0;
-
-        for (float t = 0; t <= maxT; t += 0.01f) {
-            Vector3 newPoint = (Mathf.Pow(1 - t, 2) * startpoint) + (2 * (1 - t) * t * heighPoint) + (t * t * endPoint);
-            try {
-                res[index++] = newPoint;
-            }
-            catch {
-                break;
-            }
-        }
-        return res;
+    protected Vector3 GetCurvePosition(float t)
+    {
+        Vector3 heighPoint = swingStart + (swingEnd - swingStart) / 2 + Vector3.forward * curveHeight;
+        return (Mathf.Pow(1 - t, 2) * swingStart) + (2 * (1 - t) * t * heighPoint) + (t * t * swingEnd);
     }
 }
