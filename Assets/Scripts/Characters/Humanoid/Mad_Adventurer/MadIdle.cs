@@ -22,11 +22,12 @@ public class MadIdle : MadState
     [SerializeField] private float sightThreshold;
     [SerializeField] private float soundThreshold;
 
-    public override void OnValidate(MadAdventurer madAdventurer)
+    public override void Start()
     {
-        base.OnValidate(madAdventurer);
+        base.Start();
         Physics.Raycast(mad.transform.position, Vector3.down,out RaycastHit hit, LayerMask.GetMask("Ground"));
         spawnPosition = hit.point;
+        Debug.Log(spawnPosition);
     }
 
     public override void Enter()
@@ -58,6 +59,7 @@ public class MadIdle : MadState
             if (walkTime <= 0)
             {
                 walking = false;
+                Stop();
             }
             else
             {
