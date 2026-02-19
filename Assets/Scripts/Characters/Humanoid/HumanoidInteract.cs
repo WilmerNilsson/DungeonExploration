@@ -67,6 +67,11 @@ public class HumanoidInteract : MonoBehaviour
             interactable = null;
             //UIText.SetActive(false);
         }
+
+        if (!interactable)
+        {
+            OnUnSee?.Invoke();
+        }
     }
 
     public void Interact()

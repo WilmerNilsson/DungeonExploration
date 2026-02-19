@@ -775,7 +775,7 @@ MonoBehaviour:
   jumpPath: Player/Jump
   landPath: Player/Land
   hungerPath: Player/Hunger
-  weaponObject: {fileID: 0}
+  weaponObject: {fileID: 701380088194323906}
   swingPath: Player/SwordSwing
   blockPath: Player/SwordBlock
   damagePath: Player/Take_Damage
@@ -831,6 +831,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1228488127259126123}
     m_Modifications:
+    - target: {fileID: -465523245192008808, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+      propertyPath: m_Range
+      value: 17
+      objectReference: {fileID: 0}
     - target: {fileID: -465523245192008808, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
       propertyPath: m_Color.b
       value: 0.18431371
@@ -1043,13 +1047,13 @@ MonoBehaviour:
   swingEnd: {x: 0, y: 0, z: 0}
   swingAngle: 0
   curveHeight: 2.5
-  nodeTime: 0.1
-  chargeTime: 0.7
+  nodeTime: 0.3
+  chargeTime: 1
   resetTime: 1
   recoilTime: 3
-  blockChargeTime: 0.5
+  blockChargeTime: 0.3
   blockTime: 1
-  blockResetTime: 0.5
+  blockResetTime: 0.7
   handOffset: 0.5
 --- !u!4 &5528919353053895491 stripped
 Transform:
@@ -1149,5 +1153,10 @@ PrefabInstance:
 --- !u!4 &211701987378106232 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6715476101138585803, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+  m_PrefabInstance: {fileID: 6900135006725150643}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &701380088194323906 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6231285627939046001, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
   m_PrefabInstance: {fileID: 6900135006725150643}
   m_PrefabAsset: {fileID: 0}
