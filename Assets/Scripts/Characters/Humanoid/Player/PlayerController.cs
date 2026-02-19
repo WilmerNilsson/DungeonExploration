@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour
 
         GameManagerSO.Instance.OnLockMouse += LockMovement;
         GameManagerSO.Instance.OnLockCamera += LockCamera;
+        
+        lookVector.y = transform.localEulerAngles.y;
     }
     
     private void LockMovement(bool newValue)
