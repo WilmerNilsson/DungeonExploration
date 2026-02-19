@@ -12,6 +12,12 @@ public class MadDyingState : MadState
         deactivateTimer = timeUntilDeactivate;
     }
 
+    public override void Enter()
+    {
+        base.Enter();
+        Stop();
+    }
+
     // Update is called once per frame
     public override void Update()
     {
