@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Unity.AI.Navigation;
+using UnityEngine.AI;
 
 public class DevConsoleGha : MonoBehaviour
 {
@@ -122,7 +123,13 @@ public class DevConsoleGha : MonoBehaviour
     {
         NavMeshSurface navMeshSurface = FindAnyObjectByType<NavMeshSurface>();
 
+        NavMeshAgent[] navMeshAgents = FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.InstanceID);
+        
         AddLine("navMeshSurface.isActiveAndEnabled: " + navMeshSurface.isActiveAndEnabled);
+        foreach(var agent in navMeshAgents)
+        {
+            AddLine("is on nav mesh? " + agent.isOnNavMesh);
+        }
     }
 
     private void KillPlayerCommand()
