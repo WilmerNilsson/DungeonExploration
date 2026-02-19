@@ -40,6 +40,7 @@ public class PlayerIK : HumanoidIK
             blockAngle = angle;
             anglePos = new Vector3(Mathf.Sin(blockAngle * Mathf.Deg2Rad), -Mathf.Cos(blockAngle * Mathf.Deg2Rad), 0) * handOffset;
             offsetPos.x = anglePos.y;
+            if (angle < 0) offsetPos.x++;
             offsetPos.y = -anglePos.x;
             if (blockAngle < 0)
             {
