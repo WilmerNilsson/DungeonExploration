@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Unity.AI.Navigation;
 
 public class DevConsoleGha : MonoBehaviour
 {
@@ -70,7 +71,8 @@ public class DevConsoleGha : MonoBehaviour
             new DebugCommand("teleport", "teleports the player", "teleport x y z", TeleportCommand),
             new DebugCommand("get_pos", "gets the player current possistion", "get_pos", GetPosCommand),
             new DebugCommand("log_path", "gets the debug log path of the application", "log_path", LogPathCommand),
-            new DebugCommand("kill_player", "deals 1000 damage to player", "kill_player", KillPlayerCommand)
+            new DebugCommand("kill_player", "deals 1000 damage to player", "kill_player", KillPlayerCommand),
+            new DebugCommand("debug_navmesh", "prints a lot of usefull nav mesh data", "debug_navmesh", DebugNavmeshCommand)
         };
     }
 
@@ -115,6 +117,13 @@ public class DevConsoleGha : MonoBehaviour
     }
 
     #region command methods 
+
+    private void DebugNavmeshCommand()
+    {
+        NavMeshSurface navMeshSurface = FindAnyObjectByType<NavMeshSurface>();
+
+        AddLine("navMeshSurface.isActiveAndEnabled: " + navMeshSurface.isActiveAndEnabled);
+    }
 
     private void KillPlayerCommand()
     {
