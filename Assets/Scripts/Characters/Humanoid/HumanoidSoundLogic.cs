@@ -136,7 +136,15 @@ public class HumanoidSoundLogic : MonoBehaviour
         AudioManager.Instance.StopEvent(enemyVoPath, STOP_MODE.ALLOWFADEOUT, gameObject);
         AudioManager.Instance.ReleaseInstance(enemyVoPath, gameObject);
     }
-    
+
+    private void OnDestroy()
+    {
+        if (!AudioManager.IsValid) return;
+        if (type != HumanoidType.CrazedAdventurer) return;
+        AudioManager.Instance.StopEvent(enemyVoPath, STOP_MODE.ALLOWFADEOUT, gameObject);
+        AudioManager.Instance.ReleaseInstance(enemyVoPath, gameObject);
+    }
+
     public void HandleMovementChange(HumanoidMovement.moveActions actions)
     {
         switch (actions)
