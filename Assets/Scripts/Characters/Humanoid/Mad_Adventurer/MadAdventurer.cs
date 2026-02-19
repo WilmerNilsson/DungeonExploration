@@ -19,6 +19,7 @@ public class MadAdventurer : MonoBehaviour
     public MadChasing chasingState = new MadChasing();
     public MadMelee meleeState = new MadMelee();
     public MadSearching searchingState = new MadSearching();
+    public MadDyingState dyingState = new MadDyingState();
     
     [HideInInspector] public Transform player;
     [HideInInspector] public Transform target;
@@ -30,6 +31,7 @@ public class MadAdventurer : MonoBehaviour
         chasingState.OnValidate(this);
         meleeState.OnValidate(this);
         searchingState.OnValidate(this);
+        dyingState.OnValidate(this);
     }
 #endif
 
@@ -51,11 +53,13 @@ public class MadAdventurer : MonoBehaviour
         chasingState.Intialize(this);
         meleeState.Intialize(this);
         searchingState.Intialize(this);
+        dyingState.Intialize(this);
 
         idleState.Start();
         chasingState.Start();
         meleeState.Start();
         searchingState.Start();
+        dyingState.Start();
         currentState = idleState;
         currentState.Enter();
 
@@ -74,6 +78,11 @@ public class MadAdventurer : MonoBehaviour
         currentState = targetState;
         onMadState.Invoke(currentState);
         currentState.Enter();
+    }
+
+    public void Die()
+    {
+        Transit(dyingState);
     }
 
     private void OnDrawGizmos()
