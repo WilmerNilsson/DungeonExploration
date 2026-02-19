@@ -4,6 +4,13 @@ using UnityEngine;
 public class MadChasing : MadState
 {
     [SerializeField] private float minDistanceToPlayer;
+    
+    [Header("Player detection")] 
+    [SerializeField] private float maxSightRange;
+    [SerializeField] private float maxSoundRange;
+    [SerializeField] private float sightThreshold;
+    [SerializeField] private float soundThreshold;
+    
     public override void Enter()
     {
         mad.controller.isSprinting = true;
@@ -19,6 +26,10 @@ public class MadChasing : MadState
 
     public override void Update()
     {
+        if (!DetectPlayer())
+        {
+            mad.Transit(mad.idleState);
+        }
         if (Vector3.Distance(mad.player.position, mad.transform.position) <= minDistanceToPlayer)
         {
             mad.Transit(mad.meleeState);
@@ -30,5 +41,10 @@ public class MadChasing : MadState
             Move();
         }
         
+    }
+    
+    private bool DetectPlayer()
+    {
+        return mad.vision.SightDetection(maxSightRange) > sightThreshold || mad.vision.SoundDetection(maxSoundRange) > soundThreshold;
     }
 }

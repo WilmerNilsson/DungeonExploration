@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 
 [RequireComponent(typeof(HumanoidController),typeof(HumanoidMovement),typeof(HumanoidRotator))]
-[RequireComponent(typeof(HumanoidInteract),typeof(HumanoidAttackAnimatorCompanion),typeof(PlayerInput))]
+[RequireComponent(typeof(HumanoidInteract),typeof(PlayerInput))]
 [RequireComponent(typeof(PlayerUIController),typeof(OneShotPlayer))]
 public class PlayerController : MonoBehaviour
 {
@@ -170,7 +170,7 @@ public class PlayerController : MonoBehaviour
             startedBlock = false;
             if (Vector2.Distance(mouseStart, mouseEnd) > 10)
             {
-                IK.Block(Vector2.SignedAngle(Vector2.right, (mouseEnd - mouseStart)));
+                IK.Block(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
             }
             GameManagerSO.Instance.LockCamera(false);
         }

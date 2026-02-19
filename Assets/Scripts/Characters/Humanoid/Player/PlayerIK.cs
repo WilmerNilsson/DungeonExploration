@@ -1,10 +1,13 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class PlayerIK : HumanoidIK
 {
-    
-    
+
+    private Vector3 frontPos;
+    private Vector3 anglePos;
+    private Vector3 offsetPos;
     public override void Attack(float angle = 0)
     {
         if (weapon == null)
@@ -19,12 +22,11 @@ public class PlayerIK : HumanoidIK
             swingAngle = Mathf.Deg2Rad * angle;
             swingStart = shoulderObj.localPosition + (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), 0).normalized * armLenght);
             swingEnd = shoulderObj.localPosition - (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), -1).normalized * armLenght);
-            nodes = GetQuadraticBezierPoints(swingStart, swingEnd, curveHeight);
             attacking = true;
         }
     }
 
-    public override void Block(float angle = 0)
+    public override void Block(float angle = 0) // Angle is relative to Down so 90 is right, -90 is left, 0 is down etc
     {
         if (weapon == null)
         {
@@ -34,8 +36,14 @@ public class PlayerIK : HumanoidIK
         if (!blocking && !attacking)
         {
             Reset();
-            blockAngle = Mathf.Deg2Rad * angle;
-            blockPos = Vector3.forward + shoulderObj.localPosition + (new Vector3(armLenght * Mathf.Cos(blockAngle), armLenght * Mathf.Sin(blockAngle), 0).normalized * handOffset);
+            blockAngle = angle;
+            anglePos = new Vector3(Mathf.Sin(blockAngle * Mathf.Deg2Rad), -Mathf.Cos(blockAngle * Mathf.Deg2Rad), 0) * handOffset;
+            offsetPos.x = anglePos.y;
+            offsetPos.y = -anglePos.x;
+            if (blockAngle < 0)
+            {
+                offsetPos = -offsetPos;
+            }
             blocking = true;
         }
     }
@@ -47,10 +55,8 @@ public class PlayerIK : HumanoidIK
                 
                 // Math for rotating the sword arm correctly
                 z = (Mathf.Atan2(swingStart.y - shoulderObj.localPosition.y, swingStart.x - shoulderObj.localPosition.x) * Mathf.Rad2Deg) + 180;
-                x = Mathf.Clamp(Mathf.SmoothStep(0,90,(float)nodeIndex/100), 0, 90);
                 rotation = RelativeRotation(Quaternion.AngleAxis(z, Vector3.forward) * Quaternion.AngleAxis(x, Vector3.up));
                 
-                if (current == Vector3.zero) target = nodes[0];
                 if (startTime == 0) startTime = Time.time;
                 
                 if (attackState == AttackState.Start)
@@ -58,15 +64,16 @@ public class PlayerIK : HumanoidIK
                     time = (Time.time - startTime) / chargeTime;
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,Mathf.SmoothStep(0, 1, time));
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,Mathf.Lerp(0, 1, time));
-                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(target));
+                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(swingStart));
                     animator.SetIKRotation(AvatarIKGoal.RightHand,rotation);
                 }
                 else if (attackState == AttackState.Swing)
                 {
-                    time = (Time.time - startTime) / (nodeTime/100);
+                    time = (Time.time - startTime) / nodeTime;
+                    x = Mathf.Clamp(Mathf.SmoothStep(0, 90, time), 0, 90);
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
-                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(Vector3.Slerp(current, target, time)));
+                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(GetCurvePosition(time)));
                     animator.SetIKRotation(AvatarIKGoal.RightHand,rotation);
                 }
                 else if (attackState == AttackState.Return)
@@ -74,36 +81,24 @@ public class PlayerIK : HumanoidIK
                     time = (Time.time - startTime) / resetTime;
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,Mathf.SmoothStep(1, 0, time));
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,Mathf.Lerp(1, 0, time));
-                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(current));
+                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(swingEnd));
                     animator.SetIKRotation(AvatarIKGoal.RightHand,rotation);
                 }
                 
                 if (time > 1f) //if it's near the goal switch goal or end the attack
                 {
-                    if (nodeIndex == 0) // Start Swing
+                    if (attackState == AttackState.Start) // Start Swing
                     {
                         weapon.SetActive(true);
-                        current = nodes[nodeIndex];
-                        target = nodes[nodeIndex + 1];
                         ChangeAttackState(AttackState.Swing);
-                        nodeIndex++;
                     }
-                    else if (nodeIndex < nodes.Length - 1) // Swing
-                    {
-                        current = nodes[nodeIndex];
-                        target = nodes[nodeIndex + 1];
-                        nodeIndex++;
-                    }
-                    else if (nodeIndex == nodes.Length - 1) // return
+                    else if (attackState == AttackState.Swing) // return
                     {
                         weapon.SetActive(false);
-                        current = nodes[nodeIndex];
                         ChangeAttackState(AttackState.Return);
-                        nodeIndex++;
                     }
-                    else // stop
+                    else if (attackState == AttackState.Return)// stop
                     {
-                        nodeIndex = 0;
                         attacking = false;
                         Reset();
                     }
@@ -114,32 +109,36 @@ public class PlayerIK : HumanoidIK
             {
                 if (startTime == 0) startTime = Time.time;
                 
-                z = (Mathf.Atan2(blockPos.y - shoulderObj.localPosition.y, blockPos.x - shoulderObj.localPosition.x) * Mathf.Rad2Deg) - 90;
-                if (Mathf.Abs(blockAngle) > Mathf.PI/2) z += 180;
+                z = blockAngle;
+                if (z > 0) z += 180;
+                
+                blockPos = headObj.forward + headObj.position + transform.TransformDirection(anglePos + offsetPos);
+                
+                Quaternion blockRotation = Quaternion.AngleAxis(z, Vector3.forward);
                 
                 if (blockState == BlockState.Start)
                 {
                     time = (Time.time - startTime) / blockChargeTime;
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,Mathf.SmoothStep(0, 1, time));
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,Mathf.Lerp(0, 1, time));
-                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(blockPos + blockPosMod));
-                    animator.SetIKRotation(AvatarIKGoal.RightHand,RelativeRotation(Quaternion.AngleAxis(z, Vector3.forward)));
+                    animator.SetIKPosition(AvatarIKGoal.RightHand,blockPos);
+                    animator.SetIKRotation(AvatarIKGoal.RightHand,RelativeRotation(blockRotation));
                 }
                 else if (blockState == BlockState.Block)
                 {
                     time = (Time.time - startTime) / blockTime;
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
-                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(blockPos + blockPosMod));
-                    animator.SetIKRotation(AvatarIKGoal.RightHand,RelativeRotation(Quaternion.AngleAxis(z, Vector3.forward)));
+                    animator.SetIKPosition(AvatarIKGoal.RightHand,blockPos);
+                    animator.SetIKRotation(AvatarIKGoal.RightHand,RelativeRotation(blockRotation));
                 }
                 else if (blockState == BlockState.Return)
                 {
                     time = (Time.time - startTime) / blockResetTime;
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,Mathf.SmoothStep(1, 0, time));
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,Mathf.Lerp(1, 0, time));
-                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(blockPos + blockPosMod));
-                    animator.SetIKRotation(AvatarIKGoal.RightHand,RelativeRotation(Quaternion.AngleAxis(z, Vector3.forward)));
+                    animator.SetIKPosition(AvatarIKGoal.RightHand,blockPos);
+                    animator.SetIKRotation(AvatarIKGoal.RightHand,RelativeRotation(blockRotation));
                 }
                 
                 if (time > 1f) //if it's near the goal switch goal or end the attack
@@ -178,5 +177,10 @@ public class PlayerIK : HumanoidIK
     {
         base.Reset();
         weapon.dealDamage = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(blockPos, 0.1f);
     }
 }
