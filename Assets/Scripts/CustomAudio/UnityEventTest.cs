@@ -6,7 +6,8 @@ public class UnityEventTest : MonoBehaviour
     public UnityEvent onPlay;
 
     [ContextMenu("Play")]
-    public void Play()
+
+    public void Activate()
     {
         onPlay.Invoke();
     }
