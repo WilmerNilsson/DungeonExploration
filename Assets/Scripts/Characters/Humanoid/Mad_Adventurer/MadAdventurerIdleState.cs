@@ -22,15 +22,10 @@ public class MadAdventurerIdleState : MadAventurerBaseState
     [SerializeField] private float sightThreshold;
     [SerializeField] private float soundThreshold;
 
-    public override void OnValidate(MadAdventurerStateMachine madAdventurer)
+    public override void Start()
     {
-        base.OnValidate(madAdventurer);
-    }
-
-    public override void Intialize(MadAdventurerStateMachine madAdventurer)
-    {
-        base.Intialize(madAdventurer);
-        Physics.Raycast(MyMadAdventurerStateMachine.transform.position, Vector3.down, out RaycastHit hit, LayerMask.GetMask("Ground"));
+        base.Start();
+        Physics.Raycast(mad.transform.position + Vector3.up, Vector3.down,out RaycastHit hit, LayerMask.GetMask("Ground"));
         spawnPosition = hit.point;
     }
 
@@ -63,6 +58,7 @@ public class MadAdventurerIdleState : MadAventurerBaseState
             if (walkTime <= 0)
             {
                 walking = false;
+                Stop();
             }
             else
             {

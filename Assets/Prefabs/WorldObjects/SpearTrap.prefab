@@ -937,11 +937,8 @@ MonoBehaviour:
           m_StringArgument: PlayerDetected
           m_BoolArgument: 1
         m_CallState: 2
-  OnTriggerExited:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 730499465777285280}
-        m_TargetAssemblyTypeName: UnityEngine.MeshRenderer, UnityEngine
+      - m_Target: {fileID: 8521583110136809241}
+        m_TargetAssemblyTypeName: UnityEngine.CapsuleCollider, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6
         m_Arguments:
@@ -949,9 +946,12 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: PlayerDetected
           m_BoolArgument: 0
         m_CallState: 2
+  OnTriggerExited:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &1168772996890356724
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1034,6 +1034,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 79918886863815297, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7423465523247237833}
+    - targetCorrespondingSourceObject: {fileID: 79918886863815297, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2879995447248777327}
+    - targetCorrespondingSourceObject: {fileID: 79918886863815297, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2070523275219130756}
   m_SourcePrefab: {fileID: 100100000, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}
 --- !u!23 &730499465777285280 stripped
 MeshRenderer:
@@ -1094,6 +1100,82 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6, y: 64.3, z: 6}
   m_Center: {x: 0, y: 33.8, z: 0}
+--- !u!114 &2879995447248777327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235038620602804597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5d30a9c5c8a2444c9a762f68638f5ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onPlay:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 730499465777285280}
+        m_TargetAssemblyTypeName: UnityEngine.MeshRenderer, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8521583110136809241}
+        m_TargetAssemblyTypeName: UnityEngine.CapsuleCollider, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 7423465523247237833}
+        m_TargetAssemblyTypeName: UnityEngine.BoxCollider, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+--- !u!114 &2070523275219130756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235038620602804597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a814d164a17170438a13d63660122b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activatedBy: 3
+  tagToActivate: 
+  activateOnce: 0
+  activationDelay: 0
+  instructions:
+  - command: 8
+    path: Ambiance/Spike_Trap
+    gameObj: {fileID: 6789113342608481104}
+    followObject: 1
+    stopMode: 0
+    parametersToSet: []
+    bankName: 
+    loadSampleData: 0
 --- !u!4 &3909977847892860817 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2772907834293826661, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}

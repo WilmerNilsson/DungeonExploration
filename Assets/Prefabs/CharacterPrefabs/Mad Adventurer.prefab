@@ -178,10 +178,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e27947f372aebf4faecea3f063f6227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debug: 0
   onAttackStateChange:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8503224205508373485}
+        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
+        m_MethodName: HandleAttackStateChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onBlockStateChange:
     m_PersistentCalls:
       m_Calls: []
@@ -204,7 +215,7 @@ MonoBehaviour:
   nodeTime: 0.5
   chargeTime: 2
   resetTime: 1
-  staggerTime: 3
+  recoilTime: 3
   blockChargeTime: 0.5
   blockTime: 1
   blockResetTime: 0.5
@@ -349,6 +360,10 @@ PrefabInstance:
     - target: {fileID: 3253121419754070490, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: enemyVoPath
       value: CrazedHumanoid/VO
+      objectReference: {fileID: 0}
+    - target: {fileID: 3253121419754070490, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
+      propertyPath: sprintPlayDelay
+      value: 0.31
       objectReference: {fileID: 0}
     - target: {fileID: 3253121419754070490, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: voiceActorAmount
@@ -506,15 +521,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea107c8abef7ba94da20fef4aa14aa0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NavMeshAgent: {fileID: 8156880709594735102}
-  Controller: {fileID: 1749713730186701101}
-  Animator: {fileID: 1357664741972358889}
-  Vision: {fileID: 3879916398111493942}
-  OnMadState:
+  agent: {fileID: 8156880709594735102}
+  controller: {fileID: 1749713730186701101}
+  animator: {fileID: 1357664741972358889}
+  vision: {fileID: 3879916398111493942}
+  onMadState:
     m_PersistentCalls:
-      m_Calls: []
-  IdleState:
-    MyMadAdventurerStateMachine: {fileID: 0}
+      m_Calls:
+      - m_Target: {fileID: 8503224205508373485}
+        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
+        m_MethodName: OnMadStateChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  idleState:
+    mad: {fileID: 3467929583550465738}
     minDistanceToCorner: 0.1
     target: {x: 0, y: 0, z: 0}
     wanderRange: 7
@@ -526,20 +553,30 @@ MonoBehaviour:
     maxSoundRange: 5
     sightThreshold: 0
     soundThreshold: 0
-  ChasingState:
-    MyMadAdventurerStateMachine: {fileID: 0}
+  chasingState:
+    mad: {fileID: 3467929583550465738}
     minDistanceToCorner: 0.1
     target: {x: 0, y: 0, z: 0}
     minDistanceToPlayer: 2
-  AgressiveState:
-    MyMadAdventurerStateMachine: {fileID: 0}
+    maxSightRange: 30
+    maxSoundRange: 15
+    sightThreshold: 0
+    soundThreshold: 0
+  meleeState:
+    mad: {fileID: 3467929583550465738}
     minDistanceToCorner: 0.1
     target: {x: 0, y: 0, z: 0}
     avatarIK: {fileID: 2975564478171349694}
     maxMeleeRange: 3
     minMeleeRange: 2
-  PlayerTransform: {fileID: 0}
-  TargetTransform: {fileID: 0}
+  dyingState:
+    mad: {fileID: 0}
+    minDistanceToCorner: 0.1
+    target: {x: 0, y: 0, z: 0}
+    timeUntilDeactivate: 4
+    deactivateTimer: 0
+  player: {fileID: 0}
+  target: {fileID: 0}
 --- !u!114 &3879916398111493942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -666,6 +703,18 @@ MonoBehaviour:
       - m_Target: {fileID: 8503224205508373485}
         m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
         m_MethodName: PlayDeathSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3467929583550465738}
+        m_TargetAssemblyTypeName: MadAdventurer, GameAssembly
+        m_MethodName: Die
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
