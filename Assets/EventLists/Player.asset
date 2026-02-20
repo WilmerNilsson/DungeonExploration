@@ -26,11 +26,12 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 0
     minDistance: 1
     maxDistance: 20
     debug: 0
     parameters: []
-  - eventName: Footsteps
+  - eventName: Walk
     eventReference:
       Guid:
         Data1: -1601875250
@@ -42,6 +43,7 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 0
     minDistance: 1
     maxDistance: 2.2
     debug: 0
@@ -62,6 +64,7 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 0
     minDistance: 1
     maxDistance: 20
     debug: 0
@@ -78,6 +81,7 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 0
     minDistance: 1
     maxDistance: 20
     debug: 0
@@ -98,8 +102,9 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 0
     minDistance: 1
-    maxDistance: 20
+    maxDistance: 2.2
     debug: 0
     parameters:
     - paramName: surfaceType
@@ -118,6 +123,7 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 0
     minDistance: 1
     maxDistance: 2.2
     debug: 0
@@ -138,6 +144,7 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 0
     minDistance: 1
     maxDistance: 20
     debug: 0
@@ -154,10 +161,15 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 1
     minDistance: 1
     maxDistance: 20
     debug: 0
-    parameters: []
+    parameters:
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
   - eventName: Death
     eventReference:
       Guid:
@@ -170,6 +182,7 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 0
     minDistance: 1
     maxDistance: 20
     debug: 0
@@ -186,6 +199,7 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 0
     minDistance: 1
     maxDistance: 20
     debug: 0
@@ -202,6 +216,7 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 0
     minDistance: 1
     maxDistance: 20
     debug: 0
@@ -218,6 +233,7 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 0
     minDistance: 1
     maxDistance: 20
     debug: 0
@@ -234,6 +250,7 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 0
     minDistance: 1
     maxDistance: 20
     debug: 0
@@ -250,6 +267,7 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 0
     minDistance: 1
     maxDistance: 20
     debug: 0
@@ -266,6 +284,7 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 0
     minDistance: 1
     maxDistance: 20
     debug: 0
@@ -282,6 +301,96 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: SwordBlock
+    eventReference:
+      Guid:
+        Data1: -611396921
+        Data2: 1269773903
+        Data3: -551713146
+        Data4: -1597503729
+      Path: event:/Sound/Player/Weapons/Sword/SwordBlock
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Eating
+    eventReference:
+      Guid:
+        Data1: 1655501131
+        Data2: 1107906845
+        Data3: 994653878
+        Data4: 1131485022
+      Path: event:/Sound/UI/Player/Eating
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Hunger
+    eventReference:
+      Guid:
+        Data1: -1937690854
+        Data2: 1267517978
+        Data3: 467999671
+        Data4: 331976063
+      Path: event:/Sound/UI/Player/Hunger
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters:
+    - paramName: Hunger
+      isGlobal: 1
+      data1: 707327616
+      data2: 114759573
+  - eventName: Low_HP
+    eventReference:
+      Guid:
+        Data1: 51949675
+        Data2: 1214113737
+        Data3: -1499154040
+        Data4: 770145969
+      Path: event:/Sound/UI/Player/Low_HP
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Sanity_Depletion
+    eventReference:
+      Guid:
+        Data1: 1138682245
+        Data2: 1297785148
+        Data3: -2050440514
+        Data4: -404897597
+      Path: event:/Sound/UI/Player/Sanity_Depletion
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
     minDistance: 1
     maxDistance: 20
     debug: 0

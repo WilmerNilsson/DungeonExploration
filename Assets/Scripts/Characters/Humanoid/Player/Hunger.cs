@@ -8,41 +8,38 @@ public class Hunger : MonoBehaviour
     [SerializeField] private PlayerHungerSO playerHungerSO;
     [SerializeField] private Health health;
     
-    [Tooltip("The amount of time between hunger ticks in seconds")]
-    [SerializeField] private float hungerCooldown = 10;
+    //[Tooltip("The amount of time between hunger ticks in seconds")]
+    //[SerializeField] private float hungerCooldown = 10;
 
-    public UnityEvent OnHunger;
+    public UnityEvent<float> OnHunger;
     public UnityEvent OnEat;
 
     public static Hunger instance;
     
     private IEnumerator HungerCoroutine()
     {
-        yield return new WaitForSeconds(hungerCooldown);
+        yield return new WaitForSeconds(playerHungerSO.hungerCooldown);
         LoseHunger(1);
     }
 
     public void ResetHunger()
     {
-        playerHungerSO.currentHunger = playerHungerSO.maxHunger;
-        playerHungerSO.hungerDamage = 0;
+        playerHungerSO.ResetValues();
     }
 
     private void Awake()
     {
         instance = this;
         StartCoroutine(HungerCoroutine());
+        ResetHunger();
     }
 
     public void LoseHunger(int amount)
     {
-        playerHungerSO.currentHunger -= amount;
-        OnHunger?.Invoke();
-        if (playerHungerSO.currentHunger < 0)
+        OnHunger?.Invoke((float)playerHungerSO.currentHunger / playerHungerSO.maxHunger);
+        if (!playerHungerSO.ChangeHunger(-1))
         {
-            playerHungerSO.currentHunger = 0;
-            playerHungerSO.hungerDamage++;
-            health.TakeDamage(playerHungerSO.hungerDamage);
+            health.TakeDamage(1);
         }
 
         StartCoroutine(HungerCoroutine());
@@ -51,13 +48,8 @@ public class Hunger : MonoBehaviour
     public void Eat(int amount)
     {
         StopAllCoroutines();
-        playerHungerSO.hungerDamage = 0;
-        playerHungerSO.currentHunger += amount;
+        playerHungerSO.ChangeHunger(amount);
         OnEat?.Invoke();
-        if (playerHungerSO.currentHunger > playerHungerSO.maxHunger)
-        {
-            playerHungerSO.currentHunger = playerHungerSO.maxHunger;
-        }
 
         StartCoroutine(HungerCoroutine());
     }

@@ -31,26 +31,56 @@ MonoBehaviour:
     maxDistance: 20
     debug: 1
     parameters:
+    - paramName: hpRatio
+      isGlobal: 1
+      data1: 1462849765
+      data2: 2054270614
     - paramName: Combat
       isGlobal: 1
       data1: 526677180
       data2: 1017106037
-    - paramName: HP
-      isGlobal: 1
-      data1: 3870079273
-      data2: 3045034990
-    - paramName: Close
-      isGlobal: 1
-      data1: 3648994617
-      data2: 2351758586
   - eventName: Test
     eventReference:
       Guid:
-        Data1: -1424829905
-        Data2: 1332609142
-        Data3: 1973993888
-        Data4: -556861212
-      Path: event:/Music/BGM/Test
+        Data1: 828367967
+        Data2: 1083784792
+        Data3: -754569551
+        Data4: 2050587228
+      Path: event:/Music/BGM/IntroStinger
+    banks:
+    - Music
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 0
+    maxDistance: 10000
+    debug: 1
+    parameters: []
+  - eventName: OpeningScene
+    eventReference:
+      Guid:
+        Data1: -2147219152
+        Data2: 1223937769
+        Data3: 1443655614
+        Data4: -692716788
+      Path: event:/Music/BGM/Menu
+    banks:
+    - Music
+    isOneShot: 0
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 1
+    parameters: []
+  - eventName: MainMenu
+    eventReference:
+      Guid:
+        Data1: -2004815424
+        Data2: 1108822822
+        Data3: 1456864156
+        Data4: 1885158195
+      Path: event:/Music/BGM/Menu 2
     banks:
     - Music
     isOneShot: 0

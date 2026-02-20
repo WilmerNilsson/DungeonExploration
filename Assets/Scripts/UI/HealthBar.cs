@@ -22,22 +22,17 @@ public class HealthBar : MonoBehaviour
         {
             sFImage = GetComponent<SlicedFilledImage>();
         }
-    }
 
-    private void Start()
-    {
         health = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Health>();
 
 #if DEBUG
-        if(health == null)
+        if (health == null)
         {
             Debug.LogWarning("failed to find player health, disabling script", this);
             gameObject.SetActive(false);
             return;
         }
 #endif
-
-        UpdateInfo(new HealthData(health.CurrentHealth, health.MaxHealth));
     }
 
     private void OnEnable()

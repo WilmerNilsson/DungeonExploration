@@ -70,7 +70,7 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
-        CurrentHealth = MaxHealth;
+        ChangeHealth(MaxHealth - CurrentHealth);
 
         if (!(playerHealth == null))
         {

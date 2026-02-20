@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class MinimapCamera : MonoBehaviour
 {
     [Tooltip("A list of cameras that view the different floors")]
     [SerializeField] private List<GameObject> cameras;
+
+    [SerializeField] private TextMeshProUGUI floorText;
 
     private void Awake()
     {
@@ -23,7 +26,7 @@ public class MinimapCamera : MonoBehaviour
 
     public void SetFloor(int floor)
     {
-        if (floor > cameras.Count - 1)
+        if (floor > cameras.Count)
         {
             Debug.LogWarning("floor is out of range", this);
             return;
@@ -33,6 +36,7 @@ public class MinimapCamera : MonoBehaviour
         {
             cameras[i].SetActive(false);
         }
-        cameras[floor].SetActive(true);
+        cameras[floor - 1].SetActive(true);
+        floorText.text = floor.ToString();
     }
 }

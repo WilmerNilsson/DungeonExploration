@@ -15,6 +15,7 @@ public class GameManagerSO : ScriptableObject
     private const string MasterSoundName = "Master";
     private const string SoundEffectsSoundName = "SFX";
     private const string MusicSoundName = "Music";
+    [SerializeField] private string mainMenuSceneName = "MainMenu";
 
     public SaveFileManager SavefileManager = new();
     private SavefileData? tempSavefile;
@@ -29,6 +30,7 @@ public class GameManagerSO : ScriptableObject
     }
     private int thingsLockingMouse = 0;
     private int thingsLockingCamera = 0;
+    private Vector3 spawnPosition = new Vector3();
 
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public event Action<bool>? OnFreezeGameChangeSelfReset;
@@ -39,7 +41,7 @@ public class GameManagerSO : ScriptableObject
     /// <summary>
     /// will not reset on scene change, care for memory leaks
     /// </summary>
-    public event Action<int>? OnLoadScene;
+    public event Action<string>? OnLoadScene;
     /// <summary>
     /// will not reset on scene change, care for memory leaks
     /// </summary>
@@ -83,35 +85,53 @@ public class GameManagerSO : ScriptableObject
 
     #region move to scene stuff
 
-    public void StartDemo()
+    /*public void StartDemo()
     {
-        MoveToScene(Vector2.zero, mainSceneNumber);
+        MoveToScene(Vector3.zero, mainSceneNumber);
+    }*/
+
+    public void SetSpawnPosition(Vector3 pos)
+    {
+        spawnPosition  = pos;
     }
 
-    /// <summary>
-    /// If we move to a new scene trough a door or passage.
-    /// </summary>
-    /// <param name="newLocation">Where te exit of said passage is.</param>
-    public void MoveToScene(Vector2 newLocation, int newSceneNr)
+    public void MoveToScene(string sceneName)
+    {
+        MoveToScene(spawnPosition, sceneName);
+    }
+
+    public void MoveToScene(Vector3 newLocation, string newSceneName)
     {
         //currentSavefileData.sceneNr = newSceneNr;
         //currentSavefileData.savePos = newLocation;
 
-        if(newSceneNr != SceneManager.GetActiveScene().buildIndex)
+        if(newSceneName != SceneManager.GetActiveScene().name)
         {
             ResetActions();
 
-            if(newSceneNr == mainMenuSceneNumber)
+            if(newSceneName == mainMenuSceneName) // main menu
             {
                 Time.timeScale = 1;
             }
+            else //else game file speed, which is 1 for now cause not implimented
+            {
+                Time.timeScale = 1;
+            }
+            
 
             if(OnLoadScene != null)
             {
-                OnLoadScene(newSceneNr);
+                OnLoadScene(newSceneName);
             }
 
-            SceneManager.LoadScene(newSceneNr);
+            if (SceneTransition.GetInstance())
+            {
+                SceneTransition.GetInstance().ChangeScene(newSceneName);
+            }
+            else
+            {
+                SceneManager.LoadScene(newSceneName);
+            }
         }
     }
 

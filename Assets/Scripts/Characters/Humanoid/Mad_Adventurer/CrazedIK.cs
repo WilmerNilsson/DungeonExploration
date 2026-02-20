@@ -4,6 +4,8 @@ using Random = UnityEngine.Random;
 
 public class CrazedIK : HumanoidIK
 {
+    private float interruptedSwingTime;
+    private Vector3 returnTarget;
     public override void Attack(float angle = 0)
     {
         if (weapon == null)
@@ -13,10 +15,11 @@ public class CrazedIK : HumanoidIK
         }
         if (!attacking)
         {
-            swingAngle = Mathf.Deg2Rad * Random.Range(-180 + angleLimit, 180 - angleLimit);
-            swingStart = shoulderObj.localPosition + (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), 0).normalized * armLenght);
-            swingEnd = shoulderObj.localPosition - (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), -1).normalized * armLenght);
-            nodes = GetQuadraticBezierPoints(swingStart, swingEnd, curveHeight);
+            x = 0;
+            swingAngle = Mathf.Deg2Rad * (Random.Range(angleLimit, 360 - angleLimit) - 90);
+            swingStart = shoulderObj.localPosition + (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), 0).normalized * armLenght) - transform.forward;
+            swingEnd = shoulderObj.localPosition - (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), -1).normalized * armLenght) - transform.forward;
+            returnTarget = swingEnd;
             attacking = true;
         }
     }
@@ -24,6 +27,8 @@ public class CrazedIK : HumanoidIK
     public void Interrupt()
     {
         Debug.Log("Interrupt");
+        interruptedSwingTime = time;
+        returnTarget = swingStart;
         ChangeAttackState(AttackState.Interrupt);
         weapon.SetActive(false);
     }
@@ -40,10 +45,8 @@ public class CrazedIK : HumanoidIK
                 }
                 
                 z = (Mathf.Atan2(swingStart.y - shoulderObj.localPosition.y, swingStart.x - shoulderObj.localPosition.x) * Mathf.Rad2Deg) + 180;
-                x = Mathf.Clamp(Mathf.SmoothStep(0,90,(float)nodeIndex/100), 0, 90);
                 rotation = RelativeRotation(Quaternion.AngleAxis(z, Vector3.forward) * Quaternion.AngleAxis(x, Vector3.up));
                 
-                if (current == Vector3.zero) target = nodes[0];
                 if (startTime == 0) startTime = Time.time;
                 
                 if (attackState == AttackState.Start)
@@ -51,15 +54,16 @@ public class CrazedIK : HumanoidIK
                     time = (Time.time - startTime) / chargeTime;
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,Mathf.SmoothStep(0, 1, time));
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,Mathf.Lerp(0, 1, time));
-                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(target));
+                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(swingStart));
                     animator.SetIKRotation(AvatarIKGoal.RightHand,rotation);
                 }
                 else if (attackState == AttackState.Swing)
                 {
-                    time = (Time.time - startTime) / (nodeTime/100);
+                    time = (Time.time - startTime) / nodeTime;
+                    x = Mathf.Clamp(Mathf.SmoothStep(0, 160, time), 0, 160);
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
-                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(Vector3.Slerp(current, target, time)));
+                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(GetCurvePosition(time)));
                     animator.SetIKRotation(AvatarIKGoal.RightHand,rotation);
                 }
                 else if (attackState == AttackState.Return)
@@ -67,60 +71,40 @@ public class CrazedIK : HumanoidIK
                     time = (Time.time - startTime) / resetTime;
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,Mathf.SmoothStep(1, 0, time));
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,Mathf.Lerp(1, 0, time));
-                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(current));
+                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(returnTarget));
                     animator.SetIKRotation(AvatarIKGoal.RightHand,rotation);
                 }
                 else if (attackState == AttackState.Interrupt)
                 {
-                    time = (Time.time - startTime) / (staggerTime/100);
+                    time = interruptedSwingTime - (Time.time - startTime) / recoilTime;
+                    x = Mathf.Clamp(Mathf.SmoothStep(0, 160, time), 0, 160);
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
-                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(Vector3.Slerp(current, target, time)));
+                    animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(GetCurvePosition(time)));
                     animator.SetIKRotation(AvatarIKGoal.RightHand,rotation);
                 }
                 
-                if (time > 1f) //if it's near the goal switch goal or end the attack
+                if (time > 1f || (attackState == AttackState.Interrupt && time < 0)) //if it's near the goal switch goal or end the attack
                 {
                     if (attackState == AttackState.Interrupt)
                     {
-                        if (nodeIndex > 0)
-                        {
-                            current = nodes[nodeIndex];
-                            target = nodes[nodeIndex - 1];
-                            nodeIndex--;
-                        }
-                        else if (nodeIndex == 0)
-                        {
-                            attacking = false;
-                            Reset();
-                        }
+                        weapon.SetActive(false);
+                        ChangeAttackState(AttackState.Return);
                     }
                     else
                     {
-                        if (nodeIndex == 0) // Start Swing
+                        if (attackState == AttackState.Start) // Start Swing
                         {
-                            current = nodes[nodeIndex];
-                            target = nodes[nodeIndex + 1];
-                            ChangeAttackState(AttackState.Swing);
                             weapon.SetActive(true);
-                            nodeIndex++;
+                            ChangeAttackState(AttackState.Swing);
                         }
-                        else if (nodeIndex < nodes.Length - 1) // Swing
-                        {
-                            current = nodes[nodeIndex];
-                            target = nodes[nodeIndex + 1];
-                            nodeIndex++;
-                        }
-                        else if (nodeIndex == nodes.Length - 1) // return
+                        else if (attackState == AttackState.Swing) // return
                         {
                             weapon.SetActive(false);
-                            current = nodes[nodeIndex];
                             ChangeAttackState(AttackState.Return);
-                            nodeIndex++;
                         }
-                        else // stop
+                        else if (attackState == AttackState.Return)// stop
                         {
-                            nodeIndex = 0;
                             attacking = false;
                             Reset();
                         }
@@ -136,94 +120,4 @@ public class CrazedIK : HumanoidIK
             }
         }
     }
-
-    private Vector3 RelativePosition(Vector3 position)
-    {
-        return transform.TransformDirection(position) + animator.rootPosition;
-    }
-
-    private Quaternion RelativeRotation(Quaternion rotation)
-    {
-        Vector3 euler = rotation.eulerAngles;
-        euler.y += transform.parent.eulerAngles.y;
-        return Quaternion.Euler(euler);
-    }
-
-    private void Reset()
-    {
-        attackState = AttackState.Start;
-        startTime = 0;
-        time = 0;
-
-        current = Vector3.zero;
-        target = Vector3.zero;
-        nodeIndex = 0;
-        
-        weapon.SetActive(false);
-    }
-    
-    private static Vector3[] GetQuadraticBezierPoints(Vector3 startpoint, Vector3 endPoint, float curveHeigh) {
-        Vector3 heighPoint = startpoint + (endPoint - startpoint) / 2 + Vector3.forward * curveHeigh;
-
-        Vector3[] res = new Vector3[100];
-        int maxT = 1;
-        int index = 0;
-
-        for (float t = 0; t <= maxT; t += 0.01f) {
-            Vector3 newPoint = (Mathf.Pow(1 - t, 2) * startpoint) + (2 * (1 - t) * t * heighPoint) + (t * t * endPoint);
-            try {
-                res[index++] = newPoint;
-            }
-            catch {
-                break;
-            }
-        }
-        return res;
-    }
-
-    private Vector3[] GetCurvePoints(Vector3 startpoint, Vector3 endPoint)
-    {
-        Vector3[] res = new Vector3[100];
-        // int maxT = 1;
-        // int index = 0;
-        //
-        // for (float t = 0; t <= maxT; t += 0.01f) {
-        //     Vector3 newPoint = (Mathf.Pow(1 - t, 2) * startpoint) + (2 * (1 - t) * t * heighPoint) + (t * t * endPoint);
-        //     try {
-        //         res[index++] = newPoint;
-        //     }
-        //     catch {
-        //         break;
-        //     }
-        // }
-        return res;
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (nodes is { Length: > 0 })
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawSphere(RelativePosition(swingStart), 0.1f);
-            Gizmos.color = Color.red;
-            Gizmos.DrawSphere(RelativePosition(swingEnd), 0.1f);
-            Gizmos.color = Color.white;
-            foreach (var node in nodes)
-            {
-                Gizmos.DrawSphere(RelativePosition(node), 0.1f);
-            }
-        }
-    }
-}
-
-[System.Serializable]
-class CustomKeyframe
-{
-    [SerializeField] private Vector3 position;
-    [SerializeField] private Vector3 rotation;
-    [SerializeField] private float time;
-    
-    public Vector3 Position { get { return position; } }
-    public Quaternion Rotation { get { return Quaternion.Euler(rotation); } }
-    public float Time { get { return time; } }
 }

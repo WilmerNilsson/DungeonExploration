@@ -10,16 +10,17 @@ public class AudioManager : MonoBehaviour
 {
     #region Initialization
 
-    public OcclusionChecker occlusionChecker;
+    public OcclusionChecker occlusionChecker = new();
+    
+    public WallChecker wallChecker = new();
     
     public static AudioManager Instance;
-
-    private Health _playerHealth;
-
+    
     private void Awake() //Singleton + BankLaddning + Caching
     {
         if (Instance != null && Instance != this)
         {
+            AudioDebug.Print("AudioManager has an instance, destroying this one");
             Destroy(this.gameObject);
         } else 
         {
@@ -38,12 +39,6 @@ public class AudioManager : MonoBehaviour
         {
             AudioDebug.Print("Couldn't find GameManagerSO", true);
         }
-
-        if (occlusionChecker == null)
-        {
-            Debug.LogWarning("No occlusion checker is set in the inspector, please add one if you want to be able to change values");
-            occlusionChecker = new OcclusionChecker();
-        }
         
         DontDestroyOnLoad(this);
         
@@ -52,7 +47,8 @@ public class AudioManager : MonoBehaviour
         RefreshEventListCache();
         RefreshAllEventCaches();
         RefreshGlobalParameterCache();
-        GetMainCamera();
+        GetListener();
+        CombatChecker.ResetCombatList();
 
         AudioDebug.Print("AudioManager Initialized");
     }
@@ -150,17 +146,22 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void SetGlobalParameter(string paramName, float paramValue) //Om Global parameter finns sätts vi den till paramValue;
+    public void SetGlobalParameter(string paramName, float paramValue, bool printDebug = true) //Om Global parameter finns sätts vi den till paramValue;
     {
         if (GlobalParameterCache.TryGetValue(paramName, out var id))
         {
             RuntimeManager.StudioSystem.setParameterByID(id, paramValue);
-
-            AudioDebug.Print("Successfully set " + paramName + " to " + paramValue);
+            if (printDebug)
+            {
+                AudioDebug.Print("Successfully set " + paramName + " to " + paramValue);
+            }
         }
         else
         {
-           AudioDebug.Print("Failed to set " + paramName + " to " + paramValue, true);
+            if (printDebug)
+            {
+                AudioDebug.Print("Failed to set " + paramName + " to " + paramValue, true);
+            }
         }
     }
 
@@ -385,6 +386,7 @@ public class AudioManager : MonoBehaviour
     private void OnPauseEvent(bool paused) //Kallas av GameManagerSO och sätter parametern Paused till 
     {
         SetGlobalParameter("Paused", paused ? 1 : 0);
+        SetPause(paused);
     }
 
     private void FixedUpdate()
@@ -401,7 +403,9 @@ public class AudioManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        GetMainCamera();
+        GetListener();
+        CombatChecker.ResetCombatList();
+        OnPauseEvent(false);
     }
 
     private void OnSceneUnloaded(Scene scene)
@@ -419,17 +423,19 @@ public class AudioManager : MonoBehaviour
 
     public static GameObject Listener;
 
-    private static void GetMainCamera()
+    private static void GetListener()
     {
-        if (Camera.main != null)
+        var cameras = GameObject.FindObjectsByType<Camera>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (var camera in cameras)
         {
-            Listener = Camera.main.gameObject;
-            AudioDebug.Print("Main camera found");
+            if (camera.TryGetComponent(typeof(StudioListener), out var studioListener))
+            {
+                Listener = camera.gameObject;
+                AudioDebug.Print("Successfully found listener");
+                return;
+            }
         }
-        else
-        {
-            AudioDebug.Print("No main camera found", true);
-        }
+        AudioDebug.Print("No listener found", true);
     }
     
     #endregion
@@ -461,6 +467,23 @@ public class AudioManager : MonoBehaviour
         }
 
         AudioDebug.Print("Stopped all events");
+    }
+
+    public void SetPause(bool paused)
+    {
+        RuntimeManager.StudioSystem.getBank(MasterBankPath, out var masterBank);
+        masterBank.getBusList(out var busList);
+
+        foreach (var bus in busList)
+        {
+            bus.getPath(out var path);
+            if (path == "bus:/Sound")
+            {
+                bus.setPaused(paused);
+            }
+        }
+
+        AudioDebug.Print("Set pause to " + paused);
     }
 
     public void

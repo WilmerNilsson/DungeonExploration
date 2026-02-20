@@ -26,10 +26,15 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 1
     minDistance: 1
     maxDistance: 20
     debug: 0
-    parameters: []
+    parameters:
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
   - eventName: Die
     eventReference:
       Guid:
@@ -42,10 +47,15 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 1
     minDistance: 1
     maxDistance: 20
     debug: 0
-    parameters: []
+    parameters:
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
   - eventName: Take_Damage
     eventReference:
       Guid:
@@ -58,10 +68,15 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 1
     minDistance: 1
     maxDistance: 20
     debug: 0
-    parameters: []
+    parameters:
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
   - eventName: VO
     eventReference:
       Guid:
@@ -74,14 +89,23 @@ MonoBehaviour:
     - SFX
     isOneShot: 0
     is3D: 1
+    isOcclusion: 1
     minDistance: 1
-    maxDistance: 100
+    maxDistance: 50
     debug: 0
     parameters:
+    - paramName: Walls
+      isGlobal: 0
+      data1: 3996502556
+      data2: 1746408966
     - paramName: EnemyVO
       isGlobal: 0
       data1: 3794586967
       data2: 3494831560
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
   - eventName: Walk
     eventReference:
       Guid:
@@ -94,8 +118,17 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 1
     minDistance: 1
-    maxDistance: 20
+    maxDistance: 30
     debug: 0
-    parameters: []
+    parameters:
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
+    - paramName: Walls
+      isGlobal: 0
+      data1: 3996502556
+      data2: 1746408966
   debug: 0

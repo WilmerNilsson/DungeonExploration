@@ -1,21 +1,57 @@
 using System;
+using FMOD.Studio;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class HumanoidSoundLogic : MonoBehaviour
 {
+    private enum HumanoidType {Player, CrazedAdventurer}
+    [Header("Type")]
+    [SerializeField] private HumanoidType type;
+    [SerializeField] private int voiceActorAmount;
+    private int _currentVoiceActor;
+    
+    private enum FootstepsActivatedBy {Timer, Animation}
+    [Header("Movement")]   
+    [SerializeField] private FootstepsActivatedBy footstepsActivatedBy;
+    
     [SerializeField, Min(0)] private float walkPlayDelay = 0.5f;
     [SerializeField, Min(0)] private float sprintPlayDelay = 0.25f;
     [SerializeField, Min(0)] private float crouchWalkPlayDelay = 1f;
+
+    [Serializable]
+    public struct FootstepPaths
+    {
+        public string sneak;
+        public string walk;
+        public string sprint;
+    }
+    [SerializeField] private FootstepPaths footstepPaths;
+    [SerializeField] private string crouchPath;
+    [SerializeField] private string jumpPath;
+    [SerializeField] private string landPath;
+    private string _currentFootstepSound;
+    [SerializeField] private string hungerPath;
+    
+    [Header("Weapons")]
     [SerializeField] private GameObject weaponObject;
+    [SerializeField] private string swingPath;
+    [SerializeField] private string blockPath;
+   
+    [Header("Damage & Death")]
+    [SerializeField] private string damagePath;
+    [SerializeField] private string deathPath;
 
-    [SerializeField] private string footstepSound;
-
-    [SerializeField] private string SwingSound;
+    [Header("Enemy VO")] 
+    [SerializeField] private string enemyVoPath;
+    
     //possibly just reference the speed, would work well with speed pots
     //altough once animations are implimented we can just use them, even if we remove the physical rig for the player
 
     private float currentTimer = 1f;
     private float currentDelay = 0f;
+    
+    private HumanoidMovement.moveActions _lastMoveAction;
 
 #if DEBUG
     private void OnValidate()
@@ -27,11 +63,11 @@ public class HumanoidSoundLogic : MonoBehaviour
     }
 #endif
     
-    public void AttackSound(HumanoidIK.AttackState newState)
+    public void HandleAttackStateChange(HumanoidIK.AttackState newState)
     {
-        if (AudioManager.IsValid && newState == PlayerIK.AttackState.Swing)
+        if (AudioManager.IsValid && newState == HumanoidIK.AttackState.Swing)
         {
-            AudioManager.Instance.PlayOneShot(SwingSound, null, null, gameObject, true);
+            AudioManager.Instance.PlayOneShot(swingPath, null, null, weaponObject, true);
         }
     }
 
@@ -41,7 +77,7 @@ public class HumanoidSoundLogic : MonoBehaviour
     //so no need to think about optimizing it to that degree
     private void Update()
     {
-        if (currentDelay == 0f) return;
+        if (currentDelay == 0f || footstepsActivatedBy == FootstepsActivatedBy.Animation) return;
 
         float diff = Time.deltaTime * (1f / currentDelay);
 
@@ -59,9 +95,54 @@ public class HumanoidSoundLogic : MonoBehaviour
 
             if (AudioManager.IsValid)
             {
-                AudioManager.Instance.PlayOneShot(footstepSound, null, null, gameObject);
+                AudioManager.Instance.PlayOneShot(_currentFootstepSound, null, null, gameObject);
             }
         }
+    }
+
+    private void Start()
+    {
+        if (type != HumanoidType.CrazedAdventurer) return;
+        if (!AudioManager.IsValid) return;
+        _currentVoiceActor = Random.Range(0, voiceActorAmount - 1);
+        AudioManager.Instance.CreateInstance(enemyVoPath, gameObject);
+        AudioManager.Instance.SetParameter(enemyVoPath, "EnemyVO", _currentVoiceActor, gameObject);
+        AudioManager.Instance.StartEvent(enemyVoPath, gameObject);
+    }
+
+    public void PlayFootstepSound(string path)
+    {
+        if (path is "" or null) return;
+        if (AudioManager.IsValid)
+        {
+            AudioManager.Instance.PlayOneShot(path, null, null, gameObject);
+        }
+    }
+
+    public void PlayDamageSound() //TODO: enemy vo parameter när de finns
+    {
+        if (AudioManager.IsValid)
+        {
+            AudioManager.Instance.PlayOneShot(damagePath, null, null, gameObject);
+        }
+    }
+
+    public void PlayDeathSound() //TODO: enemy vo parameter när de finns
+    {
+        if (!AudioManager.IsValid) return;
+        AudioManager.Instance.PlayOneShot(deathPath, null, null, gameObject);
+
+        if (type != HumanoidType.CrazedAdventurer) return;
+        AudioManager.Instance.StopEvent(enemyVoPath, STOP_MODE.ALLOWFADEOUT, gameObject);
+        AudioManager.Instance.ReleaseInstance(enemyVoPath, gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        if (!AudioManager.IsValid) return;
+        if (type != HumanoidType.CrazedAdventurer) return;
+        AudioManager.Instance.StopEvent(enemyVoPath, STOP_MODE.ALLOWFADEOUT, gameObject);
+        AudioManager.Instance.ReleaseInstance(enemyVoPath, gameObject);
     }
 
     public void HandleMovementChange(HumanoidMovement.moveActions actions)
@@ -71,20 +152,34 @@ public class HumanoidSoundLogic : MonoBehaviour
             case HumanoidMovement.moveActions.None:
             default:
                 currentDelay = 0f;
+                _currentFootstepSound = footstepPaths.walk;
                 break;
             case HumanoidMovement.moveActions.Walking:
                 currentDelay = walkPlayDelay;
+                _currentFootstepSound = footstepPaths.walk;
                 break;
             case HumanoidMovement.moveActions.Sprinting:
                 currentDelay = sprintPlayDelay;
+                _currentFootstepSound = footstepPaths.sprint;
                 break;
             case HumanoidMovement.moveActions.CrouchWalk:
                 currentDelay = crouchWalkPlayDelay;
+                _currentFootstepSound = footstepPaths.sneak;
+                PlayCrouchSound();
                 break;
             case HumanoidMovement.moveActions.Airborne:
                 currentDelay = 0f;
+                _currentFootstepSound = footstepPaths.walk;
                 break;
         }
+
+        if (_lastMoveAction == HumanoidMovement.moveActions.Airborne &&
+            actions != HumanoidMovement.moveActions.Airborne)
+        {
+            PlayLandSound();
+        }
+        
+        _lastMoveAction = actions;
     }
     
     public void OnHealthChange(HealthData healthData)
@@ -92,5 +187,68 @@ public class HumanoidSoundLogic : MonoBehaviour
         if (!AudioManager.IsValid) return;
         AudioManager.Instance.SetGlobalParameter("HP", healthData.CurrentHealth);
         AudioManager.Instance.SetGlobalParameter("hpRatio", (float)healthData.CurrentHealth / healthData.MaxHealth);
+    }
+
+    public void OnHungerChange(float hungerRatio)
+    {
+        if (!AudioManager.IsValid) return;
+        AudioManager.Instance.SetGlobalParameter("Hunger", hungerRatio);
+        AudioManager.Instance.PlayOneShot(hungerPath, null, null, weaponObject);
+    }
+
+    public void PlayBlockSound()
+    {
+        if (blockPath is "" or null) return;
+        if (AudioManager.IsValid)
+        {
+            AudioManager.Instance.PlayOneShot(blockPath, null, null, weaponObject);
+        }
+    }
+
+    public void PlayCrouchSound()
+    {
+        if (crouchPath is "" or null) return;
+        if (AudioManager.IsValid)
+        {
+            AudioManager.Instance.PlayOneShot(crouchPath, null, null, gameObject);
+        }
+    }
+
+    public void PlayJumpSound()
+    {
+        if (jumpPath is "" or null) return;
+        if (AudioManager.IsValid)
+        {
+            AudioManager.Instance.PlayOneShot(jumpPath, null, null, gameObject);
+        }
+    }
+
+    public void PlayLandSound()
+    {
+        if (landPath is "" or null) return;
+        if (AudioManager.IsValid)
+        {
+            AudioManager.Instance.PlayOneShot(landPath, null, null, gameObject);
+        }
+    }
+
+    public void PlayParrySound()
+    {
+
+    }
+
+    private MadAventurerBaseState lastState = new MadAdventurerIdleState();
+    
+    public void OnMadStateChange(MadAventurerBaseState newState)
+    {
+        if (newState.GetType() == typeof(MadAdventurerChasingState) && lastState.GetType() == typeof(MadAdventurerIdleState))
+        {
+            AudioManager.Instance.KeyOff(enemyVoPath, gameObject);
+        }
+        if (lastState.GetType() == typeof(MadAdventurerChasingState) && newState.GetType() == typeof(MadAdventurerIdleState))
+        {
+            AudioManager.Instance.KeyOff(enemyVoPath, gameObject);
+        }
+        lastState = newState;
     }
 }

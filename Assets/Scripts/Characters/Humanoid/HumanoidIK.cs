@@ -12,8 +12,9 @@ public class HumanoidIK : MonoBehaviour
     [SerializeField] protected bool blocking = false;
     
     public Animator animator;
-    [SerializeField] protected Weapon weapon;
+    protected Weapon weapon;
     [SerializeField, Tooltip("The Shoulder node of the weapon arm")] protected Transform shoulderObj = null;
+    [SerializeField, Tooltip("The Avatars head")] protected Transform headObj = null;
     [SerializeField, Tooltip("Where the avatar should look")] protected Transform lookObj = null;
     
     [SerializeField,Tooltip("the rotation of the hand, readonly as they are set in code")] protected float x, z;
@@ -29,11 +30,7 @@ public class HumanoidIK : MonoBehaviour
     [SerializeField] protected float nodeTime = 0.5f;
     [SerializeField] protected float chargeTime = 2f;
     [SerializeField] protected float resetTime = 1f;
-    [SerializeField] protected float staggerTime = 3f;
-    protected Vector3[] nodes;
-    protected Vector3 current;
-    protected Vector3 target;
-    protected int nodeIndex;
+    [SerializeField] protected float recoilTime = 3f;
     protected Quaternion rotation;
     
     [Header("Blocking")]
@@ -48,8 +45,13 @@ public class HumanoidIK : MonoBehaviour
     
     protected float startTime = 0;
     protected float time = 0;
-    
-    
+
+
+    private void Start()
+    {
+        weapon = GetComponentInChildren<Weapon>();
+    }
+
     public enum AttackState
     {
         Start,
@@ -90,5 +92,33 @@ public class HumanoidIK : MonoBehaviour
             blockState = newState; 
             onBlockStateChange?.Invoke(blockState);
         }
+    }
+    
+    protected Vector3 RelativePosition(Vector3 position)
+    {
+        return transform.TransformDirection(position) + animator.rootPosition;
+    }
+
+    protected Quaternion RelativeRotation(Quaternion rotation)
+    {
+        Vector3 euler = rotation.eulerAngles;
+        euler.y += transform.parent.eulerAngles.y;
+        return Quaternion.Euler(euler);
+    }
+    
+    protected virtual void Reset()
+    {
+        attackState = AttackState.Start;
+        blockState = BlockState.Start;
+        startTime = 0;
+        time = 0;
+        
+        weapon.SetActive(false);
+    }
+
+    protected Vector3 GetCurvePosition(float t)
+    {
+        Vector3 heighPoint = swingStart + (swingEnd - swingStart) / 2 + Vector3.forward * curveHeight;
+        return (Mathf.Pow(1 - t, 2) * swingStart) + (2 * (1 - t) * t * heighPoint) + (t * t * swingEnd);
     }
 }
