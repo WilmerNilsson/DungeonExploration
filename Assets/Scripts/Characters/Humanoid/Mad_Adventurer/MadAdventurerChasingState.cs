@@ -21,7 +21,7 @@ public class MadAdventurerChasingState : MadAventurerBaseState
     {
         if (Vector3.Distance(MyMadAdventurerStateMachine.PlayerTransform.position, MyMadAdventurerStateMachine.transform.position) <= minDistanceToPlayer)
         {
-            MyMadAdventurerStateMachine.Transit(MyMadAdventurerStateMachine.AgressiveState);
+            MyMadAdventurerStateMachine.Transit(MyMadAdventurerStateMachine.AttackState);
         }
         else
         {

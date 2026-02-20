@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class MadAdventurerAgressiveState : MadAventurerBaseState
+public class MadAdventurerAttackState : MadAventurerBaseState
 {
     [SerializeField] private CrazedIK avatarIK;
     [SerializeField, Tooltip("max distance to target before Chasing"), Min(1f)] public float maxMeleeRange = 2.5f;

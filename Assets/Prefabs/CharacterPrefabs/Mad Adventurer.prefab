@@ -506,15 +506,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea107c8abef7ba94da20fef4aa14aa0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 8156880709594735102}
-  controller: {fileID: 1749713730186701101}
-  animator: {fileID: 1357664741972358889}
-  vision: {fileID: 3879916398111493942}
-  onMadState:
+  NavMeshAgent: {fileID: 8156880709594735102}
+  Controller: {fileID: 1749713730186701101}
+  Animator: {fileID: 1357664741972358889}
+  Vision: {fileID: 3879916398111493942}
+  OnMadState:
     m_PersistentCalls:
       m_Calls: []
-  idleState:
-    mad: {fileID: 3467929583550465738}
+  IdleState:
+    MyMadAdventurerStateMachine: {fileID: 0}
     minDistanceToCorner: 0.1
     target: {x: 0, y: 0, z: 0}
     wanderRange: 7
@@ -526,20 +526,20 @@ MonoBehaviour:
     maxSoundRange: 5
     sightThreshold: 0
     soundThreshold: 0
-  chasingState:
-    mad: {fileID: 3467929583550465738}
+  ChasingState:
+    MyMadAdventurerStateMachine: {fileID: 0}
     minDistanceToCorner: 0.1
     target: {x: 0, y: 0, z: 0}
-    minDistanceToPlayer: 3
-  meleeState:
-    mad: {fileID: 3467929583550465738}
+    minDistanceToPlayer: 2
+  AgressiveState:
+    MyMadAdventurerStateMachine: {fileID: 0}
     minDistanceToCorner: 0.1
     target: {x: 0, y: 0, z: 0}
     avatarIK: {fileID: 2975564478171349694}
     maxMeleeRange: 3
     minMeleeRange: 2
-  player: {fileID: 0}
-  target: {fileID: 0}
+  PlayerTransform: {fileID: 0}
+  TargetTransform: {fileID: 0}
 --- !u!114 &3879916398111493942
 MonoBehaviour:
   m_ObjectHideFlags: 0

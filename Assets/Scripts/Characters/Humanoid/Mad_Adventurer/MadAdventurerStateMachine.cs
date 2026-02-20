@@ -3,11 +3,12 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class MadAdventurerStateMachine : MonoBehaviour
 {
     [Header("Required parts")]
-    [SerializeField] public NavMeshAgent NavMeshAgen;
+    [SerializeField] public NavMeshAgent NavMeshAgent;
     [SerializeField] public HumanoidController Controller;
     [SerializeField] public Animator Animator;
     [SerializeField] public DetectPlayer Vision;
@@ -17,7 +18,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
     public MadAventurerBaseState CurrentState;
     public MadAdventurerIdleState IdleState = new MadAdventurerIdleState();
     public MadAdventurerChasingState ChasingState = new MadAdventurerChasingState();
-    public MadAdventurerAgressiveState AgressiveState = new MadAdventurerAgressiveState();
+    public MadAdventurerAttackState AttackState = new MadAdventurerAttackState();
     public MadAdventurerSearchingState SearchingState = new MadAdventurerSearchingState();
     
     [HideInInspector] public Transform PlayerTransform;
@@ -28,7 +29,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
     {
         IdleState.OnValidate(this);
         ChasingState.OnValidate(this);
-        AgressiveState.OnValidate(this);
+        AttackState.OnValidate(this);
         SearchingState.OnValidate(this);
     }
 #endif
@@ -49,12 +50,12 @@ public class MadAdventurerStateMachine : MonoBehaviour
 
         IdleState.Intialize(this);
         ChasingState.Intialize(this);
-        AgressiveState.Intialize(this);
+        AttackState.Intialize(this);
         SearchingState.Intialize(this);
 
         IdleState.Start();
         ChasingState.Start();
-        AgressiveState.Start();
+        AttackState.Start();
         SearchingState.Start();
         CurrentState = IdleState;
         CurrentState.Enter();

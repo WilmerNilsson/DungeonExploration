@@ -53,7 +53,7 @@ public abstract class MadAventurerBaseState
     {
         pathIndex = 1;
 
-        MyMadAdventurerStateMachine.NavMeshAgen.CalculatePath(pos, NavMeshPath);
+        MyMadAdventurerStateMachine.NavMeshAgent.CalculatePath(pos, NavMeshPath);
     }
     
     protected Vector3 GetNextCorner()
