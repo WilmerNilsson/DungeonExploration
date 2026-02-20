@@ -320,7 +320,7 @@ public class GameManagerSO : ScriptableObject
     public void LoadSavefileScene(SavefileData data)
     {
         Time.timeScale = data.Settings.NormalTimescale;
-        OnLoadScene?.Invoke(data.SceneNr);
+        //OnLoadScene?.Invoke(data.SceneNr);
         SceneManager.LoadScene(data.SceneNr);
         Debug.Log("todo initialize scene");
     }
