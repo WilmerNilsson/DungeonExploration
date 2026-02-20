@@ -25,7 +25,7 @@ public class MadAdventurerIdleState : MadAventurerBaseState
     public override void Start()
     {
         base.Start();
-        Physics.Raycast(mad.transform.position + Vector3.up, Vector3.down,out RaycastHit hit, LayerMask.GetMask("Ground"));
+        Physics.Raycast(MyMadAdventurerStateMachine.transform.position + Vector3.up, Vector3.down,out RaycastHit hit, LayerMask.GetMask("Ground"));
         spawnPosition = hit.point;
     }
 

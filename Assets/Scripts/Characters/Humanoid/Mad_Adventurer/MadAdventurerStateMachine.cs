@@ -20,6 +20,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
     public MadAdventurerChasingState ChasingState = new MadAdventurerChasingState();
     public MadAdventurerAttackState AttackState = new MadAdventurerAttackState();
     public MadAdventurerSearchingState SearchingState = new MadAdventurerSearchingState();
+    public MadAdventurerDyingState DyingState = new();
     
     [HideInInspector] public Transform PlayerTransform;
     [HideInInspector] public Transform TargetTransform;
@@ -31,6 +32,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
         ChasingState.OnValidate(this);
         AttackState.OnValidate(this);
         SearchingState.OnValidate(this);
+        DyingState.OnValidate(this);
     }
 #endif
 
@@ -52,11 +54,13 @@ public class MadAdventurerStateMachine : MonoBehaviour
         ChasingState.Intialize(this);
         AttackState.Intialize(this);
         SearchingState.Intialize(this);
+        DyingState.Intialize(this);
 
         IdleState.Start();
         ChasingState.Start();
         AttackState.Start();
         SearchingState.Start();
+        DyingState.Start();
         CurrentState = IdleState;
         CurrentState.Enter();
 
@@ -75,6 +79,11 @@ public class MadAdventurerStateMachine : MonoBehaviour
         CurrentState = targetState;
         OnMadState.Invoke(CurrentState);
         CurrentState.Enter();
+    }
+
+    public void Die()
+    {
+        Transit(DyingState);
     }
 
     private void OnDrawGizmos()
