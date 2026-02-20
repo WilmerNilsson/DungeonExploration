@@ -1,12 +1,12 @@
 using UnityEngine;
 
 [System.Serializable]
-public class MadDyingState : MadState
+public class MadAdventurerDyingState : MadAventurerBaseState
 {
     [SerializeField] private float timeUntilDeactivate = 4f;
     [SerializeField] private float deactivateTimer = 0f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public override void Intialize(MadAdventurer madAdventurer)
+    public override void Intialize(MadAdventurerStateMachine madAdventurer)
     {
         base.Intialize(madAdventurer);
         deactivateTimer = timeUntilDeactivate;
@@ -24,7 +24,7 @@ public class MadDyingState : MadState
         deactivateTimer -= Time.deltaTime;
         if (deactivateTimer <= 0)
         {
-            GameObject.Destroy(mad.gameObject);
+            GameObject.Destroy(MyMadAdventurerStateMachine.gameObject);
         }
     }
 }
