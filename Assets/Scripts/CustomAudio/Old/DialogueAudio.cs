@@ -1,3 +1,4 @@
+using CustomAudio;
 using UnityEngine;
 
 public class DialogueAudio : MonoBehaviour
@@ -14,7 +15,7 @@ public class DialogueAudio : MonoBehaviour
             Debug.LogWarning("There is no AudioManager in the scene, please add one");
             return;
         }
-        AudioManager.Instance.InitializeDialogue(path);
+        EventHandler.InitializeDialogue(path);
     }
 
     public void SayLine(string path, string lineParameter, int lineIndex)
@@ -24,7 +25,7 @@ public class DialogueAudio : MonoBehaviour
             Debug.LogWarning("There is no AudioManager in the scene, please add one");
             return;
         }
-        AudioManager.Instance.SayLine(path, lineParameter, lineIndex);
+        EventHandler.SayLine(path, lineParameter, lineIndex);
     }
 
     public void StopLine(string path)
@@ -34,7 +35,7 @@ public class DialogueAudio : MonoBehaviour
             Debug.LogWarning("There is no AudioManager in the scene, please add one");
             return;
         }
-        AudioManager.Instance.StopLine(path);
+        EventHandler.StopLine(path);
     }
 
     public void EndDialogue(string path)
@@ -44,6 +45,6 @@ public class DialogueAudio : MonoBehaviour
             Debug.LogWarning("There is no AudioManager in the scene, please add one");
             return;
         }
-        AudioManager.Instance.EndDialogue(path);
+        EventHandler.EndDialogue(path);
     }
 }

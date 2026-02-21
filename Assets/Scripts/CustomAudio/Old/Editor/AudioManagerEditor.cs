@@ -32,7 +32,7 @@ public class AudioManagerEditor : Editor
 
         if (GUILayout.Button("Fill Eventdata"))
         {
-            _audioManager.FillAllEventData();
+            //_audioManager.FillAllEventData();
         }
         
         EditorGUILayout.Separator();

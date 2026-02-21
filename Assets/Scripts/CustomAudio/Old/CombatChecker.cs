@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CustomAudio;
 using UnityEngine;
 
 public static class CombatChecker
@@ -27,10 +28,7 @@ public static class CombatChecker
     private static void CheckCombatState()
     {
         IsCombat = _enemiesChasing.Count > 0;
-        if (AudioManager.IsValid)
-        {
-            AudioManager.Instance.SetGlobalParameter("Combat", _enemiesChasing.Count > 0 ? 1 : 0);
-        }
+        ParameterHandler.SetGlobalParameter("Combat", _enemiesChasing.Count > 0 ? 1 : 0);
     }
 
     public static void RefreshCombatList()
@@ -39,6 +37,7 @@ public static class CombatChecker
         {
             if (!_enemiesChasing[i]) _enemiesChasing.Remove(_enemiesChasing[i]);
         }
+        CheckCombatState();
     }
 
     public static void ResetCombatList()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CustomAudio;
 using FMOD.Studio;
 using FMODUnity;
 using Debug = UnityEngine.Debug;
@@ -40,7 +41,7 @@ public class EventData
         ParameterCache = new Dictionary<string, ParameterData>();
         foreach (var parameterData in parameters)
         {
-            ParameterCache.Add(parameterData.paramName, parameterData);
+            ParameterCache.Add(parameterData.name, parameterData);
         }
     }
 
@@ -90,13 +91,13 @@ public class EventData
         {
             var tempParam = new ParameterData
             {
-                paramName = editorEventRef.Parameters[i].Name,
+                name = editorEventRef.Parameters[i].Name,
                 isGlobal = editorEventRef.Parameters[i].IsGlobal,
                 data1 = editorEventRef.Parameters[i].ID.data1,
                 data2 = editorEventRef.Parameters[i].ID.data2,
             };
             parameters[i] = tempParam;
-            if (tempParam.paramName == "Occluded")
+            if (tempParam.name == "Occluded")
             {
                 isOcclusion = true;
             }

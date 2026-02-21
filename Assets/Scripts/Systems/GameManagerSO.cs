@@ -414,10 +414,7 @@ public class GameManagerSO : ScriptableObject
 
     private void UpdateMixerMasterVolume()
     {
-        if(AudioManager.IsValid)
-        {
-            AudioManager.Instance.SetVolume("Master", globalSettings.masterVolume / 100f);
-        }
+        VcaHandler.SetVolume("Master", globalSettings.masterVolume / 100f);
     }
 
     public void SetEffectsVolume(float newValue)
@@ -428,10 +425,7 @@ public class GameManagerSO : ScriptableObject
 
     private void UpdateMixerEffectsVolume()
     {
-        if (AudioManager.IsValid)
-        {
-            AudioManager.Instance.SetVolume("SFX", globalSettings.effectsVolume / 100f);
-        }
+        VcaHandler.SetVolume("SFX", globalSettings.effectsVolume / 100f);
     }
 
     public void SetMusicVolume(float newValue)
@@ -442,10 +436,7 @@ public class GameManagerSO : ScriptableObject
 
     public void UpdateMixerMusicVolume()
     {
-        if (AudioManager.IsValid)
-        {
-            AudioManager.Instance.SetVolume("Music", globalSettings.musicVolume / 100f);
-        }
+        VcaHandler.SetVolume("Music", globalSettings.musicVolume / 100f);
     }
     #endregion
 

@@ -1,3 +1,4 @@
+using CustomAudio;
 using FMOD.Studio;
 using UnityEngine;
 
@@ -8,8 +9,8 @@ public class AmbienceHandler : MonoBehaviour
    private void Start()
    {
       if (!AudioManager.IsValid) return;
-      AudioManager.Instance.CreateInstance(ambiencePath, gameObject);
-      AudioManager.Instance.StartEvent(ambiencePath, gameObject);
+      EventHandler.CreateInstance(ambiencePath, gameObject);
+      EventHandler.StartEvent(ambiencePath, gameObject);
    }
 
    [SerializeField] private string ambiencePath;
@@ -42,13 +43,13 @@ public class AmbienceHandler : MonoBehaviour
    
    private void FixedUpdate()
    {
-      if (!AudioManager.Listener) return;
+      if (!AudioSystem.Listener) return;
       for (var i = 0; i < 8; i++)
       {
-         _flatForward = new Vector3(AudioManager.Listener.transform.forward.x, 0, AudioManager.Listener.transform.forward.z);
+         _flatForward = new Vector3(AudioSystem.Listener.transform.forward.x, 0, AudioSystem.Listener.transform.forward.z);
          _direction = Quaternion.AngleAxis(45 * (i + 1), transform.up) * _flatForward;
          directions[i] = _direction * 45; //För att visualisera directions
-         Physics.Raycast(AudioManager.Listener.transform.position, _direction, out _hits[i], Mathf.Infinity, layerMask);
+         Physics.Raycast(AudioSystem.Listener.transform.position, _direction, out _hits[i], Mathf.Infinity, layerMask);
       }
       OnSort(_hits);
       for (var i = 0; i < 8; i++)
@@ -69,12 +70,12 @@ public class AmbienceHandler : MonoBehaviour
       if (!AudioManager.IsValid) return;
       if (useMean)
       {
-         AudioManager.Instance.SetGlobalParameter("RoomSize", meanDistance * roomSizeMultiplier, false);
+         ParameterHandler.SetGlobalParameter("RoomSize", meanDistance * roomSizeMultiplier, false);
          currentRoomSize = meanDistance * roomSizeMultiplier;
       }
       else
       {
-         AudioManager.Instance.SetGlobalParameter("RoomSize", medianDistance * roomSizeMultiplier, false);
+         ParameterHandler.SetGlobalParameter("RoomSize", medianDistance * roomSizeMultiplier, false);
          currentRoomSize = medianDistance * roomSizeMultiplier;
       }
    }
@@ -82,10 +83,10 @@ public class AmbienceHandler : MonoBehaviour
    private void OnDrawGizmos()
    {
       if (!Application.isPlaying || !debug) return;
-      if (!AudioManager.Listener) return;
+      if (!AudioSystem.Listener) return;
       foreach (var hit in _hits)
       {
-         Gizmos.DrawLine(AudioManager.Listener.transform.position, hit.point);
+         Gizmos.DrawLine(AudioSystem.Listener.transform.position, hit.point);
       }
    }
 
@@ -111,7 +112,7 @@ public class AmbienceHandler : MonoBehaviour
    private void OnDestroy()
    {
       if (!AudioManager.IsValid) return;
-      AudioManager.Instance.StopEvent(ambiencePath, STOP_MODE.ALLOWFADEOUT, gameObject);
-      AudioManager.Instance.ReleaseInstance(ambiencePath, gameObject);
+      EventHandler.StopEvent(ambiencePath, STOP_MODE.ALLOWFADEOUT, gameObject);
+      EventHandler.ReleaseInstance(ambiencePath, gameObject);
    }
 }

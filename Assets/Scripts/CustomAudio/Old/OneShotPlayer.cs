@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using CustomAudio;
+using EventHandler = CustomAudio.EventHandler;
 
 public class OneShotPlayer : MonoBehaviour
 {
@@ -34,11 +36,11 @@ public class OneShotPlayer : MonoBehaviour
 
         if (emitterIsThisObject)
         {
-            AudioManager.Instance.PlayOneShot(instructions[index].path, nameList.ToArray(), valueList.ToArray(), gameObject, instructions[index].followObject);
+            EventHandler.PlayOneShot(instructions[index].path, nameList.ToArray(), valueList.ToArray(), gameObject, instructions[index].followObject);
         }
         else
         {
-            AudioManager.Instance.PlayOneShot(instructions[index].path, nameList.ToArray(), valueList.ToArray(), instructions[index].gameObject, instructions[index].followObject);
+            EventHandler.PlayOneShot(instructions[index].path, nameList.ToArray(), valueList.ToArray(), instructions[index].gameObject, instructions[index].followObject);
         }
     }
 }

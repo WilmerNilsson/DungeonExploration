@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CustomAudio;
 using FMODUnity;
 using UnityEngine;
 
@@ -13,20 +14,6 @@ public class AudioDebug : MonoBehaviour
         GetAllVcas,
         GetLoadedBanks,
         SeePerformanceMetrics
-    }
-
-    public static void Print(string message, bool isWarning = false)
-    {
-        if (!AudioManager.IsValid) return;
-        if (!AudioManager.Instance.debug) return;
-        if (isWarning)
-        {
-            Debug.LogWarning(message);
-        }
-        else if (!AudioManager.Instance.showOnlyWarnings)
-        {
-            Debug.Log(message);
-        }
     }
 
     public string path;
@@ -45,6 +32,7 @@ public class AudioDebug : MonoBehaviour
 
         text = "";
         lines = 0;
+        /*
         switch (procedure)
         {
             case Procedures.GetGlobalParameterList:
@@ -137,7 +125,7 @@ public class AudioDebug : MonoBehaviour
                             {
                                 lines++;
                                 eventData.EventInstance.getParameterByID(paramData.ID(), out var value);
-                                text += paramData.paramName + ": " + value + "\n";
+                                text += paramData.name + ": " + value + "\n";
                             }
 
                             text += "\n";
@@ -153,7 +141,7 @@ public class AudioDebug : MonoBehaviour
                             {
                                 lines++;
                                 kvp.Value.getParameterByID(paramData.ID(), out var value);
-                                text += paramData.paramName + ": " + value + "\n";
+                                text += paramData.name + ": " + value + "\n";
                             }
 
                             text += "\n";
@@ -205,6 +193,11 @@ public class AudioDebug : MonoBehaviour
                 return;
             default:
                 throw new ArgumentOutOfRangeException();
-        }
+        }*/
+    }
+
+    public static void Print(string message, bool isWarning = false)
+    {
+        if (AudioSystem.Instance.debug)
     }
 }
