@@ -15,7 +15,7 @@ public class DialogueAudio : MonoBehaviour
             Debug.LogWarning("There is no AudioManager in the scene, please add one");
             return;
         }
-        EventHandler.InitializeDialogue(path);
+        AudioSystem.instance.EventHandler.InitializeDialogue(path);
     }
 
     public void SayLine(string path, string lineParameter, int lineIndex)
@@ -25,7 +25,7 @@ public class DialogueAudio : MonoBehaviour
             Debug.LogWarning("There is no AudioManager in the scene, please add one");
             return;
         }
-        EventHandler.SayLine(path, lineParameter, lineIndex);
+        AudioSystem.instance.EventHandler.SayLine(path, lineParameter, lineIndex);
     }
 
     public void StopLine(string path)
@@ -35,7 +35,7 @@ public class DialogueAudio : MonoBehaviour
             Debug.LogWarning("There is no AudioManager in the scene, please add one");
             return;
         }
-        EventHandler.StopLine(path);
+        AudioSystem.instance.EventHandler.StopLine(path);
     }
 
     public void EndDialogue(string path)
@@ -45,6 +45,6 @@ public class DialogueAudio : MonoBehaviour
             Debug.LogWarning("There is no AudioManager in the scene, please add one");
             return;
         }
-        EventHandler.EndDialogue(path);
+        AudioSystem.instance.EventHandler.EndDialogue(path);
     }
 }

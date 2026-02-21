@@ -198,6 +198,6 @@ public class AudioDebug : MonoBehaviour
 
     public static void Print(string message, bool isWarning = false)
     {
-        if (AudioSystem.Instance.debug)
+        //if (AudioSystem.Instance.debug)
     }
 }

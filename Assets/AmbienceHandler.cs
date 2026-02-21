@@ -8,9 +8,8 @@ public class AmbienceHandler : MonoBehaviour
 
    private void Start()
    {
-      if (!AudioManager.IsValid) return;
-      EventHandler.CreateInstance(ambiencePath, gameObject);
-      EventHandler.StartEvent(ambiencePath, gameObject);
+      AudioSystem.instance.EventHandler.CreateInstance(ambiencePath, gameObject);
+      AudioSystem.instance.EventHandler.StartEvent(ambiencePath, gameObject);
    }
 
    [SerializeField] private string ambiencePath;
@@ -70,12 +69,12 @@ public class AmbienceHandler : MonoBehaviour
       if (!AudioManager.IsValid) return;
       if (useMean)
       {
-         ParameterHandler.SetGlobalParameter("RoomSize", meanDistance * roomSizeMultiplier, false);
+         AudioSystem.instance.ParameterHandler.SetGlobalParameter("RoomSize", meanDistance * roomSizeMultiplier, false);
          currentRoomSize = meanDistance * roomSizeMultiplier;
       }
       else
       {
-         ParameterHandler.SetGlobalParameter("RoomSize", medianDistance * roomSizeMultiplier, false);
+         AudioSystem.instance.ParameterHandler.SetGlobalParameter("RoomSize", medianDistance * roomSizeMultiplier, false);
          currentRoomSize = medianDistance * roomSizeMultiplier;
       }
    }
@@ -112,7 +111,7 @@ public class AmbienceHandler : MonoBehaviour
    private void OnDestroy()
    {
       if (!AudioManager.IsValid) return;
-      EventHandler.StopEvent(ambiencePath, STOP_MODE.ALLOWFADEOUT, gameObject);
-      EventHandler.ReleaseInstance(ambiencePath, gameObject);
+      AudioSystem.instance.EventHandler.StopEvent(ambiencePath, STOP_MODE.ALLOWFADEOUT, gameObject);
+      AudioSystem.instance.EventHandler.ReleaseInstance(ambiencePath, gameObject);
    }
 }

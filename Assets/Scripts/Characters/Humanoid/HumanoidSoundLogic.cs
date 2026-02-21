@@ -67,7 +67,7 @@ public class HumanoidSoundLogic : MonoBehaviour
     
     public void HandleAttackStateChange(HumanoidIK.AttackState newState)
     {
-        EventHandler.PlayOneShot(swingPath, null, null, weaponObject, true);
+        AudioSystem.instance.EventHandler.PlayOneShot(swingPath, null, null, weaponObject, true);
     }
 
     //since we want to keep the footsteps between states we kinda do not need to use a coroutine
@@ -92,7 +92,7 @@ public class HumanoidSoundLogic : MonoBehaviour
         {
             currentTimer++;
 
-            EventHandler.PlayOneShot(_currentFootstepSound, null, null, gameObject);
+            AudioSystem.instance.EventHandler.PlayOneShot(_currentFootstepSound, null, null, gameObject);
         }
     }
 
@@ -101,9 +101,9 @@ public class HumanoidSoundLogic : MonoBehaviour
         if (type != HumanoidType.CrazedAdventurer) return;
         if (!AudioManager.IsValid) return;
         _currentVoiceActor = Random.Range(0, voiceActorAmount - 1);
-        EventHandler.CreateInstance(enemyVoPath, gameObject);
-        EventHandler.SetParameter(enemyVoPath, "EnemyVO", _currentVoiceActor, gameObject);
-        EventHandler.StartEvent(enemyVoPath, gameObject);
+        AudioSystem.instance.EventHandler.CreateInstance(enemyVoPath, gameObject);
+        AudioSystem.instance.EventHandler.SetParameter(enemyVoPath, "EnemyVO", _currentVoiceActor, gameObject);
+        AudioSystem.instance.EventHandler.StartEvent(enemyVoPath, gameObject);
     }
 
     public void PlayFootstepSound(string path)
@@ -111,7 +111,7 @@ public class HumanoidSoundLogic : MonoBehaviour
         if (path is "" or null) return;
         if (AudioManager.IsValid)
         {
-            EventHandler.PlayOneShot(path, null, null, gameObject);
+            AudioSystem.instance.EventHandler.PlayOneShot(path, null, null, gameObject);
         }
     }
 
@@ -119,26 +119,26 @@ public class HumanoidSoundLogic : MonoBehaviour
     {
         if (AudioManager.IsValid)
         {
-            EventHandler.PlayOneShot(damagePath, null, null, gameObject);
+            AudioSystem.instance.EventHandler.PlayOneShot(damagePath, null, null, gameObject);
         }
     }
 
     public void PlayDeathSound() //TODO: enemy vo parameter när de finns
     {
         if (!AudioManager.IsValid) return;
-        EventHandler.PlayOneShot(deathPath, null, null, gameObject);
+        AudioSystem.instance.EventHandler.PlayOneShot(deathPath, null, null, gameObject);
 
         if (type != HumanoidType.CrazedAdventurer) return;
-        EventHandler.StopEvent(enemyVoPath, STOP_MODE.ALLOWFADEOUT, gameObject);
-        EventHandler.ReleaseInstance(enemyVoPath, gameObject);
+        AudioSystem.instance.EventHandler.StopEvent(enemyVoPath, STOP_MODE.ALLOWFADEOUT, gameObject);
+        AudioSystem.instance.EventHandler.ReleaseInstance(enemyVoPath, gameObject);
     }
 
     private void OnDestroy()
     {
         if (!AudioManager.IsValid) return;
         if (type != HumanoidType.CrazedAdventurer) return;
-        EventHandler.StopEvent(enemyVoPath, STOP_MODE.ALLOWFADEOUT, gameObject);
-        EventHandler.ReleaseInstance(enemyVoPath, gameObject);
+        AudioSystem.instance.EventHandler.StopEvent(enemyVoPath, STOP_MODE.ALLOWFADEOUT, gameObject);
+        AudioSystem.instance.EventHandler.ReleaseInstance(enemyVoPath, gameObject);
     }
 
     public void HandleMovementChange(HumanoidMovement.moveActions actions)
@@ -181,15 +181,15 @@ public class HumanoidSoundLogic : MonoBehaviour
     public void OnHealthChange(HealthData healthData)
     {
         if (!AudioManager.IsValid) return;
-        ParameterHandler.SetGlobalParameter("HP", healthData.CurrentHealth);
-        ParameterHandler.SetGlobalParameter("hpRatio", (float)healthData.CurrentHealth / healthData.MaxHealth);
+        AudioSystem.instance.ParameterHandler.SetGlobalParameter("HP", healthData.CurrentHealth);
+        AudioSystem.instance.ParameterHandler.SetGlobalParameter("hpRatio", (float)healthData.CurrentHealth / healthData.MaxHealth);
     }
 
     public void OnHungerChange(float hungerRatio)
     {
         if (!AudioManager.IsValid) return;
-        ParameterHandler.SetGlobalParameter("Hunger", hungerRatio);
-        EventHandler.PlayOneShot(hungerPath, null, null, weaponObject);
+        AudioSystem.instance.ParameterHandler.SetGlobalParameter("Hunger", hungerRatio);
+        AudioSystem.instance.EventHandler.PlayOneShot(hungerPath, null, null, weaponObject);
     }
 
     public void PlayBlockSound()
@@ -197,7 +197,7 @@ public class HumanoidSoundLogic : MonoBehaviour
         if (blockPath is "" or null) return;
         if (AudioManager.IsValid)
         {
-            EventHandler.PlayOneShot(blockPath, null, null, weaponObject);
+            AudioSystem.instance.EventHandler.PlayOneShot(blockPath, null, null, weaponObject);
         }
     }
 
@@ -206,7 +206,7 @@ public class HumanoidSoundLogic : MonoBehaviour
         if (crouchPath is "" or null) return;
         if (AudioManager.IsValid)
         {
-            EventHandler.PlayOneShot(crouchPath, null, null, gameObject);
+            AudioSystem.instance.EventHandler.PlayOneShot(crouchPath, null, null, gameObject);
         }
     }
 
@@ -215,7 +215,7 @@ public class HumanoidSoundLogic : MonoBehaviour
         if (jumpPath is "" or null) return;
         if (AudioManager.IsValid)
         {
-            EventHandler.PlayOneShot(jumpPath, null, null, gameObject);
+            AudioSystem.instance.EventHandler.PlayOneShot(jumpPath, null, null, gameObject);
         }
     }
 
@@ -224,7 +224,7 @@ public class HumanoidSoundLogic : MonoBehaviour
         if (landPath is "" or null) return;
         if (AudioManager.IsValid)
         {
-            EventHandler.PlayOneShot(landPath, null, null, gameObject);
+            AudioSystem.instance.EventHandler.PlayOneShot(landPath, null, null, gameObject);
         }
     }
 
@@ -239,11 +239,11 @@ public class HumanoidSoundLogic : MonoBehaviour
     {
         if (newState.GetType() == typeof(MadAdventurerChasingState) && lastState.GetType() == typeof(MadAdventurerIdleState))
         {
-            EventHandler.KeyOff(enemyVoPath, gameObject);
+            AudioSystem.instance.EventHandler.KeyOff(enemyVoPath, gameObject);
         }
         if (lastState.GetType() == typeof(MadAdventurerChasingState) && newState.GetType() == typeof(MadAdventurerIdleState))
         {
-            EventHandler.KeyOff(enemyVoPath, gameObject);
+            AudioSystem.instance.EventHandler.KeyOff(enemyVoPath, gameObject);
         }
         lastState = newState;
     }

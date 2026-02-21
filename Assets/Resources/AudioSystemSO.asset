@@ -12,20 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f627ff76a6d43f4d9fdabe1df7e6322, type: 3}
   m_Name: AudioSystemSO
   m_EditorClassIdentifier: 
-  occlusionChecker:
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 17664
-    spread: 1
-    bounceValue: 0.5
-    linesOnEitherSide: 0
-    allowBounce: 0
-    drawDebug: 0
-  wallChecker:
-    wallLayers:
-      serializedVersion: 2
-      m_Bits: 1024
-    groundLayers:
-      serializedVersion: 2
-      m_Bits: 16640
-    drawDebug: 0
+  eventLists:
+  - {fileID: 11400000, guid: 9a3242fb20bb84949ba1d41d858e53f1, type: 2}
+  - {fileID: 11400000, guid: 371522e06991fd44abf60e3ceba8a624, type: 2}
+  - {fileID: 11400000, guid: afde80ff166d97e458cc307044999da8, type: 2}
+  - {fileID: 11400000, guid: 7f867892a08e427408ae769fca174d74, type: 2}
+  - {fileID: 11400000, guid: 70d5571681a3b5a47a4d194d721ee2d3, type: 2}
+  - {fileID: 11400000, guid: 6bc9172e5300ba4439d51a84550dcd55, type: 2}
+  - {fileID: 11400000, guid: 5fdf4386044031a478cd6626af3a23d0, type: 2}
+  - {fileID: 11400000, guid: c99794e1d1f44b3458a5f1fb0091fb22, type: 2}
+  - {fileID: 11400000, guid: 169a4653b2c74554080a28170159f3c3, type: 2}
+  banksToLoadOnStart:
+  - bankName: Master
+    loadSamples: 0
+  - bankName: SFX
+    loadSamples: 1
+  - bankName: Music
+    loadSamples: 1
+  debug: 0
+  showOnlyWarnings: 0

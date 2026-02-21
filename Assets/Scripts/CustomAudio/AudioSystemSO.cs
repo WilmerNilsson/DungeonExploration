@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FMODUnity;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using SceneManager = UnityEngine.SceneManagement.SceneManager;
@@ -8,24 +9,9 @@ using SceneManager = UnityEngine.SceneManagement.SceneManager;
 namespace CustomAudio
 {
     [CreateAssetMenu(fileName = "AudioSystemSO", menuName = "Audio System/Audio System", order = 1)]
-    public class AudioSystem : ScriptableObject
+    public class AudioSystem : ScriptableSingleton<AudioSystem>
     {
         public EventList[] eventLists;
-    
-        private AudioSystem _instance;
-
-        public AudioSystem Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = Resources.LoadAll<AudioSystem>("")[0];
-                }
-                _instance.Initialize();
-                return _instance;
-            }
-        }
     
         private static bool _initialized;
     
@@ -41,9 +27,24 @@ namespace CustomAudio
             new() { bankName = "Master", loadSamples = false },
         };
 
+        private void Awake()
+        {
+            Initialize();
+        }
+
+        public EventHandler EventHandler;
+        public BankHandler BankHandler;
+        public VcaHandler VcaHandler;
+        public ParameterHandler ParameterHandler;
+        
         private void Initialize()
         {
             if (_initialized) return;
+            EventHandler = new EventHandler();
+            BankHandler = new BankHandler();
+            VcaHandler = new VcaHandler();
+            ParameterHandler = new ParameterHandler();
+            
             foreach (var bankToLoadOnStart in banksToLoadOnStart)
             {
                 BankHandler.LoadBank(bankToLoadOnStart.bankName, bankToLoadOnStart.loadSamples);
@@ -63,6 +64,8 @@ namespace CustomAudio
             SceneManager.sceneUnloaded += OnSceneUnloaded;
         
             GameManagerSO.Instance.OnFreezeGameChangeSelfReset += OnGamePause;
+            
+            Debug.Log("AudioSystem Initialized");
         
             _initialized = true;
         }
@@ -93,7 +96,7 @@ namespace CustomAudio
     
         private void OnSceneUnloaded(Scene scene)
         {
-            _instance.CleanupInstances();
+            instance.CleanupInstances();
         }
 
         public void CleanupInstances()
@@ -126,7 +129,13 @@ namespace CustomAudio
         
         public bool debug;
         public bool showOnlyWarnings;
-        
+
+        public AudioSystem(VcaHandler vcaHandler, EventHandler eventHandler, BankHandler bankHandler)
+        {
+            this.VcaHandler = vcaHandler;
+            this.EventHandler = eventHandler;
+            this.BankHandler = bankHandler;
+        }
     }
     
 }

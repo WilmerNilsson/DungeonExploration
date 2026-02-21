@@ -36,11 +36,11 @@ public class OneShotPlayer : MonoBehaviour
 
         if (emitterIsThisObject)
         {
-            EventHandler.PlayOneShot(instructions[index].path, nameList.ToArray(), valueList.ToArray(), gameObject, instructions[index].followObject);
+            AudioSystem.instance.EventHandler.PlayOneShot(instructions[index].path, nameList.ToArray(), valueList.ToArray(), gameObject, instructions[index].followObject);
         }
         else
         {
-            EventHandler.PlayOneShot(instructions[index].path, nameList.ToArray(), valueList.ToArray(), instructions[index].gameObject, instructions[index].followObject);
+            AudioSystem.instance.EventHandler.PlayOneShot(instructions[index].path, nameList.ToArray(), valueList.ToArray(), instructions[index].gameObject, instructions[index].followObject);
         }
     }
 }

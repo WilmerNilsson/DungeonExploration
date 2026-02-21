@@ -5,7 +5,7 @@ using FMODUnity;
 using UnityEditor;
 using UnityEngine;
 
-public static class BankHandler
+public class BankHandler
 {
     private const string BankExtension = ".bank";
     private const string StringBankExtension = ".strings.bank";
@@ -18,9 +18,9 @@ public static class BankHandler
         public Bus[] Buses;
     }
     
-    public static Dictionary<string, BankData> BankLookup = new Dictionary<string, BankData>();
+    public Dictionary<string, BankData> BankLookup = new Dictionary<string, BankData>();
     
-    public static void LoadBank(string bankName, bool loadSamples = false) //Laddar bank, om master laddas också string bank
+    public void LoadBank(string bankName, bool loadSamples = false) //Laddar bank, om master laddas också string bank
     {
         RuntimeManager.LoadBank(bankName + BankExtension, loadSamples);
         
@@ -32,7 +32,7 @@ public static class BankHandler
         AudioDebug.Print("Loading " + bankName + BankExtension);
     }
 
-    public static void UnloadBank(string bankName) //Unloadar en bank
+    public void UnloadBank(string bankName) //Unloadar en bank
     {
         BankLookup.Remove(bankName);
         

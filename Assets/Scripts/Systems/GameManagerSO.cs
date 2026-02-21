@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using CustomAudio;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -414,7 +415,7 @@ public class GameManagerSO : ScriptableObject
 
     private void UpdateMixerMasterVolume()
     {
-        VcaHandler.SetVolume("Master", globalSettings.masterVolume / 100f);
+        AudioSystem.instance.VcaHandler.SetVolume("Master", globalSettings.masterVolume / 100f);
     }
 
     public void SetEffectsVolume(float newValue)
@@ -425,7 +426,7 @@ public class GameManagerSO : ScriptableObject
 
     private void UpdateMixerEffectsVolume()
     {
-        VcaHandler.SetVolume("SFX", globalSettings.effectsVolume / 100f);
+        AudioSystem.instance.VcaHandler.SetVolume("SFX", globalSettings.effectsVolume / 100f);
     }
 
     public void SetMusicVolume(float newValue)
@@ -436,7 +437,7 @@ public class GameManagerSO : ScriptableObject
 
     public void UpdateMixerMusicVolume()
     {
-        VcaHandler.SetVolume("Music", globalSettings.musicVolume / 100f);
+        AudioSystem.instance.VcaHandler.SetVolume("Music", globalSettings.musicVolume / 100f);
     }
     #endregion
 

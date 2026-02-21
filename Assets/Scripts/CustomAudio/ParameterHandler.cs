@@ -22,11 +22,11 @@ namespace CustomAudio
         }
     }
 
-    public static class ParameterHandler
+    public class ParameterHandler
     {
-        public static Dictionary<string, ParameterData> GlobalParameters = new Dictionary<string, ParameterData>();
+        public Dictionary<string, ParameterData> GlobalParameters = new Dictionary<string, ParameterData>();
 
-        public static void Initialize()
+        public void Initialize()
         {
             RuntimeManager.StudioSystem.getParameterDescriptionList(out var descriptionList);
             foreach (var paramDesc in descriptionList)
@@ -42,7 +42,7 @@ namespace CustomAudio
             }
         }
     
-        public static void SetGlobalParameter(string paramName, float paramValue, bool printDebug = true)
+        public void SetGlobalParameter(string paramName, float paramValue, bool printDebug = true)
         {
             if (GlobalParameters.TryGetValue(paramName, out var paramData))
             {

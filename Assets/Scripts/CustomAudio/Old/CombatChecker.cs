@@ -28,7 +28,7 @@ public static class CombatChecker
     private static void CheckCombatState()
     {
         IsCombat = _enemiesChasing.Count > 0;
-        ParameterHandler.SetGlobalParameter("Combat", _enemiesChasing.Count > 0 ? 1 : 0);
+        AudioSystem.instance.ParameterHandler.SetGlobalParameter("Combat", _enemiesChasing.Count > 0 ? 1 : 0);
     }
 
     public static void RefreshCombatList()

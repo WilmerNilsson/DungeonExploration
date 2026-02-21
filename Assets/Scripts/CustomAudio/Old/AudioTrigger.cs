@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using CustomAudio;
-using EventHandler = CustomAudio.EventHandler;
 
 public class AudioTrigger : MonoBehaviour
 {
@@ -107,31 +106,31 @@ public class AudioTrigger : MonoBehaviour
             switch (instruction.command)
             {
                 case Instruction.Command.CreateInstance:
-                    EventHandler.CreateInstance(instruction.path, instruction.gameObj, instruction.followObject);
+                    AudioSystem.instance.EventHandler.CreateInstance(instruction.path, instruction.gameObj, instruction.followObject);
                     break;
                 case Instruction.Command.LoadSampleData:
-                    EventHandler.LoadSampleData(instruction.path);
+                    AudioSystem.instance.EventHandler.LoadSampleData(instruction.path);
                     break;
                 case Instruction.Command.StartEvent:
-                    EventHandler.StartEvent(instruction.path, instruction.gameObj);
+                    AudioSystem.instance.EventHandler.StartEvent(instruction.path, instruction.gameObj);
                     break;
                 case Instruction.Command.StopEvent:
-                    EventHandler.StopEvent(instruction.path, instruction.stopMode, instruction.gameObj);
+                    AudioSystem.instance.EventHandler.StopEvent(instruction.path, instruction.stopMode, instruction.gameObj);
                     break;
                 case Instruction.Command.ReleaseInstance:
-                    EventHandler.ReleaseInstance(instruction.path, instruction.gameObj);
+                    AudioSystem.instance.EventHandler.ReleaseInstance(instruction.path, instruction.gameObj);
                     break;
                 case Instruction.Command.UnloadSampleData:
-                    EventHandler.UnloadSampleData(instruction.path);
+                    AudioSystem.instance.EventHandler.UnloadSampleData(instruction.path);
                     break;
                 case Instruction.Command.SetParameter:
                     foreach (var paramToSet in instruction.parametersToSet)
                     {
-                        EventHandler.SetParameter(instruction.path, paramToSet.name, paramToSet.value, instruction.gameObj);
+                        AudioSystem.instance.EventHandler.SetParameter(instruction.path, paramToSet.name, paramToSet.value, instruction.gameObj);
                     }
                     break;
                 case Instruction.Command.KeyOff:
-                    EventHandler.KeyOff(instruction.path, instruction.gameObj);
+                    AudioSystem.instance.EventHandler.KeyOff(instruction.path, instruction.gameObj);
                     break;
                 case Instruction.Command.PlayOneShot:
                     var nameList = new string[instruction.parametersToSet.Length];
@@ -141,19 +140,19 @@ public class AudioTrigger : MonoBehaviour
                         nameList[i] = instruction.parametersToSet[i].name;
                         valueList[i] = instruction.parametersToSet[i].value;
                     }
-                    EventHandler.PlayOneShot(instruction.path, nameList, valueList, instruction.gameObj, instruction.followObject);
+                    AudioSystem.instance.EventHandler.PlayOneShot(instruction.path, nameList, valueList, instruction.gameObj, instruction.followObject);
                     break;
                 case Instruction.Command.SetGlobalParameter:
                     foreach (var paramToSet in instruction.parametersToSet)
                     {
-                        ParameterHandler.SetGlobalParameter(paramToSet.name, paramToSet.value);
+                        AudioSystem.instance.ParameterHandler.SetGlobalParameter(paramToSet.name, paramToSet.value);
                     }
                     break;
                 case Instruction.Command.LoadBank:
-                    BankHandler.LoadBank(instruction.bankName, instruction.loadSampleData);
+                    AudioSystem.instance.BankHandler.LoadBank(instruction.bankName, instruction.loadSampleData);
                     break;
                 case Instruction.Command.UnloadBank:
-                    BankHandler.LoadBank(instruction.bankName);
+                    AudioSystem.instance.BankHandler.UnloadBank(instruction.bankName);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
