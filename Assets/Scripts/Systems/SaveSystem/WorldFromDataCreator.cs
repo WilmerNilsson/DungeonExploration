@@ -1,12 +1,11 @@
 using UnityEngine;
 
-#nullable enable
-
 public class WorldFromDataCreator : MonoBehaviour
 {
     [SerializeField] private ItemLibrarySO itemLibrary;
     [SerializeField] private ContainerLibrarySO containerLibrary;
     [SerializeField] private EnemyLibrarySO enemyLibrary;
+#nullable enable
 
 #if DEBUG
     private void OnValidate()

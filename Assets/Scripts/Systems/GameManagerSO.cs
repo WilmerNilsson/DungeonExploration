@@ -321,7 +321,7 @@ public class GameManagerSO : ScriptableObject
     {
         Time.timeScale = data.Settings.NormalTimescale;
         //OnLoadScene?.Invoke(data.SceneNr);
-        SceneManager.LoadScene(data.SceneNr);
+        SceneManager.LoadScene(data.SceneName);
         Debug.Log("todo initialize scene");
     }
 

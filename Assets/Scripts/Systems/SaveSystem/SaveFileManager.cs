@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SaveFileManager
 {
@@ -74,14 +75,25 @@ public class SaveFileManager
 
     #region Savefile
 
-    public void HardSave()
+    /// <summary>
+    /// makes a save file from world data and settings and then writes it to storage
+    /// </summary>
+    public void Save(bool backup = false)
     {
-        throw new NotImplementedException();
-    }
+        SavefileData data = ReadSavefile(CurrentSavefileNr); //we prob want to keep track of journals in real time aswell
+        Debug.Log("reading save to get full data, need to split it up better");
 
-    public void BackupSave()
-    {
-        throw new NotImplementedException();
+        data.World = WorldDataCreator.CreateWorldData();
+        data.SceneName = SceneManager.GetActiveScene().name;
+
+        if(backup)
+        {
+            SaveSavefileBackup(data);
+        }
+        else
+        {
+            SaveSavefile(data);
+        }
     }
 
     private void CreateSaveFileDirectory(int numberValue)

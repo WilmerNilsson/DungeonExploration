@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SavefileData
 {
-    public int SceneNr; //where player is
+    public string SceneName; //where player is
 
     public List<int> DialougesGotten;
     public List<string> BooksInJournal;
@@ -17,16 +17,16 @@ public class SavefileData
 
     public SavefileData(SavefileSettings settings)
     {
-        SceneNr = 0;
+        SceneName = string.Empty;
         DialougesGotten = new();
         BooksInJournal = new();
         Settings = settings;
         World = null;
     }
 
-    public SavefileData(int sceneNr, List<int> dialougesGotten, List<string> booksInJournal, SavefileSettings settings, WorldData world)
+    public SavefileData(string sceneName, List<int> dialougesGotten, List<string> booksInJournal, SavefileSettings settings, WorldData? world)
     {
-        SceneNr = sceneNr;
+        SceneName = sceneName;
         DialougesGotten = dialougesGotten;
         BooksInJournal = booksInJournal;
         Settings = settings;
@@ -35,7 +35,7 @@ public class SavefileData
 
     public SavefileData Clone()
     {
-        return new SavefileData(SceneNr, new(DialougesGotten), new(BooksInJournal), Settings.Clone(), World.Clone());
+        return new SavefileData(SceneName, new(DialougesGotten), new(BooksInJournal), Settings.Clone(), World?.Clone());
     }
 
     public class WorldData
