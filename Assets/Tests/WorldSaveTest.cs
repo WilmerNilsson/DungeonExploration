@@ -193,7 +193,7 @@ public class WorldSaveTest
 
             for(int i = 0; i < a.Items.Count; i++)
             {
-                if(a.Items[i].Name != b.Items[i].Name) return false;
+                if(a.Items[i].PrefabID != b.Items[i].PrefabID) return false;
                 if (a.Items[i].Slot != b.Items[i].Slot) return false;
             }
 

@@ -24,7 +24,7 @@ public class InventorySaveData
     [Serializable]
     public struct InventoryItem
     {
-        public string Name;
+        public string PrefabID;
         public int Slot; 
     }
 }

@@ -187,7 +187,7 @@ public class InventoryGrid : MonoBehaviour
                 if (InvData[collum, row].IsPiviot == false) continue;
 
                 InventorySaveData.InventoryItem item = new();
-                item.Name = InvData[collum, row].Item.name;
+                item.PrefabID = InvData[collum, row].Item.PrefabID;
 
                 //0123
                 //4567

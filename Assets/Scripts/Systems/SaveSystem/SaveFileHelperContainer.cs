@@ -28,19 +28,19 @@ public class SaveFileHelperContainer : MonoBehaviour
 
     public static void PopulateInventory(ItemLibrarySO library, InventorySaveData inventory, InventoryGrid grid)
     {
-        foreach (var item in inventory.Items)
+        foreach (InventorySaveData.InventoryItem item in inventory.Items)
         {
 #if DEBUG
-            bool couldGetItem = library.TryGetItemPairByName(item.Name, out var pair);
+            bool couldGetItem = library.TryGetItemPairByName(item.PrefabID, out var pair);
 
             if (!couldGetItem)
             {
-                Debug.LogError("failed to get item by name: " + item.Name);
+                Debug.LogError("failed to get item by name: " + item.PrefabID);
                 continue;
             }
             if (!grid.TryInstantiateItemInSlot(item.Slot, pair.UIPrefab))
             {
-                Debug.LogError($"failed to initialize item by name {item.Name} in slot {item.Slot}");
+                Debug.LogError($"failed to initialize item by name {item.PrefabID} in slot {item.Slot}");
             }
 #else
             itemLibrary.TryGetItemPairByName(item.Name, out var pair);
