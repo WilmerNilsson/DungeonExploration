@@ -5,6 +5,7 @@ public class WorldFromDataCreator : MonoBehaviour
     [SerializeField] private ItemLibrarySO itemLibrary;
     [SerializeField] private ContainerLibrarySO containerLibrary;
     [SerializeField] private EnemyLibrarySO enemyLibrary;
+    [SerializeField] private GameObject[] newWorldObjects;
 #nullable enable
 
 #if DEBUG
@@ -16,7 +17,7 @@ public class WorldFromDataCreator : MonoBehaviour
     }
 #endif
 
-    private void Awake()
+    private void Start()
     {
         if(GameManagerSO.Instance.TryConsumeSavefileData(out SavefileData? data))
         {
@@ -29,7 +30,7 @@ public class WorldFromDataCreator : MonoBehaviour
                 CreateNewWorld();
             }
         }
-#if DEBUG && !UNITY_INCLUDE_TESTS
+#if DEBUG && !UNIT_TESTS
         else
         {
             Debug.LogError("World from data creator tried to consume save file data, but it failed", this);
@@ -39,10 +40,15 @@ public class WorldFromDataCreator : MonoBehaviour
 
     private void CreateNewWorld()
     {
+        Debug.Log("creating new world");
 
+        foreach (var item in newWorldObjects)
+        {
+            item.gameObject.SetActive(true);
+        }
     }
 
-#if UNITY_INCLUDE_TESTS
+#if UNIT_TESTS
     public void InitializeWorld(SavefileData.WorldData worldData)
 #else
     private void InitializeWorld(SavefileData.WorldData worldData)
@@ -71,7 +77,9 @@ public class WorldFromDataCreator : MonoBehaviour
 
         void InitializeDroppedItems(SavefileData.WorldData worldData)
         {
-            foreach(DungeonSaveData.DroppedItem item in worldData.DungeonSaveData.DroppedItems)
+            if (worldData.DungeonSaveData.DroppedItems == null) return;
+
+            foreach (DungeonSaveData.DroppedItem item in worldData.DungeonSaveData.DroppedItems)
             {
                 if(itemLibrary.TryGetItemPairByName(item.ItemID, out ItemPairing? pair))
                 {
@@ -89,6 +97,7 @@ public class WorldFromDataCreator : MonoBehaviour
 
         void InitializeEnemies(SavefileData.WorldData worldData)
         {
+            if(worldData.DungeonSaveData.Enemies == null) return;
             foreach (DungeonSaveData.Enemy enemy in worldData.DungeonSaveData.Enemies)
             {
                 if (enemyLibrary.TryGetPrefabByName(enemy.PrefabID, out GameObject? prefab))
@@ -119,6 +128,7 @@ public class WorldFromDataCreator : MonoBehaviour
 
         void InitializeContainers(SavefileData.WorldData worldData)
         {
+            if(worldData.DungeonSaveData.Containers == null) return;
             foreach (DungeonSaveData.Container container in worldData.DungeonSaveData.Containers)
             {
                 if (containerLibrary.TryGetPrefabByName(container.PrefabID, out GameObject? prefab))

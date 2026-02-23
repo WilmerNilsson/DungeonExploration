@@ -4,6 +4,7 @@ using UnityEngine;
 
 #nullable enable
 
+[Serializable]
 public class SavefileData
 {
     public string SceneName; //where player is
@@ -17,7 +18,7 @@ public class SavefileData
 
     public SavefileData(SavefileSettings settings)
     {
-        SceneName = string.Empty;
+        SceneName = "JSaveFileTest";
         DialougesGotten = new();
         BooksInJournal = new();
         Settings = settings;
@@ -38,6 +39,7 @@ public class SavefileData
         return new SavefileData(SceneName, new(DialougesGotten), new(BooksInJournal), Settings.Clone(), World?.Clone());
     }
 
+    [Serializable]
     public class WorldData
     {
         public PlayerSaveData PlayerSaveData;

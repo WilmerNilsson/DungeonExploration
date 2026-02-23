@@ -12,7 +12,7 @@ public class SaveFileManager
     private const string GlobalSettingsName = "GlobalSettings.txt";
 
     // global settings is for things like audio and languige
-    public GlobalSettings GlobalSettings;
+    public GlobalSettings GlobalSettings { get; private set; }
     // Save file settings are stuff like accesability options and cheats
     public SavefileSettings SavefileSettings;
     public int CurrentSavefileNr = 1;
@@ -31,12 +31,9 @@ public class SaveFileManager
     public void PlaySavefile(int saveFileNr)
     {
         CurrentSavefileNr = saveFileNr;
+
         GlobalSettings.LastSaveFileNr = CurrentSavefileNr;
 
-        if (!Directory.Exists(Application.dataPath + SaveFileFolderName + CurrentSavefileNr))
-        {
-            CreateSaveFileDirectory(CurrentSavefileNr);
-        }
         SavefileData data = ReadSavefile(CurrentSavefileNr);
 
         GameManagerSO.Instance.LoadSavefileScene(data);
@@ -54,22 +51,27 @@ public class SaveFileManager
     {
         if (!File.Exists(Application.dataPath + SaveFileFolderName + GlobalSettingsName))
         {
-            if (!Directory.Exists(Application.dataPath + SaveFileFolderName))
-            {
-                CreateSaveFileDirectory(1);
-            }
+            CreateSaveFileDirectory();
             CreateDefaultGlobalOptions();
         }
         string json = File.ReadAllText(Application.dataPath + SaveFileFolderName + GlobalSettingsName);
-
         GlobalSettings = JsonUtility.FromJson<GlobalSettings>(json);
-    }
 
-    private void CreateDefaultGlobalOptions()
-    {
-        string json = JsonUtility.ToJson(new GlobalSettings());
+        if (GlobalSettings == null)
+        {
+            Debug.Log("global settings file compromized, creating a new one");
+            CreateDefaultGlobalOptions();
+            json = File.ReadAllText(Application.dataPath + SaveFileFolderName + GlobalSettingsName);
+            Debug.Log(json);
+            GlobalSettings = JsonUtility.FromJson<GlobalSettings>(json);
+        }
 
-        File.WriteAllText(Application.dataPath + SaveFileFolderName + GlobalSettingsName, json);
+        void CreateDefaultGlobalOptions()
+        {
+            string json = JsonUtility.ToJson(new GlobalSettings());
+
+            File.WriteAllText(Application.dataPath + SaveFileFolderName + GlobalSettingsName, json);
+        }
     }
     #endregion
 
@@ -86,33 +88,35 @@ public class SaveFileManager
         data.World = WorldDataCreator.CreateWorldData();
         data.SceneName = SceneManager.GetActiveScene().name;
 
+        SaveSavefile(data, backup);
+    }
+
+    private void CreateSaveFileDirectory()
+    {
+        if (!Directory.Exists(Application.dataPath + SaveFileFolderName))
+        {
+            Directory.CreateDirectory(Application.dataPath + SaveFileFolderName);
+        }
+    }
+
+
+    /// <summary>
+    /// writes data to storage
+    /// </summary>
+    private void SaveSavefile(SavefileData data, bool backup = false)
+    {
+        string json = JsonUtility.ToJson(data);
+
+        Debug.Log(json);
+
         if(backup)
         {
-            SaveSavefileBackup(data);
+            File.WriteAllText(Application.dataPath + SaveFileFolderName + CurrentSavefileNr + SaveFileBackupName, json);
         }
         else
         {
-            SaveSavefile(data);
+            File.WriteAllText(Application.dataPath + SaveFileFolderName + CurrentSavefileNr + SaveFileName, json);
         }
-    }
-
-    private void CreateSaveFileDirectory(int numberValue)
-    {
-        Directory.CreateDirectory(Application.dataPath + SaveFileFolderName + numberValue);
-    }
-
-    private void SaveSavefile(SavefileData data)
-    {
-        string json = JsonUtility.ToJson(data);
-
-        File.WriteAllText(Application.dataPath + SaveFileFolderName + CurrentSavefileNr + SaveFileName, json);
-    }
-
-    private void SaveSavefileBackup(SavefileData data)
-    {
-        string json = JsonUtility.ToJson(data);
-
-        File.WriteAllText(Application.dataPath + SaveFileFolderName + CurrentSavefileNr + SaveFileBackupName, json);
     }
 
     private void SaveSavefileSettings()
@@ -132,8 +136,12 @@ public class SaveFileManager
         SaveSavefile(data);
     }
 
+    /// <summary>
+    /// If save file does not exists it creates a new one
+    /// </summary>
     private SavefileData ReadSavefile(int saveFileNr)
     {
+        CreateSaveFileDirectory();
         if (!File.Exists(Application.dataPath + SaveFileFolderName + saveFileNr + SaveFileName))
         {
             CreateNullWorldSavefile();
@@ -141,15 +149,25 @@ public class SaveFileManager
         string json = File.ReadAllText(Application.dataPath + SaveFileFolderName + saveFileNr + SaveFileName);
 
         SavefileData data = JsonUtility.FromJson<SavefileData>(json);
+
+        if(data == null)
+        {
+            Debug.Log("save file compromized, creating new one");
+            CreateNullWorldSavefile();
+
+            json = File.ReadAllText(Application.dataPath + SaveFileFolderName + saveFileNr + SaveFileName);
+            data = JsonUtility.FromJson<SavefileData>(json);
+        }
+
         SavefileSettings = data.Settings;
 
         return data;
-    }
 
-    private void CreateNullWorldSavefile()
-    {
-        SavefileSettings = new();
-        SaveSavefile(new SavefileData(SavefileSettings));
+        void CreateNullWorldSavefile()
+        {
+            SavefileSettings = new();
+            SaveSavefile(new SavefileData(SavefileSettings));
+        }
     }
 
     public void DeleteSavefile(int saveFileNr)

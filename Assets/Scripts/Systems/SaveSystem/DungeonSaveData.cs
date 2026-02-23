@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[Serializable]
 public class DungeonSaveData
 {
     public List<DroppedItem> DroppedItems = new();
@@ -19,6 +21,7 @@ public class DungeonSaveData
         return cloneData;
     }
 
+    [Serializable]
     public struct Enemy
     {
         public Vector3 Position;
@@ -35,6 +38,7 @@ public class DungeonSaveData
         }
     }
 
+    [Serializable]
     public class Container
     {
         public Vector3 Position;
@@ -56,6 +60,7 @@ public class DungeonSaveData
         }
     }
 
+    [Serializable]
     public struct DroppedItem
     {
         public Vector3 Position;

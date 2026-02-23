@@ -319,10 +319,10 @@ public class GameManagerSO : ScriptableObject
     /// </summary>
     public void LoadSavefileScene(SavefileData data)
     {
+        tempSavefile = data;
         Time.timeScale = data.Settings.NormalTimescale;
         //OnLoadScene?.Invoke(data.SceneNr);
         SceneManager.LoadScene(data.SceneName);
-        Debug.Log("todo initialize scene");
     }
 
     public bool GetConflictingControllsNeutralizes()
