@@ -13,7 +13,6 @@ public class EventData
     public string[] banks;
     public bool isOneShot;
     public bool is3D;
-    public USER_PROPERTY[] Properties;
     public bool isOcclusion;
     public float minDistance;
     public float maxDistance;
@@ -47,12 +46,12 @@ public class EventData
     #if UNITY_EDITOR
     public void PopulateData()
     {
-        EditorUtils.LoadPreviewBanks(); //Behövs för att EventManager och EditorUtils ska fungera
         if (eventReference.IsNull)
         {
             Debug.LogWarning("Could not find event reference");
             return;
         }
+        EditorUtils.LoadPreviewBanks(); //Behövs för att EventManager och EditorUtils ska fungera
         
         
         if (eventName == null | eventName == "") //Fyll eventName om den inte redan har ett namn

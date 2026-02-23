@@ -19,8 +19,9 @@ public class EventList : ScriptableObject
     
     public Dictionary<string, EventData> EventCache = new Dictionary<string, EventData>();
 
-    public void RefreshEventCache() //Lägger till alla eventData till _eventCache för snabbare lookup än foreach loop i eventData
-                                    //samt refreshar ParameterCache i alla eventData
+    //Lägger till alla eventData till _eventCache för snabbare lookup än foreach loop i eventData
+    //samt refreshar ParameterCache i alla eventData
+    public void RefreshEventCache() 
     {
         EventCache = new Dictionary<string, EventData>();
         foreach (var eventData in events)
@@ -36,14 +37,151 @@ public class EventList : ScriptableObject
     [ContextMenu("Fill eventData")]
     public void FillEventData() //Kallar populateData i alla eventData samt sparar objektet
     {
+        var hasChanged = false;
         foreach (var eventData in events)
         {
+            var previous = CloneEventData(eventData);
             eventData.PopulateData();
+            if (HasDataChanged(previous, eventData))
+            {
+                hasChanged = true;
+            }
         }
+        if (!hasChanged) return;
+        //Debug.Log("EventData changed");
         EditorUtility.SetDirty(this);
         AssetDatabase.SaveAssetIfDirty(this);
     }
-    #endif
+
+    private static EventData CloneEventData(EventData eventData)
+    {
+        return new EventData()
+        {
+            eventName = eventData.eventName,
+            eventReference = eventData.eventReference,
+            banks = eventData.banks,
+            isOneShot = eventData.isOneShot,
+            is3D = eventData.is3D,
+            isOcclusion = eventData.isOcclusion,
+            minDistance = eventData.minDistance,
+            maxDistance = eventData.maxDistance,
+            parameters = eventData.parameters,
+        };
+    }
+    
+    private static bool HasDataChanged(EventData prev, EventData current)
+    {
+        var hasChanged = false;
+        
+        if (prev.eventName != current.eventName)
+        {
+            //Debug.Log("name changed");
+            hasChanged = true;
+        }
+        
+        if (hasChanged) return true;
+        
+        if (prev.eventReference.Guid != current.eventReference.Guid)
+        {
+            //Debug.Log("reference changed");
+            hasChanged = true;
+        }
+
+        if (hasChanged) return true;
+        
+        if (prev.banks.Length == current.banks.Length)
+        {
+            hasChanged = HasStringArrayChanged(prev.banks, current.banks);
+        }
+        else
+        {
+            //Debug.Log("bankLength changed");
+            hasChanged = true;
+        }
+        
+        if (hasChanged) return true;
+        
+        if (prev.isOneShot != current.isOneShot)
+        {
+            //Debug.Log("isOneShot changed");
+            hasChanged = true;
+        }
+        
+        if (hasChanged) return true;
+        
+        if (prev.is3D != current.is3D)
+        {
+            //Debug.Log("is3D changed");
+            hasChanged = true;
+        }
+        
+        if (hasChanged) return true;
+        
+        if (prev.isOcclusion != current.isOcclusion)
+        {
+            //Debug.Log("isOcclusion changed");
+            hasChanged = true;
+        }
+        
+        if (hasChanged) return true;
+        
+        if (!Mathf.Approximately(prev.minDistance, current.minDistance))
+        {
+            //Debug.Log("minDistance changed");
+            hasChanged = true;
+        }
+        
+        if (hasChanged) return true;
+        
+        if (!Mathf.Approximately(prev.maxDistance, current.maxDistance))
+        {
+            //Debug.Log("maxDistance changed");
+            hasChanged = true;
+        }
+        
+        if (hasChanged) return true;
+        
+        if (prev.parameters.Length == current.parameters.Length)
+        {
+            var prevParamStrings = new string[prev.parameters.Length];
+            for (int i = 0; i < prev.parameters.Length; i++)
+            {
+                prevParamStrings[i] = prev.parameters[i].paramName + prev.parameters[i].isGlobal + prev.parameters[i].data1 + prev.parameters[i].data2;
+            }
+            var currParamStrings = new string[current.parameters.Length];
+            for (int i = 0; i < current.parameters.Length; i++)
+            {
+                currParamStrings[i] = current.parameters[i].paramName + current.parameters[i].isGlobal + current.parameters[i].data1 + current.parameters[i].data2;
+            }
+            hasChanged = HasStringArrayChanged(prevParamStrings, currParamStrings);
+        }
+        else
+        {
+            //Debug.Log("paramLength changed");
+            hasChanged = true;
+        }
+
+        if (hasChanged) return true;
+        return false;
+    }
+
+    private static bool HasStringArrayChanged(string[] prev, string[] current)
+    {
+        var hasChanged = false;
+        
+        foreach (var s in prev)
+        {
+            if (!current.Contains(s))
+            {
+                //Debug.Log("string array changed");
+                hasChanged = true;
+            }
+        }
+
+        return hasChanged;
+    }
+    
+#endif
     
     public bool TryGetEvent(string eventName, out EventData eventData) //Om ett event finns i eventCache OCH banken eventet hör till är laddad returneras true samt EventData, annars false
     {
