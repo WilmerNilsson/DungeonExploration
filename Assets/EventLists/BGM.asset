@@ -50,12 +50,16 @@ MonoBehaviour:
     banks:
     - Music
     isOneShot: 0
-    is3D: 0
-    isOcclusion: 0
+    is3D: 1
+    isOcclusion: 1
     minDistance: 1
     maxDistance: 20
     debug: 1
-    parameters: []
+    parameters:
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
   - eventName: OpeningScene
     eventReference:
       Guid:
