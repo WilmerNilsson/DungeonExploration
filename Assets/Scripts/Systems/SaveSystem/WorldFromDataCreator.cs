@@ -62,6 +62,12 @@ public class WorldFromDataCreator : MonoBehaviour
 
         void InitializePlayer(SavefileData.WorldData worldData)
         {
+            if(worldData.PlayerSaveData == null)
+            {
+                Debug.Log("player data null, skipping initialize in helper", this);
+                return;
+            }
+
             SaveFileHelperPlayer helper = FindFirstObjectByType<SaveFileHelperPlayer>();
 
 #if DEBUG
@@ -77,7 +83,11 @@ public class WorldFromDataCreator : MonoBehaviour
 
         void InitializeDroppedItems(SavefileData.WorldData worldData)
         {
-            if (worldData.DungeonSaveData.DroppedItems == null) return;
+            if (worldData.DungeonSaveData.DroppedItems == null)
+            {
+                Debug.Log("dropped items null, skipping spawning", this);
+                return;
+            }
 
             foreach (DungeonSaveData.DroppedItem item in worldData.DungeonSaveData.DroppedItems)
             {
@@ -97,7 +107,11 @@ public class WorldFromDataCreator : MonoBehaviour
 
         void InitializeEnemies(SavefileData.WorldData worldData)
         {
-            if(worldData.DungeonSaveData.Enemies == null) return;
+            if(worldData.DungeonSaveData.Enemies == null)
+            {
+                Debug.Log("enemies save data null, skipping initialize");
+                return;
+            }
             foreach (DungeonSaveData.Enemy enemy in worldData.DungeonSaveData.Enemies)
             {
                 if (enemyLibrary.TryGetPrefabByName(enemy.PrefabID, out GameObject? prefab))
@@ -128,7 +142,11 @@ public class WorldFromDataCreator : MonoBehaviour
 
         void InitializeContainers(SavefileData.WorldData worldData)
         {
-            if(worldData.DungeonSaveData.Containers == null) return;
+            if(worldData.DungeonSaveData.Containers == null)
+            {
+                Debug.Log("container save data null, skipping initialize", this);
+                return;
+            }
             foreach (DungeonSaveData.Container container in worldData.DungeonSaveData.Containers)
             {
                 if (containerLibrary.TryGetPrefabByName(container.PrefabID, out GameObject? prefab))

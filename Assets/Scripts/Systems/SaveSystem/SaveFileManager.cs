@@ -107,8 +107,6 @@ public class SaveFileManager
     {
         string json = JsonUtility.ToJson(data);
 
-        Debug.Log(json);
-
         if(backup)
         {
             File.WriteAllText(Application.dataPath + SaveFileFolderName + CurrentSavefileNr + SaveFileBackupName, json);
