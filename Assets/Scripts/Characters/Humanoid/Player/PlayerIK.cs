@@ -18,6 +18,7 @@ public class PlayerIK : HumanoidIK
         if (!attacking && !blocking)
         {
             Reset();
+            x = 0;
             weapon.dealDamage = true;
             swingAngle = Mathf.Deg2Rad * angle;
             swingStart = shoulderObj.localPosition + (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), 0).normalized * armLenght);
@@ -39,6 +40,7 @@ public class PlayerIK : HumanoidIK
             blockAngle = angle;
             anglePos = new Vector3(Mathf.Sin(blockAngle * Mathf.Deg2Rad), -Mathf.Cos(blockAngle * Mathf.Deg2Rad), 0) * handOffset;
             offsetPos.x = anglePos.y;
+            if (angle < 0) offsetPos.x++;
             offsetPos.y = -anglePos.x;
             if (blockAngle < 0)
             {
@@ -70,7 +72,7 @@ public class PlayerIK : HumanoidIK
                 else if (attackState == AttackState.Swing)
                 {
                     time = (Time.time - startTime) / nodeTime;
-                    x = Mathf.Clamp(Mathf.SmoothStep(0, 90, time), 0, 90);
+                    x = Mathf.Clamp(Mathf.SmoothStep(0, 160, time), 0, 160);
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(GetCurvePosition(time)));
