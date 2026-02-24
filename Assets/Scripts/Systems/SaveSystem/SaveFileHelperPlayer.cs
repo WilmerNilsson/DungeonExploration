@@ -3,6 +3,7 @@ using UnityEngine;
 public class SaveFileHelperPlayer : MonoBehaviour
 {
     [SerializeField] private Transform spawnTransform;
+    [SerializeField] private HumanoidMovement movement;
     [SerializeField] private Health health;
     [SerializeField] private ItemLibrarySO itemLibrary;
 
@@ -12,6 +13,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
         if (spawnTransform == null) Debug.LogWarning("spawn transform is null", this);
         if (health == null) Debug.LogWarning("health is null", this);
         if (itemLibrary == null) Debug.LogWarning("item library is null", this);
+        if (movement == null) Debug.LogWarning("movement is null", this);
     }
 #endif
 
@@ -23,6 +25,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
 
         spawnTransform.position = data.Position;
         spawnTransform.rotation = data.Rotation;
+        movement.SupressMoveFrame();
 
         SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Inventory, InvMaster.Instance.PlayerInventory);
     }
