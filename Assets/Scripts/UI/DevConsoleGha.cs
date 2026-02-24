@@ -276,6 +276,11 @@ public class DevConsoleGha : MonoBehaviour
         }
 
         GameObject.FindGameObjectWithTag("Player").transform.position = endLocation;
+        if (GameObject.FindGameObjectWithTag("Player").TryGetComponent<HumanoidMovement>(out HumanoidMovement humanoidMovement))
+        {
+            humanoidMovement.SupressMoveFrame();
+        }
+
         return;
 
         Failed:

@@ -25,7 +25,7 @@ public class HumanoidMovement : MonoBehaviour
     [SerializeField] private bool doJump;
     [SerializeField] private bool grounded;
     
-    private float currentSpeed;
+    private bool supressMoveFrame = false;
 
     private moveActions currentAction = moveActions.None;
 
@@ -48,6 +48,11 @@ public class HumanoidMovement : MonoBehaviour
         grounded = CC.isGrounded;
         rotatedVector = Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * moveVector;
         
+        if(supressMoveFrame)
+        {
+            supressMoveFrame = false;
+            return;
+        }
 
         if (grounded && playerVelocity.y < -2f) playerVelocity.y = -2f; // stays to the ground
 
@@ -57,12 +62,12 @@ public class HumanoidMovement : MonoBehaviour
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
             doJump = false;
         }
-        
-        currentSpeed = moveSpeed;
+
+        float deltaSpeed = moveSpeed;
 
         if (!grounded) //TODO fix air movement, maybe save initial movement and edit it while in the air?
         {
-            currentSpeed *= airMoveMod;
+            deltaSpeed *= airMoveMod;
             SetMoveAction(moveActions.Airborne);
         }
         else if (moveVector == Vector3.zero)
@@ -71,24 +76,32 @@ public class HumanoidMovement : MonoBehaviour
         }
         else if (controller.isCrouching)
         {
-            currentSpeed = crouchSpeed;
+            deltaSpeed = crouchSpeed;
             SetMoveAction(moveActions.CrouchWalk);
         }
         else if (controller.isSprinting && Vector3.Dot(transform.forward, rotatedVector) >= 0)
         {
-            currentSpeed = sprintSpeed;
+            deltaSpeed = sprintSpeed;
             SetMoveAction(moveActions.Sprinting);
         }
         else
         {
-            currentSpeed = moveSpeed;
+            deltaSpeed = moveSpeed;
             SetMoveAction(moveActions.Walking);
         }
         
         playerVelocity.y += Physics.gravity.y * Time.fixedDeltaTime;
         
-        Vector3 finalMove = rotatedVector * currentSpeed + playerVelocity;
+        Vector3 finalMove = rotatedVector * deltaSpeed + playerVelocity;
         CC.Move(finalMove * Time.fixedDeltaTime);
+    }
+
+    /// <summary>
+    /// makes the charachter controller not move next fixed update
+    /// </summary>
+    public void SupressMoveFrame()
+    {
+        supressMoveFrame = true;
     }
 
     void SetMoveAction(moveActions newAction)
