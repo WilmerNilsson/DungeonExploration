@@ -178,7 +178,16 @@ public class GameManagerSO : ScriptableObject
         }
         else if(wasFrozen && thingsFreezingGame == 0)
         {
-            Time.timeScale = SavefileManager.SavefileSettings.NormalTimescale;
+            if(SavefileManager.SavefileSettings == null)
+            {
+                Time.timeScale = 1f;
+            }
+            else
+            {
+                Time.timeScale = SavefileManager.SavefileSettings.NormalTimescale;
+            }
+
+            
 
             OnFreezeGameChangeSelfReset?.Invoke(false);
             OnFreezeGameChange?.Invoke(false);

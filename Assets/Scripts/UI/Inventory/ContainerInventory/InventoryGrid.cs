@@ -92,6 +92,8 @@ public class InventoryGrid : MonoBehaviour
 
         bigRect.center = rt.position;
 
+        Debug.Log("big rect is " + bigRect.center);
+
         return bigRect;
     }
 
@@ -296,6 +298,7 @@ public class InventoryGrid : MonoBehaviour
 
         item.RectTransform.SetParent(transform, false);
         item.RectTransform.position = GetSlotRect(collum, row).center;
+        Debug.Log("center is: " + GetSlotRect(collum, row).center);
         return true;
     }
 
@@ -320,7 +323,6 @@ public class InventoryGrid : MonoBehaviour
 
         return foundMatch;
     }
-
 
     private class ItemWithPiviot
     {
