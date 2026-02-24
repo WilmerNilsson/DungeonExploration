@@ -15,7 +15,8 @@ public class HumanoidIK : MonoBehaviour
     protected Weapon weapon;
     [SerializeField, Tooltip("The Shoulder node of the weapon arm")] protected Transform shoulderObj = null;
     [SerializeField, Tooltip("The Avatars head")] protected Transform headObj = null;
-    [SerializeField, Tooltip("Where the avatar should look")] protected Transform lookObj = null;
+    [SerializeField, Tooltip("Where the avatar should look")] protected Transform lookObj = null; 
+    protected Vector3 Forward => headObj.position + headObj.forward;
     
     [SerializeField,Tooltip("the rotation of the hand, readonly as they are set in code")] protected float x, z;
     [Header("Attack Settings")]
@@ -96,7 +97,7 @@ public class HumanoidIK : MonoBehaviour
     
     protected Vector3 RelativePosition(Vector3 position)
     {
-        return transform.TransformDirection(position) + animator.rootPosition;
+        return transform.TransformDirection(position) + headObj.position;
     }
 
     protected Quaternion RelativeRotation(Quaternion rotation)
@@ -118,7 +119,7 @@ public class HumanoidIK : MonoBehaviour
 
     protected Vector3 GetCurvePosition(float t)
     {
-        Vector3 heighPoint = swingStart + (swingEnd - swingStart) / 2 + Vector3.forward * curveHeight;
+        Vector3 heighPoint = swingStart + (swingEnd - swingStart) / 2 + headObj.forward * curveHeight;
         return (Mathf.Pow(1 - t, 2) * swingStart) + (2 * (1 - t) * t * heighPoint) + (t * t * swingEnd);
     }
 }

@@ -21,8 +21,12 @@ public class PlayerIK : HumanoidIK
             x = 0;
             weapon.dealDamage = true;
             swingAngle = Mathf.Deg2Rad * angle;
-            swingStart = shoulderObj.localPosition + (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), 0).normalized * armLenght);
-            swingEnd = shoulderObj.localPosition - (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), -1).normalized * armLenght);
+            swingStart = new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), -.5f) * armLenght;
+            swingEnd = new Vector3(armLenght * -Mathf.Cos(swingAngle), armLenght * -Mathf.Sin(swingAngle), -.5f) * armLenght;
+            
+            Debug.Log("head rotation: " + Quaternion.AngleAxis(headObj.rotation.eulerAngles.x, Vector3.right) * Vector3.forward);
+            ;
+            
             attacking = true;
         }
     }
@@ -56,7 +60,7 @@ public class PlayerIK : HumanoidIK
             if(attacking && !blocking) {
                 
                 // Math for rotating the sword arm correctly
-                z = (Mathf.Atan2(swingStart.y - shoulderObj.localPosition.y, swingStart.x - shoulderObj.localPosition.x) * Mathf.Rad2Deg) + 180;
+                z = (Mathf.Atan2(swingStart.y, swingStart.x) * Mathf.Rad2Deg) + 180;
                 rotation = RelativeRotation(Quaternion.AngleAxis(z, Vector3.forward) * Quaternion.AngleAxis(x, Vector3.up));
                 
                 if (startTime == 0) startTime = Time.time;
