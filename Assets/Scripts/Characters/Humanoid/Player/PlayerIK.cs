@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class PlayerIK : HumanoidIK
 {
-
+    [SerializeField] AnimationCurve curve;
     private Vector3 frontPos;
     private Vector3 anglePos;
     private Vector3 offsetPos;
@@ -18,14 +18,13 @@ public class PlayerIK : HumanoidIK
         if (!attacking && !blocking)
         {
             Reset();
-            x = 0;
+            yRot = 0;
             weapon.dealDamage = true;
             swingAngle = Mathf.Deg2Rad * angle;
-            swingStart = new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), -.5f) * armLenght;
-            swingEnd = new Vector3(armLenght * -Mathf.Cos(swingAngle), armLenght * -Mathf.Sin(swingAngle), -.5f) * armLenght;
-            
-            Debug.Log("head rotation: " + Quaternion.AngleAxis(headObj.rotation.eulerAngles.x, Vector3.right) * Vector3.forward);
-            ;
+            float x = Mathf.Cos(swingAngle) + .1f;
+            float y = Mathf.Sin(swingAngle);
+            swingStart = new Vector3(x, y, 0) * armLenght;
+            swingEnd = new Vector3(-x, -y, 0) * armLenght;
             
             attacking = true;
         }
@@ -60,8 +59,9 @@ public class PlayerIK : HumanoidIK
             if(attacking && !blocking) {
                 
                 // Math for rotating the sword arm correctly
-                z = (Mathf.Atan2(swingStart.y, swingStart.x) * Mathf.Rad2Deg) + 180;
-                rotation = RelativeRotation(Quaternion.AngleAxis(z, Vector3.forward) * Quaternion.AngleAxis(x, Vector3.up));
+                zRot = (Mathf.Atan2(swingStart.y, swingStart.x) * Mathf.Rad2Deg) + 180;
+                xRot = Vector3.SignedAngle(transform.forward, headObj.forward, Vector3.left);
+                rotation = RelativeRotation(Quaternion.AngleAxis(zRot, Vector3.forward) * Quaternion.AngleAxis(yRot, Vector3.up) * Quaternion.AngleAxis(xRot, Vector3.right));
                 
                 if (startTime == 0) startTime = Time.time;
                 
@@ -76,7 +76,7 @@ public class PlayerIK : HumanoidIK
                 else if (attackState == AttackState.Swing)
                 {
                     time = (Time.time - startTime) / nodeTime;
-                    x = Mathf.Clamp(Mathf.SmoothStep(0, 160, time), 0, 160);
+                    yRot = Mathf.Clamp(Mathf.SmoothStep(0, 160, time), 0, 160);
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(GetCurvePosition(time)));
@@ -115,12 +115,12 @@ public class PlayerIK : HumanoidIK
             {
                 if (startTime == 0) startTime = Time.time;
                 
-                z = blockAngle;
-                if (z > 0) z += 180;
+                zRot = blockAngle;
+                if (zRot > 0) zRot += 180;
                 
                 blockPos = headObj.forward + headObj.position + transform.TransformDirection(anglePos + offsetPos);
                 
-                Quaternion blockRotation = Quaternion.AngleAxis(z, Vector3.forward);
+                Quaternion blockRotation = Quaternion.AngleAxis(zRot, Vector3.forward);
                 
                 if (blockState == BlockState.Start)
                 {
@@ -187,6 +187,12 @@ public class PlayerIK : HumanoidIK
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(blockPos, 0.1f);
+        if (attackState == AttackState.Swing)
+        {
+            Vector3 pos = RelativePosition(GetCurvePosition(time));
+            Gizmos.DrawSphere(pos, 0.1f);
+            Gizmos.DrawRay(pos, GetCurveNormal(time));
+        }
+        
     }
 }

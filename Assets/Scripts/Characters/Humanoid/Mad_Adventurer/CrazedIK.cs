@@ -15,7 +15,7 @@ public class CrazedIK : HumanoidIK
         }
         if (!attacking)
         {
-            x = 0;
+            yRot = 0;
             swingAngle = Mathf.Deg2Rad * (Random.Range(angleLimit, 360 - angleLimit) - 90);
             swingStart = shoulderObj.localPosition + (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), 0).normalized * armLenght) - transform.forward;
             swingEnd = shoulderObj.localPosition - (new Vector3(armLenght * Mathf.Cos(swingAngle), armLenght * Mathf.Sin(swingAngle), -1).normalized * armLenght) - transform.forward;
@@ -44,8 +44,8 @@ public class CrazedIK : HumanoidIK
                     animator.SetLookAtPosition(lookObj.position);
                 }
                 
-                z = (Mathf.Atan2(swingStart.y - shoulderObj.localPosition.y, swingStart.x - shoulderObj.localPosition.x) * Mathf.Rad2Deg) + 180;
-                rotation = RelativeRotation(Quaternion.AngleAxis(z, Vector3.forward) * Quaternion.AngleAxis(x, Vector3.up));
+                zRot = (Mathf.Atan2(swingStart.y - shoulderObj.localPosition.y, swingStart.x - shoulderObj.localPosition.x) * Mathf.Rad2Deg) + 180;
+                rotation = RelativeRotation(Quaternion.AngleAxis(zRot, Vector3.forward) * Quaternion.AngleAxis(yRot, Vector3.up));
                 
                 if (startTime == 0) startTime = Time.time;
                 
@@ -60,7 +60,7 @@ public class CrazedIK : HumanoidIK
                 else if (attackState == AttackState.Swing)
                 {
                     time = (Time.time - startTime) / nodeTime;
-                    x = Mathf.Clamp(Mathf.SmoothStep(0, 160, time), 0, 160);
+                    yRot = Mathf.Clamp(Mathf.SmoothStep(0, 160, time), 0, 160);
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(GetCurvePosition(time)));
@@ -77,7 +77,7 @@ public class CrazedIK : HumanoidIK
                 else if (attackState == AttackState.Interrupt)
                 {
                     time = interruptedSwingTime - (Time.time - startTime) / recoilTime;
-                    x = Mathf.Clamp(Mathf.SmoothStep(0, 160, time), 0, 160);
+                    yRot = Mathf.Clamp(Mathf.SmoothStep(0, 160, time), 0, 160);
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1);
                     animator.SetIKPosition(AvatarIKGoal.RightHand,RelativePosition(GetCurvePosition(time)));

@@ -15,10 +15,11 @@ public class HumanoidIK : MonoBehaviour
     protected Weapon weapon;
     [SerializeField, Tooltip("The Shoulder node of the weapon arm")] protected Transform shoulderObj = null;
     [SerializeField, Tooltip("The Avatars head")] protected Transform headObj = null;
-    [SerializeField, Tooltip("Where the avatar should look")] protected Transform lookObj = null; 
+    [SerializeField, Tooltip("Where the avatar should look")] protected Transform lookObj = null;
+    [SerializeField, Tooltip("Weapon Hand")] protected Transform handObj = null;
     protected Vector3 Forward => headObj.position + headObj.forward;
     
-    [SerializeField,Tooltip("the rotation of the hand, readonly as they are set in code")] protected float x, z;
+    [SerializeField,Tooltip("the rotation of the hand, readonly as they are set in code")] protected float xRot, yRot, zRot;
     [Header("Attack Settings")]
     [SerializeField, Tooltip("the min angle between the attack and straight up/down")] protected float angleLimit = 30f;
     [SerializeField, Tooltip("the lenght of the weapon arm")] protected float armLenght = 2f;
@@ -121,5 +122,14 @@ public class HumanoidIK : MonoBehaviour
     {
         Vector3 heighPoint = swingStart + (swingEnd - swingStart) / 2 + headObj.forward * curveHeight;
         return (Mathf.Pow(1 - t, 2) * swingStart) + (2 * (1 - t) * t * heighPoint) + (t * t * swingEnd);
+    }
+    
+    protected Vector3 GetCurveNormal(float t)
+    {
+        Vector3 heighPoint = swingStart + (swingEnd - swingStart) / 2 + headObj.forward * curveHeight;
+        Vector3 tangent = (2*(1-t) * (heighPoint-swingStart) + 2*t*(swingEnd-heighPoint)).normalized;
+        Vector3 cross = Vector3.Cross(tangent, heighPoint);
+        Vector3 normal = Vector3.Cross(cross, tangent);
+        return -tangent;
     }
 }
