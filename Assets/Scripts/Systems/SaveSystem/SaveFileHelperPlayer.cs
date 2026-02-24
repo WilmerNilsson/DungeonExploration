@@ -17,6 +17,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
 
     public void Initialize(PlayerSaveData data)
     {
+        health.StopSelfInitialize();
         health.SetCurrentHealth(data.CurrentHP);
         health.SetMaxHealth(data.MaxHP);
 
@@ -33,6 +34,13 @@ public class SaveFileHelperPlayer : MonoBehaviour
         Vector3 pos = spawnTransform.position;
         Quaternion rot = spawnTransform.rotation;
         InventorySaveData inventory = new(InvMaster.Instance.PlayerInventory.GetInventoryData());
+
+#if DEBUG
+        foreach (var item in inventory.Items)
+        {
+            Debug.Log("a" + item.Slot);
+        }
+#endif
 
         PlayerSaveData data = new(inventory, pos, rot, maxHP, currentHP, 100, 100);
         return data;

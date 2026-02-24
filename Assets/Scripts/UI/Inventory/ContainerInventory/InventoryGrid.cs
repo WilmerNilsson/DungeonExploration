@@ -92,8 +92,6 @@ public class InventoryGrid : MonoBehaviour
 
         bigRect.center = rt.position;
 
-        Debug.Log("big rect is " + bigRect.center);
-
         return bigRect;
     }
 
@@ -151,7 +149,6 @@ public class InventoryGrid : MonoBehaviour
         return false;
     }
 
-
     #endregion
 
     public bool TryInstantiateItemInSlot(int slot, GameObject prefab)
@@ -159,8 +156,14 @@ public class InventoryGrid : MonoBehaviour
 #if DEBUG
         if (prefab.TryGetComponent<SimpleItem>(out SimpleItem component))
         {
-            int row = slot % collumns;
-            int collum = slot - (row * collumns);
+            int collum = slot % (collumns);
+            int row = (slot - collum) / (collumns);
+
+            //4567890
+            //7890123
+            //0123456
+
+            Debug.Log($"slot: {slot}, c{collum}, r{row}");
 
             return TryPutItemInSlot(component, collum, row, true);
         }
@@ -191,8 +194,8 @@ public class InventoryGrid : MonoBehaviour
                 InventorySaveData.InventoryItem item = new();
                 item.PrefabID = InvData[collum, row].Item.PrefabID;
 
-                //0123
                 //4567
+                //0123
                 item.Slot = (row * collumns) + collum;
 
                 data.Add(item);
@@ -234,8 +237,15 @@ public class InventoryGrid : MonoBehaviour
 
     private bool InvSlotExists(int collumn, int row)
     {
+        Debug.Log(InvData.GetLength(0));
+        Debug.Log(InvData.GetLength(1));
+
         if (collumn < 0 || row < 0 || collumn >= InvData.GetLength(0) || row >= InvData.GetLength(1))
-        { return false; }
+        {
+            Debug.Log("failed");
+
+            return false;
+        }
         return true;
     }
 
@@ -255,6 +265,8 @@ public class InventoryGrid : MonoBehaviour
     {
         bool[,] itemSlots = item.GetSizeMatrix();
 
+        Debug.Log($"cXr {collum},{row}");
+
         for (int x = 0; x < itemSlots.GetLength(0); x++)
         {
             for (int y = 0; y < itemSlots.GetLength(1); y++)
@@ -262,13 +274,21 @@ public class InventoryGrid : MonoBehaviour
                 bool itemSlotActive = itemSlots[x, y] == true;
                 if (!itemSlotActive) continue; // we can skip if not active
 
+                Debug.Log("active:" + x + "," + y);
+
+                Debug.Log($"slot exists?: {collum + x - item.Pivot.x},{row + y - item.Pivot.y}");
+
                 bool invSlotExists = InvSlotExists(collum + x - item.Pivot.x, row + y - item.Pivot.y);
                 if(! invSlotExists) return false;
+
+                Debug.Log($"slot exists: {collum + x - item.Pivot.x},{row + y - item.Pivot.y}");
 
                 bool spaceIsFreeIfItemIsAbsent = InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y] == null ||
                     InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y].Item == item;
 
                 if (!spaceIsFreeIfItemIsAbsent) return false;
+
+                Debug.Log("space is free");
             }
         }
         //by this point it is clear that we can place the item
@@ -298,7 +318,6 @@ public class InventoryGrid : MonoBehaviour
 
         item.RectTransform.SetParent(transform, false);
         item.RectTransform.position = GetSlotRect(collum, row).center;
-        Debug.Log("center is: " + GetSlotRect(collum, row).center);
         return true;
     }
 

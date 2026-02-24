@@ -23,6 +23,7 @@ public class SaveFileHelperEnemy : MonoBehaviour
         spawnTransform.position = data.Position;
         spawnTransform.rotation = data.Rotation;
 
+        health.StopSelfInitialize();
         health.SetCurrentHealth(data.CurrentHP);
     }
 
