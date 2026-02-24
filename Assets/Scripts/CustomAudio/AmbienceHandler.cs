@@ -50,6 +50,7 @@ public class AmbienceHandler : MonoBehaviour
          directions[i] = _direction * 45; //För att visualisera directions
          Physics.Raycast(AudioManager.Listener.transform.position, _direction, out _hits[i], Mathf.Infinity, layerMask);
       }
+      
       OnSort(_hits);
       for (var i = 0; i < 8; i++)
       {
