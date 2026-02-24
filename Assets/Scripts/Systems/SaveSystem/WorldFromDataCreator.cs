@@ -21,8 +21,9 @@ public class WorldFromDataCreator : MonoBehaviour
     {
         if(GameManagerSO.Instance.TryConsumeSavefileData(out SavefileData? data))
         {
-            if(data.World != null)
+            if(data.World != null && data.World.Initialized)
             {
+                DestoryNewWorld();
                 InitializeWorld(data.World);
             }
             else
@@ -36,6 +37,17 @@ public class WorldFromDataCreator : MonoBehaviour
             Debug.LogError("World from data creator tried to consume save file data, but it failed", this);
         }
 #endif
+    }
+
+    //TODO remake initialize system to not use inactive objects
+    private void DestoryNewWorld()
+    {
+        Debug.Log("destroying new world items");
+
+        foreach (var item in newWorldObjects)
+        {
+            GameObject.Destroy(item);
+        }
     }
 
     private void CreateNewWorld()

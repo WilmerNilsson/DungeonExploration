@@ -16,6 +16,7 @@ public static class WorldDataCreator
         PlayerSaveData playerSaveData = GameObject.FindAnyObjectByType<SaveFileHelperPlayer>(FindObjectsInactive.Exclude).GetData();
 
         SavefileData.WorldData worldData = new(playerSaveData, dungeonSaveData);
+        worldData.Initialized = true;
 
         return worldData;
 

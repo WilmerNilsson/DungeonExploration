@@ -42,6 +42,10 @@ public class SavefileData
     [Serializable]
     public class WorldData
     {
+        /// <summary>
+        /// gets set to true in world data creator
+        /// </summary>
+        public bool Initialized = false;
         public PlayerSaveData PlayerSaveData;
         public DungeonSaveData DungeonSaveData;
 
@@ -51,9 +55,16 @@ public class SavefileData
             DungeonSaveData = dungeonSaveData;
         }
 
+        private WorldData(PlayerSaveData playerSaveData, DungeonSaveData dungeonSaveData, bool initialized)
+        {
+            PlayerSaveData = playerSaveData;
+            DungeonSaveData = dungeonSaveData;
+            Initialized = initialized;
+        }
+
         public WorldData Clone()
         {
-            return new WorldData(PlayerSaveData.Clone(), DungeonSaveData.Clone());
+            return new WorldData(PlayerSaveData.Clone(), DungeonSaveData.Clone(), Initialized);
         }
     }
 }
