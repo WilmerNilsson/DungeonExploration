@@ -83,7 +83,7 @@ public class MadAdventurerIdleState : MadAventurerBaseState
 
     private bool DetectPlayer()
     {
-        return MyMadAdventurerStateMachine.Vision.SightDetection(maxSightRange) > sightThreshold || MyMadAdventurerStateMachine.Vision.SoundDetection(maxSoundRange) > soundThreshold;
+        return MyMadAdventurerStateMachine.Vision.Detect(sightThreshold, soundThreshold, maxSoundRange, maxSightRange);
     }
 
     private void Reset()
