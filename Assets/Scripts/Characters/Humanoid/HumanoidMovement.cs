@@ -10,6 +10,7 @@ public class HumanoidMovement : MonoBehaviour
     [SerializeField] HumanoidController controller;
     [SerializeField] CharacterController CC;
     [SerializeField] Animator animator;
+    private Transform bodyTransform;
     
     [Header("Stats")]
     [SerializeField] private float moveSpeed = 1;
@@ -41,6 +42,11 @@ public class HumanoidMovement : MonoBehaviour
         Sprinting,
         CrouchWalk,
         Airborne
+    }
+
+    private void Start()
+    {
+        bodyTransform = animator.gameObject.transform;
     }
 
     private void FixedUpdate()
@@ -117,5 +123,18 @@ public class HumanoidMovement : MonoBehaviour
     public void Jump()
     {
         doJump = CC.isGrounded;
+    }
+
+    public void Crouch(bool isCrouching)
+    {
+        Vector3 heightMod = new Vector3(0, 0.5f, 0);
+        if (isCrouching)
+        {
+            bodyTransform.position -= heightMod;
+        }
+        else
+        {
+            bodyTransform.position += heightMod;
+        }
     }
 }
