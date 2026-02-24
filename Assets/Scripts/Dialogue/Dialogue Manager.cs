@@ -146,6 +146,10 @@ public class DialogueManager : MonoBehaviour
 
     public void ContinueStory()
     {
+        if (!dialogueIsPlaying)
+        {
+            return;
+        }
         if (isTyping)
         {
             onEndLine?.Invoke();
