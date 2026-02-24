@@ -8,8 +8,8 @@ using UnityEngine.UI;
 public class UIControlerHandler : MonoBehaviour
 {
     [SerializeField] private GameObject FirstSelected;
-    [SerializeField] private EventSystem _eventSystem;
-    [SerializeField] private PlayerInput _playerInput;
+    private EventSystem _eventSystem;
+    private PlayerInput _playerInput;
     private string ControlScheme;
 
     private void Start()
