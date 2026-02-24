@@ -12,15 +12,20 @@ public class UIControlerHandler : MonoBehaviour
     private PlayerInput _playerInput;
     private string ControlScheme;
 
-    private void Start()
+    private void OnEnable()
     {
-        _eventSystem = GetComponent<EventSystem>();
+        _eventSystem = FindAnyObjectByType<EventSystem>();
         _playerInput = FindAnyObjectByType<PlayerInput>();
         ControlScheme = _playerInput.currentControlScheme;
+        _eventSystem.SetSelectedGameObject(FirstSelected);
     }
 
     private void Update()
     {
+        if (_eventSystem.currentSelectedGameObject)
+        {
+            Debug.DrawLine(_eventSystem.currentSelectedGameObject.transform.position, Vector3.zero);
+        }
         if (_playerInput.currentControlScheme != ControlScheme)
         {
             ControlScheme =  _playerInput.currentControlScheme;
