@@ -14,14 +14,48 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   category: Town
   events:
-  - eventName: 
+  - eventName: Big_Purchase
     eventReference:
       Guid:
-        Data1: 1759749520
-        Data2: 1112238772
-        Data3: 1784874671
-        Data4: -1190603510
-      Path: event:/Sound/UI/Inventory/Click
+        Data1: -509691909
+        Data2: 1329246868
+        Data3: 425986991
+        Data4: 1697237663
+      Path: event:/Sound/Shop/Big Purchase
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Buy_Loot
+    eventReference:
+      Guid:
+        Data1: -256764189
+        Data2: 1158873845
+        Data3: -1359323259
+        Data4: 1381537548
+      Path: event:/Sound/Shop/Buy Loot
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Sell_Loot
+    eventReference:
+      Guid:
+        Data1: 979678093
+        Data2: 1106309126
+        Data3: -1239493479
+        Data4: 2034479962
+      Path: event:/Sound/Shop/Sell Loot
     banks:
     - SFX
     isOneShot: 1
