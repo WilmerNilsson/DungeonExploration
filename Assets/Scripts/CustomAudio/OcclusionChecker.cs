@@ -40,7 +40,7 @@ public class OcclusionChecker
     //TODO: weighting på normalkurva? baserat på spread?
     //TODO: kolla ovan och under spelaren också?
 
-    public void CheckOcclusion(GameObject sourceGo, GameObject targetGo, out float occlusion)
+    public void CheckOcclusion(GameObject sourceGo, GameObject targetGo, out float occlusion, float maxDistance = -1)
     {
         _lineCount = linesOnEitherSide * 2 + 1;
         hitDatas = new HitData[_lineCount];
@@ -101,13 +101,16 @@ public class OcclusionChecker
                         break;
                     }
                     
-                    if (Physics.Raycast(hitDatas[i].Hits[j - 1].point, _direction, out hitDatas[i].Hits[j], layerMask))
+                    if (maxDistance > 0) _distance = maxDistance;
+                    else _distance = Mathf.Infinity;
+                    
+                    if (Physics.Raycast(hitDatas[i].Hits[j - 1].point, _direction, out hitDatas[i].Hits[j], _distance, layerMask))
                     {
                         if (drawDebug) Debug.DrawLine(hitDatas[i].Hits[j - 1].point, hitDatas[i].Hits[j].point, Color.blue);
                     }
                     else
                     {
-                        if (drawDebug) Debug.DrawRay(hitDatas[i].Hits[j - 1].point, _direction * 1000, Color.black);
+                        if (drawDebug) Debug.DrawRay(hitDatas[i].Hits[j - 1].point, _direction * _distance, Color.black);
                         hitDatas[i].score = 1;
                         hitDatas[i].castIndex = j;
                         break;

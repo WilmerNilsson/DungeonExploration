@@ -510,7 +510,7 @@ public class EventList : ScriptableObject
             if (Vector3.Distance(kvp.Key.transform.position, AudioManager.Listener.transform.position) <
                 eventData.maxDistance + 1) //gör inte raycast om distance är för långt, vi lägger till +1 på maxDistance så värden hinner sättas innan ljudet börjar bli audible
             {
-                AudioManager.Instance.occlusionChecker.CheckOcclusion(kvp.Key, AudioManager.Listener,out _occlusion);
+                AudioManager.Instance.occlusionChecker.CheckOcclusion(kvp.Key, AudioManager.Listener,out _occlusion, eventData.maxDistance + 1);
                 AudioManager.Instance.wallChecker.CheckWalls(kvp.Key, AudioManager.Listener, out _walls);
                 if (eventData.ParameterCache.TryGetValue("Occluded", out var parameterData))
                 {

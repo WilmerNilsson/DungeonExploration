@@ -47,6 +47,16 @@ public class AmbienceHandler : MonoBehaviour
    [SerializeField] private float seekSpeed;
    private float _velocity;
    
+   
+   private RaycastHit[] _heightHits = new RaycastHit[2];
+   
+   private float _height = 0f;
+   
+   [SerializeField] private bool useHeightAsMultiplier;
+   
+   [Range(0, 3f)]
+   [SerializeField] private float heightMultiplier;
+   
    private void FixedUpdate()
    {
       if (!AudioManager.Listener) return;
@@ -57,6 +67,7 @@ public class AmbienceHandler : MonoBehaviour
          directions[i] = _direction * 45; //För att visualisera directions
          Physics.Raycast(AudioManager.Listener.transform.position, _direction, out _hits[i], Mathf.Infinity, layerMask);
       }
+
       
       //OnSort(_hits);
       for (var i = 0; i < 8; i++)
@@ -81,16 +92,24 @@ public class AmbienceHandler : MonoBehaviour
       if (maxDistanceAngle < -180) maxDistanceAngle += 360f;
       else if (maxDistanceAngle > 180) maxDistanceAngle -= 360f;
       
+      if (useHeightAsMultiplier)
+      {
+         Physics.Raycast(AudioManager.Listener.transform.position, Vector3.up, out _heightHits[0], layerMask);
+         Physics.Raycast(AudioManager.Listener.transform.position, Vector3.down, out _heightHits[1], layerMask);
+         _height = Vector3.Distance(_heightHits[0].point, _heightHits[1].point);
+         if (heightMultiplier > 0) _height *= heightMultiplier;
+      }
+      
       if (!AudioManager.IsValid) return;
       //AudioManager.Instance.SetGlobalParameter("AmbiencePan", maxDistanceAngle, false);
       if (useMean)
       {
-         AudioManager.Instance.SetGlobalParameter("RoomSize", meanDistance * roomSizeMultiplier, false);
+         AudioManager.Instance.SetGlobalParameter("RoomSize", meanDistance * roomSizeMultiplier * _height, false);
          currentRoomSize = meanDistance * roomSizeMultiplier;
       }
       else
       {
-         AudioManager.Instance.SetGlobalParameter("RoomSize", medianDistance * roomSizeMultiplier, false);
+         AudioManager.Instance.SetGlobalParameter("RoomSize", medianDistance * roomSizeMultiplier * _height, false);
          currentRoomSize = medianDistance * roomSizeMultiplier;
       }
    }
