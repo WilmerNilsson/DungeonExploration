@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
+using static Codice.Client.Commands.WkTree.WorkspaceTreeNode;
 
 [RequireComponent(typeof(RectTransform))]
 public class InventoryGrid : MonoBehaviour
@@ -6,22 +9,41 @@ public class InventoryGrid : MonoBehaviour
     [SerializeField, Min(1)] private int collumns = 1;
     [SerializeField, Min(1)] private int rows = 1;
 
+    private bool hasBeenEnabled = false;
+
     /// <summary>
     /// collum, row
     /// </summary>
-    private SimpleItem[,] InvData
+    private ItemWithPiviot[,] InvData
     {
         get
         {
             if (_invData == null)
             {
-                _invData = new SimpleItem[collumns, rows];
+                _invData = new ItemWithPiviot[collumns, rows];
             }
             return _invData;
         }
     }
-    private SimpleItem[,] _invData;
+    private ItemWithPiviot[,] _invData;
 
+
+    private void OnEnable()
+    {
+        if(hasBeenEnabled) return;
+        hasBeenEnabled = true;
+
+        for(int x = 0; x < InvData.GetLength(0); x++)
+        {
+            for (int y = 0; y < InvData.GetLength(1); y++)
+            {
+                if (InvData[x,y] != null && InvData[x,y].IsPiviot)
+                {
+                    InvData[x, y].Item.RectTransform.position = GetSlotRect(x, y).center;
+                }
+            }
+        }
+    }
 
 #if UNITY_EDITOR
     [Header("gizmos")]
@@ -73,6 +95,7 @@ public class InventoryGrid : MonoBehaviour
     }
 #endif
 
+    #region Geometry
     private Rect GlobalRect()
     {
         //This will get global rect that is neutral to rotation
@@ -112,43 +135,6 @@ public class InventoryGrid : MonoBehaviour
         return new(bigRect.width / collumns, bigRect.height / rows);
     }
 
-    public bool TryPlaceItem(SimpleItem item)
-    {
-        Vector2 pos = item.RectTransform.position;
-
-        if(!GlobalRect().Contains(pos))
-        {
-            return false;
-        }
-
-        bool[,] itemSlots = item.GetSizeMatrix();
-
-#if DEBUG
-        for (int x = 0; x < itemSlots.GetLength(0); x++)
-        {
-            for (int y = 0; y < itemSlots.GetLength(1); y++)
-            {
-                //Debug.Log($"item takes up: {x},{y} - {itemSlots[x,y]}");
-            }
-        }
-#endif
-
-        //TODO work in pivot
-        if (TryGetSlotOfPos(pos, out int collum, out int row, out Rect slot))
-        {
-            return TryPutItemInSlot(item, collum, row);
-        }
-
-        return false;
-    }
-
-    private bool InvSlotExists(int collumn, int row)
-    {
-        if (collumn < 0 || row < 0 || collumn >= InvData.GetLength(0) || row >= InvData.GetLength(1))
-        { return false; }
-        return true;
-    }
-
     private bool TryGetSlotOfPos(Vector2 pos, out int collum, out int row, out Rect slot)
     {
         //slot should be nullable, but i could not get the nullable forgiving to work for some reason.
@@ -182,6 +168,99 @@ public class InventoryGrid : MonoBehaviour
         return false;
     }
 
+    #endregion
+
+    public bool TryInstantiateItemInSlot(int slot, GameObject prefab)
+    {
+#if DEBUG
+        if (prefab.TryGetComponent<SimpleItem>(out SimpleItem component))
+        {
+            int collum = slot % (collumns);
+            int row = (slot - collum) / (collumns);
+
+            //4567890
+            //7890123
+            //0123456
+
+            return TryPutItemInSlot(component, collum, row, true);
+        }
+        else
+        {
+            Debug.LogError($"can't instanciate prefab {prefab}, cause it is not a simple item", this);
+            return false;
+        }
+#else //assume it won't error;
+        int row = slot % collumns;
+        int collum = slot - (row * collumns);
+
+        return TryPutItemInSlot(prefab.GetComponent<SimpleItem>(), row, collum, true);
+#endif
+    }
+
+    public List<InventorySaveData.InventoryItem> GetInventoryData()
+    {
+        List<InventorySaveData.InventoryItem> data = new();
+
+        for (int collum = 0; collum < InvData.GetLength(0); collum++)
+        {
+            for (int row = 0; row < InvData.GetLength(1); row++)
+            {
+                if (InvData[collum, row] == null) continue;
+                if (InvData[collum, row].IsPiviot == false) continue;
+
+                InventorySaveData.InventoryItem item = new();
+                item.PrefabID = InvData[collum, row].Item.PrefabID;
+
+                //4567
+                //0123
+                item.Slot = (row * collumns) + collum;
+
+                data.Add(item);
+            }
+        }
+
+        return data;
+    }
+
+    public bool TryPlaceItem(SimpleItem item)
+    {
+        Vector2 pos = item.RectTransform.position;
+
+        if(!GlobalRect().Contains(pos))
+        {
+            return false;
+        }
+
+        bool[,] itemSlots = item.GetSizeMatrix();
+
+#if DEBUG
+        for (int x = 0; x < itemSlots.GetLength(0); x++)
+        {
+            for (int y = 0; y < itemSlots.GetLength(1); y++)
+            {
+                //Debug.Log($"item takes up: {x},{y} - {itemSlots[x,y]}");
+            }
+        }
+#endif
+
+        //TODO work in pivot
+        if (TryGetSlotOfPos(pos, out int collum, out int row, out Rect slot))
+        {
+            return TryPutItemInSlot(item, collum, row);
+        }
+
+        return false;
+    }
+
+    private bool InvSlotExists(int collumn, int row)
+    {
+        if (collumn < 0 || row < 0 || collumn >= InvData.GetLength(0) || row >= InvData.GetLength(1))
+        {
+            return false;
+        }
+        return true;
+    }
+
     public bool TryInsertItem(SimpleItem item, bool instantiate = false)
     {
         for (int collum = 0; collum < InvData.GetLength(0); collum++)
@@ -209,7 +288,7 @@ public class InventoryGrid : MonoBehaviour
                 if(! invSlotExists) return false;
 
                 bool spaceIsFreeIfItemIsAbsent = InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y] == null ||
-                    InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y] == item;
+                    InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y].Item == item;
 
                 if (!spaceIsFreeIfItemIsAbsent) return false;
             }
@@ -231,10 +310,14 @@ public class InventoryGrid : MonoBehaviour
             {
                 if (itemSlots[x, y] == true)
                 {
-                    InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y] = item;
+                    InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y] = new();
+                    InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y].Item = item;
                 }
             }
         }
+
+        InvData[collum, row].IsPiviot = true;
+
         item.RectTransform.SetParent(transform, false);
         item.RectTransform.position = GetSlotRect(collum, row).center;
         return true;
@@ -250,7 +333,8 @@ public class InventoryGrid : MonoBehaviour
         {
             for (int row = 0; row < InvData.GetLength(1); row++)
             {
-                if (InvData[collum, row] == item)
+                if(InvData[collum, row] == null) { continue; }
+                else if (InvData[collum, row].Item == item)
                 {
                     InvData[collum, row] = null;
                     foundMatch = true;
@@ -261,4 +345,9 @@ public class InventoryGrid : MonoBehaviour
         return foundMatch;
     }
 
+    private class ItemWithPiviot
+    {
+        public SimpleItem Item;
+        public bool IsPiviot;
+    }
 }

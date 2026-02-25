@@ -66,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3467929583550465738, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: AttackState.maxMeleeRange
-      value: 2
+      value: 2.2
       objectReference: {fileID: 0}
     - target: {fileID: 3467929583550465738, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: AttackState.minMeleeRange
@@ -78,7 +78,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3467929583550465738, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: ChasingState.minDistanceToPlayer
-      value: 0.8
+      value: 1.3
       objectReference: {fileID: 0}
     - target: {fileID: 3467929583550465738, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: chasingState.minDistanceToCorner
@@ -91,6 +91,14 @@ PrefabInstance:
     - target: {fileID: 3879916398111493942, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: sightAngle
       value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 3879916398111493942, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: crouchSoundModifier
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3879916398111493942, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
+      propertyPath: occlusionChecker.allowBounce
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4698545371277439629, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: moveSpeed
@@ -126,15 +134,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -16.13712
+      value: -120.5
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.5
+      value: 8.25
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 16.75
+      value: 44.5
       objectReference: {fileID: 0}
     - target: {fileID: 8286474408485520126, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalRotation.w
@@ -168,10 +176,6 @@ PrefabInstance:
       propertyPath: weaponObject
       value: 
       objectReference: {fileID: 4617323142937222814}
-    - target: {fileID: 8503224205508373485, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-      propertyPath: voiceActorAmount
-      value: 47
-      objectReference: {fileID: 0}
     - target: {fileID: 9191440078456712669, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.02
@@ -239,7 +243,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
       propertyPath: damage
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
       propertyPath: onBlocked.m_PersistentCalls.m_Calls.Array.size
@@ -350,15 +354,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 390cd28beb3dc974196980e374791fc6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.025
+      value: 0.024
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 390cd28beb3dc974196980e374791fc6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.706
+      value: -0.705
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 390cd28beb3dc974196980e374791fc6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.136
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 390cd28beb3dc974196980e374791fc6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -428,15 +432,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 119deddaeadf7a44e9fd89998a1a50f9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.0042440565
+      value: 0.003
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 119deddaeadf7a44e9fd89998a1a50f9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.31196192
+      value: -0.318
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 119deddaeadf7a44e9fd89998a1a50f9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.055254564
+      value: -0.083
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 119deddaeadf7a44e9fd89998a1a50f9, type: 3}
       propertyPath: m_LocalRotation.w

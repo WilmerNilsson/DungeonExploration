@@ -7,21 +7,31 @@ public class MinimapCamera : MonoBehaviour
 {
     [Tooltip("A list of cameras that view the different floors")]
     [SerializeField] private List<GameObject> cameras;
+    [SerializeField] private GameObject UpButton;
+    [SerializeField] private GameObject DownButton;
 
     [SerializeField] private TextMeshProUGUI floorText;
+    [SerializeField] private int currentFloor;
 
     private void Awake()
     {
         if (cameras.Count == 0)
         {
-            Debug.LogWarning("No cameras found", this);
+            Debug.LogWarning("No minimap cameras found", this);
             return;
         }
-        cameras[0].SetActive(true);
-        for (int i = 1; i < cameras.Count; i++)
+        for (int i = 0; i < cameras.Count; i++)
         {
             cameras[i].SetActive(false);
         }
+        cameras[currentFloor - 1].SetActive(true);
+        floorText.text = (currentFloor).ToString();
+    }
+
+    public void ChangeFloor(int value)
+    {
+        currentFloor = Mathf.Clamp(currentFloor + value, 1, cameras.Count);
+        SetFloor(currentFloor);
     }
 
     public void SetFloor(int floor)
