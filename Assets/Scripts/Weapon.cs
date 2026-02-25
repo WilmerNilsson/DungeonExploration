@@ -4,6 +4,11 @@ using UnityEngine.Events;
 
 public class Weapon : MonoBehaviour
 {
+    [Header("Events")]
+    public UnityEvent onDamage;
+    public UnityEvent onBlocked;
+    
+    [Header("Weapon Base")]
     [SerializeField, Min(1)] private int damage = 1;
     [SerializeField, Min(1)] private int durability = 1;
     [SerializeField] private bool unbreakable;
@@ -11,8 +16,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] private bool unblockable = false;
     private Collider body;
     
-    public UnityEvent onDamage;
-    public UnityEvent onBlocked;
+    
 
     private void OnEnable()
     {
