@@ -84,7 +84,6 @@ public class SceneTransition : MonoBehaviour
         }
 
         SceneManager.LoadSceneAsync(level, LoadSceneMode.Single);
-        isReloadingNow = false;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -93,6 +92,7 @@ public class SceneTransition : MonoBehaviour
         {
             _animator.Play(Anim_in.name);
         }
+        isReloadingNow = false;
     }
 
     public void SetTransitionIn(AnimationClip  clip)
