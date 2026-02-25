@@ -39,6 +39,13 @@ public class AmbienceHandler : MonoBehaviour
    [Range(0.5f, 2f)][SerializeField] private float roomSizeMultiplier;
    
    [SerializeField] private float currentRoomSize;
+
+   [Range(-180,180)]
+   [SerializeField]private float maxDistanceAngle;
+   
+   [Range(0, 1f)]
+   [SerializeField] private float seekSpeed;
+   private float _velocity;
    
    private void FixedUpdate()
    {
@@ -46,12 +53,12 @@ public class AmbienceHandler : MonoBehaviour
       for (var i = 0; i < 8; i++)
       {
          _flatForward = new Vector3(AudioManager.Listener.transform.forward.x, 0, AudioManager.Listener.transform.forward.z);
-         _direction = Quaternion.AngleAxis(45 * (i + 1), transform.up) * _flatForward;
+         _direction = Quaternion.AngleAxis(45 * i, transform.up) * _flatForward;
          directions[i] = _direction * 45; //För att visualisera directions
          Physics.Raycast(AudioManager.Listener.transform.position, _direction, out _hits[i], Mathf.Infinity, layerMask);
       }
       
-      OnSort(_hits);
+      //OnSort(_hits);
       for (var i = 0; i < 8; i++)
       {
          distances[i] = _hits[i].distance;
@@ -64,10 +71,18 @@ public class AmbienceHandler : MonoBehaviour
          totalDistances += distances[i];
       }
       meanDistance = totalDistances * 0.125f;
-      shortestDistance = _hits[0].distance;
-      longestDistance = _hits[^1].distance;
-
+      GetMinMax(_hits, out var min, out var max);
+      shortestDistance = _hits[min].distance;
+      longestDistance = _hits[max].distance;
+      
+      //Debug.DrawLine(AudioManager.Listener.transform.position, _hits[max].point, Color.red);
+      
+      maxDistanceAngle += Mathf.DeltaAngle(maxDistanceAngle + 180, (max * 45) - 180) * seekSpeed * 0.5f;
+      if (maxDistanceAngle < -180) maxDistanceAngle += 360f;
+      else if (maxDistanceAngle > 180) maxDistanceAngle -= 360f;
+      
       if (!AudioManager.IsValid) return;
+      //AudioManager.Instance.SetGlobalParameter("AmbiencePan", maxDistanceAngle, false);
       if (useMean)
       {
          AudioManager.Instance.SetGlobalParameter("RoomSize", meanDistance * roomSizeMultiplier, false);
@@ -88,6 +103,29 @@ public class AmbienceHandler : MonoBehaviour
       {
          Gizmos.DrawLine(AudioManager.Listener.transform.position, hit.point);
       }
+   }
+
+   private void GetMinMax(RaycastHit[] hits, out int minIndex, out int maxIndex)
+   {
+      var currentMin = 100f;
+      var currentMinIndex = 0;
+      var currentMax = 0f;
+      var currentMaxIndex = 0;
+      for (var i = 0; i < hits.Length; i++)
+      {
+         if (hits[i].distance > currentMax)
+         {
+            currentMax = hits[i].distance;
+            currentMaxIndex = i;
+         }
+         else if (hits[i].distance < currentMin)
+         {
+            currentMin = hits[i].distance;
+            currentMinIndex = i;
+         }
+      }
+      minIndex = currentMinIndex;
+      maxIndex = currentMaxIndex;
    }
 
    private void OnSort(RaycastHit[] hits)

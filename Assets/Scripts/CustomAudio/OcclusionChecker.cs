@@ -121,12 +121,14 @@ public class OcclusionChecker
                 hitDatas[i].score = 0;
             }
 
-            foreach (var hitData in hitDatas)
-            {
-                _occlusionScore += Mathf.Clamp01(hitData.score);
-            }
-            occlusion += _occlusionScore / _lineCount;
+            
         }
+        foreach (var hitData in hitDatas)
+        {
+            _occlusionScore += Mathf.Clamp01(hitData.score);
+        }
+        Debug.Log(_occlusionScore + "     " + _lineCount);
+        occlusion += _occlusionScore / _lineCount;
     }
 }
 
