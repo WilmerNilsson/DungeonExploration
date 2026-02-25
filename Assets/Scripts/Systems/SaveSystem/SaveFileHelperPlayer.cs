@@ -38,13 +38,6 @@ public class SaveFileHelperPlayer : MonoBehaviour
         Quaternion rot = spawnTransform.rotation;
         InventorySaveData inventory = new(InvMaster.Instance.PlayerInventory.GetInventoryData());
 
-#if DEBUG
-        foreach (var item in inventory.Items)
-        {
-            Debug.Log("a" + item.Slot);
-        }
-#endif
-
         PlayerSaveData data = new(inventory, pos, rot, maxHP, currentHP, 100, 100);
         return data;
     }
