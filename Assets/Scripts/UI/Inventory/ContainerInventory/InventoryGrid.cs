@@ -9,6 +9,8 @@ public class InventoryGrid : MonoBehaviour
     [SerializeField, Min(1)] private int collumns = 1;
     [SerializeField, Min(1)] private int rows = 1;
 
+    private bool hasBeenEnabled = false;
+
     /// <summary>
     /// collum, row
     /// </summary>
@@ -25,6 +27,23 @@ public class InventoryGrid : MonoBehaviour
     }
     private ItemWithPiviot[,] _invData;
 
+
+    private void OnEnable()
+    {
+        if(hasBeenEnabled) return;
+        hasBeenEnabled = true;
+
+        for(int x = 0; x < InvData.GetLength(0); x++)
+        {
+            for (int y = 0; y < InvData.GetLength(1); y++)
+            {
+                if (InvData[x,y] != null && InvData[x,y].IsPiviot)
+                {
+                    InvData[x, y].Item.RectTransform.position = GetSlotRect(x, y).center;
+                }
+            }
+        }
+    }
 
 #if UNITY_EDITOR
     [Header("gizmos")]
