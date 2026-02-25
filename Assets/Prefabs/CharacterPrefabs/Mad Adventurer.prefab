@@ -299,7 +299,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.15
+      value: 11.58
       objectReference: {fileID: 0}
     - target: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -307,7 +307,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10
+      value: 7.46
       objectReference: {fileID: 0}
     - target: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -492,6 +492,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4762914387664306239, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6828274868361272449}
+    - targetCorrespondingSourceObject: {fileID: 4762914387664306239, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5072373015846336972}
   m_SourcePrefab: {fileID: 100100000, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
 --- !u!114 &1749713730186701101 stripped
 MonoBehaviour:
@@ -550,7 +553,7 @@ MonoBehaviour:
     MyMadAdventurerStateMachine: {fileID: 0}
     minDistanceToCorner: 0.1
     target: {x: 0, y: 0, z: 0}
-    avatarIK: {fileID: 0}
+    avatarIK: {fileID: 2975564478171349694}
     maxMeleeRange: 3
     minMeleeRange: 2
   DyingState:
@@ -648,8 +651,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 0}
-  currentHealth: 0
-  maxHealth: 3
+  _currentHealth: 0
+  _maxHealth: 1
   DurabilityDamage: 0
   OnChangeHealths:
     m_PersistentCalls:
@@ -708,6 +711,34 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5072373015846336972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818795128226548232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e8a981fbacd5fc4d829661477fcd283, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: {fileID: 6828274868361272449}
+  spawnTransform: {fileID: 8286474408485520126}
+  movement: {fileID: 4698545371277439629}
+  agent: {fileID: 8156880709594735102}
+  prefabID: CrazedAdventurer
+--- !u!114 &4698545371277439629 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1878137323481184442, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
+  m_PrefabInstance: {fileID: 6567635767054797367}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818795128226548232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b62cb79775680864fbe12c086a03398d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8286474408485520126 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}

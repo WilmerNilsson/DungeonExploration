@@ -12,7 +12,6 @@ public class GraphicsSettingsMaster : MonoBehaviour
     [SerializeField] TMP_InputField framerateInputField;
 
     IUIController uIController;
-    CanvasScaleFactorAdjuster canvasScaleFactorAdjuster;
 
     bool hasMadeChanges = false;
 
@@ -25,7 +24,6 @@ public class GraphicsSettingsMaster : MonoBehaviour
     private void Start()
     {
         uIController = GameObject.FindGameObjectWithTag("MainUI").GetComponent<IUIController>();
-        canvasScaleFactorAdjuster = GameObject.FindGameObjectWithTag("MainUI").GetComponent<CanvasScaleFactorAdjuster>();
 
         ResetSettings();
     }
@@ -104,7 +102,6 @@ public class GraphicsSettingsMaster : MonoBehaviour
     {
         Screen.SetResolution(newResolution.width, newResolution.height, newFullScreenMode);
         Application.targetFrameRate = (int) newResolution.refreshRateRatio.value;
-        canvasScaleFactorAdjuster.AdjustScalingFactorFromInt(newResolution.height / 360);
 
         uIController.ChangeCanUnpause(false);
         warningWindow.SetActive(true);
@@ -116,7 +113,6 @@ public class GraphicsSettingsMaster : MonoBehaviour
         {
             Screen.SetResolution(oldResolution.width, oldResolution.height, oldFullScreenMode);
             Application.targetFrameRate = (int) oldResolution.refreshRateRatio.value;
-            canvasScaleFactorAdjuster.AdjustScalingFactorFromInt(oldResolution.height / 360);
         }
         else
         {

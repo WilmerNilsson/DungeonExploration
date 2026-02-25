@@ -49,7 +49,7 @@ public class SavesMaster : MonoBehaviour
 
     public void PlaySelectedSaveFile()
     {
-        gameManager.PlaySaveFile(selectedSaveFileInt);
+        gameManager.SavefileManager.PlaySavefile(selectedSaveFileInt);
     }
 
     public void ShowDeleteWarningWindow()
@@ -61,7 +61,7 @@ public class SavesMaster : MonoBehaviour
     {
         if(wantToDelete)
         {
-            gameManager.DeleteSaveFile(selectedSaveFileInt);
+            gameManager.SavefileManager.DeleteSavefile(selectedSaveFileInt);
             DeselectButton();
         }
 
