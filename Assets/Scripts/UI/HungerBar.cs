@@ -50,8 +50,8 @@ public class HungerBar : MonoBehaviour
     
     void UpdateInfo()
     {
-        float current = hungerSO.currentHunger;
-        float max = hungerSO.maxHunger;
+        float current = hungerSO.CurrentHunger;
+        float max = hungerSO.MaxHunger;
         if(isNormalImage)
         {
             image.fillAmount = Mathf.Clamp((float) current / max, 0, 1);

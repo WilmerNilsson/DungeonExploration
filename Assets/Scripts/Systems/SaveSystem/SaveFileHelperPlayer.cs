@@ -6,6 +6,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
     [SerializeField] private HumanoidMovement movement;
     [SerializeField] private Health health;
     [SerializeField] private ItemLibrarySO itemLibrary;
+    [SerializeField] private Hunger hunger;
 
 #if DEBUG
     private void OnValidate()
@@ -14,6 +15,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
         if (health == null) Debug.LogWarning("health is null", this);
         if (itemLibrary == null) Debug.LogWarning("item library is null", this);
         if (movement == null) Debug.LogWarning("movement is null", this);
+        if (hunger == null) Debug.LogWarning("hunger is null", this);
     }
 #endif
 
@@ -27,6 +29,8 @@ public class SaveFileHelperPlayer : MonoBehaviour
         spawnTransform.rotation = data.Rotation;
         movement.SupressMoveFrame();
 
+        hunger.Initialize(data.Hunger);
+
         SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Inventory, InvMaster.Instance.PlayerInventory);
     }
 
@@ -37,8 +41,9 @@ public class SaveFileHelperPlayer : MonoBehaviour
         Vector3 pos = spawnTransform.position;
         Quaternion rot = spawnTransform.rotation;
         InventorySaveData inventory = new(InvMaster.Instance.PlayerInventory.GetInventoryData());
+        int hungerInt = hunger.GetHungerValue();
 
-        PlayerSaveData data = new(inventory, pos, rot, maxHP, currentHP, 100, 100);
+        PlayerSaveData data = new(inventory, pos, rot, maxHP, currentHP, 100, hungerInt);
         return data;
     }
 }
