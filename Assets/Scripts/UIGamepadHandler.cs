@@ -14,10 +14,10 @@ public class UIGamepadHandler : MonoBehaviour
 
     private void Awake()
     {
+        instance = this;
+        Debug.Log(instance);
         eventSystem = GetComponent<EventSystem>();
         _playerInput = FindAnyObjectByType<PlayerInput>();
-        ControlScheme = _playerInput.currentControlScheme;
-        instance = this;
     }
 
     public void OpenMenu(GameObject button)
@@ -45,13 +45,10 @@ public class UIGamepadHandler : MonoBehaviour
         {
             Debug.DrawLine(eventSystem.currentSelectedGameObject.transform.position, Vector3.zero);
         }
-        if (_playerInput.currentControlScheme != ControlScheme)
+
+        if (_playerInput.currentControlScheme == "Controler" && !eventSystem.currentSelectedGameObject)
         {
-            ControlScheme =  _playerInput.currentControlScheme;
-            if (ControlScheme == "Controler" && !eventSystem.currentSelectedGameObject)
-            {
-                eventSystem.SetSelectedGameObject(buttons[^1]);
-            }
+            eventSystem.SetSelectedGameObject(buttons[^1]);
         }
     }
 }
