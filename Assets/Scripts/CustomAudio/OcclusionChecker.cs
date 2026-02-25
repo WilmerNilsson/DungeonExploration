@@ -117,7 +117,7 @@ public class OcclusionChecker
             }
             else
             {
-                Debug.DrawRay(_sourcePos, _direction * _distance, Color.green);
+                if (drawDebug)Debug.DrawRay(_sourcePos, _direction * _distance, Color.green);
                 hitDatas[i].score = 0;
             }
 
