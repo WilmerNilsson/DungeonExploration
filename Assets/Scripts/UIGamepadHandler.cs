@@ -48,7 +48,7 @@ public class UIGamepadHandler : MonoBehaviour
         if (_playerInput.currentControlScheme != ControlScheme)
         {
             ControlScheme =  _playerInput.currentControlScheme;
-            if (ControlScheme == "Controler")
+            if (ControlScheme == "Controler" && !eventSystem.currentSelectedGameObject)
             {
                 eventSystem.SetSelectedGameObject(buttons[^1]);
             }
