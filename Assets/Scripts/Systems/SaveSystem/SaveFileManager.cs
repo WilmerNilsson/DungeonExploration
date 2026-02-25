@@ -119,12 +119,10 @@ public class SaveFileManager
 
     private void SaveSavefileSettings()
     {
-#if DEBUG
         if (SavefileSettings == null)
         {
-            Debug.LogError("trying to Save save file settings, but it is null");
+            return;
         }
-#endif
 
         // instead of reading the full json we could try and find just the settings
         // but i feel like the most work is just reading and writing att all.
