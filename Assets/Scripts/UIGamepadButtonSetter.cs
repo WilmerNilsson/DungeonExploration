@@ -11,11 +11,19 @@ public class UIGamepadButtonSetter : MonoBehaviour
 
     private void OnEnable()
     {
-        UIGamepadHandler.instance.OpenMenu(FirstSelected);
+        if (UIGamepadHandler.instance)
+        {
+            UIGamepadHandler.instance.OpenMenu(FirstSelected);
+        }
+        else
+        {
+            FindAnyObjectByType<UIGamepadHandler>().OpenMenu(FirstSelected);
+        }
     }
 
     private void OnDisable()
     {
+        Debug.Log(name);
         UIGamepadHandler.instance.CloseMenu(FirstSelected);
     }
 }
