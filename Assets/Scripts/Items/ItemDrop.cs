@@ -1,13 +1,13 @@
 using UnityEngine;
 
-#nullable enable
-
 public class ItemDrop : MonoBehaviour
 {
     [SerializeField] private float cameraDropOffset;
     [SerializeField] private string prefabID;
     [SerializeField] private ItemLibrarySO itemLibrary;
     [SerializeField] private SimpleItem myItem;
+
+#nullable enable
 
 #if DEBUG
     private void OnValidate()

@@ -3,6 +3,8 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+#nullable enable
+
 public class SaveFileManager
 {
     private const string SaveFileFolderName = "/Savefiles/";
@@ -14,8 +16,51 @@ public class SaveFileManager
     // global settings is for things like audio and languige
     public GlobalSettings GlobalSettings { get; private set; }
     // Save file settings are stuff like accesability options and cheats
-    public SavefileSettings SavefileSettings;
+    public SavefileSettings? SavefileSettings;
     public int CurrentSavefileNr = 1;
+
+    public SaveFileManager()
+    {
+        Debug.Log("creating save file manager");
+
+        GlobalSettings = ReadGlobalSettings();
+
+        GlobalSettings ReadGlobalSettings()
+        {
+            if (File.Exists(Application.dataPath + SaveFileFolderName + GlobalSettingsName))
+            {
+                string json1 = File.ReadAllText(Application.dataPath + SaveFileFolderName + GlobalSettingsName);
+                GlobalSettings? settings = JsonUtility.FromJson<GlobalSettings>(json1);
+
+                if (settings == null)
+                {
+                    Debug.Log("global settings file compromized, creating a new one");
+                    return CreateDefaultGlobalOptions();
+                }
+                else
+                {
+                    return settings;
+                }
+            }
+            else if(Directory.Exists(Application.dataPath + SaveFileFolderName))
+            {
+                return CreateDefaultGlobalOptions();
+            }
+            else
+            {
+                CreateSaveFileDirectory();
+                return CreateDefaultGlobalOptions();
+            }
+
+            GlobalSettings CreateDefaultGlobalOptions()
+            {
+                GlobalSettings defaultSettings = new GlobalSettings();
+                string json = JsonUtility.ToJson(defaultSettings);
+                File.WriteAllText(Application.dataPath + SaveFileFolderName + GlobalSettingsName, json);
+                return defaultSettings;
+            }
+        }
+    }
 
     public void LoadLastSaveFile()
     {
@@ -46,33 +91,6 @@ public class SaveFileManager
 
         File.WriteAllText(Application.dataPath + SaveFileFolderName + GlobalSettingsName, json);
     }
-
-    public void ReadGlobalSettings()
-    {
-        if (!File.Exists(Application.dataPath + SaveFileFolderName + GlobalSettingsName))
-        {
-            CreateSaveFileDirectory();
-            CreateDefaultGlobalOptions();
-        }
-        string json = File.ReadAllText(Application.dataPath + SaveFileFolderName + GlobalSettingsName);
-        GlobalSettings = JsonUtility.FromJson<GlobalSettings>(json);
-
-        if (GlobalSettings == null)
-        {
-            Debug.Log("global settings file compromized, creating a new one");
-            CreateDefaultGlobalOptions();
-            json = File.ReadAllText(Application.dataPath + SaveFileFolderName + GlobalSettingsName);
-            Debug.Log(json);
-            GlobalSettings = JsonUtility.FromJson<GlobalSettings>(json);
-        }
-
-        void CreateDefaultGlobalOptions()
-        {
-            string json = JsonUtility.ToJson(new GlobalSettings());
-
-            File.WriteAllText(Application.dataPath + SaveFileFolderName + GlobalSettingsName, json);
-        }
-    }
     #endregion
 
     #region Savefile
@@ -80,12 +98,41 @@ public class SaveFileManager
     /// <summary>
     /// makes a save file from world data and settings and then writes it to storage
     /// </summary>
-    public void Save(bool backup = false)
+    public void SaveInWorld(bool backup = false)
     {
         SavefileData data = ReadSavefile(CurrentSavefileNr); //we prob want to keep track of journals in real time aswell
         Debug.Log("reading save to get full data, need to split it up better");
 
         data.World = WorldDataCreator.CreateWorldData();
+        data.SceneName = SceneManager.GetActiveScene().name;
+
+        SaveSavefile(data, backup);
+    }
+
+    /// <summary>
+    /// makes a save file that keeps dungeon data and settings and then writes it to storage
+    /// loading this save file will not move the player and reset thier health etc
+    /// </summary>
+    public void SaveFromTown(bool backup = false)
+    {
+        SavefileData data = ReadSavefile(CurrentSavefileNr); //we prob want to keep track of journals in real time aswell
+        Debug.Log("reading save to get full data, need to split it up better");
+
+#if DEBUG
+        if(data.World == null)
+        {
+            Debug.LogError("World is null when saving from town");
+            return;
+        }
+        else
+        {
+            data.World.PlayerSaveData.FromTown = true;
+        }
+#else
+        data.World!.PlayerSaveData.FromTown = true;
+#endif
+
+        data.World.PlayerSaveData.FromTown = true;
         data.SceneName = SceneManager.GetActiveScene().name;
 
         SaveSavefile(data, backup);
