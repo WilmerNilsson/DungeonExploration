@@ -18,6 +18,8 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     [SerializeField] private string descriptionText;
     [SerializeField] private bool descriptionTextIsLibraryName;
     [SerializeField] private TextLibrarySO textLibrary;
+    [SerializeField] private string prefabID;
+    public string PrefabID { get { return prefabID; } }
 
     public UnityEvent OnStopDrag;
 

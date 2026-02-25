@@ -120,6 +120,7 @@ GameObject:
   - component: {fileID: 2616489918536357648}
   - component: {fileID: 653897519548769769}
   - component: {fileID: 761204284509048953}
+  - component: {fileID: -1075263557498986769}
   m_Layer: 12
   m_Name: True Player
   m_TagString: Player
@@ -329,8 +330,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 11400000, guid: 8d1752d3d4465884c80e0304113f59c8, type: 2}
-  currentHealth: 0
-  maxHealth: 20
+  _currentHealth: 0
+  _maxHealth: 1
   DurabilityDamage: 0
   OnChangeHealths:
     m_PersistentCalls:
@@ -662,6 +663,46 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 0ea1335d-f280-47f0-bd12-7de40be0babd
     m_ActionName: 'Player/Block[/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0603732c-8ef5-4942-b5ef-6c3ca7e1ea60
+    m_ActionName: 'UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d406964c-6b61-4426-99c5-205eb4d2a01a
+    m_ActionName: 'UI/Submit[/Keyboard/enter]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f5ed455b-59b3-4183-9d0d-e700bc77b864
+    m_ActionName: 'UI/Cancel[/Keyboard/escape]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: bfefc35b-3483-46a1-b6bd-6bb5d2a5fb68
+    m_ActionName: 'UI/Point[/Mouse/position]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7cd4820a-09f8-473c-9dc0-c97f5c8ea29e
+    m_ActionName: 'UI/Click[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1c62a167-620a-4d32-9d8c-227bfc10f0c9
+    m_ActionName: 'UI/ScrollWheel[/Mouse/scroll]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1274929e-a541-422d-ba4a-5108dfd8d605
+    m_ActionName: 'UI/MiddleClick[/Mouse/middleButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 36679773-e363-42bc-8b6f-aaa382608aa7
+    m_ActionName: 'UI/RightClick[/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 077aae16-739b-4879-9a89-67ee96b4c5dd
+    m_ActionName: UI/TrackedDevicePosition
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ee74a1bf-90ea-46ae-b106-aa56c81ca74c
+    m_ActionName: UI/TrackedDeviceOrientation
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -715,6 +756,23 @@ CapsuleCollider:
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 1.5, z: 0}
+--- !u!114 &-1075263557498986769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822202894608450755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04de7f260e04281469e51984ecd06150, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnTransform: {fileID: 1879338547510664418}
+  movement: {fileID: 6844093797709260482}
+  health: {fileID: 1354050652585229241}
+  itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
+  hunger: {fileID: 3689962434181300810}
 --- !u!1 &8329409515068079808
 GameObject:
   m_ObjectHideFlags: 0

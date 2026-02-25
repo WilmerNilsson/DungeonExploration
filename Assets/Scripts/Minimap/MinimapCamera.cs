@@ -48,21 +48,5 @@ public class MinimapCamera : MonoBehaviour
         }
         cameras[floor - 1].SetActive(true);
         floorText.text = floor.ToString();
-        if (floor == cameras.Count)
-        {
-            UpButton.gameObject.SetActive(false);
-        }
-        else
-        {
-            UpButton.gameObject.SetActive(true);
-        }
-        if (floor == 1)
-        {
-            DownButton.SetActive(false);
-        }
-        else
-        {
-            DownButton.SetActive(true);
-        }
     }
 }
