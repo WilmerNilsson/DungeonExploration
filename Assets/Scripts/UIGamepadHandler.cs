@@ -6,15 +6,17 @@ using UnityEngine.InputSystem;
 
 public class UIGamepadHandler : MonoBehaviour
 {
-    [SerializeField] private EventSystem eventSystem;
+    private EventSystem eventSystem;
     private PlayerInput _playerInput;
     private string ControlScheme;
     public static UIGamepadHandler instance;
-    public List<GameObject> buttons = new List<GameObject>();
+    private List<GameObject> buttons = new List<GameObject>();
 
     private void Awake()
     {
         instance = this;
+        Debug.Log(instance);
+        eventSystem = GetComponent<EventSystem>();
         _playerInput = FindAnyObjectByType<PlayerInput>();
     }
 
@@ -27,7 +29,7 @@ public class UIGamepadHandler : MonoBehaviour
     public void CloseMenu(GameObject button)
     {
         buttons.Remove(button);
-        if (buttons.Count > 0)
+        if (buttons.Count > 0 && eventSystem.currentSelectedGameObject == button)
         {
             eventSystem.SetSelectedGameObject(buttons[^1]);
         }
