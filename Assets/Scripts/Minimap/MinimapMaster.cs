@@ -32,6 +32,7 @@ public class MinimapMaster : MonoBehaviour
     private void Start()
     {
         Instance = this;
+        minimap.SetActive(false);
     }
 
     // Update is called once per frame

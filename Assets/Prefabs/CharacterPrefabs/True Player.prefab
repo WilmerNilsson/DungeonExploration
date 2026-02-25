@@ -26,12 +26,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 271289363439776972}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 2.182, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1879338547510664418}
+  m_Father: {fileID: 5528919353053895491}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &2291378432833029802
 Camera:
@@ -120,7 +120,6 @@ GameObject:
   - component: {fileID: 2616489918536357648}
   - component: {fileID: 653897519548769769}
   - component: {fileID: 761204284509048953}
-  - component: {fileID: 187492519222050497}
   m_Layer: 12
   m_Name: True Player
   m_TagString: Player
@@ -141,7 +140,6 @@ Transform:
   m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 7929286171431266012}
   - {fileID: 6955565832605297247}
   - {fileID: 5528919353053895491}
   m_Father: {fileID: 0}
@@ -331,8 +329,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 11400000, guid: 8d1752d3d4465884c80e0304113f59c8, type: 2}
-  _currentHealth: 0
-  _maxHealth: 1
+  currentHealth: 0
+  maxHealth: 20
   DurabilityDamage: 0
   OnChangeHealths:
     m_PersistentCalls:
@@ -717,22 +715,6 @@ CapsuleCollider:
   m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 1.5, z: 0}
---- !u!114 &187492519222050497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 822202894608450755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04de7f260e04281469e51984ecd06150, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnTransform: {fileID: 1879338547510664418}
-  movement: {fileID: 6844093797709260482}
-  health: {fileID: 1354050652585229241}
-  itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
 --- !u!1 &8329409515068079808
 GameObject:
   m_ObjectHideFlags: 0
@@ -977,6 +959,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 158bf6404f43d4f4992b14d60613b4b1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7929286171431266012}
     - targetCorrespondingSourceObject: {fileID: 6502182839619065283, guid: 158bf6404f43d4f4992b14d60613b4b1, type: 3}
       insertIndex: 0
       addedObject: {fileID: 4229444106205551951}
@@ -1064,9 +1049,9 @@ MonoBehaviour:
   swingEnd: {x: 0, y: 0, z: 0}
   swingAngle: 0
   curveHeight: 2.5
-  nodeTime: 0.1
-  chargeTime: 0.5
-  resetTime: 0.1
+  nodeTime: 0.2
+  chargeTime: 0.8
+  resetTime: 0.3
   recoilTime: 3
   blockChargeTime: 0.1
   blockTime: 0.5

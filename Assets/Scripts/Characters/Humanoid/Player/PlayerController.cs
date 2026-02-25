@@ -98,18 +98,9 @@ public class PlayerController : MonoBehaviour
     
     public void OnCrouch(InputAction.CallbackContext context)
     {
-
-        //we may want the playr to crouch while looting;
-        if (context.canceled || lockedMovement)
-        {
-            controller.isCrouching = false;
-        }
-        else if (context.performed)
-        {
-            controller.isCrouching = true;
-        }
-
-        
+        if (lockedMovement) return;
+        if (context.performed) controller.Crouch(true);
+        if (context.canceled) controller.Crouch(false);
     }
     
     public void OnMouseLook(InputAction.CallbackContext context)

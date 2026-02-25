@@ -5,15 +5,17 @@ public class DetectPlayer : MonoBehaviour
 {
     [SerializeField, Tooltip("Automatically detects player on Start")] Transform player;
     [SerializeField, Tooltip("Where to look/hear from")] Transform head;
+    private HumanoidController playerController;
 
     [Header("Vision")] 
-    [SerializeField] private float sightAngle;
+    [SerializeField, Tooltip("full sight cone")] private float sightAngle;
     [SerializeField] private LayerMask visionMask;
 
     private PlayerVisionData visionData;
     private RaycastHit[] sightHits;
-    
-    [Header("Sound")]
+
+    [Header("Sound")] 
+    [SerializeField, Tooltip("percent modifier applied to sound when player crouches, 1 is full sound 0 is no sound"), Range(0,1)] private float crouchSoundModifier;
     [SerializeField] private OcclusionChecker occlusionChecker = new OcclusionChecker();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -28,6 +30,14 @@ public class DetectPlayer : MonoBehaviour
                 Debug.LogWarning("Cant find Player", this);
                 return;
             }
+            if (player.TryGetComponent<HumanoidController>(out HumanoidController controller))
+            {
+                playerController = controller;
+            }
+            else
+            {
+                Debug.LogWarning("Cant find HumanoidController on Player", this);
+            }
 
             if (player.TryGetComponent<PlayerVisionData>(out PlayerVisionData data))
             {
@@ -40,11 +50,16 @@ public class DetectPlayer : MonoBehaviour
         }
     }
 
+    public bool Detect(float sightThreshold, float soundThreshold, float soundRange, float maxSightDistance)
+    {
+        return (SightDetection(maxSightDistance) > sightThreshold || SoundDetection(soundRange) > soundThreshold);
+    }
+
     public float SoundDetection(float soundRange) // returns the percentage of how well the enemy can "hear" the player
     {
         if(Vector3.Distance(player.position, transform.position) > soundRange) return 0; // return if the player is too far away
         occlusionChecker.CheckOcclusion(head.gameObject,player.gameObject,out float occlusion); // run sound occlusion in reverse
-        return 1-occlusion;
+        return (1-occlusion) * crouchSoundModifier;
     }
 
     public float SightDetection(float maxSightDistance) // returns what percentage of the player that can be seen based on the PlayerVisionData
