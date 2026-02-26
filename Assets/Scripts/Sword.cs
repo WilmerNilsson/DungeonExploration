@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using Random = UnityEngine.Random;
 
 public class Sword : Weapon
 {
@@ -14,8 +15,8 @@ public class Sword : Weapon
     [SerializeField] private float rightRotation;
 
     private float time;
-    private Vector3 swingStart => core.position + (core.right + Vector3.up).normalized;
-    private Vector3 swingEnd => core.position - (core.right + Vector3.up - core.forward).normalized;
+    private Vector3 swingStart;
+    private Vector3 swingEnd;
     
     private Vector3 heightPoint => swingStart + (swingEnd - swingStart) / 2 + headObj.forward * curveHeight;
     
@@ -24,19 +25,46 @@ public class Sword : Weapon
     private Vector3 ShoulderToHand => hand.position - shoulder.position;
 
     // Update is called once per frame
+    private void Start()
+    {
+        RandomiseStartEnd();
+    }
+
     void Update()
     {
         if (attacking)
         {
-            if (time >= attackSpeed) time = 0;
+            if (time >= attackSpeed)
+            {
+                time = 0;
+                RandomiseStartEnd();
+            }
             time += Time.deltaTime;
             hand.position = GetCurvePosition(time / attackSpeed);
-            hand.right = -ShoulderToHand;
+            Vector3 forward = GetCurveTangent(time / attackSpeed);
+            Vector3 upward = GetCurveNormal(time / attackSpeed);
+            hand.rotation = Quaternion.LookRotation(forward, upward);
+            hand.rotation *= Quaternion.AngleAxis(90, hand.right);
         }
         else
         {
             time = 0;
         }
+    }
+
+    private void RandomiseStartEnd()
+    {
+        float angle = Random.Range(-45, 45);
+        Vector3 direction = Quaternion.AngleAxis(angle, core.forward) * core.right;
+        swingStart = shoulder.position + (direction - core.forward).normalized;
+        swingEnd = shoulder.position - direction.normalized;;
+    }
+    
+    private Quaternion RelativeRotation(Quaternion rotation)
+    {
+        Vector3 euler = rotation.eulerAngles;
+        euler.y += core.eulerAngles.y;
+        return Quaternion.Euler(euler);
     }
     
     private Vector3 GetCurvePosition(float t)
@@ -46,8 +74,7 @@ public class Sword : Weapon
 
     private Vector3 GetCurveTangent(float t)
     {
-        Vector3 heighPoint = swingStart + (swingEnd - swingStart) / 2 + headObj.forward * curveHeight;
-        Vector3 tangent = 2*(1-t) * (heighPoint-swingStart) + 2*t*(swingEnd-heighPoint);
+        Vector3 tangent = 2*(1-t) * (heightPoint-swingStart) + 2*t*(swingEnd-heightPoint);
         return tangent.normalized;
     }
     
@@ -68,11 +95,18 @@ public class Sword : Weapon
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(swingEnd, 0.1f);
         
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(hand.position, ShoulderToHand);
+        
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(hand.position, -hand.right);
+        Gizmos.DrawRay(hand.position, -hand.forward);
         Gizmos.color = Color.blue;
-        if (attacking) Gizmos.DrawRay(hand.position, GetCurveNormal(time));
+        Gizmos.DrawRay(hand.position, -hand.right);
+        
+        if (attacking)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawRay(hand.position, GetCurveTangent(time / attackSpeed));
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawRay(hand.position, GetCurveNormal(time / attackSpeed));
+        }
     }
 }
