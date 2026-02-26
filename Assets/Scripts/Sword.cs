@@ -11,19 +11,27 @@ public class Sword : Weapon
     [SerializeField] private Transform core;
     [SerializeField] private Transform headObj;
     [SerializeField] private float curveHeight;
+    [SerializeField, Tooltip("distance from middle toward start")] private float startBend;
+    [SerializeField, Tooltip("distance from middle toward end")] private float endBend;
     [SerializeField, Tooltip("Attacks per Second")] private float attackSpeed;
     [SerializeField] private float rightRotation;
 
     private float time;
     private Vector3 swingStart;
     private Vector3 swingEnd;
+    private Vector3 direction;
     
     private Vector3 heightPoint => swingStart + (swingEnd - swingStart) / 2 + headObj.forward * curveHeight;
     
     private Transform hand => swordArm.data.target;
     private Transform shoulder => swordArm.data.root;
+    private Transform arm => swordArm.data.mid;
     private Vector3 ShoulderToHand => hand.position - shoulder.position;
 
+    private Vector3 P0 => shoulder.position + -core.forward;
+    private Vector3 P1 => shoulder.position + swingStart + (swingEnd - swingStart) * (.5f - startBend) + headObj.forward * curveHeight;
+    private Vector3 P2 => shoulder.position + swingStart + (swingEnd - swingStart) * (.5f + endBend) + headObj.forward * curveHeight;
+    private Vector3 P3 => shoulder.position - core.right;
     // Update is called once per frame
     private void Start()
     {
@@ -43,8 +51,8 @@ public class Sword : Weapon
             hand.position = GetCurvePosition(time / attackSpeed);
             Vector3 forward = GetCurveTangent(time / attackSpeed);
             Vector3 upward = GetCurveNormal(time / attackSpeed);
-            hand.rotation = Quaternion.LookRotation(forward, upward);
-            hand.rotation *= Quaternion.AngleAxis(90, hand.right);
+            hand.rotation = RelativeRotation(Quaternion.LookRotation(forward, arm.up));
+            //hand.rotation *= Quaternion.AngleAxis(90, hand.right);
         }
         else
         {
@@ -56,8 +64,7 @@ public class Sword : Weapon
     {
         float angle = Random.Range(-45, 45);
         Vector3 direction = Quaternion.AngleAxis(angle, core.forward) * core.right;
-        swingStart = shoulder.position + (direction - core.forward).normalized;
-        swingEnd = shoulder.position - direction.normalized;;
+        swingEnd = -direction.normalized;
     }
     
     private Quaternion RelativeRotation(Quaternion rotation)
@@ -69,18 +76,19 @@ public class Sword : Weapon
     
     private Vector3 GetCurvePosition(float t)
     {
-        return (Mathf.Pow(1 - t, 2) * swingStart) + (2 * (1 - t) * t * heightPoint) + (t * t * swingEnd);
+        Vector3 cubic = (Mathf.Pow(1 - t, 3) * P0) + 3 * Mathf.Pow(1 - t, 2)*t*P1 + 3*(1-t)*t*t * P2 + t*t*t * P3;
+        return cubic;
     }
 
     private Vector3 GetCurveTangent(float t)
     {
-        Vector3 tangent = 2*(1-t) * (heightPoint-swingStart) + 2*t*(swingEnd-heightPoint);
+        Vector3 tangent = (-3 * Mathf.Pow(1 - t, 2) * P0) + (3 * Mathf.Pow(1 - t, 2) * P1) - (6 * t * (1 - t) * P1) - (3 * Mathf.Pow(t, 2) * P2 + 6 * t * (1 - t) * P2) + (3 * Mathf.Pow(t, 2) * P3);
         return tangent.normalized;
     }
     
-    private Vector3 GetCurveNormal(float t)
+    private Vector3 GetCurveNormal(float t) // Doesnt really work atm
     {
-        Vector3 cross = Vector3.Cross(GetCurveTangent(t), heightPoint);
+        Vector3 cross = Vector3.Cross(GetCurveTangent(t+0.0001f), GetCurveTangent(t));
         Vector3 normal = Vector3.Cross(cross, GetCurveTangent(t));
         return normal.normalized;
     }
@@ -88,12 +96,15 @@ public class Sword : Weapon
 
     private void OnDrawGizmos()
     {
+        Gizmos.color = Color.black;
+        Gizmos.DrawSphere(Vector3.zero, 0.1f);
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(swingStart, 0.1f);
+        Gizmos.DrawSphere(P0, 0.1f);
         Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(heightPoint, 0.1f);
+        Gizmos.DrawSphere(P1, 0.1f);
+        Gizmos.DrawSphere(P2, 0.1f);
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(swingEnd, 0.1f);
+        Gizmos.DrawSphere(P3, 0.1f);
         
         
         Gizmos.color = Color.red;
