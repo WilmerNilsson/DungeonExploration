@@ -90,7 +90,7 @@ public class InventoryGrid : MonoBehaviour
 
         void CheckSlotSize()
         {
-            Vector2 slotSize = GetSlotSize();
+            Vector2 slotSize = SlotSizeWOScaler();
 
             float delta = 0.0005f;
             if (Mathf.Abs(slotSize.x - slotSize.y) > delta)
@@ -103,8 +103,44 @@ public class InventoryGrid : MonoBehaviour
             }
             if (Mathf.Abs((float)StandardGridSize - slotSize.x) > delta)
             {
-                Debug.LogWarning("slot size of X is not the standard: " + StandardGridSize, this);
+                Debug.LogWarning($"slot size of X is not the standard: {StandardGridSize}, it is {slotSize.x}", this);
             }
+        }
+
+        Vector2 SlotSizeWOScaler()
+        {
+            Rect bigRect = (transform as RectTransform).rect;
+
+            float scaleX = 1f;
+            float scaleY = 1f;
+
+            int sanity = 100;
+
+            for (Transform t = transform; t.parent != null; t = t.parent)
+            {
+                if (t.TryGetComponent<CanvasScaler>(out CanvasScaler scaler))
+                {
+                    break;
+                }
+                else
+                {
+                    scaleX *= t.localScale.x;
+                    scaleY *= t.localScale.y;
+                }
+
+                sanity--;
+                if (sanity <= 0)
+                {
+                    Debug.Log("hit sanity cap", this);
+                    break;
+                }
+            }
+            bigRect.width = bigRect.width * scaleX;
+            bigRect.width /= collumns;
+            bigRect.height = bigRect.height * scaleY;
+            bigRect.height /= rows;
+
+            return bigRect.size;
         }
     }
 #endif
@@ -124,7 +160,7 @@ public class InventoryGrid : MonoBehaviour
         float scaleX = 1f;
         float scaleY = 1f;
 
-        int sanity = 20;
+        int sanity = 100;
 
         for (Transform t = transform; t.parent != null; t = t.parent)
         {
