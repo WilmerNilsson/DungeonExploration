@@ -76,11 +76,15 @@ MonoBehaviour:
     - Music
     isOneShot: 0
     is3D: 0
-    isOcclusion: 0
+    isOcclusion: 1
     minDistance: 1
     maxDistance: 20
     debug: 1
-    parameters: []
+    parameters:
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
   - eventName: MainMenu
     eventReference:
       Guid:
@@ -98,4 +102,25 @@ MonoBehaviour:
     maxDistance: 20
     debug: 1
     parameters: []
+  - eventName: Town
+    eventReference:
+      Guid:
+        Data1: -2038929842
+        Data2: 1091847565
+        Data3: -1464359528
+        Data4: -1141733489
+      Path: event:/Music/BGM/Town
+    banks:
+    - Music
+    isOneShot: 0
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 1
+    parameters:
+    - paramName: Location
+      isGlobal: 0
+      data1: 2969342620
+      data2: 2531022472
   debug: 1
