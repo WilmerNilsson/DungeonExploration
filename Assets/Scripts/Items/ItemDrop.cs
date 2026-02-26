@@ -9,6 +9,8 @@ public class ItemDrop : MonoBehaviour
     [SerializeField] private ItemLibrarySO itemLibrary;
     [SerializeField] private SimpleItem myItem;
 
+#nullable enable
+
 #if DEBUG
     private void OnValidate()
     {

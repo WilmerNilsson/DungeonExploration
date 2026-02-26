@@ -66,6 +66,7 @@ public class Hunger : MonoBehaviour
     {
         StopAllCoroutines();
         playerHungerSO.ChangeHunger(amount);
+        MinimapMaster.Instance.SpawnMinimap();
         OnEat?.Invoke();
 
         StartCoroutine(HungerCoroutine());
