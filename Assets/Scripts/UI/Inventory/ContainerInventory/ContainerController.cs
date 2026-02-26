@@ -43,7 +43,7 @@ public class ContainerController : MonoBehaviour
             }
 
             bool couldInsert = myGrid.TryInsertItem(item);
-            if (!couldInsert )
+            if (!couldInsert)
             {
                 Debug.LogError("failed to insert spawn item: " + prefab.name, this);
             }

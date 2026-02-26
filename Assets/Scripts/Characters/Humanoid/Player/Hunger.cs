@@ -15,11 +15,22 @@ public class Hunger : MonoBehaviour
     public UnityEvent OnEat;
 
     public static Hunger instance;
-    
+    private bool selfInitialize = true;
+
     private IEnumerator HungerCoroutine()
     {
-        yield return new WaitForSeconds(playerHungerSO.hungerCooldown);
+        yield return new WaitForSeconds(playerHungerSO.HungerCooldown);
         LoseHunger(1);
+    }
+
+    private void Awake()
+    {
+        instance = this;
+        StartCoroutine(HungerCoroutine());
+        if(selfInitialize)
+        {
+            ResetHunger();
+        }
     }
 
     public void ResetHunger()
@@ -27,16 +38,22 @@ public class Hunger : MonoBehaviour
         playerHungerSO.ResetValues();
     }
 
-    private void Awake()
+    public void Initialize(int newCurrentHunger)
     {
-        instance = this;
-        StartCoroutine(HungerCoroutine());
-        ResetHunger();
+        selfInitialize = false;
+        playerHungerSO.ResetValues();
+        playerHungerSO.CurrentHunger = newCurrentHunger;
+        OnHunger?.Invoke((float)playerHungerSO.CurrentHunger / playerHungerSO.MaxHunger);
+    }
+
+    public int GetHungerValue()
+    {
+        return playerHungerSO.CurrentHunger;
     }
 
     public void LoseHunger(int amount)
     {
-        OnHunger?.Invoke((float)playerHungerSO.currentHunger / playerHungerSO.maxHunger);
+        OnHunger?.Invoke((float)playerHungerSO.CurrentHunger / playerHungerSO.MaxHunger);
         if (!playerHungerSO.ChangeHunger(-1))
         {
             health.TakeDamage(1);
@@ -49,6 +66,7 @@ public class Hunger : MonoBehaviour
     {
         StopAllCoroutines();
         playerHungerSO.ChangeHunger(amount);
+        MinimapMaster.Instance.SpawnMinimap();
         OnEat?.Invoke();
 
         StartCoroutine(HungerCoroutine());
