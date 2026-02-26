@@ -17,7 +17,7 @@ public class GameManagerSO : ScriptableObject
     private const string MusicSoundName = "Music";
     [SerializeField] private string mainMenuSceneName = "MainMenu";
 
-    public SaveFileManager SavefileManager = new();
+    public SaveFileManager SavefileManager { get; private set; } = new();
     private SavefileData? tempSavefile;
 
     private static GameManagerSO? instance;
@@ -55,8 +55,6 @@ public class GameManagerSO : ScriptableObject
         {
             //updating volume is sound peoples thing, ask them if needed
             //put things here instad of OnEnable etc
-
-            SavefileManager.ReadGlobalSettings();
             hasLoadedSettings = true;
         }
     }
@@ -148,11 +146,16 @@ public class GameManagerSO : ScriptableObject
     #region Timescale and mouselock
     public float GetTimeScale()
     {
+        if (SavefileManager.SavefileSettings == null)
+            return 1f;
+
         return SavefileManager.SavefileSettings.NormalTimescale;
     }
 
     public void SetTimeScale(float newValue)
     {
+        if (SavefileManager.SavefileSettings == null) return;
+
         SavefileManager.SavefileSettings.NormalTimescale = newValue;
     }
 
