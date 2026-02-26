@@ -9,7 +9,7 @@ public static class EventDataRefresher
     [MenuItem("CustomAudio/RefreshEventData")]
     public static void RefreshEventData()
     {
-        _eventLists = Resources.LoadAll<EventList>("EventLists");
+        _eventLists = Resources.LoadAll<EventList>("EventLists/");
         
         foreach (var list in _eventLists)
         {
