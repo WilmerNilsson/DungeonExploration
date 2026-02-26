@@ -20,7 +20,6 @@ public class DialogueManager : MonoBehaviour
 
     [SerializeField] private Animator portraitAnimator;
     //[SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip audioClip;
 
     //[SerializeField] private DataStorage data;
     
@@ -45,8 +44,6 @@ public class DialogueManager : MonoBehaviour
     public List<UnityEvent> storyEvents = new List<UnityEvent>();
     private int lineIndex = 0;
 
-    //[Header("Choices UI")] 
-    [SerializeField] private GameObject[] choices;
     
     private TextMeshProUGUI[] choicesText;
 
@@ -74,22 +71,6 @@ public class DialogueManager : MonoBehaviour
         if (playOnStart)
         {
             EnterDialogueMode(startTextAsset);
-        }
-        /*if (data.playStoryAtStart)
-        {
-            PlayIntroStory.Invoke();
-        }
-        else
-        {
-            InputManager.GetInstance().isLevelPlaying = true;
-        }*/
-
-        choicesText = new TextMeshProUGUI[choices.Length];
-        int index = 0;
-        foreach (GameObject choice in choices)
-        {
-            choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
-            index++;
         }
     }
 
@@ -137,10 +118,6 @@ public class DialogueManager : MonoBehaviour
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
         dialogueText.text = "";
-        for (int i = 0; i < choices.Length; i++)
-        {
-            choices[i].gameObject.SetActive(false);
-        }
         //InputManager.GetInstance().isLevelPlaying = true;
         //data.playStoryAtStart = false;
         onDialogueExit.Invoke();
@@ -190,11 +167,6 @@ public class DialogueManager : MonoBehaviour
             {
                 dialogueText.text = sentence;
             }
-
-            
-            //audioSource.PlayOneShot(audioClip);
-            
-            DisplayChoices();
         }
         else
         {
@@ -313,57 +285,7 @@ public class DialogueManager : MonoBehaviour
         isTyping = false;
         //audioSource.Stop();
     }
-
-    private void DisplayChoices()
-    {
-        if (choices.Length == 0)
-        {
-            return;
-        }
-        List<Choice> currentChoices = currentStory.currentChoices;
-
-        if (currentChoices.Count > choices.Length)
-        {
-            Debug.Log("Need more choices");
-        }
-
-        int index = 0;
-        foreach (Choice choice in currentChoices)
-        {
-            choices[index].gameObject.SetActive(true);
-            choicesText[index].text = choice.text;
-            index++;
-        }
-
-        for (int i = index; i < choices.Length; i++)
-        {
-            choices[i].gameObject.SetActive(false);
-        }
-
-        StartCoroutine(SelectFirstChoice());
-    }
-
-    private IEnumerator SelectFirstChoice()
-    {
-        EventSystem.current.SetSelectedGameObject(null);
-        yield return new WaitForEndOfFrame();
-        EventSystem.current.SetSelectedGameObject(choices[0].gameObject);
-    }
-
-    public void MakeChoice(int index)
-    {
-        if (isTyping)
-        {
-            StopAllCoroutines();
-            dialogueText.text = sentence;
-            isTyping = false;
-            return;
-        }
-        else
-        {
-            currentStory.ChooseChoiceIndex(index);
-        }
-    }
+    
 
     public void OnAdvancePressed(InputAction.CallbackContext context)
     {
