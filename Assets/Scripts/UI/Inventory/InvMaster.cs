@@ -43,7 +43,7 @@ public class InvMaster : InvMasterBase
         //perhaps have a reference in SimpleItem to current inventory that we can remove it from
         //when we move it from one inventory to another.
 
-        if(PlayerInventoryGrid.TryPlaceItem(item))
+        if(PlayerInventory.TryPlaceItem(item))
         {
             foreach (ContainerController container in openContainers)
             {
@@ -62,7 +62,7 @@ public class InvMaster : InvMasterBase
                 ContainerController container = openContainers[i];
                 if (container.Grid.TryPlaceItem(item))
                 {
-                    if(PlayerInventoryGrid.TryRemoveSlottedItem(item))
+                    if(PlayerInventory.TryRemoveSlottedItem(item))
                     {
                         return true;
                     }
@@ -153,7 +153,7 @@ public class InvMaster : InvMasterBase
 
     public override void DestroyItem(SimpleItem item)
     {
-        if (PlayerInventoryGrid.TryRemoveSlottedItem(item))
+        if (PlayerInventory.TryRemoveSlottedItem(item))
         {
             
         }

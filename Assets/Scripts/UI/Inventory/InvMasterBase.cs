@@ -5,7 +5,10 @@ using UnityEngine.EventSystems;
 
 public abstract class InvMasterBase : MonoBehaviour
 {
-    [field: SerializeField] protected InventoryGrid PlayerInventoryGrid;
+    [field: SerializeField] public InventoryGrid PlayerInventory
+    {
+        get; protected set; 
+    }
     [SerializeField] private Transform drawOntopParent;
     [SerializeField] private TextMeshProUGUI descriptionText;
 
@@ -22,7 +25,7 @@ public abstract class InvMasterBase : MonoBehaviour
 #if DEBUG
     protected virtual void OnValidate()
     {
-        if (PlayerInventoryGrid == null)
+        if (PlayerInventory == null)
         {
             Debug.LogWarning("player inventory grid rect is null", this);
         }
@@ -36,12 +39,12 @@ public abstract class InvMasterBase : MonoBehaviour
 
     public Vector2 GetSlotSize()
     {
-        return PlayerInventoryGrid.GetSlotSize();
+        return PlayerInventory.GetSlotSize();
     }
 
     public virtual bool TryPlaceItem(SimpleItem item)
     {
-        return PlayerInventoryGrid.TryPlaceItem(item);
+        return PlayerInventory.TryPlaceItem(item);
     }
 
     public virtual void ParentTransformOntop(Transform transform)
@@ -51,7 +54,7 @@ public abstract class InvMasterBase : MonoBehaviour
 
     public virtual void DestroyItem(SimpleItem item)
     {
-        PlayerInventoryGrid.TryRemoveSlottedItem(item);
+        PlayerInventory.TryRemoveSlottedItem(item);
         Destroy(item.gameObject);
     }
 

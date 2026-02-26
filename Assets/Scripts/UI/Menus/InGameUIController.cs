@@ -92,7 +92,10 @@ public class InGameUIController : MonoBehaviour, IUIController
             gameManager.FreezeTime(true);
             gameManager.LockMouse(true);
 
-            InvMaster.Instance.ClosePlayerInventory();
+            if(InvMasterBase.Instance is InvMaster invMaster)
+            {
+                invMaster.ClosePlayerInventory();
+            }
 
             gameIsPaused = true;
         }

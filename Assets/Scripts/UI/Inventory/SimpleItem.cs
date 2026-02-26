@@ -84,7 +84,10 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         }
         else if(eventData.button == PointerEventData.InputButton.Right)
         {
-            InvMaster.Instance.GetContextMenu().SelectItem(this, uses);
+            if(InvMasterBase.Instance is InvMaster master)
+            {
+                master.GetContextMenu().SelectItem(this, uses);
+            }
         }
 
     }

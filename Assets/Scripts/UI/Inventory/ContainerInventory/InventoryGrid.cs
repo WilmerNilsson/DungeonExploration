@@ -11,6 +11,9 @@ public class InventoryGrid : MonoBehaviour
     [SerializeField, Min(1)] private int collumns = 1;
     [SerializeField, Min(1)] private int rows = 1;
 
+    /// <summary>
+    /// the standard grid size in pixels at 1920x1080
+    /// </summary>
     public const int StandardGridSize = 100;
 
     private bool hasBeenEnabled = false;
@@ -30,7 +33,6 @@ public class InventoryGrid : MonoBehaviour
         }
     }
     private ItemWithPiviot[,] _invData;
-
 
     private void OnEnable()
     {

@@ -24,14 +24,14 @@ public class InvMasterTown : InvMasterBase
 
 
         // we may want to send a predicate to try and take the cash
-        if (PlayerInventoryGrid.TryPlaceItem(item))
+        if (PlayerInventory.TryPlaceItem(item))
         {
             merchantGrid.TryRemoveSlottedItem(item);
             return true;
         }
         else if(merchantGrid.TryPlaceItem(item))
         {
-            PlayerInventoryGrid.TryRemoveSlottedItem(item);
+            PlayerInventory.TryRemoveSlottedItem(item);
             return true;
         }
         else
