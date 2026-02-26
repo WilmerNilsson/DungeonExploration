@@ -38,8 +38,10 @@ public class DialogueManager : MonoBehaviour
     private const string INDEX_TAG = "index";
     private const string EVENT_TAG = "event";
 
-
-    public UnityEvent onDialogueEnter, onStartLine, onEndLine, onDialogueExit;
+    
+    public UnityEvent<string> onDialogueEnter;
+    public UnityEvent<int> onStartLine;
+    public UnityEvent onEndLine, onDialogueExit;
     public List<UnityEvent> storyEvents = new List<UnityEvent>();
     private int lineIndex = 0;
 
@@ -116,9 +118,10 @@ public class DialogueManager : MonoBehaviour
 
     public void EnterDialogueMode(TextAsset InkJSON)
     {
-        onDialogueEnter?.Invoke();
+        onDialogueEnter?.Invoke(InkJSON.name);
         //Debug.Log("entering dialogue mode");
         isTyping = false;
+        lineIndex = 0;
         currentStory = new Story(InkJSON.text);
         dialogueIsPlaying = true;
         dialoguePanel.SetActive(true);
@@ -172,7 +175,7 @@ public class DialogueManager : MonoBehaviour
         {
             //audioSource.Stop();
             //Debug.Log("startLine");
-            onStartLine?.Invoke();
+            onStartLine?.Invoke(lineIndex);
             sentence = currentStory.Continue();
             lineIndex++;
             
