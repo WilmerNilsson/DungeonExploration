@@ -21,17 +21,40 @@ public class SaveFileHelperPlayer : MonoBehaviour
 
     public void Initialize(PlayerSaveData data)
     {
-        health.StopSelfInitialize();
-        health.SetCurrentHealth(data.CurrentHP);
-        health.SetMaxHealth(data.MaxHP);
+        if(data.FromTown)
+        {
+            FromTown();
+        }
+        else
+        {
+            FromWorld();
+        }
 
-        spawnTransform.position = data.Position;
-        spawnTransform.rotation = data.Rotation;
-        movement.SupressMoveFrame();
+        void FromWorld()
+        {
+            health.StopSelfInitialize();
+            health.SetMaxHealth(data.MaxHP);
+            health.SetCurrentHealth(data.CurrentHP);
 
-        hunger.Initialize(data.Hunger);
+            spawnTransform.position = data.Position;
+            spawnTransform.rotation = data.Rotation;
+            movement.SupressMoveFrame();
 
-        SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Inventory, InvMaster.Instance.PlayerInventory);
+            hunger.Initialize(data.Hunger);
+
+            SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Inventory, InvMaster.Instance.PlayerInventory);
+        }
+
+        void FromTown()
+        {
+            health.StopSelfInitialize();
+            health.SetMaxHealth(data.MaxHP);
+            health.SetCurrentHealth(data.MaxHP);
+
+            //hunger starts at max
+
+            SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Inventory, InvMaster.Instance.PlayerInventory);
+        }
     }
 
     public PlayerSaveData GetData()
