@@ -11,8 +11,8 @@ public class Sword : Weapon
     [SerializeField] private Transform core;
     [SerializeField] private Transform headObj;
     [SerializeField] private float curveHeight;
-    [SerializeField, Tooltip("distance from middle toward start")] private float startBend;
-    [SerializeField, Tooltip("distance from middle toward end")] private float endBend;
+    [SerializeField, Tooltip("distance from middle toward start"), Range(0,1)] private float startBend;
+    [SerializeField, Tooltip("distance from middle toward end"), Range(0,1)] private float endBend;
     [SerializeField, Tooltip("Attacks per Second")] private float attackSpeed;
     [SerializeField] private float rightRotation;
 
@@ -20,6 +20,7 @@ public class Sword : Weapon
     private Vector3 swingStart;
     private Vector3 swingEnd;
     private Vector3 direction;
+    private float angle;
     
     private Vector3 heightPoint => swingStart + (swingEnd - swingStart) / 2 + headObj.forward * curveHeight;
     
@@ -28,10 +29,10 @@ public class Sword : Weapon
     private Transform arm => swordArm.data.mid;
     private Vector3 ShoulderToHand => hand.position - shoulder.position;
 
-    private Vector3 P0 => shoulder.position + -core.forward;
-    private Vector3 P1 => shoulder.position + swingStart + (swingEnd - swingStart) * (.5f - startBend) + headObj.forward * curveHeight;
-    private Vector3 P2 => shoulder.position + swingStart + (swingEnd - swingStart) * (.5f + endBend) + headObj.forward * curveHeight;
-    private Vector3 P3 => shoulder.position - core.right;
+    private Vector3 P0 => Quaternion.AngleAxis(angle, core.forward) * core.right;
+    private Vector3 P1 => Vector3.Lerp(P0,P3,startBend)+ headObj.forward * curveHeight;
+    private Vector3 P2 => Vector3.Lerp(P0,P3,endBend)+ headObj.forward * curveHeight;
+    private Vector3 P3 => Quaternion.AngleAxis(angle, core.forward) * -core.right;
     // Update is called once per frame
     private void Start()
     {
@@ -48,11 +49,18 @@ public class Sword : Weapon
                 RandomiseStartEnd();
             }
             time += Time.deltaTime;
-            hand.position = GetCurvePosition(time / attackSpeed);
+            hand.position = shoulder.position + GetCurvePosition(time / attackSpeed);
+            /*
             Vector3 forward = GetCurveTangent(time / attackSpeed);
             Vector3 upward = GetCurveNormal(time / attackSpeed);
-            hand.rotation = RelativeRotation(Quaternion.LookRotation(forward, arm.up));
-            //hand.rotation *= Quaternion.AngleAxis(90, hand.right);
+            Quaternion rotation = Quaternion.LookRotation(forward, arm.up) * Quaternion.AngleAxis(-90, hand.right);
+            float xRot = Vector3.SignedAngle(transform.forward, headObj.forward, Vector3.left);
+            float yRot = Mathf.Clamp(Mathf.SmoothStep(0, 160, time), 0, 160);
+            float zRot = (Mathf.Atan2(swingStart.y, swingStart.x) * Mathf.Rad2Deg) + 180;
+            rotation = RelativeRotation(Quaternion.AngleAxis(zRot, Vector3.forward) * Quaternion.AngleAxis(yRot, Vector3.up) * Quaternion.AngleAxis(xRot, Vector3.right));
+            hand.rotation = rotation;
+            */
+            hand.up = -GetCurveTangent(time / attackSpeed);
         }
         else
         {
@@ -62,9 +70,7 @@ public class Sword : Weapon
 
     private void RandomiseStartEnd()
     {
-        float angle = Random.Range(-45, 45);
-        Vector3 direction = Quaternion.AngleAxis(angle, core.forward) * core.right;
-        swingEnd = -direction.normalized;
+        angle = Random.Range(-45, 45);
     }
     
     private Quaternion RelativeRotation(Quaternion rotation)
@@ -99,12 +105,12 @@ public class Sword : Weapon
         Gizmos.color = Color.black;
         Gizmos.DrawSphere(Vector3.zero, 0.1f);
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(P0, 0.1f);
+        Gizmos.DrawSphere(shoulder.position + P0, 0.1f);
         Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(P1, 0.1f);
-        Gizmos.DrawSphere(P2, 0.1f);
+        Gizmos.DrawSphere(shoulder.position + P1, 0.1f);
+        Gizmos.DrawSphere(shoulder.position + P2, 0.1f);
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(P3, 0.1f);
+        Gizmos.DrawSphere(shoulder.position + P3, 0.1f);
         
         
         Gizmos.color = Color.red;
