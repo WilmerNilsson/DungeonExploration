@@ -25,7 +25,7 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     public string PrefabID { get { return prefabID; } }
 
-    public UnityEvent OnStopDrag;
+    public UnityEvent? OnStopDrag;
 
     public RectTransform RectTransform { get { return (transform as RectTransform)!; } }
     private bool isDragging;
@@ -103,7 +103,7 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             if(isDragging)
             {
                 isDragging = false;
-                OnStopDrag.Invoke();
+                OnStopDrag?.Invoke();
             }
 
             
