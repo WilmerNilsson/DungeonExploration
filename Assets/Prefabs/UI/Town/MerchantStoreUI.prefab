@@ -34,10 +34,10 @@ RectTransform:
   - {fileID: 8292868447704228672}
   m_Father: {fileID: 5582466815859894354}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 125, y: -55}
-  m_SizeDelta: {x: 230, y: 110}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 230, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2349412943655724572
 CanvasRenderer:
@@ -155,7 +155,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4877725515858018896}
   m_Layer: 5
-  m_Name: WorldContainerParent
+  m_Name: DrawOntopParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -214,10 +214,10 @@ RectTransform:
   - {fileID: 7719997190029392183}
   m_Father: {fileID: 5582466815859894354}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 375, y: -55}
-  m_SizeDelta: {x: 230, y: 110}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 230, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2709625889523579154
 CanvasRenderer:
@@ -588,9 +588,9 @@ RectTransform:
   - {fileID: 1021822690228420047}
   m_Father: {fileID: 9205323461389053356}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 110}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &9208100991621540772
@@ -795,7 +795,7 @@ GameObject:
   - component: {fileID: 6701324164807970778}
   - component: {fileID: 4864247598894987594}
   m_Layer: 5
-  m_Name: MerchantInventoryGrid
+  m_Name: BuyGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -907,9 +907,9 @@ RectTransform:
   - {fileID: 9084222258661557877}
   m_Father: {fileID: 9205323461389053356}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 250, y: -110}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 500, y: 60}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &307664700675790330
@@ -1025,7 +1025,7 @@ GameObject:
   - component: {fileID: 5582466815859894354}
   - component: {fileID: 3286968833342854919}
   m_Layer: 0
-  m_Name: SwitchMerchantGrdButtons
+  m_Name: SwitchMerchantGridButtons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1486,6 +1486,98 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &7990612314989876784
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1672897413057028013}
+  - component: {fileID: 4511466340609509262}
+  - component: {fileID: 4983527817044123994}
+  - component: {fileID: 3377220526939929423}
+  m_Layer: 5
+  m_Name: SellGrid
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1672897413057028013
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7990612314989876784}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5159665865687612895}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 350, y: 400}
+  m_SizeDelta: {x: 500, y: 500}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &4511466340609509262
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7990612314989876784}
+  m_CullTransparentMesh: 1
+--- !u!114 &4983527817044123994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7990612314989876784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 572ab514d2c970540af64183005a2474, type: 3}
+  m_Type: 2
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1.4
+--- !u!114 &3377220526939929423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7990612314989876784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 759b6220e0aabb04eac40427e2024375, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collumns: 5
+  rows: 5
+  drawCenter: 0
+  drawGrid: 0
 --- !u!1 &8009254623956902493
 GameObject:
   m_ObjectHideFlags: 0
@@ -1633,13 +1725,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5159665865687612895}
+  - component: {fileID: 6873610629622713757}
+  - component: {fileID: 8790973820728260665}
   m_Layer: 0
   m_Name: MerchantStoreUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5159665865687612895
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1654,12 +1748,13 @@ RectTransform:
   m_Children:
   - {fileID: 4818273765296751141}
   - {fileID: 5951420570392427079}
+  - {fileID: 1672897413057028013}
   - {fileID: 1416224761534965935}
-  - {fileID: 4877725515858018896}
   - {fileID: 8953462919030641037}
   - {fileID: 9205323461389053356}
   - {fileID: 5582466815859894354}
   - {fileID: 7289336053052482888}
+  - {fileID: 4877725515858018896}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1667,6 +1762,39 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1300, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6873610629622713757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8467994904407022930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09da84f7359cf394ab95311750c2f75b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buyGrid: {fileID: 4864247598894987594}
+  sellGrid: {fileID: 3377220526939929423}
+  SpawnItems: []
+  itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
+  playerCashSO: {fileID: 11400000, guid: ffae8245bc035e74c8db57a6b9da2ca3, type: 2}
+--- !u!114 &8790973820728260665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8467994904407022930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f61991c83c7f4e348be8908d9f694600, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <PlayerInventory>k__BackingField: {fileID: 8999381474393071573}
+  drawOntopParent: {fileID: 4877725515858018896}
+  descriptionText: {fileID: 2009915852834760501}
+  merchantInventory: {fileID: 6873610629622713757}
 --- !u!1 &8582224814892460142
 GameObject:
   m_ObjectHideFlags: 0

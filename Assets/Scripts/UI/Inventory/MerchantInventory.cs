@@ -1,3 +1,4 @@
+using System.Diagnostics.Contracts;
 using UnityEngine;
 
 public class MerchantInventory : MonoBehaviour
@@ -8,6 +9,7 @@ public class MerchantInventory : MonoBehaviour
     [SerializeField] private InventoryGrid sellGrid;
     [SerializeField] private string[] SpawnItems;
     [SerializeField] private ItemLibrarySO itemLibrary;
+    [SerializeField] private PlayerCashSO playerCashSO;
 
     private bool buyIsActiveGrid = true;
     private InventoryGrid ActiveGrid
@@ -66,29 +68,54 @@ public class MerchantInventory : MonoBehaviour
 
     public void SelectGrid(bool buy)
     {
-        buyIsActiveGrid = buy; 
+        buyIsActiveGrid = buy;
+        if(buyIsActiveGrid)
+        {
+            buyGrid.gameObject.SetActive(true);
+            sellGrid.gameObject.SetActive(false);
+        }
+        else
+        {
+            buyGrid.gameObject.SetActive(false);
+            sellGrid.gameObject.SetActive(true);
+        }
     }
 
-    public bool TryPlaceItem(SimpleItem item)
+    public bool TrySellItem(SimpleItem item)
     {
-        if(buyIsActiveGrid)
+        if (buyIsActiveGrid)
+        {
+            return false;
+        }
+        else if (HasItem(item)) //we don't want the player re-arrenging merchant inventory
         {
             return false;
         }
         else if(ActiveGrid.TryPlaceItem(item))
         {
-            Debug.Log("give player monney");
-
-            //give player cash
+            playerCashSO.AddCash(item.CashValue);
             return true;
         }
         else return false;
     }
 
+    public bool HasItem(SimpleItem item)
+    {
+        return ActiveGrid.HasItem(item);
+    }
+    public bool CanAfford(SimpleItem item)
+    {
+        return playerCashSO.CanAfford(item.CashValue);
+    }
+
+    /// <summary>
+    /// Check CostPredicate before doing this
+    /// removes the item cost from player cash
+    /// </summary>
     public bool TryRemoveSlottedItem(SimpleItem item)
     {
-        //if item costs too much return false
+        playerCashSO.TryBuy(item.CashValue);
 
-        return true;
+        return ActiveGrid.TryRemoveSlottedItem(item);
     }
 }

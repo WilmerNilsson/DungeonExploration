@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class InvMasterTown : InvMasterBase
 {
-    [SerializeField] private InventoryGrid merchantGrid;
+    [SerializeField] private MerchantInventory merchantInventory;
 
     protected override void Start()
     {
@@ -13,7 +13,7 @@ public class InvMasterTown : InvMasterBase
     protected override void OnValidate()
     {
         base.OnValidate();
-        if (merchantGrid == null) Debug.LogWarning("merchant grid is null", this);
+        if (merchantInventory == null) Debug.LogWarning("merchant inventory is null", this);
     }
 #endif
 
@@ -23,20 +23,28 @@ public class InvMasterTown : InvMasterBase
         //when we move it from one inventory to another.
 
 
-        // we may want to send a predicate to try and take the cash
-        if (PlayerInventory.TryPlaceItem(item))
+        // we check if merchant has the item first so player can re-arrange thier inventory
+        // without interfearense
+
+        if(merchantInventory.HasItem(item))
         {
-            merchantGrid.TryRemoveSlottedItem(item);
-            return true;
+            if(merchantInventory.CanAfford(item) && PlayerInventory.TryPlaceItem(item))
+            {
+                merchantInventory.TryRemoveSlottedItem(item);
+                return true;
+            }
         }
-        else if(merchantGrid.TryPlaceItem(item))
+        else if(PlayerInventory.HasItem(item))
         {
-            PlayerInventory.TryRemoveSlottedItem(item);
-            return true;
+            if(PlayerInventory.TryPlaceItem(item)) //re-arrenge
+            {
+                return true;
+            }
+            else //try sell
+            {
+                return merchantInventory.TrySellItem(item);
+            }
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 }

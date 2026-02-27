@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using static Codice.Client.Commands.WkTree.WorkspaceTreeNode;
 
 [RequireComponent(typeof(RectTransform))]
 public class InventoryGrid : MonoBehaviour
@@ -403,6 +402,23 @@ public class InventoryGrid : MonoBehaviour
         item.RectTransform.SetParent(transform, false);
         item.RectTransform.position = GetSlotRect(collum, row).center;
         return true;
+    }
+
+    public bool HasItem(SimpleItem item)
+    {
+        for (int collum = 0; collum < InvData.GetLength(0); collum++)
+        {
+            for (int row = 0; row < InvData.GetLength(1); row++)
+            {
+                if (InvData[collum, row] == null) { continue; }
+                else if (InvData[collum, row].Item == item)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public bool TryRemoveSlottedItem(SimpleItem item)

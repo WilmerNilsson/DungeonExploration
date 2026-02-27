@@ -19,6 +19,8 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     [SerializeField] private bool descriptionTextIsLibraryName;
     [SerializeField] private TextLibrarySO textLibrary;
     [SerializeField] private string prefabID;
+    [field: SerializeField] public int CashValue { get; private set; }
+
     public string PrefabID { get { return prefabID; } }
 
     public UnityEvent OnStopDrag;
