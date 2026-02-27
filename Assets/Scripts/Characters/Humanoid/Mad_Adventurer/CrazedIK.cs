@@ -37,13 +37,11 @@ public class CrazedIK : HumanoidIK
     protected override void OnAnimatorIK(int layerIndex)
     {
         if(animator) {
+            if(lookObj != null) {
+                animator.SetLookAtWeight(1);
+                animator.SetLookAtPosition(lookObj.position);
+            }
             if(attacking) {
-                
-                if(lookObj != null) {
-                    animator.SetLookAtWeight(1);
-                    animator.SetLookAtPosition(lookObj.position);
-                }
-                
                 zRot = (Mathf.Atan2(swingStart.y - shoulderObj.localPosition.y, swingStart.x - shoulderObj.localPosition.x) * Mathf.Rad2Deg) + 180;
                 rotation = RelativeRotation(Quaternion.AngleAxis(zRot, Vector3.forward) * Quaternion.AngleAxis(yRot, Vector3.up));
                 
@@ -115,7 +113,6 @@ public class CrazedIK : HumanoidIK
             else {          
                 animator.SetIKPositionWeight(AvatarIKGoal.RightHand,0);
                 animator.SetIKRotationWeight(AvatarIKGoal.RightHand,0);
-                animator.SetLookAtWeight(0);
                 Reset();
             }
         }

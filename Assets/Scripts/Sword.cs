@@ -15,6 +15,7 @@ public class Sword : Weapon
     [SerializeField, Tooltip("distance from middle toward end"), Range(0,1)] private float endBend;
     [SerializeField, Tooltip("Attacks per Second")] private float attackSpeed;
     [SerializeField] private float rightRotation;
+    [SerializeField] private bool x, y, z;
 
     private float time;
     private Vector3 swingStart;
@@ -29,10 +30,10 @@ public class Sword : Weapon
     private Transform arm => swordArm.data.mid;
     private Vector3 ShoulderToHand => hand.position - shoulder.position;
 
-    private Vector3 P0 => Quaternion.AngleAxis(angle, core.forward) * core.right;
+    private Vector3 P0 => Quaternion.AngleAxis(angle, headObj.forward) * headObj.right;
     private Vector3 P1 => Vector3.Lerp(P0,P3,startBend)+ headObj.forward * curveHeight;
     private Vector3 P2 => Vector3.Lerp(P0,P3,endBend)+ headObj.forward * curveHeight;
-    private Vector3 P3 => Quaternion.AngleAxis(angle, core.forward) * -core.right;
+    private Vector3 P3 => Quaternion.AngleAxis(angle, headObj.forward) * -headObj.right + headObj.forward;
     // Update is called once per frame
     private void Start()
     {
@@ -43,6 +44,8 @@ public class Sword : Weapon
     {
         if (attacking)
         {
+            swordArm.data.targetPositionWeight = 1;
+            swordArm.data.targetRotationWeight = 1;
             if (time >= attackSpeed)
             {
                 time = 0;
@@ -50,21 +53,21 @@ public class Sword : Weapon
             }
             time += Time.deltaTime;
             hand.position = shoulder.position + GetCurvePosition(time / attackSpeed);
-            /*
+            
             Vector3 forward = GetCurveTangent(time / attackSpeed);
             Vector3 upward = GetCurveNormal(time / attackSpeed);
-            Quaternion rotation = Quaternion.LookRotation(forward, arm.up) * Quaternion.AngleAxis(-90, hand.right);
-            float xRot = Vector3.SignedAngle(transform.forward, headObj.forward, Vector3.left);
-            float yRot = Mathf.Clamp(Mathf.SmoothStep(0, 160, time), 0, 160);
-            float zRot = (Mathf.Atan2(swingStart.y, swingStart.x) * Mathf.Rad2Deg) + 180;
-            rotation = RelativeRotation(Quaternion.AngleAxis(zRot, Vector3.forward) * Quaternion.AngleAxis(yRot, Vector3.up) * Quaternion.AngleAxis(xRot, Vector3.right));
+            
+            float xRot = x ? Vector3.Angle(core.forward, headObj.forward) - 90 : 0;
+            float yRot = y ? Vector3.Angle(GetCurvePosition(time / attackSpeed), P3) + 90: 0;
+            float zRot = z ? angle: 0;
+            Quaternion rotation = RelativeRotation(Quaternion.AngleAxis(zRot, core.forward) * Quaternion.AngleAxis(yRot, core.up) * Quaternion.AngleAxis(xRot, core.right));
             hand.rotation = rotation;
-            */
-            hand.up = -GetCurveTangent(time / attackSpeed);
         }
         else
         {
             time = 0;
+            swordArm.data.targetPositionWeight = 0;
+            swordArm.data.targetRotationWeight = 0;
         }
     }
 
