@@ -44,11 +44,13 @@ public class EventData
     }
 
     #if UNITY_EDITOR
-    public void PopulateData()
+    public void PopulateData(out bool failed)
     {
+        failed = false;
         if (eventReference.IsNull)
         {
-            Debug.LogWarning("Could not find event reference");
+            //Debug.LogWarning("Could not find event reference");
+            failed = true;
             return;
         }
         EditorUtils.LoadPreviewBanks(); //Behövs för att EventManager och EditorUtils ska fungera
@@ -68,7 +70,8 @@ public class EventData
 
         if (editorEventRef == null)
         {
-            Debug.LogWarning("Could not find editorEventRef");
+            //Debug.LogWarning("Could not find editorEventRef");
+            failed = true;
             return;
         }
 

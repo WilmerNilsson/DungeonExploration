@@ -41,7 +41,11 @@ public class EventList : ScriptableObject
         foreach (var eventData in events)
         {
             var previous = CloneEventData(eventData);
-            eventData.PopulateData();
+            eventData.PopulateData(out bool failed);
+            if (failed)
+            {
+                Debug.LogWarning("Failed to fetch EventData for " + eventData.eventName + " in list: " + category);
+            }
             if (HasDataChanged(previous, eventData))
             {
                 hasChanged = true;
