@@ -1,8 +1,10 @@
+using TMPro;
 using UnityEngine;
 
 public class InvMasterTown : InvMasterBase
 {
     [SerializeField] private MerchantInventory merchantInventory;
+    [SerializeField] private TextMeshProUGUI itemGoldValueText;
 
     protected override void Start()
     {
@@ -16,6 +18,19 @@ public class InvMasterTown : InvMasterBase
         if (merchantInventory == null) Debug.LogWarning("merchant inventory is null", this);
     }
 #endif
+
+    public override void ChangeHover(SimpleItem simpleItem, bool startHover)
+    {
+        base.ChangeHover(simpleItem, startHover);
+        if(startHover)
+        {
+            itemGoldValueText.text = simpleItem.CashValue.ToString();
+        }
+        else
+        {
+            itemGoldValueText.text = string.Empty;
+        }
+    }
 
     public override bool TryPlaceItem(SimpleItem item)
     {

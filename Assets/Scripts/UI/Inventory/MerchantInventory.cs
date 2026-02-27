@@ -11,6 +11,8 @@ public class MerchantInventory : MonoBehaviour
     [SerializeField] private ItemLibrarySO itemLibrary;
     [SerializeField] private PlayerCashSO playerCashSO;
 
+#nullable enable
+
     private bool buyIsActiveGrid = true;
     private InventoryGrid ActiveGrid
     {
@@ -27,15 +29,24 @@ public class MerchantInventory : MonoBehaviour
         }
     }
 
-#if DEBUG
+
     private void Start()
     {
+#if DEBUG
         if (sellGrid.isActiveAndEnabled)
         {
             Debug.LogWarning("sell grid is active at start, buy should be the default", this);
         }
-    }
 #endif
+
+        foreach(string spawnItem in SpawnItems)
+        {
+            if(itemLibrary.TryGetItemPairByName(spawnItem, out ItemPairing? pair))
+            {
+                buyGrid.TryInsertItem(pair.UIPrefab.GetComponent<SimpleItem>(), true);
+            }
+        }
+    }
 
 #if DEBUG
     private void OnValidate()

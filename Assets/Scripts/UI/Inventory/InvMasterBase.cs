@@ -58,7 +58,19 @@ public abstract class InvMasterBase : MonoBehaviour
         Destroy(item.gameObject);
     }
 
-    public void SetDescriptionText(string newText)
+    public virtual void ChangeHover(SimpleItem simpleItem, bool startHover)
+    {
+        if(startHover)
+        {
+            SetDescriptionText(simpleItem.GetDescription());
+        }
+        else
+        {
+            SetDescriptionText(string.Empty);
+        }
+    }
+
+    protected void SetDescriptionText(string newText)
     {
         descriptionText.text = newText;
     }
