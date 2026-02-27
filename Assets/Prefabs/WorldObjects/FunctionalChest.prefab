@@ -127,7 +127,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 451, y: -268}
-  m_SizeDelta: {x: 728, y: 416}
+  m_SizeDelta: {x: 700, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7627061576712550295
 CanvasRenderer:
@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.83352613, b: 0.7012578, a: 1}
+  m_Color: {r: 1, g: 0.9254902, b: 0.76862746, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -193,6 +193,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3809707799358460188}
   - component: {fileID: 5573836849333404787}
+  - component: {fileID: 8613436155439844600}
+  - component: {fileID: 7238762930757179238}
   m_Layer: 0
   m_Name: FunctionalChest
   m_TagString: Untagged
@@ -210,7 +212,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6531636182816706209}
@@ -241,6 +243,43 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!65 &8613436155439844600
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1007070657314993592}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7238762930757179238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1007070657314993592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29b5e901713877e47a81c7619f5023ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grid: {fileID: 8767876181034157955}
+  spawnTransform: {fileID: 3809707799358460188}
+  prefabID: StandardChest
+  itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
 --- !u!1 &2067215900535007154
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,10 +584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a4c48c17c22ea04dba9c882ed67e826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnItems:
-  - {fileID: 1659243512019290888, guid: 1ebb1f7bf03b4eb41802b18e628466e2, type: 3}
-  - {fileID: 4294192794624958368, guid: 7212981591d96454baef208cb8f46b40, type: 3}
-  - {fileID: 4294192794624958368, guid: 3d432c8e8cc6973499b22f99df8b1a97, type: 3}
+  spawnItems: []
   myGrid: {fileID: 8767876181034157955}
 --- !u!1001 &2759032842727245898
 PrefabInstance:
@@ -558,6 +594,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3809707799358460188}
     m_Modifications:
+    - target: {fileID: 5015617441951991588, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
+      propertyPath: m_Size.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015617441951991588, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
+      propertyPath: m_Size.y
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5015617441951991588, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
+      propertyPath: m_Size.z
+      value: 1.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
       propertyPath: activatedBy
       value: 3
@@ -600,7 +648,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.625
       objectReference: {fileID: 0}
     - target: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
       propertyPath: m_LocalPosition.z

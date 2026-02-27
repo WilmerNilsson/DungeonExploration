@@ -8,10 +8,10 @@ public class Health : MonoBehaviour
 {
     [SerializeField, Tooltip("leave as null to use internal ints")]
     private PlayerHealthSO playerHealth;
-    [SerializeField] private int currentHealth;
-    [SerializeField, Min(1)] private int maxHealth = 1;
+    [SerializeField] private int _currentHealth;
+    [SerializeField, Min(1)] private int _maxHealth = 1;
     [SerializeField, Min(0)] public int DurabilityDamage;
-
+    private bool selfInitialize = true;
     public static Health PlayerHealthInstance { get; private set;  }
     
     public UnityEvent<HealthData> OnChangeHealths;
@@ -28,7 +28,7 @@ public class Health : MonoBehaviour
         get
         {
             if (playerHealth == null)
-                return currentHealth;
+                return _currentHealth;
             else 
                 return playerHealth.CurrentHealth;
         } 
@@ -36,7 +36,7 @@ public class Health : MonoBehaviour
         {
             if (playerHealth == null)
             {
-                currentHealth = value;
+                _currentHealth = value;
             }
 
             else
@@ -49,14 +49,14 @@ public class Health : MonoBehaviour
         get
         {
             if (playerHealth == null)
-                return maxHealth;
+                return _maxHealth;
             else
                 return playerHealth.MaxHealth;
         }
         private set
         {
             if (playerHealth == null)
-                maxHealth = value;
+                _maxHealth = value;
             else
                 playerHealth.MaxHealth = value;
         }
@@ -70,12 +70,20 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
-        ChangeHealth(maxHealth - currentHealth);
+        if(selfInitialize)
+        {
+            SetCurrentHealth(MaxHealth);
+        }
 
         if (!(playerHealth == null))
         {
             PlayerHealthInstance = this;
         }
+    }
+
+    public void StopSelfInitialize()
+    {
+        selfInitialize = false;
     }
 
     public void Kill()
@@ -91,6 +99,35 @@ public class Health : MonoBehaviour
     public void ChangeHealthVoid(int amount)
     {
         ChangeHealth(amount);
+    }
+
+    /// <summary>
+    /// fails and returns false if dead already.
+    /// </summary>
+    public bool SetCurrentHealth(int newValue)
+    {
+        return ChangeHealth(newValue - CurrentHealth);
+    }
+
+    /// <summary>
+    /// fails and returns false if dead already.
+    /// </summary>
+    public bool SetMaxHealth(int newValue)
+    {
+        if(Dead) return false;
+        if (newValue == MaxHealth) return true;
+
+        MaxHealth = newValue;
+
+        if(CurrentHealth > MaxHealth)
+        {
+            return SetCurrentHealth(MaxHealth);
+        }
+        else
+        {
+            OnChangeHealths?.Invoke(new HealthData(CurrentHealth, MaxHealth));
+            return true;
+        }
     }
 
     /// <summary>
@@ -112,7 +149,7 @@ public class Health : MonoBehaviour
             CurrentHealth = MaxHealth;
         }
 
-        OnChangeHealths?.Invoke(new HealthData(currentHealth, MaxHealth));
+        OnChangeHealths?.Invoke(new HealthData(CurrentHealth, MaxHealth));
 
         return true;
     }

@@ -14,7 +14,6 @@ public class MinimapMaster : MonoBehaviour
 
     [Tooltip("The scriptable object belonging to this level")]
     [SerializeField] private MinimapSO_test minimapSoTest;
-    //[SerializeField] private PlayerController playerController;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void OnValidate()
@@ -33,6 +32,7 @@ public class MinimapMaster : MonoBehaviour
     private void Start()
     {
         Instance = this;
+        minimap.SetActive(false);
     }
 
     // Update is called once per frame
@@ -46,6 +46,14 @@ public class MinimapMaster : MonoBehaviour
         SpawnMinimap();
     }
 
+    public void AddToSO(List<MinimapPart> children)
+    {
+        foreach (MinimapPart child in children)
+        {
+            minimapSoTest.AddToLists(child.prefab, child.transform, child.GetRotatedBounds());
+        }
+    }
+
     public void SpawnMinimap()
     {
         for (int i = 0; i < spawnedObjects.Count; i++)
@@ -55,11 +63,10 @@ public class MinimapMaster : MonoBehaviour
         spawnedObjects.Clear();
         for (int i = 0; i < minimapSoTest.minimapObjects.Count; i++)
         {
-            GameObject currentMinimap = Instantiate(minimapSoTest.minimapObjects[i]);
+            GameObject currentMinimap = Instantiate(minimapSoTest.minimapObjects[i], transform);
             currentMinimap.transform.position = minimapSoTest.minimapPositions[i];
-            currentMinimap.transform.localScale = minimapSoTest.minimapScales[i];
             currentMinimap.transform.eulerAngles = minimapSoTest.minimapRotations[i];
-            currentMinimap.transform.parent = transform;
+            currentMinimap.transform.localScale = minimapSoTest.minimapScales[i];
             spawnedObjects.Add(currentMinimap);
         }
     }
@@ -81,7 +88,7 @@ public class MinimapMaster : MonoBehaviour
         minimap.SetActive(true);
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined; //we need to controll curson with a pause menu once implimented
-        //playerController.LockMovement(true);
+        GameManagerSO.Instance.LockMouse(true);
     }
 
     public void CloseMinimap()
@@ -89,6 +96,6 @@ public class MinimapMaster : MonoBehaviour
         minimap.SetActive(false);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        //playerController.LockMovement(false);
+        GameManagerSO.Instance.LockMouse(false);
     }
 }

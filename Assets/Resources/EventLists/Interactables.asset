@@ -1,0 +1,131 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7493b6246a18ce4ca3407bc85a819a4, type: 3}
+  m_Name: Interactables
+  m_EditorClassIdentifier: 
+  category: Interactables
+  events:
+  - eventName: Chest_Open
+    eventReference:
+      Guid:
+        Data1: -1962986809
+        Data2: 1197466648
+        Data3: 593735843
+        Data4: 1124346600
+      Path: event:/Sound/Interactables/Chest_Open
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Destructable_Box
+    eventReference:
+      Guid:
+        Data1: -378290160
+        Data2: 1117138219
+        Data3: 1551044241
+        Data4: -713776227
+      Path: event:/Sound/Interactables/Destructable_Box
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Door_Open
+    eventReference:
+      Guid:
+        Data1: -1863791047
+        Data2: 1155713074
+        Data3: 229258368
+        Data4: 2030475943
+      Path: event:/Sound/Interactables/Door_Open
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters:
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
+  - eventName: Key
+    eventReference:
+      Guid:
+        Data1: 1304109766
+        Data2: 1336486645
+        Data3: 518316164
+        Data4: -355005906
+      Path: event:/Sound/Interactables/Key
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Pickup
+    eventReference:
+      Guid:
+        Data1: -1623886334
+        Data2: 1194083237
+        Data3: 1666430850
+        Data4: -1147784321
+      Path: event:/Sound/Interactables/Pickup
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters:
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
+  - eventName: Pressure_Pad
+    eventReference:
+      Guid:
+        Data1: 765250343
+        Data2: 1239223291
+        Data3: 784037016
+        Data4: -1806229272
+      Path: event:/Sound/Interactables/Pressure_Pad
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters:
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
+  debug: 0

@@ -8,18 +8,29 @@ public class Hunger : MonoBehaviour
     [SerializeField] private PlayerHungerSO playerHungerSO;
     [SerializeField] private Health health;
     
-    [Tooltip("The amount of time between hunger ticks in seconds")]
-    [SerializeField] private float hungerCooldown = 10;
+    //[Tooltip("The amount of time between hunger ticks in seconds")]
+    //[SerializeField] private float hungerCooldown = 10;
 
-    public UnityEvent OnHunger;
+    public UnityEvent<float> OnHunger;
     public UnityEvent OnEat;
 
     public static Hunger instance;
-    
+    private bool selfInitialize = true;
+
     private IEnumerator HungerCoroutine()
     {
-        yield return new WaitForSeconds(hungerCooldown);
+        yield return new WaitForSeconds(playerHungerSO.HungerCooldown);
         LoseHunger(1);
+    }
+
+    private void Awake()
+    {
+        instance = this;
+        StartCoroutine(HungerCoroutine());
+        if(selfInitialize)
+        {
+            ResetHunger();
+        }
     }
 
     public void ResetHunger()
@@ -27,15 +38,22 @@ public class Hunger : MonoBehaviour
         playerHungerSO.ResetValues();
     }
 
-    private void Awake()
+    public void Initialize(int newCurrentHunger)
     {
-        instance = this;
-        StartCoroutine(HungerCoroutine());
+        selfInitialize = false;
+        playerHungerSO.ResetValues();
+        playerHungerSO.CurrentHunger = newCurrentHunger;
+        OnHunger?.Invoke((float)playerHungerSO.CurrentHunger / playerHungerSO.MaxHunger);
+    }
+
+    public int GetHungerValue()
+    {
+        return playerHungerSO.CurrentHunger;
     }
 
     public void LoseHunger(int amount)
     {
-        OnHunger?.Invoke();
+        OnHunger?.Invoke((float)playerHungerSO.CurrentHunger / playerHungerSO.MaxHunger);
         if (!playerHungerSO.ChangeHunger(-1))
         {
             health.TakeDamage(1);
@@ -48,6 +66,7 @@ public class Hunger : MonoBehaviour
     {
         StopAllCoroutines();
         playerHungerSO.ChangeHunger(amount);
+        MinimapMaster.Instance.SpawnMinimap();
         OnEat?.Invoke();
 
         StartCoroutine(HungerCoroutine());

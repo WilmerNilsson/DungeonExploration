@@ -7,31 +7,40 @@ using UnityEngine.Events;
 public class PlayerHungerSO : ScriptableObject
 {
     [Tooltip("The maximum amount of hunger")]
-    [SerializeField] public int maxHunger = 100;
-    public int currentHunger = 0;
-    public int hungerDamage = 0;
+    [SerializeField] public int MaxHunger = 100;
+    public int CurrentHunger = 0;
+    public int HungerDamage = 0;
+    [Tooltip("The amount of time between hunger ticks in seconds")]
+    public float HungerCooldown = 10f;
     public UnityEvent OnChangeHunger;
+    [Tooltip("The calculated amount of time the player can survive in seconds, based on max hunger and hunger cooldown")]
+    public float SurvivalTime = 0;
+
+    private void OnValidate()
+    {
+        SurvivalTime = MaxHunger * HungerCooldown;
+    }
 
 
     public void ResetValues()
     {
-        currentHunger = maxHunger;
-        hungerDamage = 0;
+        CurrentHunger = MaxHunger;
+        HungerDamage = 0;
     }
     
     public bool ChangeHunger(int amount)
     {
-        currentHunger += amount;
+        CurrentHunger += amount;
         OnChangeHunger?.Invoke();
 
-        if (currentHunger < 0)
+        if (CurrentHunger < 0)
         {
-            currentHunger = 0;
+            CurrentHunger = 0;
             return false;
         }
-        if (currentHunger > maxHunger)
+        if (CurrentHunger > MaxHunger)
         {
-            currentHunger = maxHunger;
+            CurrentHunger = MaxHunger;
         }
 
         return true;

@@ -3,14 +3,34 @@ using UnityEngine;
 public class ItemDrop : MonoBehaviour
 {
     [SerializeField] private float cameraDropOffset;
-    [SerializeField] private GameObject dropPrefab;
+    [SerializeField] private string prefabID;
+    [SerializeField] private ItemLibrarySO itemLibrary;
     [SerializeField] private SimpleItem myItem;
+
+#nullable enable
 
 #if DEBUG
     private void OnValidate()
     {
-        if (dropPrefab == null) Debug.LogWarning("drop prefab is null", this);
-        if (myItem == null) Debug.Log("my item is null", this);
+        bool hasPrefabID = !(prefabID == null || prefabID == string.Empty);
+        bool hasLibrary = itemLibrary != null;
+
+        if (!hasPrefabID)
+        {
+            Debug.LogWarning("prefabID is empty", this);
+        }
+
+        if (!hasLibrary)
+        {
+            Debug.LogWarning("item library is null", this);
+        }
+        else if(hasPrefabID && !itemLibrary!.TryGetItemPairByName(prefabID, out _))
+        {
+            Debug.LogWarning("item library does not have entry of: " + prefabID, this);
+        }
+
+        
+        if (myItem == null) Debug.LogWarning("my item is null", this);
     }
 #endif
 
@@ -20,7 +40,10 @@ public class ItemDrop : MonoBehaviour
 
         dropPos.y += cameraDropOffset;
 
-        Instantiate(dropPrefab, dropPos, Quaternion.identity);
+        //since we check this is valid on validate we can assume it will not be null
+        itemLibrary.TryGetItemPairByName(prefabID, out ItemPairing? pair);
+
+        Instantiate(pair?.WorldPrefab, dropPos, Quaternion.identity);
 
         InvMaster.Instance.DestroyItem(myItem);
     }

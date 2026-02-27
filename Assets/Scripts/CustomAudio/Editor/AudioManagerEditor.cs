@@ -5,33 +5,26 @@ using UnityEditor;
 [CustomEditor(typeof(AudioManager))]
 public class AudioManagerEditor : Editor
 {
-    private SerializedProperty _eventLists;
     private SerializedProperty _banksToLoadOnStart;
     private SerializedProperty _debug;
     private SerializedProperty _showOnlyWarnings;
     private AudioManager _audioManager;
     private SerializedProperty _occlusionChecker;
+    private SerializedProperty _wallChecker;
     
     public void OnEnable()
     {
-        _eventLists = serializedObject.FindProperty("eventLists");
         _banksToLoadOnStart = serializedObject.FindProperty("banksToLoadOnStart");
         _debug = serializedObject.FindProperty("debug");
         _showOnlyWarnings = serializedObject.FindProperty("showOnlyWarnings");
         _audioManager = (AudioManager)target;
         _occlusionChecker = serializedObject.FindProperty("occlusionChecker");
+        _wallChecker = serializedObject.FindProperty("wallChecker");
     }
 
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
-        
-        EditorGUILayout.PropertyField(_eventLists);
-
-        if (GUILayout.Button("Fill Eventdata"))
-        {
-            _audioManager.FillAllEventData();
-        }
         
         EditorGUILayout.Separator();
         
@@ -40,6 +33,8 @@ public class AudioManagerEditor : Editor
         EditorGUILayout.Separator();
         
         EditorGUILayout.PropertyField(_occlusionChecker);
+        
+        EditorGUILayout.PropertyField(_wallChecker);
         
         EditorGUILayout.Separator();
         

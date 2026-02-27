@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(RectTransform))]
@@ -17,6 +18,10 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     [SerializeField] private string descriptionText;
     [SerializeField] private bool descriptionTextIsLibraryName;
     [SerializeField] private TextLibrarySO textLibrary;
+    [SerializeField] private string prefabID;
+    public string PrefabID { get { return prefabID; } }
+
+    public UnityEvent OnStopDrag;
 
     public RectTransform RectTransform { get { return (transform as RectTransform); } }
     private bool isDragging;
@@ -88,7 +93,13 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            isDragging = false;
+            if(isDragging)
+            {
+                isDragging = false;
+                OnStopDrag.Invoke();
+            }
+
+            
             if (!InvMaster.Instance.TryPlaceItem(this))
             {
                 RectTransform.position = returnPos;

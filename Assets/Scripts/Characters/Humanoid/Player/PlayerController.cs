@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 
 [RequireComponent(typeof(HumanoidController),typeof(HumanoidMovement),typeof(HumanoidRotator))]
-[RequireComponent(typeof(HumanoidInteract),typeof(HumanoidAttackAnimatorCompanion),typeof(PlayerInput))]
+[RequireComponent(typeof(HumanoidInteract),typeof(PlayerInput))]
 [RequireComponent(typeof(PlayerUIController),typeof(OneShotPlayer))]
 public class PlayerController : MonoBehaviour
 {
@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour
 
         GameManagerSO.Instance.OnLockMouse += LockMovement;
         GameManagerSO.Instance.OnLockCamera += LockCamera;
+        
+        lookVector.y = transform.localEulerAngles.y;
     }
     
     private void LockMovement(bool newValue)
@@ -96,18 +98,9 @@ public class PlayerController : MonoBehaviour
     
     public void OnCrouch(InputAction.CallbackContext context)
     {
-
-        //we may want the playr to crouch while looting;
-        if (context.canceled || lockedMovement)
-        {
-            controller.isCrouching = false;
-        }
-        else if (context.performed)
-        {
-            controller.isCrouching = true;
-        }
-
-        
+        if (lockedMovement) return;
+        if (context.performed) controller.Crouch(true);
+        if (context.canceled) controller.Crouch(false);
     }
     
     public void OnMouseLook(InputAction.CallbackContext context)
@@ -170,7 +163,7 @@ public class PlayerController : MonoBehaviour
             startedBlock = false;
             if (Vector2.Distance(mouseStart, mouseEnd) > 10)
             {
-                IK.Block(Vector2.SignedAngle(Vector2.right, (mouseEnd - mouseStart)));
+                IK.Block(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
             }
             GameManagerSO.Instance.LockCamera(false);
         }

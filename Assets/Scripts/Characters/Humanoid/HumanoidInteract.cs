@@ -1,8 +1,10 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class HumanoidInteract : MonoBehaviour
 {
+    [SerializeField] protected bool debug = false;
     [SerializeField] private Transform head;
     [SerializeField] private float interactDistance = 5f;
     private Interactable interactable;
@@ -10,10 +12,12 @@ public class HumanoidInteract : MonoBehaviour
     [Tooltip("The layers that will block the ray, including the interactable object")]
     [SerializeField] private LayerMask layerMask;
     private RaycastHit hit;
+
+    public UnityEvent OnSee, OnUnSee;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //layerMask = LayerMask.GetMask("Interactable");
+        
     }
 
     // Update is called once per frame
@@ -24,22 +28,28 @@ public class HumanoidInteract : MonoBehaviour
         {
             if (hit.transform.gameObject.TryGetComponent(out Interactable newInteractable))
             {
-                Debug.DrawRay(head.position, head.forward * hit.distance, Color.green);
+                if(debug)Debug.DrawRay(head.position, head.forward * hit.distance, Color.green);
                 //Debug.Log("Did Hit");
                 if (interactable != newInteractable)
                 {
+                    if (interactable)
+                    {
+                        interactable.OnView(false);
+                    }
                     interactable = newInteractable;
                     interactable.OnView(true);
+                    OnSee?.Invoke();
                 }
                 //UIText.SetActive(true);
             }
             else
             {
-                Debug.DrawRay(head.position, head.forward * hit.distance, Color.yellow);
+                if(debug)Debug.DrawRay(head.position, head.forward * hit.distance, Color.yellow);
                 //Debug.Log("Hit something else");
                 if (interactable)
                 {
                     interactable.OnView(false);
+                    OnUnSee?.Invoke();
                 }
                 interactable = null;
                 //UIText.SetActive(false);
@@ -47,14 +57,20 @@ public class HumanoidInteract : MonoBehaviour
         }
         else
         {
-            Debug.DrawRay(head.position, head.forward * interactDistance, Color.red);
+            if(debug)Debug.DrawRay(head.position, head.forward * interactDistance, Color.red);
             //Debug.Log("Did not Hit");
             if (interactable)
             {
                 interactable.OnView(false);
+                OnUnSee?.Invoke();
             }
             interactable = null;
             //UIText.SetActive(false);
+        }
+
+        if (!interactable)
+        {
+            OnUnSee?.Invoke();
         }
     }
 
