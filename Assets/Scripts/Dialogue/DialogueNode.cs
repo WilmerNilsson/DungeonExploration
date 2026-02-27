@@ -8,5 +8,6 @@ public class DialogueNode
     public string ButtonText;
     public TextAsset InkJson;
     public bool HasBeenRead;
+    public bool IsUnreadable;
     public List<string> PrerequisiteNames;
 }

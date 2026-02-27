@@ -5,4 +5,12 @@ using UnityEngine;
 public class DialogueTree : ScriptableObject
 {
     public List<DialogueNode> Dialogues = new List<DialogueNode>();
+
+    public void resetRead()
+    {
+        foreach (DialogueNode node in Dialogues)
+        {
+            node.HasBeenRead = false;
+        }
+    }
 }
