@@ -10,8 +10,9 @@ using UnityEngine.InputSystem;
 
 public class DialogueManager : MonoBehaviour
 {
+    [SerializeField] private string StartDialogueName;
     [SerializeField] private bool playOnStart = false;
-    [SerializeField] private TextAsset startTextAsset;
+    [SerializeField] private DialogueTree dialogueTree;
     [Header("Dialogue UI")] 
     [SerializeField] private GameObject dialoguePanel;
 
@@ -19,8 +20,8 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dialogueName;
 
     [SerializeField] private Animator portraitAnimator;
+    [SerializeField] private List<DialogueSelectButton> selectButtons = new List<DialogueSelectButton>();
     //[SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip audioClip;
 
     //[SerializeField] private DataStorage data;
     
@@ -38,13 +39,13 @@ public class DialogueManager : MonoBehaviour
     private const string INDEX_TAG = "index";
     private const string EVENT_TAG = "event";
 
-
-    public UnityEvent onDialogueEnter, onStartLine, onEndLine, onDialogueExit;
+    
+    public UnityEvent<string> onDialogueEnter;
+    public UnityEvent<int> onStartLine;
+    public UnityEvent onEndLine, onDialogueExit;
     public List<UnityEvent> storyEvents = new List<UnityEvent>();
     private int lineIndex = 0;
 
-    //[Header("Choices UI")] 
-    [SerializeField] private GameObject[] choices;
     
     private TextMeshProUGUI[] choicesText;
 
@@ -71,24 +72,9 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
         if (playOnStart)
         {
-            EnterDialogueMode(startTextAsset);
+            EnterDialogueMode(StartDialogueName);
         }
-        /*if (data.playStoryAtStart)
-        {
-            PlayIntroStory.Invoke();
-        }
-        else
-        {
-            InputManager.GetInstance().isLevelPlaying = true;
-        }*/
-
-        choicesText = new TextMeshProUGUI[choices.Length];
-        int index = 0;
-        foreach (GameObject choice in choices)
-        {
-            choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
-            index++;
-        }
+        HandleDialogue();
     }
 
     private void Update()
@@ -114,17 +100,27 @@ public class DialogueManager : MonoBehaviour
         return instance;
     }
 
-    public void EnterDialogueMode(TextAsset InkJSON)
+    public void EnterDialogueMode(string DialogueName)
     {
-        onDialogueEnter?.Invoke();
-        //Debug.Log("entering dialogue mode");
-        isTyping = false;
-        currentStory = new Story(InkJSON.text);
-        dialogueIsPlaying = true;
-        dialoguePanel.SetActive(true);
-        //InputManager.GetInstance().isLevelPlaying = false;
+        TextAsset InkJSON = new TextAsset();
+        for (int i = 0; i < dialogueTree.Dialogues.Count; i++)
+        {
+            if (dialogueTree.Dialogues[i].Name == DialogueName)
+            {
+                onDialogueEnter?.Invoke(DialogueName);
+                dialogueTree.Dialogues[i].HasBeenRead = true;
+                //Debug.Log("entering dialogue mode");
+                isTyping = false;
+                lineIndex = 0;
+                currentStory = new Story(dialogueTree.Dialogues[i].InkJson.text);
+                dialogueIsPlaying = true;
+                dialoguePanel.SetActive(true);
+                //InputManager.GetInstance().isLevelPlaying = false;
         
-        ContinueStory();
+                ContinueStory();
+                return;
+            }
+        }
     }
 
     private IEnumerator ExitDialogueMode()
@@ -134,10 +130,6 @@ public class DialogueManager : MonoBehaviour
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
         dialogueText.text = "";
-        for (int i = 0; i < choices.Length; i++)
-        {
-            choices[i].gameObject.SetActive(false);
-        }
         //InputManager.GetInstance().isLevelPlaying = true;
         //data.playStoryAtStart = false;
         onDialogueExit.Invoke();
@@ -159,20 +151,11 @@ public class DialogueManager : MonoBehaviour
             isTyping = false;
             return;
         }
-        if (currentStory.currentChoices.Count > 0)
-        {
-            //onEndLine?.Invoke();
-            //Debug.Log("endLine choice");
-            StopAllCoroutines();
-            dialogueText.text = sentence;
-            isTyping = false;
-            return;
-        }
         if (currentStory.canContinue)
         {
             //audioSource.Stop();
             //Debug.Log("startLine");
-            onStartLine?.Invoke();
+            onStartLine?.Invoke(lineIndex);
             sentence = currentStory.Continue();
             lineIndex++;
             
@@ -187,11 +170,6 @@ public class DialogueManager : MonoBehaviour
             {
                 dialogueText.text = sentence;
             }
-
-            
-            //audioSource.PlayOneShot(audioClip);
-            
-            DisplayChoices();
         }
         else
         {
@@ -310,57 +288,7 @@ public class DialogueManager : MonoBehaviour
         isTyping = false;
         //audioSource.Stop();
     }
-
-    private void DisplayChoices()
-    {
-        if (choices.Length == 0)
-        {
-            return;
-        }
-        List<Choice> currentChoices = currentStory.currentChoices;
-
-        if (currentChoices.Count > choices.Length)
-        {
-            Debug.Log("Need more choices");
-        }
-
-        int index = 0;
-        foreach (Choice choice in currentChoices)
-        {
-            choices[index].gameObject.SetActive(true);
-            choicesText[index].text = choice.text;
-            index++;
-        }
-
-        for (int i = index; i < choices.Length; i++)
-        {
-            choices[i].gameObject.SetActive(false);
-        }
-
-        StartCoroutine(SelectFirstChoice());
-    }
-
-    private IEnumerator SelectFirstChoice()
-    {
-        EventSystem.current.SetSelectedGameObject(null);
-        yield return new WaitForEndOfFrame();
-        EventSystem.current.SetSelectedGameObject(choices[0].gameObject);
-    }
-
-    public void MakeChoice(int index)
-    {
-        if (isTyping)
-        {
-            StopAllCoroutines();
-            dialogueText.text = sentence;
-            isTyping = false;
-            return;
-        }
-        else
-        {
-            currentStory.ChooseChoiceIndex(index);
-        }
-    }
+    
 
     public void OnAdvancePressed(InputAction.CallbackContext context)
     {
@@ -397,5 +325,56 @@ public class DialogueManager : MonoBehaviour
         bool result = skipDialogue;
         skipDialogue = false;
         return result;
+    }
+
+    private void HandleDialogue()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            selectButtons[i].gameObject.SetActive(true);
+        }
+        int currentButtons = 0;
+        for (int i = 0; i < dialogueTree.Dialogues.Count && currentButtons < 3; i++) //all dialogues in tree
+        {
+            Debug.Log(1);
+            if (!dialogueTree.Dialogues[i].HasBeenRead) //do not display dialogue that has already been read
+            {
+                bool prerequisitesRead = true;
+                Debug.Log(2);
+                for (int j = 0; j < dialogueTree.Dialogues[i].PrerequisiteNames.Count && prerequisitesRead; j++) //all prerequisites to play this dialogue
+                {
+                    Debug.Log(3);
+                    for (int k = 0; k < dialogueTree.Dialogues.Count; k++) //all dialogues in tree
+                    {
+                        Debug.Log(4);
+                        if (dialogueTree.Dialogues[i].PrerequisiteNames[j] == dialogueTree.Dialogues[k].Name) //find prerequisites
+                        {
+                            Debug.Log(5);
+                            if (!dialogueTree.Dialogues[k].HasBeenRead) //check if prerequisite is read
+                            {
+                                Debug.Log(6);
+                                prerequisitesRead = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (prerequisitesRead)
+                {
+                    selectButtons[currentButtons].DialogueName =  dialogueTree.Dialogues[i].Name;
+                    selectButtons[currentButtons].buttonText.text = dialogueTree.Dialogues[i].ButtonText;
+                    currentButtons++;
+                }
+            }
+        }
+
+        if (currentButtons < 3)
+        {
+            for (int i = currentButtons; i < 3; i++)
+            {
+                selectButtons[i].gameObject.SetActive(false);
+            }
+        }
     }
 }
