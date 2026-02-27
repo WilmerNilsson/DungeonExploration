@@ -329,30 +329,24 @@ public class DialogueManager : MonoBehaviour
 
     private void HandleDialogue()
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < selectButtons.Count; i++)
         {
             selectButtons[i].gameObject.SetActive(true);
         }
         int currentButtons = 0;
-        for (int i = 0; i < dialogueTree.Dialogues.Count && currentButtons < 3; i++) //all dialogues in tree
+        for (int i = 0; i < dialogueTree.Dialogues.Count && currentButtons < selectButtons.Count; i++) //all dialogues in tree
         {
-            Debug.Log(1);
-            if (!dialogueTree.Dialogues[i].HasBeenRead) //do not display dialogue that has already been read
+            if (!dialogueTree.Dialogues[i].HasBeenRead || !dialogueTree.Dialogues[i].IsUnreadable) //do not display dialogue that has already been read
             {
                 bool prerequisitesRead = true;
-                Debug.Log(2);
                 for (int j = 0; j < dialogueTree.Dialogues[i].PrerequisiteNames.Count && prerequisitesRead; j++) //all prerequisites to play this dialogue
                 {
-                    Debug.Log(3);
                     for (int k = 0; k < dialogueTree.Dialogues.Count; k++) //all dialogues in tree
                     {
-                        Debug.Log(4);
                         if (dialogueTree.Dialogues[i].PrerequisiteNames[j] == dialogueTree.Dialogues[k].Name) //find prerequisites
                         {
-                            Debug.Log(5);
                             if (!dialogueTree.Dialogues[k].HasBeenRead) //check if prerequisite is read
                             {
-                                Debug.Log(6);
                                 prerequisitesRead = false;
                                 break;
                             }
@@ -369,9 +363,9 @@ public class DialogueManager : MonoBehaviour
             }
         }
 
-        if (currentButtons < 3)
+        if (currentButtons < selectButtons.Count)
         {
-            for (int i = currentButtons; i < 3; i++)
+            for (int i = currentButtons; i < selectButtons.Count; i++)
             {
                 selectButtons[i].gameObject.SetActive(false);
             }
