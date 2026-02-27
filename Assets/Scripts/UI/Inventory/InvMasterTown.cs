@@ -57,7 +57,11 @@ public class InvMasterTown : InvMasterBase
             }
             else //try sell
             {
-                return merchantInventory.TrySellItem(item);
+                if(merchantInventory.TrySellItem(item))
+                {
+                    PlayerInventory.TryRemoveSlottedItem(item);
+                    return true;
+                }
             }
         }
         return false;
