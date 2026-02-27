@@ -31,12 +31,8 @@ public class OcclusionChecker
         public RaycastHit[] Hits;
         public int castIndex;
     }
-    
     public HitData[] hitDatas;
     
-    
-    
-    //TODO: punkterna följer inte spelarens rotation, utan istället emittern? prob inte göra detta
     //TODO: weighting på normalkurva? baserat på spread?
     //TODO: kolla ovan och under spelaren också?
 
@@ -130,64 +126,6 @@ public class OcclusionChecker
         {
             _occlusionScore += Mathf.Clamp01(hitData.score);
         }
-        Debug.Log(_occlusionScore + "     " + _lineCount);
         occlusion += _occlusionScore / _lineCount;
     }
 }
-
-/*
-for (var i = 0; i < _lineCount; i++)
-{
-    _posModifier++;
-    _targetPos = targetGo.transform.position;
-    _distance = Vector3.Distance(_sourcePos, _targetPos);
-    _direction = (_targetPos - _sourcePos).normalized;
-    _direction = (Quaternion.AngleAxis(spread * _posModifier, Vector3.up) * _direction).normalized;
-    if (Physics.Raycast(_sourcePos, _direction, out hits[i][0], _distance, layerMask))
-    {
-        //Om första raycast träffar något gör vi studs calculations
-        if (drawDebug) Debug.DrawLine(_sourcePos, hits[i][0].point, Color.cyan);
-        for (var j = 1; j < hits[i].Length; j++)
-        {
-            if (j == hits[i].Length - 1)
-            {
-                _occlusionScore += 1;
-            }
-            else
-            {
-                if (i == 0) Debug.Log(Mathf.Clamp01(bounceValue * j));
-                _occlusionScore += Mathf.Clamp01(bounceValue * j);
-            }
-            
-            if (!Physics.Linecast(hits[i][j-1].point + hits[i][j-1].normal * Offset, _targetPos, layerMask))
-            {
-                //Om inte träffar något lägg till occlusion och sen break
-                if (drawDebug) Debug.DrawLine(hits[i][j-1].point + hits[i][j-1].normal * Offset, _targetPos, Color.green);
-                break;
-            }
-
-            //Om träff studsa vidare
-            _direction = Vector3.Reflect(_direction, hits[i][j-1].normal);
-            if (Physics.Raycast(hits[i][j-1].point, _direction, out hits[i][j], layerMask))
-            {
-                //Om studs träffar
-                if (drawDebug) Debug.DrawLine(hits[i][j-1].point, hits[i][j].point, Color.cyan);
-                //Om sista studs och inte träff lägg till max occlusion
-            }
-            else
-            {
-                //Om studs inte träffar något (ray åkt skitlångt bort) max occlusion
-                //_occlusionScore += hits[i].Length - 1;
-                occlusion = 1;
-                break;
-            }
-        }
-    }
-    else
-    {
-        //Om inte träff ingen occlusion
-        if (drawDebug) Debug.DrawRay(_sourcePos, _direction * _distance, Color.green);
-    }
-    
-}
-*/
