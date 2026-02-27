@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7493b6246a18ce4ca3407bc85a819a4, type: 3}
+  m_Name: Town
+  m_EditorClassIdentifier: 
+  category: Town
+  events:
+  - eventName: Big_Purchase
+    eventReference:
+      Guid:
+        Data1: -509691909
+        Data2: 1329246868
+        Data3: 425986991
+        Data4: 1697237663
+      Path: event:/Sound/Town/Shop/Big Purchase
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Buy_Loot
+    eventReference:
+      Guid:
+        Data1: -256764189
+        Data2: 1158873845
+        Data3: -1359323259
+        Data4: 1381537548
+      Path: event:/Sound/Town/Shop/Buy Loot
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Sell_Loot
+    eventReference:
+      Guid:
+        Data1: 979678093
+        Data2: 1106309126
+        Data3: -1239493479
+        Data4: 2034479962
+      Path: event:/Sound/Town/Shop/Sell Loot
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Doorbell
+    eventReference:
+      Guid:
+        Data1: -322975764
+        Data2: 1126114977
+        Data3: 314940339
+        Data4: -1441305012
+      Path: event:/Sound/Town/Doorbell
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  debug: 0

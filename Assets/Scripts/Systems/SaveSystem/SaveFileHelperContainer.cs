@@ -43,7 +43,7 @@ public class SaveFileHelperContainer : MonoBehaviour
                 Debug.LogError($"failed to initialize item by name {item.PrefabID} in slot {item.Slot}");
             }
 #else
-            itemLibrary.TryGetItemPairByName(item.Name, out var pair);
+            library.TryGetItemPairByName(item.PrefabID, out var pair);
             grid.TryInstantiateItemInSlot(item.Slot, pair.UIPrefab);
 #endif
         }
