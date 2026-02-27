@@ -28,7 +28,7 @@ public class DialogueTrigger : MonoBehaviour
             //todo INTERACT
             //if (InputManager.GetInstance().GetInteractPressed())
             {
-                DialogueManager.GetInstance().EnterDialogueMode(inkJSON);
+                //DialogueManager.GetInstance().EnterDialogueMode(inkJSON);
             }
         }
         else
