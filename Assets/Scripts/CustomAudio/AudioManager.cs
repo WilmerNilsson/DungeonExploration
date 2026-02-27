@@ -59,12 +59,14 @@ public class AudioManager : MonoBehaviour
 
     #region Events
 
-    public EventList[] eventLists;
+    [HideInInspector] public EventList[] eventLists;
 
     public Dictionary<string, EventList> EventListCache; //För snabbare lookup än foreach
 
     private void RefreshEventListCache() //Lägger till alla eventLists i eventListCache
     {
+        eventLists = Resources.LoadAll<EventList>("EventLists/");
+        
         EventListCache = new Dictionary<string, EventList>();
         if (eventLists == null)
         {
@@ -82,10 +84,7 @@ public class AudioManager : MonoBehaviour
     #if UNITY_EDITOR
     public void FillAllEventData()
     {
-        foreach (var list in eventLists)
-        {
-            list.FillEventData();
-        }
+        EventDataRefresher.RefreshEventData();
     }
     #endif
     
