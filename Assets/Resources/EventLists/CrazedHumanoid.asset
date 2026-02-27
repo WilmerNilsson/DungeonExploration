@@ -29,12 +29,16 @@ MonoBehaviour:
     isOcclusion: 1
     minDistance: 1
     maxDistance: 20
-    debug: 0
+    debug: 1
     parameters:
     - paramName: Occluded
       isGlobal: 0
       data1: 2996130905
       data2: 1527690840
+    - paramName: Walls
+      isGlobal: 0
+      data1: 3996502556
+      data2: 1746408966
   - eventName: Die
     eventReference:
       Guid:
@@ -50,12 +54,16 @@ MonoBehaviour:
     isOcclusion: 1
     minDistance: 1
     maxDistance: 20
-    debug: 0
+    debug: 1
     parameters:
     - paramName: Occluded
       isGlobal: 0
       data1: 2996130905
       data2: 1527690840
+    - paramName: Walls
+      isGlobal: 0
+      data1: 3996502556
+      data2: 1746408966
   - eventName: Take_Damage
     eventReference:
       Guid:
@@ -71,8 +79,12 @@ MonoBehaviour:
     isOcclusion: 1
     minDistance: 1
     maxDistance: 20
-    debug: 0
+    debug: 1
     parameters:
+    - paramName: Walls
+      isGlobal: 0
+      data1: 3996502556
+      data2: 1746408966
     - paramName: Occluded
       isGlobal: 0
       data1: 2996130905
@@ -92,7 +104,7 @@ MonoBehaviour:
     isOcclusion: 1
     minDistance: 1
     maxDistance: 50
-    debug: 0
+    debug: 1
     parameters:
     - paramName: Walls
       isGlobal: 0
@@ -121,7 +133,7 @@ MonoBehaviour:
     isOcclusion: 1
     minDistance: 1
     maxDistance: 30
-    debug: 0
+    debug: 1
     parameters:
     - paramName: Occluded
       isGlobal: 0
@@ -131,4 +143,4 @@ MonoBehaviour:
       isGlobal: 0
       data1: 3996502556
       data2: 1746408966
-  debug: 0
+  debug: 1
