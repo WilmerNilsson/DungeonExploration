@@ -7,7 +7,8 @@ public class PlayerUIController : MonoBehaviour
 
     public void OnInventory(InputAction.CallbackContext context)
     {
-        if (context.canceled) InvMaster.Instance.ToggleInventory();
+        if (context.canceled && InvMasterBase.Instance is InvMaster invMaster)
+            invMaster.ToggleInventory();
     }
 
     public void OnMinimap(InputAction.CallbackContext context)

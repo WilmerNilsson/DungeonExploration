@@ -10,6 +10,9 @@ public class InventoryGrid : MonoBehaviour
     [SerializeField, Min(1)] private int collumns = 1;
     [SerializeField, Min(1)] private int rows = 1;
 
+    /// <summary>
+    /// the standard grid size in pixels at 1920x1080
+    /// </summary>
     public const int StandardGridSize = 100;
 
     private bool hasBeenEnabled = false;
@@ -29,7 +32,6 @@ public class InventoryGrid : MonoBehaviour
         }
     }
     private ItemWithPiviot[,] _invData;
-
 
     private void OnEnable()
     {
@@ -400,6 +402,23 @@ public class InventoryGrid : MonoBehaviour
         item.RectTransform.SetParent(transform, false);
         item.RectTransform.position = GetSlotRect(collum, row).center;
         return true;
+    }
+
+    public bool HasItem(SimpleItem item)
+    {
+        for (int collum = 0; collum < InvData.GetLength(0); collum++)
+        {
+            for (int row = 0; row < InvData.GetLength(1); row++)
+            {
+                if (InvData[collum, row] == null) { continue; }
+                else if (InvData[collum, row].Item == item)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public bool TryRemoveSlottedItem(SimpleItem item)
