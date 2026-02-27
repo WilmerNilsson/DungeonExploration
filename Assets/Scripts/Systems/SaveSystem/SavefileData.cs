@@ -11,6 +11,7 @@ public class SavefileData
 
     public List<int> DialougesGotten;
     public List<string> BooksInJournal;
+    public int PlayerGold;
 
     public SavefileSettings Settings;
 
