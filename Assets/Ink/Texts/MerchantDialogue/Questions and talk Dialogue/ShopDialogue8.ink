@@ -8,14 +8,14 @@ Oh good evening madam.. I was just doing some.. Soul searching
 Okay, and did you find anything?
 
 #name:Aiden
-I- <i>Sigh</i>
+I- <i>*Sigh*</i>
 My entire life I’ve been told that the lower classes were worse. Simply inferior to us nobles and that it was our job as the Miraults to give even a modicum of luxury to them so they wouldn’t be as “filthy”. 
 
 #name:Ingrid
 And do you believe that?
 
 #name:Aiden
-I used to eat it up, we had more money after all. What did it matter what they thought? <i>Chuckle</i>... But look at me now. I have one regular here and she’s one of the people I was always told to hate. And not only that, she's the only person here trying to better this damn place. What a joke..
+I used to eat it up, we had more money after all. What did it matter what they thought? <i>*Chuckle*</i>... But look at me now. I have one regular here and she’s one of the people I was always told to hate. And not only that, she's the only person here trying to better this damn place. What a joke..
 
 #name:Ingrid
 Huh? where did you-

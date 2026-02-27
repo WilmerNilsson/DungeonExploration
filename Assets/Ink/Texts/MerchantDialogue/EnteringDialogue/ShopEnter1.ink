@@ -1,5 +1,5 @@
 #speed:0.2
 #animation:AidenPlaceholder
 #name:Aiden
-<i>Oh, You're back… great… Welcome.</i>
+Oh, You're back… <i>great…</i> Welcome.
     -> END

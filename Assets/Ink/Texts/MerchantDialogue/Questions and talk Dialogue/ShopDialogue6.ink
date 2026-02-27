@@ -7,7 +7,7 @@ Oh, hello madam, welcome back. You uhh, sure you’re getting enough sleep? You 
 Since when do you care…?
 
 #name:Aiden
-“Just.. worried about my customer's health is all. 
+Just.. worried about my customer's health is all. 
 
 #name:Ingrid
 ... Right…

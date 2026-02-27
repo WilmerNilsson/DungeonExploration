@@ -13,7 +13,7 @@ Is that so? Heh, Didn't know you had it in you grams.
 <i>Grams?</i>
 
 #name:Saga
-Tell you what, I just had a bolt of brilliance. If you find more stuff like this down there then I can make you some nice equipment for you yeah? If you go back down, and come back up that is. 
+Tell you what, I just had a bolt of brilliance. If you find more stuff like this down there then I can make you some nice equipment for you yeah? If you come back up that is. 
 Oh and I almost forgot 
 Names Saga Regin by the way, it's nice to meet you. 
 

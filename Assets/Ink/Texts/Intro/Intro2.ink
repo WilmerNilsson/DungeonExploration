@@ -17,7 +17,7 @@ Rumors soon spread of its treasures  and the once forgotten town of Günhildr si
 #event:7
 Over 100 years have passed since those days. And my, how times have changed…
 #event:8
-I never got to see its prime. But I clearly witnessed its downfall. My son and husband did too but… they no longer share my breath. And my son… Of those who ventured into Agathol. He remains one of the ones who never returned.
+I never got to see its prime. But I clearly witnessed its downfall. My son, Ari, and husband, Yngvarr, did too but… they no longer share my breath. And Ari… Of those who ventured into Agathol. He remains one of the ones who never returned.
 #event:9
 I can not live with the uncertainty of his fate…
 #event:10

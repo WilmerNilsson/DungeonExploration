@@ -16,7 +16,7 @@ The deepest part of Agathol.
 <i>*Chuckle*</i> Oh grams, cant say im surprised. So, you think you’re ready?
 
 #name:Ingrid
-I don't have much of a choice heh.. sigh, I just wanted to come here to say.. Thanks.. for everything..
+I don't have much of a choice heh.. <i>*sigh*,</i> I just wanted to come here to say.. Thanks.. for everything..
 
 #name:Saga
 Awww grams, no need to get so emotional on me. I'm just doing my job. And well, you’ve helped me too. I was in a real slump before you came along after all. So, thank you too.

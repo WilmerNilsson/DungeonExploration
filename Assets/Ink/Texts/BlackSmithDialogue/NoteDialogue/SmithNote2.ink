@@ -11,7 +11,7 @@ Huh? let me see that
 
 ...
 
-<i>Sigh..</i> Oh Will, you damn fool. I remember clearly the day he left for Agathol. He was convinced that he would somehow find that sword down there.
+<i>*Sigh..*</i> Oh Will, you damn fool. I remember clearly the day he left for Agathol. He was convinced that he would somehow find that sword down there.
 I didn’t think he was this obsessed with it though. Gave me a whole earful about it too. 
 ‘Once I come back with it, you'll not be able to resist going down yourself!’ or something like that.
 And coooomee ooooon. A sword forged of pure fire? Give me a break. 
