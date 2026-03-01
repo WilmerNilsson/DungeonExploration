@@ -23,6 +23,10 @@ public class Sword : Weapon
     private Vector3 swingEnd;
     private Vector3 direction;
     
+    private Vector3 up;
+    private Vector3 forward;
+    private Vector3 right;
+    
     private Vector3 heightPoint => swingStart + (swingEnd - swingStart) / 2 + headObj.forward * curveHeight;
     
     private Transform hand => swordArm.data.target;
@@ -54,10 +58,10 @@ public class Sword : Weapon
             time += Time.deltaTime;
             Vector3 position = RotateVecAroundPoint(GetCurvePosition(time / attackSpeed), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
             hand.position = shoulder.position + position;
-            
-            Vector3 forward = GetCurveTangent(time / attackSpeed);
-            Vector3 upward = GetCurveNormal(time / attackSpeed);
-            
+
+            up = Quaternion.AngleAxis(angle, core.forward) * headObj.up;
+            forward = RotateVecAroundPoint(GetCurveTangent(time / attackSpeed), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
+            right = Vector3.Cross(up, forward);
             
             float xRot = x ? Vector3.Angle(core.forward, headObj.forward) + xMod: 0;
             float yRot = y ? core.transform.eulerAngles.y + yMod: 0;
@@ -98,8 +102,10 @@ public class Sword : Weapon
 
     private Vector3 GetCurveTangent(float t)
     {
-        Vector3 tangent = (-3 * Mathf.Pow(1 - t, 2) * P0) + (3 * Mathf.Pow(1 - t, 2) * P1) - (6 * t * (1 - t) * P1) - (3 * Mathf.Pow(t, 2) * P2 + 6 * t * (1 - t) * P2) + (3 * Mathf.Pow(t, 2) * P3);
-        return tangent.normalized;
+        Vector3 a = 3 * (P1 - P0);
+        Vector3 b = 3 * (P2 - P1);
+        Vector3 c = 3 * (P3 - P2);
+        return a * Mathf.Pow(1 - t, 2) + b * (2 * (1 - t) * t) + c * (t * t);
     }
     
     private Vector3 GetCurveNormal(float t) // Doesnt really work atm
@@ -117,28 +123,22 @@ public class Sword : Weapon
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.black;
-        Gizmos.DrawSphere(Vector3.zero, 0.1f);
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(P0, 0.1f);
+        Gizmos.DrawSphere(shoulder.position + RotateVecAroundPoint(P0, Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero ), 0.1f);
         Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(P1, 0.1f);
-        Gizmos.DrawSphere(P2, 0.1f);
+        Gizmos.DrawSphere(shoulder.position + RotateVecAroundPoint(P1, Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero ), 0.1f);
+        Gizmos.DrawSphere(shoulder.position + RotateVecAroundPoint(P2, Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero ), 0.1f);
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(P3, 0.1f);
-        
-        
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(hand.position, -hand.forward);
-        Gizmos.color = Color.blue;
-        Gizmos.DrawRay(hand.position, -hand.right);
+        Gizmos.DrawSphere(shoulder.position + RotateVecAroundPoint(P3, Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero ), 0.1f);
         
         if (attacking)
         {
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawRay(hand.position, GetCurveTangent(time / attackSpeed));
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawRay(hand.position, GetCurveNormal(time / attackSpeed));
+            Gizmos.color = Color.green;
+            Gizmos.DrawRay(hand.position, up);
+            Gizmos.color = Color.blue;
+            Gizmos.DrawRay(hand.position, forward);
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(hand.position, right);
         }
     }
 }
