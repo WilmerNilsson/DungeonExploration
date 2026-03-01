@@ -35,8 +35,8 @@ public class Sword : Weapon
     private Vector3 ShoulderToHand => hand.position - shoulder.position;
 
     private Vector3 P0 => Quaternion.AngleAxis(angle, Vector3.forward) * Vector3.right;
-    private Vector3 P1 => Vector3.Lerp(P0,P3,startBend)+ Vector3.forward * curveHeight;
-    private Vector3 P2 => Vector3.Lerp(P0,P3,endBend)+ Vector3.forward * curveHeight;
+    private Vector3 P1 => Vector3.Lerp(P0,P3,startBend) + Vector3.forward * curveHeight;
+    private Vector3 P2 => Vector3.Lerp(P0,P3,endBend) + Vector3.forward * curveHeight;
     private Vector3 P3 => Quaternion.AngleAxis(angle, Vector3.forward) * Vector3.left + Vector3.forward;
     // Update is called once per frame
     private void Start()
@@ -63,16 +63,7 @@ public class Sword : Weapon
             forward = RotateVecAroundPoint(GetCurveTangent(time / attackSpeed), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
             right = Vector3.Cross(up, forward);
             
-            float xRot = x ? Vector3.Angle(core.forward, headObj.forward) + xMod: 0;
-            float yRot = y ? core.transform.eulerAngles.y + yMod: 0;
-            float zRot = z ? angle + zMod: 0;
-            //Quaternion rotation = Quaternion.AngleAxis(zRot, core.forward) * Quaternion.AngleAxis(yRot, headObj.up) * Quaternion.AngleAxis(xRot, core.right);
-            //hand.rotation = rotation;
-            
-            
-            //hand.up = position;
-            //hand.localRotation = Quaternion.LookRotation(Quaternion.AngleAxis(angle, core.forward) * Vector3.up,position);
-            hand.localRotation = Quaternion.Euler(xRot,yRot,zRot);
+            hand.rotation = Quaternion.LookRotation(up, forward);
         }
         else
         {
