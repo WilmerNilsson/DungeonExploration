@@ -121,6 +121,7 @@ GameObject:
   - component: {fileID: 653897519548769769}
   - component: {fileID: 761204284509048953}
   - component: {fileID: -1075263557498986769}
+  - component: {fileID: 8039961835658388922}
   m_Layer: 12
   m_Name: True Player
   m_TagString: Player
@@ -422,6 +423,7 @@ MonoBehaviour:
   OnEat:
     m_PersistentCalls:
       m_Calls: []
+  resetOnAwake: 1
 --- !u!114 &2616489918536357648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -773,6 +775,26 @@ MonoBehaviour:
   health: {fileID: 1354050652585229241}
   itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
   hunger: {fileID: 3689962434181300810}
+--- !u!114 &8039961835658388922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822202894608450755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf6de27b5af57e14fbd4454590391010, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerSanitySO: {fileID: 11400000, guid: 5c9490a2940ba974e80dc37a66354202, type: 2}
+  OnLoseSanity:
+    m_PersistentCalls:
+      m_Calls: []
+  OnGainSanity:
+    m_PersistentCalls:
+      m_Calls: []
+  ResetOnAwake: 1
 --- !u!1 &8329409515068079808
 GameObject:
   m_ObjectHideFlags: 0
@@ -818,8 +840,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d931ca1dd1838a4bb460879b3218922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
-  voiceActorAmount: 0
   footstepsActivatedBy: 0
   walkPlayDelay: 0.5
   sprintPlayDelay: 0.31
@@ -837,7 +857,6 @@ MonoBehaviour:
   blockPath: Player/SwordBlock
   damagePath: Player/Take_Damage
   deathPath: Player/Death
-  enemyVoPath: 
 --- !u!114 &288142176733751095
 MonoBehaviour:
   m_ObjectHideFlags: 0
