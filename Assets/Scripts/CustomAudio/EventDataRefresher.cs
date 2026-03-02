@@ -6,7 +6,7 @@ public static class EventDataRefresher
 {
     private static EventList[] _eventLists;
 
-    [MenuItem("CustomAudio/RefreshEventData")]
+    [MenuItem("Tools/RefreshEventData")]
     public static void RefreshEventData()
     {
         _eventLists = Resources.LoadAll<EventList>("EventLists/");
@@ -17,6 +17,7 @@ public static class EventDataRefresher
         }
     }
 
+    
     public static EventList[] GetEventLists()
     {
         _eventLists = Resources.LoadAll<EventList>("EventLists/");

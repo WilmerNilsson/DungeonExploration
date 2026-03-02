@@ -22,14 +22,15 @@ public class HumanoidRotator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        headTransform.rotation = Quaternion.Lerp(headTransform.rotation, targetHeadQuaternion, headRotationSpeed);
-        bodyTransform.rotation = Quaternion.Lerp(bodyTransform.rotation, targetBodyQuaternion, bodyRotationSpeed);
+        //headTransform.rotation = targetHeadQuaternion;
+        bodyTransform.rotation = targetBodyQuaternion;
+        headTransform.eulerAngles = new Vector3(rotationVector.x, bodyTransform.eulerAngles.y, 0);
     }
     
     public void Rotate(Quaternion rotationQuaternion)
     {
         rotationVector = rotationQuaternion.eulerAngles;
-        
+
         targetHeadQuaternion = rotationQuaternion;
         targetBodyQuaternion = Quaternion.AngleAxis(rotationVector.y, Vector3.up);
     }
