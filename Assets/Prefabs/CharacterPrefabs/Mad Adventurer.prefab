@@ -299,7 +299,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.58
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -307,7 +307,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.46
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -562,6 +562,21 @@ MonoBehaviour:
     target: {x: 0, y: 0, z: 0}
     timeUntilDeactivate: 4
     deactivateTimer: 0
+  HallucinationState:
+    MyMadAdventurerStateMachine: {fileID: 0}
+    minDistanceToCorner: 0.1
+    target: {x: 0, y: 0, z: 0}
+    wanderRange: 7
+    minWaitTime: 1
+    maxWaitTime: 2
+    minWalkTime: 2
+    maxWalkTime: 3
+    maxSightRange: 0
+    maxSoundRange: 0
+    sightThreshold: 0
+    soundThreshold: 0
+    halucinationLayer: 15
+    regularLayer: 12
   PlayerTransform: {fileID: 0}
   TargetTransform: {fileID: 0}
 --- !u!114 &3879916398111493942
@@ -582,15 +597,18 @@ MonoBehaviour:
   visionMask:
     serializedVersion: 2
     m_Bits: 5376
+  crouchSoundModifier: 0
   occlusionChecker:
     layerMask:
       serializedVersion: 2
       m_Bits: 1280
     spread: 1
     bounceValue: 0.5
+    maxBounces: 0
     linesOnEitherSide: 0
     allowBounce: 0
     drawDebug: 0
+    hitDatas: []
 --- !u!143 &9209436760628890261
 CharacterController:
   m_ObjectHideFlags: 0

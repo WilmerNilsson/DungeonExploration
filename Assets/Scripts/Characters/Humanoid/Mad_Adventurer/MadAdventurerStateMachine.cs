@@ -21,6 +21,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
     public MadAdventurerAttackState AttackState = new MadAdventurerAttackState();
     public MadAdventurerSearchingState SearchingState = new MadAdventurerSearchingState();
     public MadAdventurerDyingState DyingState = new();
+    public MadAdventurerHallucinationState HallucinationState = new();
     
     [HideInInspector] public Transform PlayerTransform;
     [HideInInspector] public Transform TargetTransform;
