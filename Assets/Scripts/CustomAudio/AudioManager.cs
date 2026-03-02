@@ -53,6 +53,17 @@ public class AudioManager : MonoBehaviour
         AudioDebug.Print("AudioManager Initialized");
     }
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void CheckIfExists()
+    {
+        var go = GameObject.FindObjectsByType<AudioManager>(FindObjectsSortMode.None);
+        if (go.Length < 1 || go == null)
+        {
+            Debug.LogWarning("AudioManager not found in scene, creating one");
+            Instantiate(Resources.Load<GameObject>("AudioManager"));
+        }
+    }
+
     public static bool IsValid;
 
     #endregion
