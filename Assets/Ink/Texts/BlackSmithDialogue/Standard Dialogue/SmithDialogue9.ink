@@ -16,7 +16,7 @@ I can tell you’re lying. What, the hell, is wrong?
 Uh huh, and?
 
 #name:Ingrid
-It's my son, I found him down there. He wasn’t himself and I-... I killed him
+It's my son, I found him down there. He.. was dead..
 
 #name:Saga
 ... I'm sorry I- I didn’t know. 
