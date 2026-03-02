@@ -42,4 +42,9 @@ public class PlayerCashSO : ScriptableObject
     {
         CurrentCash += cash;
     }
+
+    internal void SetCash(int playerGold)
+    {
+        CurrentCash = playerGold;
+    }
 }

@@ -15,7 +15,7 @@ public class Hunger : MonoBehaviour
     public UnityEvent OnEat;
 
     public static Hunger instance;
-    private bool selfInitialize = true;
+    [SerializeField] private bool resetOnAwake = true;
 
     private IEnumerator HungerCoroutine()
     {
@@ -27,7 +27,7 @@ public class Hunger : MonoBehaviour
     {
         instance = this;
         StartCoroutine(HungerCoroutine());
-        if(selfInitialize)
+        if(resetOnAwake)
         {
             ResetHunger();
         }
@@ -40,7 +40,7 @@ public class Hunger : MonoBehaviour
 
     public void Initialize(int newCurrentHunger)
     {
-        selfInitialize = false;
+        resetOnAwake = false;
         playerHungerSO.ResetValues();
         playerHungerSO.CurrentHunger = newCurrentHunger;
         OnHunger?.Invoke((float)playerHungerSO.CurrentHunger / playerHungerSO.MaxHunger);

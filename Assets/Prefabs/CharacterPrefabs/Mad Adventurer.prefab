@@ -495,6 +495,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4762914387664306239, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5072373015846336972}
+    - targetCorrespondingSourceObject: {fileID: 3723092682248772573, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9163837292846036514}
   m_SourcePrefab: {fileID: 100100000, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
 --- !u!114 &1749713730186701101 stripped
 MonoBehaviour:
@@ -530,7 +533,19 @@ MonoBehaviour:
   Vision: {fileID: 3879916398111493942}
   OnMadState:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 9163837292846036514}
+        m_TargetAssemblyTypeName: EnemyVOSoundLogic, GameAssembly
+        m_MethodName: OnMadStateChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   IdleState:
     MyMadAdventurerStateMachine: {fileID: 0}
     minDistanceToCorner: 0.1
@@ -582,15 +597,18 @@ MonoBehaviour:
   visionMask:
     serializedVersion: 2
     m_Bits: 5376
+  crouchSoundModifier: 0
   occlusionChecker:
     layerMask:
       serializedVersion: 2
       m_Bits: 1280
     spread: 1
     bounceValue: 0.5
+    maxBounces: 0
     linesOnEitherSide: 0
     allowBounce: 0
     drawDebug: 0
+    hitDatas: []
 --- !u!143 &9209436760628890261
 CharacterController:
   m_ObjectHideFlags: 0
@@ -711,6 +729,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 9163837292846036514}
+        m_TargetAssemblyTypeName: EnemyVOSoundLogic, GameAssembly
+        m_MethodName: OnDeath
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &5072373015846336972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -739,6 +769,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b62cb79775680864fbe12c086a03398d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &7534514477765022186 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3723092682248772573, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
+  m_PrefabInstance: {fileID: 6567635767054797367}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9163837292846036514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7534514477765022186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f370090c5398e1d42860e9f8f0dde244, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voiceActorRange: {x: 0, y: 10}
+  enemyVoPath: CrazedHumanoid/VO
+  parameters:
+    voiceActor: EnemyVO
+    state: 
+    attack: 
+    stun: 
+    damage: 
+    death: 
 --- !u!4 &8286474408485520126 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
@@ -749,7 +805,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3253121419754070490, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
   m_PrefabInstance: {fileID: 6567635767054797367}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 7534514477765022186}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d931ca1dd1838a4bb460879b3218922, type: 3}
