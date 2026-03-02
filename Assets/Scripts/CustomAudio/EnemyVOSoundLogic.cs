@@ -28,7 +28,6 @@ public class EnemyVOSoundLogic : MonoBehaviour
     {
         if (!AudioManager.IsValid) return;
         _currentVoiceActor = Random.Range(voiceActorRange.x, voiceActorRange.y);
-        Debug.Log("VOICE ACTOR: " + _currentVoiceActor);
         AudioManager.Instance.CreateInstance(enemyVoPath, gameObject);
         AudioManager.Instance.SetParameter(enemyVoPath, parameters.voiceActor, _currentVoiceActor, gameObject);
         AudioManager.Instance.StartEvent(enemyVoPath, gameObject);
