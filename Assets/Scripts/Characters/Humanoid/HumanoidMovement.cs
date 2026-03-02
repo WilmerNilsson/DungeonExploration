@@ -141,13 +141,17 @@ public class HumanoidMovement : MonoBehaviour
     public void Crouch(bool isCrouching)
     {
         Vector3 heightMod = new Vector3(0, 0.5f, 0);
-        if (isCrouching)
+        if (isCrouching && grounded)
         {
-            bodyTransform.position -= heightMod;
+            GetComponent<CapsuleCollider>().height = 1.5f;
+            GetComponent<CharacterController>().height = 1.5f;
+            //bodyTransform.position -= heightMod;
         }
-        else
+        else if (!Physics.Raycast(transform.position, Vector3.up, out RaycastHit hit, 0.1f))
         {
-            bodyTransform.position += heightMod;
+            //bodyTransform.position += heightMod;
+            GetComponent<CapsuleCollider>().height = 3;
+            GetComponent<CharacterController>().height = 3;
         }
     }
 }

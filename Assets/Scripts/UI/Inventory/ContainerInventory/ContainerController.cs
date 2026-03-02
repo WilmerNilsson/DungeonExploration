@@ -55,8 +55,17 @@ public class ContainerController : MonoBehaviour
 
     public void Open()
     {
-        myGrid.gameObject.SetActive(true);
-        InvMaster.Instance.AddOpenWorldContainerToSystem(this);
+        if(InvMasterBase.Instance is InvMaster master)
+        {
+            myGrid.gameObject.SetActive(true);
+            master.AddOpenWorldContainerToSystem(this);
+        }
+#if DEBUG
+        else
+        {
+            Debug.LogError("can't open container cause InvMaster.Instance is not the right type", this);
+        }
+#endif
     }
 
     public void Close()

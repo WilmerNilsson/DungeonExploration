@@ -30,7 +30,6 @@ public class GameManagerSO : ScriptableObject
     }
     private int thingsLockingMouse = 0;
     private int thingsLockingCamera = 0;
-    private Vector3 spawnPosition = new Vector3();
 
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public event Action<bool>? OnFreezeGameChangeSelfReset;
@@ -83,26 +82,16 @@ public class GameManagerSO : ScriptableObject
 
     #region move to scene stuff
 
-    /*public void StartDemo()
+    /// <summary>
+    /// Saves data, but the new scene is used, also loads temp save file;
+    /// </summary>
+    public void MoveToSceneAndSave(string newSceneName)
     {
-        MoveToScene(Vector3.zero, mainSceneNumber);
-    }*/
 
-    public void SetSpawnPosition(Vector3 pos)
-    {
-        spawnPosition  = pos;
     }
 
-    public void MoveToScene(string sceneName)
+    public void MoveToScene(string newSceneName)
     {
-        MoveToScene(spawnPosition, sceneName);
-    }
-
-    public void MoveToScene(Vector3 newLocation, string newSceneName)
-    {
-        //currentSavefileData.sceneNr = newSceneNr;
-        //currentSavefileData.savePos = newLocation;
-
         if(newSceneName != SceneManager.GetActiveScene().name)
         {
             ResetActions();
@@ -332,9 +321,15 @@ public class GameManagerSO : ScriptableObject
     public void LoadSavefileScene(SavefileData data)
     {
         tempSavefile = data;
-        Time.timeScale = data.Settings.NormalTimescale;
-        //OnLoadScene?.Invoke(data.SceneNr);
-        SceneManager.LoadScene(data.SceneName);
+        MoveToScene(data.SceneName);
+    }
+
+    /// <summary>
+    /// should only be called from SaveFileManager
+    /// </summary>
+    public void LoadTempSaveFile(SavefileData data)
+    {
+        tempSavefile = data;
     }
 
     public bool GetConflictingControllsNeutralizes()
