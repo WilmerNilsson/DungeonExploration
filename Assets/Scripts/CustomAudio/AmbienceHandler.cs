@@ -98,6 +98,11 @@ public class AmbienceHandler : MonoBehaviour
          Physics.Raycast(AudioManager.Listener.transform.position, Vector3.down, out _heightHits[1], layerMask);
          _height = Vector3.Distance(_heightHits[0].point, _heightHits[1].point);
          if (heightMultiplier > 0) _height *= heightMultiplier;
+         else _height = 0f;
+      }
+      else
+      {
+         _height = 1;
       }
       
       if (!AudioManager.IsValid) return;
@@ -105,13 +110,13 @@ public class AmbienceHandler : MonoBehaviour
       if (useMean)
       {
          AudioManager.Instance.SetGlobalParameter("RoomSize", meanDistance * roomSizeMultiplier * _height, false);
-         currentRoomSize = meanDistance * roomSizeMultiplier;
       }
       else
       {
          AudioManager.Instance.SetGlobalParameter("RoomSize", medianDistance * roomSizeMultiplier * _height, false);
-         currentRoomSize = medianDistance * roomSizeMultiplier;
       }
+
+      currentRoomSize = meanDistance * roomSizeMultiplier * _height;
    }
 
    private void OnDrawGizmos()
