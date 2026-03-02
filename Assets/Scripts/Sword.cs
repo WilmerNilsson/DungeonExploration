@@ -56,8 +56,10 @@ public class Sword : Weapon
                 RandomiseStartEnd();
             }
             time += Time.deltaTime;
-            Vector3 position = RotateVecAroundPoint(GetCurvePosition(time / attackSpeed), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
-            hand.position = shoulder.position + position;
+            Debug.Log($"forward = {headObj.forward}, angle is {Mathf.Asin(headObj.forward.y) * Mathf.Rad2Deg}");
+            Vector3 position = RotateVecAroundPoint(GetCurvePosition(time / attackSpeed), Quaternion.AngleAxis(Mathf.Asin(headObj.forward.y), Vector3.right), Vector3.zero );
+            position = RotateVecAroundPoint(position, Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
+            hand.position = shoulder.position + RelativeRotation(GetCurvePosition(time / attackSpeed));
 
             up = Quaternion.AngleAxis(angle, core.forward) * headObj.up;
             forward = RotateVecAroundPoint(GetCurveTangent(time / attackSpeed), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
@@ -75,14 +77,12 @@ public class Sword : Weapon
 
     private void RandomiseStartEnd()
     {
-        //angle = Random.Range(-45, 45);
+        angle = Random.Range(-45, 45);
     }
     
-    private Quaternion RelativeRotation(Quaternion rotation)
+    private Vector3 RelativeRotation(Vector3 rotation)
     {
-        Vector3 euler = rotation.eulerAngles;
-        euler.y += core.eulerAngles.y;
-        return Quaternion.Euler(euler);
+        return Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up) * Quaternion.AngleAxis(Mathf.Asin(headObj.forward.y) * Mathf.Rad2Deg, Vector3.left) * rotation;
     }
     
     private Vector3 GetCurvePosition(float t)
@@ -115,12 +115,12 @@ public class Sword : Weapon
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(shoulder.position + RotateVecAroundPoint(P0, Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero ), 0.1f);
+        Gizmos.DrawSphere(shoulder.position + RelativeRotation(P0), 0.1f);
         Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(shoulder.position + RotateVecAroundPoint(P1, Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero ), 0.1f);
-        Gizmos.DrawSphere(shoulder.position + RotateVecAroundPoint(P2, Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero ), 0.1f);
+        Gizmos.DrawSphere(shoulder.position + RelativeRotation(P1), 0.1f);
+        Gizmos.DrawSphere(shoulder.position + RelativeRotation(P2), 0.1f);
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(shoulder.position + RotateVecAroundPoint(P3, Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero ), 0.1f);
+        Gizmos.DrawSphere(shoulder.position + RelativeRotation(P3), 0.1f);
         
         if (attacking)
         {
