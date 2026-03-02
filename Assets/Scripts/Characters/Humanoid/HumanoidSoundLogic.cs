@@ -5,12 +5,6 @@ using Random = UnityEngine.Random;
 
 public class HumanoidSoundLogic : MonoBehaviour
 {
-    private enum HumanoidType {Player, CrazedAdventurer}
-    [Header("Type")]
-    [SerializeField] private HumanoidType type;
-    [SerializeField] private int voiceActorAmount;
-    private int _currentVoiceActor;
-    
     private enum FootstepsActivatedBy {Timer, Animation}
     [Header("Movement")]   
     [SerializeField] private FootstepsActivatedBy footstepsActivatedBy;
@@ -41,9 +35,6 @@ public class HumanoidSoundLogic : MonoBehaviour
     [Header("Damage & Death")]
     [SerializeField] private string damagePath;
     [SerializeField] private string deathPath;
-
-    [Header("Enemy VO")] 
-    [SerializeField] private string enemyVoPath;
     
     //possibly just reference the speed, would work well with speed pots
     //altough once animations are implimented we can just use them, even if we remove the physical rig for the player
@@ -100,16 +91,6 @@ public class HumanoidSoundLogic : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        if (type != HumanoidType.CrazedAdventurer) return;
-        if (!AudioManager.IsValid) return;
-        _currentVoiceActor = Random.Range(0, voiceActorAmount - 1);
-        AudioManager.Instance.CreateInstance(enemyVoPath, gameObject);
-        AudioManager.Instance.SetParameter(enemyVoPath, "EnemyVO", _currentVoiceActor, gameObject);
-        AudioManager.Instance.StartEvent(enemyVoPath, gameObject);
-    }
-
     public void PlayFootstepSound(string path)
     {
         if (path is "" or null) return;
@@ -131,18 +112,6 @@ public class HumanoidSoundLogic : MonoBehaviour
     {
         if (!AudioManager.IsValid) return;
         AudioManager.Instance.PlayOneShot(deathPath, null, null, gameObject);
-
-        if (type != HumanoidType.CrazedAdventurer) return;
-        AudioManager.Instance.StopEvent(enemyVoPath, STOP_MODE.ALLOWFADEOUT, gameObject);
-        AudioManager.Instance.ReleaseInstance(enemyVoPath, gameObject);
-    }
-
-    private void OnDestroy()
-    {
-        if (!AudioManager.IsValid) return;
-        if (type != HumanoidType.CrazedAdventurer) return;
-        AudioManager.Instance.StopEvent(enemyVoPath, STOP_MODE.ALLOWFADEOUT, gameObject);
-        AudioManager.Instance.ReleaseInstance(enemyVoPath, gameObject);
     }
 
     public void HandleMovementChange(HumanoidMovement.moveActions actions)
@@ -235,20 +204,5 @@ public class HumanoidSoundLogic : MonoBehaviour
     public void PlayParrySound()
     {
 
-    }
-
-    private MadAventurerBaseState lastState = new MadAdventurerIdleState();
-    
-    public void OnMadStateChange(MadAventurerBaseState newState)
-    {
-        if (newState.GetType() == typeof(MadAdventurerChasingState) && lastState.GetType() == typeof(MadAdventurerIdleState))
-        {
-            AudioManager.Instance.KeyOff(enemyVoPath, gameObject);
-        }
-        if (lastState.GetType() == typeof(MadAdventurerChasingState) && newState.GetType() == typeof(MadAdventurerIdleState))
-        {
-            AudioManager.Instance.KeyOff(enemyVoPath, gameObject);
-        }
-        lastState = newState;
     }
 }
