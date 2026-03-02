@@ -141,6 +141,11 @@ public class SaveFileManager
         data.PlayerGold = townData.Cash;
         data.World.PlayerSaveData.Inventory = townData.Inventory;
 
+        foreach(var item in data.World.PlayerSaveData.Inventory.Items)
+        {
+            Debug.Log($"name: {item.PrefabID}, slot {item.Slot}");
+        }
+
         if (newScene != null)
         {
             data.SceneName = newScene;
