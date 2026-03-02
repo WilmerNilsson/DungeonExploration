@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,20 +7,31 @@ public class Sanity : MonoBehaviour
 {
     [SerializeField] private PlayerSanitySO playerSanitySO;
     //[SerializeField] private Health health;
-    
+
     //[Tooltip("The amount of time between hunger ticks in seconds")]
     //[SerializeField] private float hungerCooldown = 10;
 
+    [Tooltip("sends out a event with current % sanity")]
     public UnityEvent<float> OnLoseSanity;
     public UnityEvent OnGainSanity;
 
     public static Sanity instance;
     [SerializeField] private bool ResetOnAwake = true;
-    private bool light;
+    private bool isInLight;
+
+    private Coroutine sanityTimer;
+
+    public int CurrentSanity
+    {
+        get
+        {
+            return playerSanitySO.CurrentSanity;
+        }
+    }
 
     private IEnumerator SanityCoroutine()
     {
-        yield return new WaitForSeconds(playerSanitySO.GetCurrentCooldown(light));
+        yield return new WaitForSeconds(playerSanitySO.GetCurrentCooldown(isInLight));
         LoseSanity(1);
     }
 
@@ -51,13 +63,13 @@ public class Sanity : MonoBehaviour
         return playerSanitySO.CurrentSanity;
     }
 
+    /// <summary>
+    /// takes a positive number
+    /// </summary>
     public void LoseSanity(int amount)
     {
+        playerSanitySO.ChangeSanity(-amount);
         OnLoseSanity?.Invoke((float)playerSanitySO.CurrentSanity / playerSanitySO.MaxSanity);
-        if (!playerSanitySO.ChangeSanity(-1))
-        {
-            
-        }
 
         StartCoroutine(SanityCoroutine());
     }
@@ -69,5 +81,19 @@ public class Sanity : MonoBehaviour
         OnGainSanity?.Invoke();
 
         StartCoroutine(SanityCoroutine());
+    }
+
+    public void SetSanity(int newValue)
+    {
+        int diff = newValue - playerSanitySO.CurrentSanity;
+
+        if(diff < 0)
+        {
+            LoseSanity(-newValue);
+        }
+        else if (diff > 0)
+        {
+            GainSanity(newValue);
+        }
     }
 }

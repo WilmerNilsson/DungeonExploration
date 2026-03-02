@@ -22,7 +22,8 @@ public class MadAdventurerStateMachine : MonoBehaviour
     public MadAdventurerSearchingState SearchingState = new MadAdventurerSearchingState();
     public MadAdventurerDyingState DyingState = new();
     public MadAdventurerHallucinationState HallucinationState = new();
-    
+    [SerializeField] private bool startInHallucination = false;
+
     [HideInInspector] public Transform PlayerTransform;
     [HideInInspector] public Transform TargetTransform;
 
@@ -62,10 +63,15 @@ public class MadAdventurerStateMachine : MonoBehaviour
         AttackState.Start();
         SearchingState.Start();
         DyingState.Start();
-        CurrentState = IdleState;
+        if(startInHallucination)
+        {
+            CurrentState = HallucinationState;
+        }
+        else
+        {
+            CurrentState = IdleState;
+        }
         CurrentState.Enter();
-
-        //agent
     }
 
     // Update is called once per frame

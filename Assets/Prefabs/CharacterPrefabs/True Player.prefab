@@ -1175,6 +1175,7 @@ GameObject:
   - component: {fileID: 761204284509048953}
   - component: {fileID: -1075263557498986769}
   - component: {fileID: 8039961835658388922}
+  - component: {fileID: 1608432785845023580}
   m_Layer: 12
   m_Name: True Player
   m_TagString: Player
@@ -1848,6 +1849,28 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   ResetOnAwake: 1
+--- !u!114 &1608432785845023580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822202894608450755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a8be88a44732534dae5e54a32422ca7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distance: 2
+  tries: 5
+  minSpawnTime: 10
+  maxSpawnTime: 30
+  sanityMax: 40
+  sanityMin: 0
+  enemySpawnID: Hallucination
+  enemyLibrary: {fileID: 11400000, guid: e892c49861de1b146b3af5c6f924c044, type: 2}
+  agentIndex: 0
+  mySanity: {fileID: 8039961835658388922}
 --- !u!1 &8329409515068079808
 GameObject:
   m_ObjectHideFlags: 0
