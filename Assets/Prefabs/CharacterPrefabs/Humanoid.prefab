@@ -426,8 +426,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 0}
-  currentHealth: 0
-  maxHealth: 10
+  _currentHealth: 0
+  _maxHealth: 1
   DurabilityDamage: 0
   OnChangeHealths:
     m_PersistentCalls:
@@ -590,6 +590,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7692201632456385411}
   - component: {fileID: 3253121419754070490}
+  - component: {fileID: 2596484175588703253}
   m_Layer: 12
   m_Name: SoundLogic
   m_TagString: Untagged
@@ -624,8 +625,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d931ca1dd1838a4bb460879b3218922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
-  voiceActorAmount: 0
   footstepsActivatedBy: 0
   walkPlayDelay: 0.5
   sprintPlayDelay: 0.25
@@ -636,12 +635,34 @@ MonoBehaviour:
     sprint: 
   crouchPath: 
   jumpPath: 
+  landPath: 
+  hungerPath: 
   weaponObject: {fileID: 0}
   swingPath: 
   blockPath: 
   damagePath: 
   deathPath: 
-  enemyVoPath: 
+--- !u!114 &2596484175588703253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3723092682248772573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f370090c5398e1d42860e9f8f0dde244, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voiceActorRange: {x: 0, y: 47}
+  enemyVoPath: CrazedHumanoid/VO
+  parameters:
+    voiceActor: EnemyVO
+    state: EnemyStance
+    attack: Attack
+    stun: Stun
+    damage: OnHit
+    death: Death
 --- !u!1 &4072767237738320272
 GameObject:
   m_ObjectHideFlags: 0
@@ -785,8 +806,12 @@ MonoBehaviour:
   OnMoveActionChange:
     m_PersistentCalls:
       m_Calls: []
+  OnJump:
+    m_PersistentCalls:
+      m_Calls: []
   controller: {fileID: 4858494153439666970}
   CC: {fileID: 0}
+  animator: {fileID: 0}
   moveSpeed: 1
   sprintSpeed: 2
   crouchSpeed: 0.5
@@ -808,6 +833,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyTransform: {fileID: 3016168738674608329}
   headTransform: {fileID: 3438904474607824357}
+  bodyRotationSpeed: 0.5
+  headRotationSpeed: 0.5
 --- !u!114 &-8534321769884439687
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -820,11 +847,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d6cb9b6668a66b4fabe5c6e684e8eda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   head: {fileID: 3438904474607824357}
   interactDistance: 5
   layerMask:
     serializedVersion: 2
     m_Bits: 1281
+  OnSee:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUnSee:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &9136041693334964218
 MonoBehaviour:
   m_ObjectHideFlags: 0
