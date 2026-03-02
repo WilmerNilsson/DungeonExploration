@@ -53,13 +53,11 @@ public class EnemyVOSoundLogic : MonoBehaviour
     {
         if (newState.GetType() == typeof(MadAdventurerChasingState) && lastState.GetType() == typeof(MadAdventurerIdleState))
         {
-            //AudioManager.Instance.SetParameter(enemyVoPath, parameters.state, 1, gameObject);
-            AudioManager.Instance.KeyOff(enemyVoPath, gameObject);
+            AudioManager.Instance.SetParameter(enemyVoPath, parameters.state, 1, gameObject);
         }
         if (lastState.GetType() == typeof(MadAdventurerChasingState) && newState.GetType() == typeof(MadAdventurerIdleState))
         {
-            //AudioManager.Instance.SetParameter(enemyVoPath, parameters.state, 0, gameObject);
-            AudioManager.Instance.KeyOff(enemyVoPath, gameObject);
+            AudioManager.Instance.SetParameter(enemyVoPath, parameters.state, 0, gameObject);
         }
         lastState = newState;
     }
