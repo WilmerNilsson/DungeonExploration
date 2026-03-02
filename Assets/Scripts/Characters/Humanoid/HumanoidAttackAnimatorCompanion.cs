@@ -1,37 +1,182 @@
+using System;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
+using UnityEngine.Events;
 
 public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 {
-    [SerializeField] private Animator animator;
-
-    [SerializeField] private Collider weapon;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [Header("Events")]
+    public UnityEvent onDealDamage;
+    public UnityEvent onGetBlocked;
+    public UnityEvent<AttackState> onAttackStateChange;
+    public UnityEvent<BlockState> onBlockStateChange;
+    
+    [SerializeField] protected AttackState attackState = AttackState.Charge;
+    [SerializeField] protected BlockState blockState = BlockState.Charge;
+    
+    [SerializeField] private bool hasWeapon = false;
+    [SerializeField] private bool attacking = false;
+    [SerializeField] private bool blocking = false;
+    [SerializeField] private GameObject weapon;
+    [SerializeField] private TwoBoneIKConstraint swordArm; 
+    [SerializeField] private Transform core;
+    [SerializeField] private Transform head;
+    [SerializeField] private Transform hand;
+    
+    private float startTime;
+    private float time;
+    private float cutoffTime; // to track how far into attack it has to reverse
+    private Weapon weaponScript;
+    
+    public enum AttackState
     {
-        
+        Charge,
+        Hold,
+        Swing,
+        Return,
+        Recoil
     }
 
-    // Update is called once per frame
-    void Update()
+    public enum BlockState
     {
-        
+        Charge,
+        Block,
+        Return
     }
 
-    public void Attack()
+    private void Start()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        if (weaponScript == null)
         {
-            animator.SetBool("Attack",true);
+            hasWeapon = weapon.TryGetComponent(out weaponScript);
         }
+    }
+
+    public void Attack(bool value, float angle)
+    {
+        if (!attacking && !blocking)
+        {
+            attacking = value;
+            weaponScript.angle = angle;
+            attackState = AttackState.Charge;
+        }
+    }
+    
+    public void Block(bool value, float angle)
+    {
+        if (!attacking && !blocking)
+        {
+            blocking = value;
+            weaponScript.angle = angle;
+            blockState = BlockState.Charge;
+        }
+    }
+
+    public void ChangeAttackState(AttackState newState)
+    {
+        attackState = newState;
+        onAttackStateChange.Invoke(attackState);
+        startTime = Time.time;
+    }
+    
+    public void ChangeBlockState(BlockState newState)
+    {
+        blockState = newState;
+        onBlockStateChange.Invoke(blockState);
+        startTime = Time.time;
+    }
+
+    public void OnGetBlocked()
+    {
+        onGetBlocked.Invoke();
+        cutoffTime = time;
+        attackState = AttackState.Recoil;
+    }
+
+    private void Update()
+    {
+        if (hasWeapon)
+        {
+            time = (Time.time - startTime);
+            if (attacking)
+            {
+                switch (attackState)
+                {
+                    case AttackState.Charge:
+                        if (weaponScript.ChargeAttack(time))
+                        {
+                            startTime = Time.time;
+                            attackState = AttackState.Hold;
+                        }
+                        break;
+                    case AttackState.Hold:
+                        if (weaponScript.HoldAttack(time))
+                        {
+                            startTime = Time.time;
+                            attackState = AttackState.Swing;
+                        }
+                        break;
+                    case AttackState.Swing:
+                        if (weaponScript.Swing(time))
+                        {
+                            startTime = Time.time;
+                            attackState = AttackState.Return;
+                        }
+                        break;
+                    case AttackState.Recoil:
+                        if (weaponScript.RecoilAttack(cutoffTime - time))
+                        {
+                            startTime = Time.time;
+                            attackState = AttackState.Return;
+                        }
+                        break;
+                    case AttackState.Return:
+                        if (weaponScript.ReturnAttack(time))
+                        {
+                            attacking = false;
+                        }
+                        break;
+                    
+                }
+            }
+            else if (blocking)
+            {
+                switch (blockState)
+                {
+                    case BlockState.Charge:
+                        weaponScript.ChargeBlock(time);
+                        break;
+                    case BlockState.Block:
+                        weaponScript.Block(time);
+                        break;
+                    case BlockState.Return:
+                        weaponScript.ReturnBlock(time);
+                        break;
+                }
+            }
+        }
+    }
+
+    public void Equip(GameObject newWeapon)
+    {
+        Destroy(weapon);
+        weapon = Instantiate(newWeapon, hand);
+        Weapon script = weapon.GetComponent<Weapon>();
+        script.companion = this;
+        script.swordArm = swordArm;
+        script.head = head;
+        script.core = core;
     }
 
     public void Activate()
     {
-        weapon.enabled = true;
+        weapon.GetComponent<Collider>().enabled = true;
     }
 
     public void Deactivate()
     {
-        weapon.enabled = false;
+        weapon.GetComponent<Collider>().enabled = false;
     }
+    
+    
 }
