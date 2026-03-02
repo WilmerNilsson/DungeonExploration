@@ -115,6 +115,8 @@ public class AmbienceHandler : MonoBehaviour
       {
          AudioManager.Instance.SetGlobalParameter("RoomSize", medianDistance * roomSizeMultiplier * _height, false);
       }
+      
+      AudioManager.Instance.SetGlobalParameter("ReverbPanner", maxDistanceAngle, false);
 
       currentRoomSize = meanDistance * roomSizeMultiplier * _height;
    }
