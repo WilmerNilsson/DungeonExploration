@@ -5,20 +5,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 
-public class InvMaster : MonoBehaviour
+public class InvMaster : InvMasterBase
 {
-    public static InvMaster Instance
-    {
-        get; private set; 
-    }
-    [SerializeField] private InventoryGrid playerInventoryGrid;
     [SerializeField] private ItemContextMenu contextMenu;
     [SerializeField] private Transform worldContainerParent;
     [SerializeField] private GameObject playerInventory;
-    [SerializeField] private Transform drawOntopParent;
     [Header("reading")] //Starting to feel like we may want to split this up further, but prob once we do a pause menu
     [SerializeField] private OpenBookController openBookController;
-    [SerializeField] private TextMeshProUGUI descriptionText;
     /// <summary>
     /// collum, row
     /// </summary>
@@ -26,46 +19,31 @@ public class InvMaster : MonoBehaviour
     //dunno what we expect to be the max open container amount, but going with 1 for now
     private List<ContainerController> openContainers = new(1);
 
-    public InventoryGrid PlayerInventory { get { return playerInventoryGrid; } }
-
-    private void Start()
+    protected override void Start()
     {
-        Instance = this;
+        base.Start();
     }
 
 #if DEBUG
-    private void OnValidate()
+    protected override void OnValidate()
     {
-        if(playerInventoryGrid == null)
-        {
-            Debug.LogWarning("inventory grid rect is null", this);
-        }
+        base.OnValidate();
         if (contextMenu == null) Debug.LogWarning("context menu is null", this);
         if (worldContainerParent == null) Debug.LogWarning("world container parent is null", this);
         if (playerInventory == null) Debug.LogWarning("player inventory object is null", this);
-        if (drawOntopParent == null) Debug.LogWarning("draw ontop parent is null", this);
         if (openBookController == null) Debug.LogWarning("open book controller is null", this);
-        if (descriptionText == null) Debug.LogWarning("description text field is null", this);
-
-        if (!PrefabUtility.IsPartOfPrefabAsset(this) && GameObject.FindAnyObjectByType<EventSystem>() == null)
-            Debug.LogWarning("no event system in scene", this);
     }
 #endif
 
     public ItemContextMenu GetContextMenu()
         { return contextMenu; }
 
-    public Vector2 GetSlotSize()
-    {
-        return playerInventoryGrid.GetSlotSize();
-    }
-
-    public bool TryPlaceItem(SimpleItem item)
+    public override bool TryPlaceItem(SimpleItem item)
     {
         //perhaps have a reference in SimpleItem to current inventory that we can remove it from
         //when we move it from one inventory to another.
 
-        if(playerInventoryGrid.TryPlaceItem(item))
+        if(PlayerInventory.TryPlaceItem(item))
         {
             foreach (ContainerController container in openContainers)
             {
@@ -84,7 +62,7 @@ public class InvMaster : MonoBehaviour
                 ContainerController container = openContainers[i];
                 if (container.Grid.TryPlaceItem(item))
                 {
-                    if(playerInventoryGrid.TryRemoveSlottedItem(item))
+                    if(PlayerInventory.TryRemoveSlottedItem(item))
                     {
                         return true;
                     }
@@ -166,16 +144,16 @@ public class InvMaster : MonoBehaviour
         openContainers.Clear();
     }
 
-    public void ParentTransformOntop(Transform transform)
+    public override void ParentTransformOntop(Transform transform)
     {
-        transform.SetParent(drawOntopParent);
+        base.ParentTransformOntop(transform);
 
         contextMenu.Deselect();
     }
 
-    public void DestroyItem(SimpleItem item)
+    public override void DestroyItem(SimpleItem item)
     {
-        if (playerInventoryGrid.TryRemoveSlottedItem(item))
+        if (PlayerInventory.TryRemoveSlottedItem(item))
         {
             
         }
@@ -203,10 +181,5 @@ public class InvMaster : MonoBehaviour
     public void CloseText()
     {
         openBookController.CloseText();
-    }
-
-    public void SetDescriptionText(string newText)
-    {
-        descriptionText.text = newText;
     }
 }

@@ -1,13 +1,19 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
-using static Codice.Client.Commands.WkTree.WorkspaceTreeNode;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(RectTransform))]
 public class InventoryGrid : MonoBehaviour
 {
     [SerializeField, Min(1)] private int collumns = 1;
     [SerializeField, Min(1)] private int rows = 1;
+
+    /// <summary>
+    /// the standard grid size in pixels at 1920x1080
+    /// </summary>
+    public const int StandardGridSize = 100;
 
     private bool hasBeenEnabled = false;
 
@@ -26,7 +32,6 @@ public class InventoryGrid : MonoBehaviour
         }
     }
     private ItemWithPiviot[,] _invData;
-
 
     private void OnEnable()
     {
@@ -79,19 +84,65 @@ public class InventoryGrid : MonoBehaviour
 #if DEBUG
     private void OnValidate()
     {
-        Vector2 slotSize = GetSlotSize();
-
-        float delta = 0.0005f;
-        if (Mathf.Abs(slotSize.x - slotSize.y) > delta)
-        {
-            Debug.Log(slotSize.x - slotSize.y);
-            Debug.Log(Mathf.Abs(slotSize.x - slotSize.y));
-            Debug.LogWarning($"inventory slot width and height does not match. width is {slotSize.x}, height is {slotSize.y}", this);
-        }
+        CheckSlotSize();
 
         if ((transform as RectTransform).pivot.y != 0.5f || (transform as RectTransform).pivot.x != 0.5f)
             Debug.LogWarning("inventory grid pivot is not 0.5 in x and y", this);
-        
+
+        void CheckSlotSize()
+        {
+            Vector2 slotSize = SlotSizeWOScaler();
+
+            float delta = 0.0005f;
+            if (Mathf.Abs(slotSize.x - slotSize.y) > delta)
+            {
+                Debug.LogWarning($"inventory slot width and height does not match. width is {slotSize.x}, height is {slotSize.y}", this);
+            }
+            if (Mathf.Abs((float)StandardGridSize - slotSize.y) > delta)
+            {
+                Debug.LogWarning($"slot size of Y is not the standard: {StandardGridSize}, it is {slotSize.y}", this);
+            }
+            if (Mathf.Abs((float)StandardGridSize - slotSize.x) > delta)
+            {
+                Debug.LogWarning($"slot size of X is not the standard: {StandardGridSize}, it is {slotSize.x}", this);
+            }
+        }
+
+        Vector2 SlotSizeWOScaler()
+        {
+            Rect bigRect = (transform as RectTransform).rect;
+
+            float scaleX = 1f;
+            float scaleY = 1f;
+
+            int sanity = 100;
+
+            for (Transform t = transform; t.parent != null; t = t.parent)
+            {
+                if (t.TryGetComponent<CanvasScaler>(out CanvasScaler scaler))
+                {
+                    break;
+                }
+                else
+                {
+                    scaleX *= t.localScale.x;
+                    scaleY *= t.localScale.y;
+                }
+
+                sanity--;
+                if (sanity <= 0)
+                {
+                    Debug.Log("hit sanity cap", this);
+                    break;
+                }
+            }
+            bigRect.width = bigRect.width * scaleX;
+            bigRect.width /= collumns;
+            bigRect.height = bigRect.height * scaleY;
+            bigRect.height /= rows;
+
+            return bigRect.size;
+        }
     }
 #endif
 
@@ -106,8 +157,38 @@ public class InventoryGrid : MonoBehaviour
 
         Rect bigRect = rt.rect;
 
+#if UNITY_EDITOR
+        float scaleX = 1f;
+        float scaleY = 1f;
+
+        int sanity = 100;
+
+        for (Transform t = transform; t.parent != null; t = t.parent)
+        {
+            if(t.TryGetComponent<CanvasScaler>(out CanvasScaler scaler))
+            {
+                scaleX *= scaler.scaleFactor;
+                scaleY *= scaler.scaleFactor;
+            }
+            else
+            {
+                scaleX *= t.localScale.x;
+                scaleY *= t.localScale.y;
+            }
+
+            sanity--;
+            if (sanity <= 0)
+            {
+                Debug.Log("hit sanity cap", this);
+                break;
+            }
+        }
+        bigRect.width = bigRect.width * scaleX;
+        bigRect.height = bigRect.height * scaleY;
+#else
         bigRect.width = bigRect.width * rt.lossyScale.x;
         bigRect.height = bigRect.height * rt.lossyScale.y;
+#endif
 
         bigRect.center = rt.position;
 
@@ -168,7 +249,7 @@ public class InventoryGrid : MonoBehaviour
         return false;
     }
 
-    #endregion
+#endregion
 
     public bool TryInstantiateItemInSlot(int slot, GameObject prefab)
     {
@@ -321,6 +402,23 @@ public class InventoryGrid : MonoBehaviour
         item.RectTransform.SetParent(transform, false);
         item.RectTransform.position = GetSlotRect(collum, row).center;
         return true;
+    }
+
+    public bool HasItem(SimpleItem item)
+    {
+        for (int collum = 0; collum < InvData.GetLength(0); collum++)
+        {
+            for (int row = 0; row < InvData.GetLength(1); row++)
+            {
+                if (InvData[collum, row] == null) { continue; }
+                else if (InvData[collum, row].Item == item)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public bool TryRemoveSlottedItem(SimpleItem item)

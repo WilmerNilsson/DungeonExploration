@@ -1567,13 +1567,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bf8df6b2211dd34190fb3940eef5ea0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StartDialogueName: Intro
   playOnStart: 1
-  startTextAsset: {fileID: 4900000, guid: 26c815e6dc8612543b57ea4657a9558d, type: 3}
+  dialogueTree: {fileID: 11400000, guid: 91761aa53cf96044d9866d8b82a5b9a3, type: 2}
   dialoguePanel: {fileID: 971567237}
   dialogueText: {fileID: 971567239}
   dialogueName: {fileID: 0}
   portraitAnimator: {fileID: 0}
-  audioClip: {fileID: 0}
+  selectButtons: []
   onDialogueEnter:
     m_PersistentCalls:
       m_Calls:
@@ -1791,7 +1792,6 @@ MonoBehaviour:
           m_StringArgument: UI_Fade_Out
           m_BoolArgument: 1
         m_CallState: 2
-  choices: []
 --- !u!1 &2082308802
 GameObject:
   m_ObjectHideFlags: 0

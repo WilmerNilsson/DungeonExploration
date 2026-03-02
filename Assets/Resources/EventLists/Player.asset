@@ -1,0 +1,402 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7493b6246a18ce4ca3407bc85a819a4, type: 3}
+  m_Name: Player
+  m_EditorClassIdentifier: 
+  category: Player
+  events:
+  - eventName: Crouch
+    eventReference:
+      Guid:
+        Data1: 1838614167
+        Data2: 1125695131
+        Data3: -917396850
+        Data4: 1039931948
+      Path: event:/Sound/Player/Foley/Crouch
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Walk
+    eventReference:
+      Guid:
+        Data1: -1601875250
+        Data2: 1302351512
+        Data3: -808690007
+        Data4: 2074805805
+      Path: event:/Sound/Player/Foley/Footsteps
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 2.2
+    debug: 0
+    parameters:
+    - paramName: surfaceType
+      isGlobal: 0
+      data1: 2409256524
+      data2: 1522719029
+  - eventName: Jump
+    eventReference:
+      Guid:
+        Data1: 407463004
+        Data2: 1236730135
+        Data3: -686158409
+        Data4: -1809549754
+      Path: event:/Sound/Player/Foley/Jump
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Land
+    eventReference:
+      Guid:
+        Data1: 981942694
+        Data2: 1170302005
+        Data3: 1078097320
+        Data4: 2102860344
+      Path: event:/Sound/Player/Foley/Land
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters:
+    - paramName: surfaceType
+      isGlobal: 0
+      data1: 2409256524
+      data2: 1522719029
+  - eventName: Run
+    eventReference:
+      Guid:
+        Data1: -1190909364
+        Data2: 1335245060
+        Data3: -1544620126
+        Data4: -1624280498
+      Path: event:/Sound/Player/Foley/Run
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 2.2
+    debug: 0
+    parameters:
+    - paramName: surfaceType
+      isGlobal: 0
+      data1: 2409256524
+      data2: 1522719029
+  - eventName: Sneak
+    eventReference:
+      Guid:
+        Data1: -292369202
+        Data2: 1203377431
+        Data3: 30939821
+        Data4: 1633049054
+      Path: event:/Sound/Player/Foley/Sneak
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 2.2
+    debug: 0
+    parameters:
+    - paramName: surfaceType
+      isGlobal: 0
+      data1: 2409256524
+      data2: 1522719029
+  - eventName: Take_Damage
+    eventReference:
+      Guid:
+        Data1: 682598519
+        Data2: 1153000272
+        Data3: -628293213
+        Data4: -2052368569
+      Path: event:/Sound/Player/Foley/Take_Damage
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Rope
+    eventReference:
+      Guid:
+        Data1: 899366842
+        Data2: 1207631029
+        Data3: 1432944573
+        Data4: -1561945739
+      Path: event:/Sound/Player/Tools/Rope
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters:
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
+    - paramName: Walls
+      isGlobal: 0
+      data1: 3996502556
+      data2: 1746408966
+  - eventName: Death
+    eventReference:
+      Guid:
+        Data1: 941497113
+        Data2: 1204195257
+        Data3: -1563407949
+        Data4: 1996458937
+      Path: event:/Sound/Player/VoiceOver/Death
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: MaceDraw
+    eventReference:
+      Guid:
+        Data1: 117038431
+        Data2: 1316967584
+        Data3: 953966527
+        Data4: 93756998
+      Path: event:/Sound/Player/Weapons/Mace/MaceDraw
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: MaceSwing
+    eventReference:
+      Guid:
+        Data1: 670634877
+        Data2: 1181582949
+        Data3: 1433416865
+        Data4: -1187100018
+      Path: event:/Sound/Player/Weapons/Mace/MaceSwing
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: SpearDraw
+    eventReference:
+      Guid:
+        Data1: -368424739
+        Data2: 1078631819
+        Data3: -2057157759
+        Data4: 901269589
+      Path: event:/Sound/Player/Weapons/Spear/SpearDraw
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: SpearSwing
+    eventReference:
+      Guid:
+        Data1: 1245330088
+        Data2: 1259604517
+        Data3: -1634906436
+        Data4: -575427368
+      Path: event:/Sound/Player/Weapons/Spear/SpearSwing
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: SwordDraw
+    eventReference:
+      Guid:
+        Data1: 1826768141
+        Data2: 1195450235
+        Data3: 665233564
+        Data4: 1390284585
+      Path: event:/Sound/Player/Weapons/Sword/SwordDraw
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: SwordParry
+    eventReference:
+      Guid:
+        Data1: 1736530211
+        Data2: 1131489808
+        Data3: -516748105
+        Data4: 615583645
+      Path: event:/Sound/Player/Weapons/Sword/SwordParry
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: SwordSwing
+    eventReference:
+      Guid:
+        Data1: 2099678300
+        Data2: 1108240502
+        Data3: -1972189767
+        Data4: -1576565586
+      Path: event:/Sound/Player/Weapons/Sword/SwordSwing
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: SwordBlock
+    eventReference:
+      Guid:
+        Data1: -611396921
+        Data2: 1269773903
+        Data3: -551713146
+        Data4: -1597503729
+      Path: event:/Sound/Player/Weapons/Sword/SwordBlock
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Eating
+    eventReference:
+      Guid:
+        Data1: 1655501131
+        Data2: 1107906845
+        Data3: 994653878
+        Data4: 1131485022
+      Path: event:/Sound/UI/Player/Eating
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Hunger
+    eventReference:
+      Guid:
+        Data1: -1937690854
+        Data2: 1267517978
+        Data3: 467999671
+        Data4: 331976063
+      Path: event:/Sound/UI/Player/Hunger
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters:
+    - paramName: Hunger
+      isGlobal: 1
+      data1: 707327616
+      data2: 114759573
+  - eventName: Low_HP
+    eventReference:
+      Guid:
+        Data1: 51949675
+        Data2: 1214113737
+        Data3: -1499154040
+        Data4: 770145969
+      Path: event:/Sound/UI/Player/Low_HP
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Sanity_Depletion
+    eventReference:
+      Guid:
+        Data1: 1138682245
+        Data2: 1297785148
+        Data3: -2050440514
+        Data4: -404897597
+      Path: event:/Sound/UI/Player/Sanity_Depletion
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  debug: 0

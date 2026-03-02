@@ -21,17 +21,40 @@ public class SaveFileHelperPlayer : MonoBehaviour
 
     public void Initialize(PlayerSaveData data)
     {
-        health.StopSelfInitialize();
-        health.SetCurrentHealth(data.CurrentHP);
-        health.SetMaxHealth(data.MaxHP);
+        if(data.FromTown)
+        {
+            FromTown();
+        }
+        else
+        {
+            FromWorld();
+        }
 
-        spawnTransform.position = data.Position;
-        spawnTransform.rotation = data.Rotation;
-        movement.SupressMoveFrame();
+        void FromWorld()
+        {
+            health.StopSelfInitialize();
+            health.SetMaxHealth(data.MaxHP);
+            health.SetCurrentHealth(data.CurrentHP);
 
-        hunger.Initialize(data.Hunger);
+            spawnTransform.position = data.Position;
+            spawnTransform.rotation = data.Rotation;
+            movement.SupressMoveFrame();
 
-        SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Inventory, InvMaster.Instance.PlayerInventory);
+            hunger.Initialize(data.Hunger);
+
+            SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Inventory, InvMasterBase.Instance.PlayerInventory);
+        }
+
+        void FromTown()
+        {
+            health.StopSelfInitialize();
+            health.SetMaxHealth(data.MaxHP);
+            health.SetCurrentHealth(data.MaxHP);
+
+            //hunger starts at max
+
+            SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Inventory, InvMasterBase.Instance.PlayerInventory);
+        }
     }
 
     public PlayerSaveData GetData()
@@ -40,7 +63,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
         int maxHP = health.MaxHealth;
         Vector3 pos = spawnTransform.position;
         Quaternion rot = spawnTransform.rotation;
-        InventorySaveData inventory = new(InvMaster.Instance.PlayerInventory.GetInventoryData());
+        InventorySaveData inventory = new(InvMasterBase.Instance.PlayerInventory.GetInventoryData());
         int hungerInt = hunger.GetHungerValue();
 
         PlayerSaveData data = new(inventory, pos, rot, maxHP, currentHP, 100, hungerInt);
