@@ -13,26 +13,45 @@ public class Sanity : MonoBehaviour
     public UnityEvent<float> OnLoseSanity;
     public UnityEvent OnGainSanity;
 
-    public static Sanity instance;
+    public static Sanity Instance;
     [SerializeField] private bool ResetOnAwake = true;
-    private bool light;
+    private bool isInLight;
 
-    private IEnumerator SanityCoroutine()
+    Coroutine sanityTick;
+
+    public int CurrentSanity
     {
-        yield return new WaitForSeconds(playerSanitySO.GetCurrentCooldown(light));
-        LoseSanity(1);
+        get
+        {
+            return playerSanitySO.CurrentSanity;
+        }
     }
 
     private void Awake()
     {
-        instance = this;
-        StartCoroutine(SanityCoroutine());
-        if(ResetOnAwake)
+        Instance = this;
+        ResetSanityTick();
+        if (ResetOnAwake)
         {
             ResetSanity();
         }
     }
 
+    private void ResetSanityTick()
+    {
+        if(sanityTick != null)
+        {
+            StopCoroutine(sanityTick);
+        }
+        sanityTick = StartCoroutine(SanityTickCoroutine());
+
+        IEnumerator SanityTickCoroutine()
+        {
+            yield return new WaitForSeconds(playerSanitySO.GetCurrentCooldown(isInLight));
+            LoseSanity(1);
+        }
+
+    }
     public void ResetSanity()
     {
         playerSanitySO.ResetValues();
@@ -51,15 +70,19 @@ public class Sanity : MonoBehaviour
         return playerSanitySO.CurrentSanity;
     }
 
+    /// <summary>
+    /// takes a positive number
+    /// </summary>
     public void LoseSanity(int amount)
     {
+        playerSanitySO.ChangeSanity(-amount);
         OnLoseSanity?.Invoke((float)playerSanitySO.CurrentSanity / playerSanitySO.MaxSanity);
         if (!playerSanitySO.ChangeSanity(-1))
         {
             
         }
 
-        StartCoroutine(SanityCoroutine());
+        ResetSanityTick();
     }
 
     public void GainSanity(int amount)
@@ -68,6 +91,20 @@ public class Sanity : MonoBehaviour
         playerSanitySO.ChangeSanity(amount);
         OnGainSanity?.Invoke();
 
-        StartCoroutine(SanityCoroutine());
+        ResetSanityTick();
+    }
+
+    public void SetSanity(int newValue)
+    {
+        int diff = newValue - CurrentSanity;
+
+        if (diff > 0)
+        {
+            GainSanity(diff);
+        }
+        else if (diff < 0)
+        {
+            LoseSanity(-diff);
+        }
     }
 }
