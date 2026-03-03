@@ -143,9 +143,9 @@ public class OcclusionChecker
             }
             else
             {
-                if (checkIfFirstMiss)
+                if (checkIfFirstMiss) //TODO: använda Hits[0].distance här?
                 {
-                    if (!Physics.Linecast(_sourcePos + (_direction * _distance),
+                    if (!Physics.Linecast(_sourcePos + (_direction * _distance), 
                             _targetPos, out hitDatas[i].Hits[1], layerMask))
                     {
                         hitDatas[i].score += bounceValue;
