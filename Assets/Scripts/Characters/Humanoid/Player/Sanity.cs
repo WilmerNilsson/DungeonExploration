@@ -65,7 +65,7 @@ public class Sanity : MonoBehaviour
         OnLoseSanity?.Invoke((float)playerSanitySO.CurrentSanity / playerSanitySO.MaxSanity);
     }
 
-    public int GetHungerValue()
+    public int GetSanityValue()
     {
         return playerSanitySO.CurrentSanity;
     }
@@ -77,17 +77,12 @@ public class Sanity : MonoBehaviour
     {
         playerSanitySO.ChangeSanity(-amount);
         OnLoseSanity?.Invoke((float)playerSanitySO.CurrentSanity / playerSanitySO.MaxSanity);
-        if (!playerSanitySO.ChangeSanity(-1))
-        {
-            
-        }
 
         ResetSanityTick();
     }
 
     public void GainSanity(int amount)
     {
-        StopAllCoroutines();
         playerSanitySO.ChangeSanity(amount);
         OnGainSanity?.Invoke();
 
