@@ -15,24 +15,33 @@ public class Sanity : MonoBehaviour
 
     public static Sanity instance;
     [SerializeField] private bool ResetOnAwake = true;
-    private bool light;
+    private bool isInLight;
 
-    private IEnumerator SanityCoroutine()
-    {
-        yield return new WaitForSeconds(playerSanitySO.GetCurrentCooldown(light));
-        LoseSanity(1);
-    }
+    Coroutine sanityTick;
 
-    private void Awake()
+    public int CurrentSanity
     {
-        instance = this;
-        StartCoroutine(SanityCoroutine());
-        if(ResetOnAwake)
+        get
         {
-            ResetSanity();
+            return playerSanitySO.CurrentSanity;
         }
     }
 
+    private void ResetSanityTick()
+    {
+        if(sanityTick != null)
+        {
+            StopCoroutine(sanityTick);
+        }
+        sanityTick = StartCoroutine(SanityTickCoroutine());
+
+        IEnumerator SanityTickCoroutine()
+        {
+            yield return new WaitForSeconds(playerSanitySO.GetCurrentCooldown(isInLight));
+            LoseSanity(1);
+        }
+
+    }
     public void ResetSanity()
     {
         playerSanitySO.ResetValues();
@@ -53,13 +62,10 @@ public class Sanity : MonoBehaviour
 
     public void LoseSanity(int amount)
     {
+        playerSanitySO.ChangeSanity(-amount);
         OnLoseSanity?.Invoke((float)playerSanitySO.CurrentSanity / playerSanitySO.MaxSanity);
-        if (!playerSanitySO.ChangeSanity(-1))
-        {
-            
-        }
 
-        StartCoroutine(SanityCoroutine());
+        ResetSanityTick();
     }
 
     public void GainSanity(int amount)
@@ -68,6 +74,6 @@ public class Sanity : MonoBehaviour
         playerSanitySO.ChangeSanity(amount);
         OnGainSanity?.Invoke();
 
-        StartCoroutine(SanityCoroutine());
+        ResetSanityTick();
     }
 }
