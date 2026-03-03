@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,11 +6,10 @@ public class Sanity : MonoBehaviour
 {
     [SerializeField] private PlayerSanitySO playerSanitySO;
     //[SerializeField] private Health health;
-
+    
     //[Tooltip("The amount of time between hunger ticks in seconds")]
     //[SerializeField] private float hungerCooldown = 10;
 
-    [Tooltip("sends out a event with current % sanity")]
     public UnityEvent<float> OnLoseSanity;
     public UnityEvent OnGainSanity;
 
@@ -19,7 +17,7 @@ public class Sanity : MonoBehaviour
     [SerializeField] private bool ResetOnAwake = true;
     private bool isInLight;
 
-    private Coroutine sanityTimer;
+    Coroutine sanityTick;
 
     public int CurrentSanity
     {
@@ -29,22 +27,21 @@ public class Sanity : MonoBehaviour
         }
     }
 
-    private IEnumerator SanityCoroutine()
+    private void ResetSanityTick()
     {
-        yield return new WaitForSeconds(playerSanitySO.GetCurrentCooldown(isInLight));
-        LoseSanity(1);
-    }
-
-    private void Awake()
-    {
-        instance = this;
-        StartCoroutine(SanityCoroutine());
-        if(ResetOnAwake)
+        if(sanityTick != null)
         {
-            ResetSanity();
+            StopCoroutine(sanityTick);
         }
-    }
+        sanityTick = StartCoroutine(SanityTickCoroutine());
 
+        IEnumerator SanityTickCoroutine()
+        {
+            yield return new WaitForSeconds(playerSanitySO.GetCurrentCooldown(isInLight));
+            LoseSanity(1);
+        }
+
+    }
     public void ResetSanity()
     {
         playerSanitySO.ResetValues();
@@ -63,15 +60,12 @@ public class Sanity : MonoBehaviour
         return playerSanitySO.CurrentSanity;
     }
 
-    /// <summary>
-    /// takes a positive number
-    /// </summary>
     public void LoseSanity(int amount)
     {
         playerSanitySO.ChangeSanity(-amount);
         OnLoseSanity?.Invoke((float)playerSanitySO.CurrentSanity / playerSanitySO.MaxSanity);
 
-        StartCoroutine(SanityCoroutine());
+        ResetSanityTick();
     }
 
     public void GainSanity(int amount)
@@ -80,20 +74,6 @@ public class Sanity : MonoBehaviour
         playerSanitySO.ChangeSanity(amount);
         OnGainSanity?.Invoke();
 
-        StartCoroutine(SanityCoroutine());
-    }
-
-    public void SetSanity(int newValue)
-    {
-        int diff = newValue - playerSanitySO.CurrentSanity;
-
-        if(diff < 0)
-        {
-            LoseSanity(-newValue);
-        }
-        else if (diff > 0)
-        {
-            GainSanity(newValue);
-        }
+        ResetSanityTick();
     }
 }
