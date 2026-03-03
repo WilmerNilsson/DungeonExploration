@@ -74,7 +74,7 @@ public class DevConsoleGha : MonoBehaviour
             new DebugCommand("log_path", "gets the debug log path of the application", "log_path", LogPathCommand),
             new DebugCommand("kill_player", "deals 1000 damage to player", "kill_player", KillPlayerCommand),
             new DebugCommand("debug_navmesh", "prints a lot of usefull nav mesh data", "debug_navmesh", DebugNavmeshCommand),
-
+            new DebugCommand("set_sanity", "sets players sanity to value", "set_sanity int", SetSanity)
         };
     }
 
