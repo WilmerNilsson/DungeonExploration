@@ -17,6 +17,7 @@ public class DialogueManager : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private TextMeshProUGUI dialogueName;
+    [SerializeField] private GameObject continueButton;
 
     [SerializeField] private Animator portraitAnimator;
     //[SerializeField] private AudioSource audioSource;
@@ -62,6 +63,7 @@ public class DialogueManager : MonoBehaviour
             Debug.Log("More than one Dialogue Manager found");
         }
         instance = this;
+        continueButton.SetActive(false);
     }
 
     private void Start()
@@ -109,6 +111,7 @@ public class DialogueManager : MonoBehaviour
                 lineIndex = 0;
                 currentStory = new Story(dialogueTree.Dialogues[i].InkJson.text);
                 dialogueIsPlaying = true;
+                continueButton.SetActive(true);
                 //InputManager.GetInstance().isLevelPlaying = false;
         
                 ContinueStory();
@@ -126,6 +129,7 @@ public class DialogueManager : MonoBehaviour
         currentStory = new Story(inkJSON.text);
         dialogueIsPlaying = true;
         //InputManager.GetInstance().isLevelPlaying = false;
+        continueButton.SetActive(true);
 
         ContinueStory();
     }
@@ -136,6 +140,7 @@ public class DialogueManager : MonoBehaviour
         
         dialogueIsPlaying = false;
         dialogueText.text = "";
+        continueButton.SetActive(false);
         //InputManager.GetInstance().isLevelPlaying = true;
         //data.playStoryAtStart = false;
         onDialogueExit.Invoke();

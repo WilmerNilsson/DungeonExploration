@@ -30,4 +30,14 @@ public class DialogueTree : ScriptableObject
             }
         }
     }
+
+    public void SetFriendshipLevel(int level)
+    {
+        friendshipLevel  = level;
+    }
+
+    public void IncreaseFriendshipLevel(int amount)
+    {
+        friendshipLevel += amount;
+    }
 }
