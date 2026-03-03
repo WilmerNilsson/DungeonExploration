@@ -27,7 +27,7 @@ public class MadAdventurerAttackState : MadAventurerBaseState
         }
         else if (distance > minMeleeRange) // just smack :)
         {
-            avatarIK.Attack();
+            MyMadAdventurerStateMachine.Attack();
         }
         
         Stop();

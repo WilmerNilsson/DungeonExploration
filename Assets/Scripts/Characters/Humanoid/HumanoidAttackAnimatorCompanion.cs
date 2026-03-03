@@ -66,9 +66,17 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     {
         if (!attacking && !blocking)
         {
+            ChangeBlockState(BlockState.Charge);
             blocking = true;
             weaponScript.angle = angle;
-            ChangeBlockState(BlockState.Charge);
+            Vector3 anglePos = new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), -Mathf.Cos(angle * Mathf.Deg2Rad), 0);
+            Vector3 offsetPos = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0);
+            if (angle > 0)
+            {
+                offsetPos = -offsetPos;
+            }
+            weaponScript.BlockPos = anglePos;
+            weaponScript.BlockOffset = offsetPos;
         }
     }
 
@@ -140,13 +148,22 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
                 switch (blockState)
                 {
                     case BlockState.Charge:
-                        weaponScript.ChargeBlock(time);
+                        if (weaponScript.ChargeBlock(time))
+                        {
+                            ChangeBlockState(BlockState.Block);
+                        }
                         break;
                     case BlockState.Block:
-                        weaponScript.Block(time);
+                        if (weaponScript.Block(time))
+                        {
+                            ChangeBlockState(BlockState.Return);
+                        }
                         break;
                     case BlockState.Return:
-                        weaponScript.ReturnBlock(time);
+                        if (weaponScript.ReturnBlock(time))
+                        {
+                            blocking = false;
+                        }
                         break;
                 }
             }

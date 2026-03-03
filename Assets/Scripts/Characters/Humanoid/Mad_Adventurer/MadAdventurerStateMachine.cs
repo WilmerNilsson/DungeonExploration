@@ -72,7 +72,6 @@ public class MadAdventurerStateMachine : MonoBehaviour
     void Update()
     {
         CurrentState?.Update();
-        Attack();
     }
     
     public void Transit(MadAventurerBaseState targetState)

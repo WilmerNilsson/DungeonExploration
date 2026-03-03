@@ -22,19 +22,33 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float curveHeight = 1.5f;
     [SerializeField, Tooltip("distance from middle toward start"), Range(0,1)] private float startBend;
     [SerializeField, Tooltip("distance from middle toward end"), Range(0,1)] private float endBend;
-    
-    [Header("State Stats")]
-    
-    [SerializeField] protected float chargeTime = 0.5f;
-    [SerializeField] protected float holdTime = 2f;
-    [SerializeField] protected float swingTime = 1f;
-    [SerializeField] protected float resetTime = 1f;
-    [SerializeField] protected float recoilTime = 3f;
+    [SerializeField] private float attackChargeTime = 0.5f;
+    [SerializeField] private float attackHoldTime = 2f;
+    [SerializeField] private float attackSwingTime = 1f;
+    [SerializeField] private float attackResetTime = 1f;
+    [SerializeField] private float attackRecoilTime = 3f;
     private float cutoffTime;
+    
+    [Header("Block")]
+    [SerializeField] private float blockDistance = 0.5f;
+    [SerializeField] private float blockChargeTime = 0.5f;
+    [SerializeField] private float blockHoldTime = 1f;
+    [SerializeField] private float blockReturnTime = 0.5f;
     
     private Vector3 up;
     private Vector3 forward;
     private Vector3 right;
+    
+    private Vector3 blockAnglePos;
+    private Vector3 blockOffsetPos;
+    public Vector3 BlockPos 
+    {
+        set => blockAnglePos = value;
+    }
+    public Vector3 BlockOffset 
+    {
+        set => blockOffsetPos = value;
+    }
     
     [Header("References")]
     public HumanoidAttackAnimatorCompanion companion;
@@ -58,8 +72,8 @@ public class Weapon : MonoBehaviour
     
     public bool ChargeAttack(float time) // Go from neutral to P0
     {
-        swordArm.data.targetPositionWeight = time / chargeTime;
-        swordArm.data.targetRotationWeight = time / chargeTime;
+        swordArm.data.targetPositionWeight = time / attackChargeTime;
+        swordArm.data.targetRotationWeight = time / attackChargeTime;
         
         HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(0));
         up = Quaternion.AngleAxis(angle+90, core.forward) * head.up;
@@ -67,7 +81,7 @@ public class Weapon : MonoBehaviour
             
         HandIK.rotation = Quaternion.LookRotation(up, forward);
         
-        return time / chargeTime >= 1;
+        return time / attackChargeTime >= 1;
     }
     
     public bool HoldAttack(float time) // Stay at P0
@@ -81,7 +95,7 @@ public class Weapon : MonoBehaviour
             
         HandIK.rotation = Quaternion.LookRotation(up, forward);
         
-        return time / holdTime >= 1;
+        return time / attackHoldTime >= 1;
     }
     
     public bool Swing(float time) // Swing along bezier curve
@@ -89,19 +103,19 @@ public class Weapon : MonoBehaviour
         swordArm.data.targetPositionWeight = 1;
         swordArm.data.targetRotationWeight = 1;
         
-        HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(time / swingTime));
+        HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(time / attackSwingTime));
         up = Quaternion.AngleAxis(angle+90, core.forward) * head.up;
-        forward = RotateVecAroundPoint(GetCurveTangent(time / swingTime), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
+        forward = RotateVecAroundPoint(GetCurveTangent(time / attackSwingTime), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
             
         HandIK.rotation = Quaternion.LookRotation(up, forward);
 
-        return time / swingTime >= 1;
+        return time / attackSwingTime >= 1;
     }
     
     public bool ReturnAttack(float time) // Go back to Neutral from P3
     {
-        swordArm.data.targetPositionWeight = 1 - time/resetTime;
-        swordArm.data.targetRotationWeight = 1 - time/resetTime;
+        swordArm.data.targetPositionWeight = 1 - time/attackResetTime;
+        swordArm.data.targetRotationWeight = 1 - time/attackResetTime;
         
         HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(1));
         up = Quaternion.AngleAxis(angle+90, core.forward) * head.up;
@@ -109,7 +123,7 @@ public class Weapon : MonoBehaviour
             
         HandIK.rotation = Quaternion.LookRotation(up, forward);
         
-        return time / resetTime >= 1;
+        return time / attackResetTime >= 1;
     }
     
     public bool RecoilAttack(float time) // Bounce back along curve to P0
@@ -117,32 +131,54 @@ public class Weapon : MonoBehaviour
         swordArm.data.targetPositionWeight = 1;
         swordArm.data.targetRotationWeight = 1;
         
-        HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(time / recoilTime));
+        HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(time / attackRecoilTime));
+        
         up = Quaternion.AngleAxis(angle, core.forward) * head.up;
-        forward = RotateVecAroundPoint(GetCurveTangent(time / recoilTime), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
+        forward = RotateVecAroundPoint(GetCurveTangent(time / attackRecoilTime), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
             
         HandIK.rotation = Quaternion.LookRotation(up, forward);
         
-        return time / recoilTime <= 0;
+        return time / attackRecoilTime <= 0;
     }
     
     #endregion
     
     #region Block
     
-    public void ChargeBlock(float time) // Go from neutral to P0
+    public bool ChargeBlock(float time) // Go from neutral to BlockPos
     {
-        HandIK.position = Shoulder.position + P0;
+        swordArm.data.targetPositionWeight = time / blockChargeTime;
+        swordArm.data.targetRotationWeight = time / blockChargeTime;
+        
+        HandIK.position = head.position + RelativeRotation((blockAnglePos + blockOffsetPos).normalized + Vector3.forward * 0.5f) * blockDistance;
+        
+        HandIK.rotation = Quaternion.LookRotation(Vector3.forward * angle, RelativeRotation(blockAnglePos + blockOffsetPos * 0.5f));
+        
+        return time / blockChargeTime > 1;
     }
     
-    public void Block(float time) // Stay at P0
+    public bool Block(float time) // Stay at BlockPos
     {
+        swordArm.data.targetPositionWeight = 1;
+        swordArm.data.targetRotationWeight = 1;
         
+        HandIK.position = head.position + RelativeRotation((blockAnglePos + blockOffsetPos).normalized * blockDistance + Vector3.forward * 0.5f);
+        
+        HandIK.rotation = Quaternion.LookRotation(Vector3.forward * angle, RelativeRotation(blockAnglePos + blockOffsetPos * 0.5f));
+        
+        return time / blockHoldTime > 1;
     }
     
-    public void ReturnBlock(float time) // Go back to Neutral from P3
+    public bool ReturnBlock(float time) // Go back to Neutral from BlockPos
     {
+        swordArm.data.targetPositionWeight = 1 - time / blockReturnTime;
+        swordArm.data.targetRotationWeight = 1 - time / blockReturnTime;
         
+        HandIK.position = head.position + RelativeRotation((blockAnglePos + blockOffsetPos).normalized + Vector3.forward * 0.5f) * blockDistance;
+        
+        HandIK.rotation = Quaternion.LookRotation(Vector3.forward * angle, RelativeRotation(blockAnglePos + blockOffsetPos * 0.5f));
+        
+        return time / blockReturnTime > 1;
     }
     
     #endregion
@@ -213,4 +249,12 @@ public class Weapon : MonoBehaviour
         return rotation * (vector - point) + point;
     }
     #endregion
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawSphere(head.position + RelativeRotation(blockAnglePos), 0.1f);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(head.position + RelativeRotation(blockOffsetPos), 0.1f);
+    }
 }
