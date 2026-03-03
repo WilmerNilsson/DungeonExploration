@@ -38,11 +38,10 @@ public class ItemLibrarySO : ScriptableObject
     }
 #endif
 
-#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
-    public bool TryGetItemPairByName(string name,[NotNullWhen(true)] out ItemPairing? pair)
+#nullable enable
+    public bool TryGetItemPairByName(string name, [NotNullWhen(true)] out ItemPairing? pair)
     {
         pair = itemPairs.FirstOrDefault(x => x.Name == name);
         return pair != null;
     }
-#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 }

@@ -23,6 +23,7 @@ public class SaveFileHelperTown : MonoBehaviour
             playerCashSO.SetCash(data.PlayerGold);
 
             SaveFileHelperContainer.PopulateInventory(itemLibrary, data.World!.PlayerSaveData.Inventory, InvMasterBase.Instance.PlayerInventory);
+            SaveFileHelperContainer.PopulateInventory(itemLibrary, data.World!.PlayerSaveData.Equipment, InvMasterBase.Instance.EquipmentGrid);
         }
         else
         {
@@ -34,9 +35,12 @@ public class SaveFileHelperTown : MonoBehaviour
     {
         return playerCashSO.CurrentCash;
     }
-
     public InventorySaveData GetPlayerInventory()
     {
         return new(InvMasterBase.Instance.PlayerInventory.GetInventoryData());
+    }
+    public InventorySaveData GetPlayerEquipment()
+    {
+        return new(InvMasterBase.Instance.EquipmentGrid.GetInventoryData());
     }
 }

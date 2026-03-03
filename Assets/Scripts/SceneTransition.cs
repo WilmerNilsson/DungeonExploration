@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class SceneTransition : MonoBehaviour
@@ -93,6 +94,21 @@ public class SceneTransition : MonoBehaviour
         {
             _animator.Play(Anim_in.name);
         }
+    }
+
+    public void PlayFade(float blackScreenTime)
+    {
+        FindAnyObjectByType<PlayerInput>().enabled = false;
+        _animator.Play(Anim_out.name);
+        StartCoroutine(PlayFadeIn(blackScreenTime));
+    }
+
+    private IEnumerator PlayFadeIn(float blackScreenTime)
+    {
+        yield return new WaitForSeconds(blackScreenTime);
+        _animator.Play(Anim_in.name);
+        FindAnyObjectByType<PlayerInput>().enabled = true;
+
     }
 
     public void SetTransitionIn(AnimationClip  clip)
