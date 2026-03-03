@@ -66,6 +66,10 @@ public class Hunger : MonoBehaviour
     {
         StopAllCoroutines();
         playerHungerSO.ChangeHunger(amount);
+        if (SceneTransition.GetInstance())
+        {
+            SceneTransition.GetInstance().PlayFade(5);
+        }
         MinimapMaster.Instance.SpawnMinimap();
         OnEat?.Invoke();
 
