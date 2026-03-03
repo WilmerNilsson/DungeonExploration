@@ -35,6 +35,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
         AttackState.OnValidate(this);
         SearchingState.OnValidate(this);
         DyingState.OnValidate(this);
+        HallucinationState.OnValidate(this);
     }
 #endif
 
@@ -57,12 +58,14 @@ public class MadAdventurerStateMachine : MonoBehaviour
         AttackState.Intialize(this);
         SearchingState.Intialize(this);
         DyingState.Intialize(this);
+        HallucinationState.Intialize(this);
 
         IdleState.Start();
         ChasingState.Start();
         AttackState.Start();
         SearchingState.Start();
         DyingState.Start();
+        HallucinationState.Start();
         if(startInHallucination)
         {
             CurrentState = HallucinationState;

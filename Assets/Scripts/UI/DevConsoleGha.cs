@@ -135,7 +135,7 @@ public class DevConsoleGha : MonoBehaviour
             return;
         }
 
-        Sanity.instance.SetSanity(newValue);
+        Sanity.Instance.SetSanity(newValue);
     }
 
     private void DebugNavmeshCommand()
