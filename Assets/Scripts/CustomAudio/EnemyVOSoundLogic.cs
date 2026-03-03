@@ -28,7 +28,6 @@ public class EnemyVOSoundLogic : MonoBehaviour
     {
         if (!AudioManager.IsValid) return;
         _currentVoiceActor = Random.Range(voiceActorRange.x, voiceActorRange.y);
-        Debug.Log("VOICE ACTOR: " + _currentVoiceActor);
         AudioManager.Instance.CreateInstance(enemyVoPath, gameObject);
         AudioManager.Instance.SetParameter(enemyVoPath, parameters.voiceActor, _currentVoiceActor, gameObject);
         AudioManager.Instance.StartEvent(enemyVoPath, gameObject);
@@ -40,42 +39,39 @@ public class EnemyVOSoundLogic : MonoBehaviour
         AudioManager.Instance.ReleaseInstance(enemyVoPath, gameObject);
     }
     
-    private void OnDestroy()
-    {
-        if (!AudioManager.IsValid) return;
-        AudioManager.Instance.StopEvent(enemyVoPath, STOP_MODE.ALLOWFADEOUT, gameObject);
-        AudioManager.Instance.ReleaseInstance(enemyVoPath, gameObject);
-    }
-    
-    private MadAventurerBaseState lastState = new MadAdventurerIdleState();
+    private MadAventurerBaseState _lastState = new MadAdventurerIdleState();
     
     public void OnMadStateChange(MadAventurerBaseState newState) //TODO: fixa så att den använder nya systemet när det finns
     {
-        if (newState.GetType() == typeof(MadAdventurerChasingState) && lastState.GetType() == typeof(MadAdventurerIdleState))
+        if (newState.GetType() == typeof(MadAdventurerChasingState) && _lastState.GetType() == typeof(MadAdventurerIdleState))
         {
-            //AudioManager.Instance.SetParameter(enemyVoPath, parameters.state, 1, gameObject);
-            AudioManager.Instance.KeyOff(enemyVoPath, gameObject);
+            AudioManager.Instance.SetParameter(enemyVoPath, parameters.state, 1, gameObject);
         }
-        if (lastState.GetType() == typeof(MadAdventurerChasingState) && newState.GetType() == typeof(MadAdventurerIdleState))
+        if (_lastState.GetType() == typeof(MadAdventurerChasingState) && newState.GetType() == typeof(MadAdventurerIdleState))
         {
-            //AudioManager.Instance.SetParameter(enemyVoPath, parameters.state, 0, gameObject);
-            AudioManager.Instance.KeyOff(enemyVoPath, gameObject);
+            AudioManager.Instance.SetParameter(enemyVoPath, parameters.state, 0, gameObject);
         }
-        lastState = newState;
+        _lastState = newState;
     }
     
     public void OnAttack(HumanoidIK.AttackState newState)
     {
-        if (AudioManager.IsValid && newState == HumanoidIK.AttackState.Swing)
-        {
-            AudioManager.Instance.SetParameter(enemyVoPath, parameters.attack, 1, gameObject);
-        }
-    }
-
-    public void OnStun()
-    {
         if (!AudioManager.IsValid) return;
-        AudioManager.Instance.SetParameter(enemyVoPath, parameters.stun, 1, gameObject);
+        switch (newState)
+        {
+            case HumanoidIK.AttackState.Start:
+                break;
+            case HumanoidIK.AttackState.Swing:
+                AudioManager.Instance.SetParameter(enemyVoPath, parameters.attack, 1, gameObject);
+                break;
+            case HumanoidIK.AttackState.Return:
+                break;
+            case HumanoidIK.AttackState.Interrupt:
+                AudioManager.Instance.SetParameter(enemyVoPath, parameters.stun, 1, gameObject);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+        }
     }
 
     public void OnHit()
@@ -88,6 +84,13 @@ public class EnemyVOSoundLogic : MonoBehaviour
     {
         if (!AudioManager.IsValid) return;
         AudioManager.Instance.SetParameter(enemyVoPath, parameters.death, 1, gameObject);
+        AudioManager.Instance.StopEvent(enemyVoPath, STOP_MODE.ALLOWFADEOUT, gameObject);
+        AudioManager.Instance.ReleaseInstance(enemyVoPath, gameObject);
+    }
+    
+    private void OnDestroy()
+    {
+        if (!AudioManager.IsValid) return;
         AudioManager.Instance.StopEvent(enemyVoPath, STOP_MODE.ALLOWFADEOUT, gameObject);
         AudioManager.Instance.ReleaseInstance(enemyVoPath, gameObject);
     }

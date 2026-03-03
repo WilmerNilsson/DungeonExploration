@@ -54,6 +54,10 @@ public class Sanity : MonoBehaviour
     public void LoseSanity(int amount)
     {
         OnLoseSanity?.Invoke((float)playerSanitySO.CurrentSanity / playerSanitySO.MaxSanity);
+        if (!playerSanitySO.ChangeSanity(-1))
+        {
+            
+        }
 
         StartCoroutine(SanityCoroutine());
     }
