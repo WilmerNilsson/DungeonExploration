@@ -6,15 +6,14 @@ using UnityEngine;
 public class EnemyLibrarySO : ScriptableObject
 {
     [SerializeField] private Pair[] Enemies;
+#nullable enable
 
-#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public bool TryGetPrefabByName(string name, [NotNullWhen(true)] out GameObject? prefab)
     {
-        prefab = Enemies.First(x => x.Name == name).Prefab;
+        prefab = Enemies.FirstOrDefault(x => x.Name == name)?.Prefab;
 
         return prefab != null;
     }
-#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
 
     [System.Serializable]
     public class Pair

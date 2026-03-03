@@ -17,21 +17,33 @@ public class Hunger : MonoBehaviour
     public static Hunger instance;
     [SerializeField] private bool resetOnAwake = true;
 
-    private IEnumerator HungerCoroutine()
-    {
-        yield return new WaitForSeconds(playerHungerSO.HungerCooldown);
-        LoseHunger(1);
-    }
+    private Coroutine hungerTick;
 
     private void Awake()
     {
         instance = this;
-        StartCoroutine(HungerCoroutine());
+        ResetHungerTick();
         if(resetOnAwake)
         {
             ResetHunger();
         }
     }
+
+    private void ResetHungerTick()
+    {
+        if(hungerTick != null)
+        {
+            StopCoroutine(hungerTick);
+        }
+        hungerTick = StartCoroutine(HungerTickCoroutine());
+
+        IEnumerator HungerTickCoroutine()
+        {
+            yield return new WaitForSeconds(playerHungerSO.HungerCooldown);
+            LoseHunger(1);
+        }
+}
+
 
     public void ResetHunger()
     {
@@ -53,22 +65,26 @@ public class Hunger : MonoBehaviour
 
     public void LoseHunger(int amount)
     {
-        OnHunger?.Invoke((float)playerHungerSO.CurrentHunger / playerHungerSO.MaxHunger);
-        if (!playerHungerSO.ChangeHunger(-1))
+        if (!playerHungerSO.ChangeHunger(-amount))
         {
             health.TakeDamage(1);
         }
+        OnHunger?.Invoke((float)playerHungerSO.CurrentHunger / playerHungerSO.MaxHunger);
 
-        StartCoroutine(HungerCoroutine());
+        ResetHungerTick();
     }
 
     public void Eat(int amount)
     {
         StopAllCoroutines();
         playerHungerSO.ChangeHunger(amount);
+        if (SceneTransition.GetInstance())
+        {
+            SceneTransition.GetInstance().PlayFade(5);
+        }
         MinimapMaster.Instance.SpawnMinimap();
         OnEat?.Invoke();
 
-        StartCoroutine(HungerCoroutine());
+        ResetHungerTick();
     }
 }

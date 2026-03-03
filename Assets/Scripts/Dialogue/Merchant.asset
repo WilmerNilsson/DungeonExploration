@@ -126,20 +126,28 @@ MonoBehaviour:
     - ShopDialogue5
   - Name: ShopDialogue7
     ButtonText: Aiden?
-    InkJson: {fileID: 4900000, guid: 5d6fa02cc4e357548a77b27d2dffa734, type: 3}
+    InkJson: {fileID: 4900000, guid: 171c9c8febbfde443993cd54281be492, type: 3}
     HasBeenRead: 0
     IsUnreadable: 0
     FriendshipRequirement: 2
     PrerequisiteNames:
     - ShopQuesion3
     - ShopDialogue6
-    - AgatholDepths
-  - Name: ShopDialogue7
-    ButtonText: Aiden?
-    InkJson: {fileID: 4900000, guid: 5d6fa02cc4e357548a77b27d2dffa734, type: 3}
+  - Name: ShopDialogue8
+    ButtonText: How is it?
+    InkJson: {fileID: 4900000, guid: 24da8fd59a40b2e4e8e0e5f10b365c7a, type: 3}
     HasBeenRead: 0
     IsUnreadable: 0
     FriendshipRequirement: 2
+    PrerequisiteNames:
+    - ShopDialogue7
+    - ShopQuestion3
+  - Name: AgatholDepths
+    ButtonText: 
+    InkJson: {fileID: 0}
+    HasBeenRead: 0
+    IsUnreadable: 1
+    FriendshipRequirement: 0
     PrerequisiteNames: []
   Greetings:
   - Name: ShopEnter1

@@ -25,7 +25,7 @@ public class DialogueChoiceHandler : MonoBehaviour
         int currentButtons = 0;
         for (int i = 0; i < dialogueTree.Dialogues.Count && currentButtons < selectButtons.Count; i++) //all dialogues in tree
         {
-            if (!dialogueTree.Dialogues[i].HasBeenRead || !dialogueTree.Dialogues[i].IsUnreadable) //do not display dialogue that has already been read
+            if (!dialogueTree.Dialogues[i].HasBeenRead && !dialogueTree.Dialogues[i].IsUnreadable) //do not display dialogue that has already been read or is unreadable
             {
                 bool prerequisitesRead = true;
                 for (int j = 0; j < dialogueTree.Dialogues[i].PrerequisiteNames.Count && prerequisitesRead; j++) //all prerequisites to play this dialogue
