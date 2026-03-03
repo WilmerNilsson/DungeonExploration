@@ -24,6 +24,7 @@ public class Weapon : MonoBehaviour
     [SerializeField, Tooltip("distance from middle toward end"), Range(0,1)] private float endBend;
     
     [Header("State Stats")]
+    
     [SerializeField] protected float chargeTime = 0.5f;
     [SerializeField] protected float holdTime = 2f;
     [SerializeField] protected float swingTime = 1f;
@@ -35,17 +36,18 @@ public class Weapon : MonoBehaviour
     private Vector3 forward;
     private Vector3 right;
     
-    [HideInInspector] public HumanoidAttackAnimatorCompanion companion;
-    [HideInInspector] public TwoBoneIKConstraint swordArm;
-    [HideInInspector] public Transform head;
-    [HideInInspector] public Transform core;
+    [Header("References")]
+    public HumanoidAttackAnimatorCompanion companion;
+    public TwoBoneIKConstraint swordArm;
+    public Transform head;
+    public Transform core;
     private Transform HandIK => swordArm.data.target;
     private Transform Shoulder => swordArm.data.root;
     
-    private Vector3 P0 => Quaternion.AngleAxis(angle, Vector3.forward) * Vector3.right;
+    private Vector3 P0 => Quaternion.AngleAxis(angle, Vector3.forward) * Vector3.up;
     private Vector3 P1 => Vector3.Lerp(P0,P3,startBend/2) + Vector3.forward * curveHeight;
     private Vector3 P2 => Vector3.Lerp(P0,P3,1-endBend/2) + Vector3.forward * curveHeight;
-    private Vector3 P3 => Quaternion.AngleAxis(angle, Vector3.forward) * Vector3.left + Vector3.forward;
+    private Vector3 P3 => Quaternion.AngleAxis(angle, Vector3.forward) * Vector3.down + Vector3.forward;
     
     private void OnEnable()
     {
@@ -58,7 +60,13 @@ public class Weapon : MonoBehaviour
     {
         swordArm.data.targetPositionWeight = time / chargeTime;
         swordArm.data.targetRotationWeight = time / chargeTime;
-        HandIK.position = Shoulder.position + P0;
+        
+        HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(0));
+        up = Quaternion.AngleAxis(angle+90, core.forward) * head.up;
+        forward = RotateVecAroundPoint(GetCurveTangent(0), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
+            
+        HandIK.rotation = Quaternion.LookRotation(up, forward);
+        
         return time / chargeTime >= 1;
     }
     
@@ -66,7 +74,13 @@ public class Weapon : MonoBehaviour
     {
         swordArm.data.targetPositionWeight = 1;
         swordArm.data.targetRotationWeight = 1;
-        HandIK.position = Shoulder.position + P0;
+        
+        HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(0));
+        up = Quaternion.AngleAxis(angle+90, core.forward) * head.up;
+        forward = RotateVecAroundPoint(GetCurveTangent(0), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
+            
+        HandIK.rotation = Quaternion.LookRotation(up, forward);
+        
         return time / holdTime >= 1;
     }
     
@@ -76,7 +90,7 @@ public class Weapon : MonoBehaviour
         swordArm.data.targetRotationWeight = 1;
         
         HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(time / swingTime));
-        up = Quaternion.AngleAxis(angle, core.forward) * head.up;
+        up = Quaternion.AngleAxis(angle+90, core.forward) * head.up;
         forward = RotateVecAroundPoint(GetCurveTangent(time / swingTime), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
             
         HandIK.rotation = Quaternion.LookRotation(up, forward);
@@ -86,8 +100,15 @@ public class Weapon : MonoBehaviour
     
     public bool ReturnAttack(float time) // Go back to Neutral from P3
     {
-        swordArm.data.targetPositionWeight = 1 - time/recoilTime;
-        swordArm.data.targetRotationWeight = 1 - time/recoilTime;
+        swordArm.data.targetPositionWeight = 1 - time/resetTime;
+        swordArm.data.targetRotationWeight = 1 - time/resetTime;
+        
+        HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(1));
+        up = Quaternion.AngleAxis(angle+90, core.forward) * head.up;
+        forward = RotateVecAroundPoint(GetCurveTangent(1), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
+            
+        HandIK.rotation = Quaternion.LookRotation(up, forward);
+        
         return time / resetTime >= 1;
     }
     
@@ -112,7 +133,6 @@ public class Weapon : MonoBehaviour
     public void ChargeBlock(float time) // Go from neutral to P0
     {
         HandIK.position = Shoulder.position + P0;
-        
     }
     
     public void Block(float time) // Stay at P0

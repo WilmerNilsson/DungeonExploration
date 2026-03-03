@@ -49,13 +49,13 @@ public class HumanoidController : MonoBehaviour
         interact.Interact();
     }
 
-    public void Attack(bool value, float angle)
+    public void Attack(float angle)
     {
-        animateAttack.Attack(value, angle);
+        animateAttack.Attack(angle);
     }
     
-    public void Block(bool value, float angle)
+    public void Block(float angle)
     {
-        animateAttack.Block(value, angle);
+        animateAttack.Block(angle);
     }
 }

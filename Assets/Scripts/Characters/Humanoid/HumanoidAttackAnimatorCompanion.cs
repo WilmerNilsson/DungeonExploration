@@ -52,23 +52,23 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         }
     }
 
-    public void Attack(bool value, float angle)
+    public void Attack(float angle)
     {
         if (!attacking && !blocking)
         {
-            attacking = value;
+            ChangeAttackState(AttackState.Charge);
+            attacking = true;
             weaponScript.angle = angle;
-            attackState = AttackState.Charge;
         }
     }
     
-    public void Block(bool value, float angle)
+    public void Block(float angle)
     {
         if (!attacking && !blocking)
         {
-            blocking = value;
+            blocking = true;
             weaponScript.angle = angle;
-            blockState = BlockState.Charge;
+            ChangeBlockState(BlockState.Charge);
         }
     }
 
@@ -105,29 +105,25 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
                     case AttackState.Charge:
                         if (weaponScript.ChargeAttack(time))
                         {
-                            startTime = Time.time;
-                            attackState = AttackState.Hold;
+                            ChangeAttackState(AttackState.Hold);
                         }
                         break;
                     case AttackState.Hold:
                         if (weaponScript.HoldAttack(time))
                         {
-                            startTime = Time.time;
-                            attackState = AttackState.Swing;
+                            ChangeAttackState(AttackState.Swing);
                         }
                         break;
                     case AttackState.Swing:
                         if (weaponScript.Swing(time))
                         {
-                            startTime = Time.time;
-                            attackState = AttackState.Return;
+                            ChangeAttackState(AttackState.Return);
                         }
                         break;
                     case AttackState.Recoil:
                         if (weaponScript.RecoilAttack(cutoffTime - time))
                         {
-                            startTime = Time.time;
-                            attackState = AttackState.Return;
+                            ChangeAttackState(AttackState.Return);
                         }
                         break;
                     case AttackState.Return:
@@ -153,6 +149,11 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
                         weaponScript.ReturnBlock(time);
                         break;
                 }
+            }
+            else
+            {
+                swordArm.data.targetPositionWeight = 0;
+                swordArm.data.targetRotationWeight = 0;
             }
         }
     }

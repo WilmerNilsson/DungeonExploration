@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class MadAdventurerStateMachine : MonoBehaviour
 {
@@ -71,6 +72,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
     void Update()
     {
         CurrentState?.Update();
+        Attack();
     }
     
     public void Transit(MadAventurerBaseState targetState)
@@ -79,6 +81,12 @@ public class MadAdventurerStateMachine : MonoBehaviour
         CurrentState = targetState;
         OnMadState.Invoke(CurrentState);
         CurrentState.Enter();
+    }
+
+    public void Attack()
+    {
+        float angle = Random.Range(-160f, 160f);
+        Controller.Attack(angle);
     }
 
     public void Die()
