@@ -77,6 +77,10 @@ public class Sanity : MonoBehaviour
     {
         playerSanitySO.ChangeSanity(-amount);
         OnLoseSanity?.Invoke((float)playerSanitySO.CurrentSanity / playerSanitySO.MaxSanity);
+        if (!playerSanitySO.ChangeSanity(-1))
+        {
+            
+        }
 
         ResetSanityTick();
     }
