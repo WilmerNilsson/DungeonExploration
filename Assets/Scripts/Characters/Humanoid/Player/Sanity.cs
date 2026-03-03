@@ -13,7 +13,7 @@ public class Sanity : MonoBehaviour
     public UnityEvent<float> OnLoseSanity;
     public UnityEvent OnGainSanity;
 
-    public static Sanity instance;
+    public static Sanity Instance;
     [SerializeField] private bool ResetOnAwake = true;
     private bool isInLight;
 
@@ -24,6 +24,16 @@ public class Sanity : MonoBehaviour
         get
         {
             return playerSanitySO.CurrentSanity;
+        }
+    }
+
+    private void Awake()
+    {
+        Instance = this;
+        ResetSanityTick();
+        if (ResetOnAwake)
+        {
+            ResetSanity();
         }
     }
 
