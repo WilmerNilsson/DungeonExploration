@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 public abstract class InvMasterBase : MonoBehaviour
 {
@@ -13,7 +14,10 @@ public abstract class InvMasterBase : MonoBehaviour
     }
     [SerializeField] private Transform drawOntopParent;
     [SerializeField] private TextMeshProUGUI descriptionText;
-    [SerializeField] protected InventoryGrid equipmentGrid;
+    [field: SerializeField, FormerlySerializedAs("equipmentGrid")] public InventoryGrid EquipmentGrid
+    {
+        get; private set;
+    }
 #nullable enable
 
     public static InvMasterBase Instance
@@ -35,7 +39,7 @@ public abstract class InvMasterBase : MonoBehaviour
         }
         if (drawOntopParent == null) Debug.LogWarning("draw ontop parent is null", this);
         if (descriptionText == null) Debug.LogWarning("description text field is null", this);
-        if (equipmentGrid == null) Debug.LogWarning("equipment grid is null", this);
+        if (EquipmentGrid == null) Debug.LogWarning("equipment grid is null", this);
 
         if (!PrefabUtility.IsPartOfPrefabAsset(this) && GameObject.FindAnyObjectByType<EventSystem>() == null)
             Debug.LogWarning("no event system in scene", this);
@@ -54,9 +58,9 @@ public abstract class InvMasterBase : MonoBehaviour
             inventoryGrid = PlayerInventory;
             return true;
         }
-        else if (equipmentGrid.TryPlaceItem(item))
+        else if (EquipmentGrid.TryPlaceItem(item))
         {
-            inventoryGrid = equipmentGrid;
+            inventoryGrid = EquipmentGrid;
             return true;
         }
         inventoryGrid = null;

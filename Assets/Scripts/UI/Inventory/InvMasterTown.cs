@@ -46,22 +46,22 @@ public class InvMasterTown : InvMasterBase
                 inventoryGrid = PlayerInventory;
                 return true;
             }
-            else if (equipmentGrid.TryPlaceItem(item))
+            else if (EquipmentGrid.TryPlaceItem(item))
             {
-                inventoryGrid = equipmentGrid;
+                inventoryGrid = EquipmentGrid;
                 return true;
             }
         }
-        else if(PlayerInventory.HasItem(item) || equipmentGrid.HasItem(item))
+        else if(PlayerInventory.HasItem(item) || EquipmentGrid.HasItem(item))
         {
             if(PlayerInventory.TryPlaceItem(item)) //re-arrenge
             {
                 inventoryGrid = PlayerInventory;
                 return true;
             }
-            else if(equipmentGrid.TryPlaceItem(item))
+            else if(EquipmentGrid.TryPlaceItem(item))
             {
-                inventoryGrid = equipmentGrid;
+                inventoryGrid = EquipmentGrid;
                 return true;
             }
             else //try sell

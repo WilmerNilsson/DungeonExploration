@@ -43,6 +43,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
             hunger.Initialize(data.Hunger);
 
             SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Inventory, InvMasterBase.Instance.PlayerInventory);
+            SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Equipment, InvMasterBase.Instance.EquipmentGrid);
         }
 
         void FromTown()
@@ -54,6 +55,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
             //hunger starts at max
 
             SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Inventory, InvMasterBase.Instance.PlayerInventory);
+            SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Equipment, InvMasterBase.Instance.EquipmentGrid);
         }
     }
 
@@ -64,9 +66,10 @@ public class SaveFileHelperPlayer : MonoBehaviour
         Vector3 pos = spawnTransform.position;
         Quaternion rot = spawnTransform.rotation;
         InventorySaveData inventory = new(InvMasterBase.Instance.PlayerInventory.GetInventoryData());
+        InventorySaveData equipment = new(InvMasterBase.Instance.EquipmentGrid.GetInventoryData());
         int hungerInt = hunger.GetHungerValue();
 
-        PlayerSaveData data = new(inventory, pos, rot, maxHP, currentHP, 100, hungerInt);
+        PlayerSaveData data = new(inventory, equipment, pos, rot, maxHP, currentHP, 100, hungerInt);
         return data;
     }
 }
