@@ -16,8 +16,6 @@ public abstract class InvMasterBase : MonoBehaviour
     [SerializeField] protected InventoryGrid equipmentGrid;
 #nullable enable
 
-    public UnityEvent<SimpleItem>? OnEquip;
-
     public static InvMasterBase Instance
     {
         get; private set;
