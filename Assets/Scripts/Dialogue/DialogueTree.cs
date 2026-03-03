@@ -13,4 +13,16 @@ public class DialogueTree : ScriptableObject
             node.HasBeenRead = false;
         }
     }
+
+    public void SetReadTrue(string name)
+    {
+        foreach (DialogueNode node in Dialogues)
+        {
+            if (node.Name == name)
+            {
+                node.HasBeenRead = true;
+                return;
+            }
+        }
+    }
 }
