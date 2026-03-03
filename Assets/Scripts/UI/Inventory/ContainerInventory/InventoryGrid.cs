@@ -129,7 +129,7 @@ public class InventoryGrid : MonoBehaviour
             float delta = 0.0005f;
             if (Mathf.Abs(slotSize.x - slotSize.y) > delta)
             {
-                Debug.LogWarning($"inventory slot width and height does not match. width is {slotSize.x}, height is {slotSize.y}", this);
+                Debug.LogWarning($"inventory slot width and height does not match. width is {slotSize.x}, height is {slotSize.y}, name is {gameObject.name}", this);
             }
             if (Mathf.Abs((float)StandardGridSize - slotSize.y) > delta)
             {

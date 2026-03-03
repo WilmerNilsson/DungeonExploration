@@ -56,6 +56,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
             health.SetCurrentHealth(data.MaxHP);
 
             //hunger starts at max
+            //sanity starts at max
 
             SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Inventory, InvMasterBase.Instance.PlayerInventory);
             SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Equipment, InvMasterBase.Instance.EquipmentGrid);
