@@ -57,12 +57,11 @@ public class Sanity : MonoBehaviour
         playerSanitySO.ResetValues();
     }
 
-    public void Initialize(int newCurrentHunger)
+    public void Initialize(int newCurrentSanity)
     {
         ResetOnAwake = false;
         playerSanitySO.ResetValues();
-        playerSanitySO.CurrentSanity = newCurrentHunger;
-        OnLoseSanity?.Invoke((float)playerSanitySO.CurrentSanity / playerSanitySO.MaxSanity);
+        SetSanity(newCurrentSanity);
     }
 
     public int GetSanityValue()
