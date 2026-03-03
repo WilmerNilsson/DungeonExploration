@@ -60,6 +60,9 @@ public class Sanity : MonoBehaviour
         return playerSanitySO.CurrentSanity;
     }
 
+    /// <summary>
+    /// takes a positive number
+    /// </summary>
     public void LoseSanity(int amount)
     {
         playerSanitySO.ChangeSanity(-amount);
@@ -75,5 +78,19 @@ public class Sanity : MonoBehaviour
         OnGainSanity?.Invoke();
 
         ResetSanityTick();
+    }
+
+    public void SetSanity(int newValue)
+    {
+        int diff = newValue - CurrentSanity;
+
+        if (diff > 0)
+        {
+            GainSanity(diff);
+        }
+        else if (diff < 0)
+        {
+            LoseSanity(-diff);
+        }
     }
 }
