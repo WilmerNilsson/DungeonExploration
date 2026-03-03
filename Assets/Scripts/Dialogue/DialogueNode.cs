@@ -9,5 +9,6 @@ public class DialogueNode
     public TextAsset InkJson;
     public bool HasBeenRead;
     public bool IsUnreadable;
+    public int FriendshipRequirement;
     public List<string> PrerequisiteNames;
 }
