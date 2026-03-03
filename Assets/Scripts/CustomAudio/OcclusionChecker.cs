@@ -4,9 +4,15 @@ using UnityEngine;
 [System.Serializable]
 public class OcclusionChecker
 {
+    public enum FirstDistance
+    {
+        DistanceToPlayer,
+        MaxInputDistance,
+    }
+    
     private static float _occlusionScore;
     [SerializeField] private LayerMask layerMask;
-    [Range(0, 10)][SerializeField] private float spread = 4;
+    [Range(0, 60)][SerializeField] private float spread = 4;
     [Range(0, 1)] [SerializeField] private float bounceValue = 0.25f;
     [Range(0, 8)] [SerializeField] private int maxBounces;
     [Range(0,4)][SerializeField] private int linesOnEitherSide;
@@ -20,8 +26,11 @@ public class OcclusionChecker
     private float _totalDistance;
     private Vector3 _sourcePos;
     private Vector3 _targetPos;
-
+    
+    
+    [SerializeField] private FirstDistance firstDistance;
     [SerializeField] private bool allowBounce;
+    [SerializeField] private bool checkIfFirstMiss;
     [SerializeField] private bool drawDebug;
 
     [Serializable]
@@ -58,7 +67,19 @@ public class OcclusionChecker
         {
             _posModifier++;
             _targetPos = targetGo.transform.position;
-            _distance = Vector3.Distance(_sourcePos, _targetPos);
+            switch (firstDistance)
+            {
+                case FirstDistance.DistanceToPlayer:
+                    _distance = Vector3.Distance(_sourcePos, _targetPos);
+                    break;
+                case FirstDistance.MaxInputDistance:
+                    if (maxDistance > 0) _distance = maxDistance;
+                    else _distance = Mathf.Infinity;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
             _direction = (_targetPos - _sourcePos).normalized;
             _direction = (Quaternion.AngleAxis(spread * _posModifier, Vector3.up) * _direction).normalized;
 
@@ -66,6 +87,12 @@ public class OcclusionChecker
             {
                 if (drawDebug) Debug.DrawLine(_sourcePos, hitDatas[i].Hits[0].point, Color.red);
 
+                if (!allowBounce)
+                {
+                    hitDatas[i].score = 1;
+                    continue;
+                }
+                
                 for (var j = 1; j < hitDatas[i].Hits.Length; j++)
                 {
                     hitDatas[i].score += bounceValue;
@@ -116,8 +143,28 @@ public class OcclusionChecker
             }
             else
             {
-                if (drawDebug)Debug.DrawRay(_sourcePos, _direction * _distance, Color.green);
-                hitDatas[i].score = 0;
+                if (checkIfFirstMiss) //TODO: använda Hits[0].distance här?
+                {
+                    if (!Physics.Linecast(_sourcePos + (_direction * _distance), 
+                            _targetPos, out hitDatas[i].Hits[1], layerMask))
+                    {
+                        hitDatas[i].score += bounceValue;
+                        if (drawDebug) Debug.DrawLine(_sourcePos + (_direction * _distance),
+                            _targetPos, Color.green);
+                        hitDatas[i].castIndex = 1;
+                    }
+                    else
+                    {
+                        if (drawDebug)Debug.DrawRay(_sourcePos, _direction * _distance, Color.red);
+                        hitDatas[i].score = 1;
+                    }
+                }
+                else
+                {
+                    if (drawDebug)Debug.DrawRay(_sourcePos, _direction * _distance, Color.green);
+                    hitDatas[i].score = 0;
+                }
+                
             }
 
             
