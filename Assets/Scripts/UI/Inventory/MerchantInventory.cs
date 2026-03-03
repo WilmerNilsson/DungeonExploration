@@ -14,7 +14,7 @@ public class MerchantInventory : MonoBehaviour
 #nullable enable
 
     private bool buyIsActiveGrid = true;
-    private InventoryGrid ActiveGrid
+    public InventoryGrid ActiveGrid
     {
         get
         {

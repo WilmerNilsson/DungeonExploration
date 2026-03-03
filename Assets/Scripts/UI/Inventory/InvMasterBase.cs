@@ -1,6 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public abstract class InvMasterBase : MonoBehaviour
@@ -11,6 +13,10 @@ public abstract class InvMasterBase : MonoBehaviour
     }
     [SerializeField] private Transform drawOntopParent;
     [SerializeField] private TextMeshProUGUI descriptionText;
+    [SerializeField] protected InventoryGrid equipmentGrid;
+#nullable enable
+
+    public UnityEvent<SimpleItem>? OnEquip;
 
     public static InvMasterBase Instance
     {
@@ -31,6 +37,7 @@ public abstract class InvMasterBase : MonoBehaviour
         }
         if (drawOntopParent == null) Debug.LogWarning("draw ontop parent is null", this);
         if (descriptionText == null) Debug.LogWarning("description text field is null", this);
+        if (equipmentGrid == null) Debug.LogWarning("equipment grid is null", this);
 
         if (!PrefabUtility.IsPartOfPrefabAsset(this) && GameObject.FindAnyObjectByType<EventSystem>() == null)
             Debug.LogWarning("no event system in scene", this);
@@ -42,9 +49,20 @@ public abstract class InvMasterBase : MonoBehaviour
         return PlayerInventory.GetSlotSize();
     }
 
-    public virtual bool TryPlaceItem(SimpleItem item)
+    public virtual bool TryPlaceItem(SimpleItem item, [NotNullWhen(true)]out InventoryGrid? inventoryGrid)
     {
-        return PlayerInventory.TryPlaceItem(item);
+        if (PlayerInventory.TryPlaceItem(item))
+        {
+            inventoryGrid = PlayerInventory;
+            return true;
+        }
+        else if (equipmentGrid.TryPlaceItem(item))
+        {
+            inventoryGrid = equipmentGrid;
+            return true;
+        }
+        inventoryGrid = null;
+        return false;
     }
 
     public virtual void ParentTransformOntop(Transform transform)
@@ -54,7 +72,7 @@ public abstract class InvMasterBase : MonoBehaviour
 
     public virtual void DestroyItem(SimpleItem item)
     {
-        PlayerInventory.TryRemoveSlottedItem(item);
+        item.ReadyForDestory();
         Destroy(item.gameObject);
     }
 
