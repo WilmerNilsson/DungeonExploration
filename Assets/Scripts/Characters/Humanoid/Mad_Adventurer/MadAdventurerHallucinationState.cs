@@ -25,7 +25,7 @@ public class MadAdventurerHallucinationState : MadAdventurerIdleState
     private IEnumerator LifetimeLimiter(int seconds)
     {
         yield return new WaitForSeconds(seconds);
-        GameObject.Destroy(MyMadAdventurerStateMachine);
+        GameObject.Destroy(MyMadAdventurerStateMachine.gameObject);
     }
 
     public override void Enter()
