@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class InvMasterTown : InvMasterBase
 {
-    [SerializeField] private MerchantInventory merchantInventory;
     [SerializeField] private TextMeshProUGUI itemGoldValueText;
 #nullable enable
+
+    private MerchantInventory? merchantInventory;
 
     protected override void Start()
     {
@@ -17,9 +18,22 @@ public class InvMasterTown : InvMasterBase
     protected override void OnValidate()
     {
         base.OnValidate();
-        if (merchantInventory == null) Debug.LogWarning("merchant inventory is null", this);
+        if (itemGoldValueText == null) Debug.LogWarning("item gold value text is null", this);
     }
 #endif
+
+    public void SetActiveMerchantInventory(MerchantInventory merchant)
+    {
+        merchantInventory = merchant;
+    }
+
+    public void RemoveActiveMerchantInventory(MerchantInventory merchant)
+    {
+        if(merchantInventory == merchant)
+        {
+            merchantInventory = null;
+        }
+    }
 
     public override void ChangeHover(SimpleItem simpleItem, bool startHover)
     {
@@ -39,15 +53,17 @@ public class InvMasterTown : InvMasterBase
         // we check if merchant has the item first so player can re-arrange thier inventory
         // without interfearense
 
-        if(merchantInventory.HasItem(item) && merchantInventory.CanAfford(item))
+        if(merchantInventory != null && merchantInventory.HasItem(item) && merchantInventory.CanAfford(item))
         {
             if(PlayerInventory.TryPlaceItem(item))
             {
+                merchantInventory.BuyItem(item);
                 inventoryGrid = PlayerInventory;
                 return true;
             }
             else if (EquipmentGrid.TryPlaceItem(item))
             {
+                merchantInventory.BuyItem(item);
                 inventoryGrid = EquipmentGrid;
                 return true;
             }
@@ -64,7 +80,7 @@ public class InvMasterTown : InvMasterBase
                 inventoryGrid = EquipmentGrid;
                 return true;
             }
-            else //try sell
+            else if(merchantInventory != null)
             {
                 if(merchantInventory.TrySellItem(item))
                 {

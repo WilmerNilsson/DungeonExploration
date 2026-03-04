@@ -2736,7 +2736,6 @@ RectTransform:
   - {fileID: 3647857108014341197}
   - {fileID: 5654070194143096284}
   - {fileID: 8204917402215360930}
-  - {fileID: 5430050869433195580}
   - {fileID: 6159294364039786296}
   m_Father: {fileID: 745094116800395653}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2760,12 +2759,9 @@ MonoBehaviour:
   buyGrid: {fileID: 7803860877703450787}
   sellGrid: {fileID: 4974495492418118007}
   SpawnItems:
-  - Ration
-  - Rep
-  - Rep
-  - HealthPotion
-  - HealthPotion
-  - HealthPotion
+  - BasicSword
+  - DamascusSword
+  - IronSword
   itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
   playerCashSO: {fileID: 11400000, guid: ffae8245bc035e74c8db57a6b9da2ca3, type: 2}
 --- !u!1 &2495740166984162305
@@ -2864,41 +2860,6 @@ MonoBehaviour:
   drawCenter: 0
   drawGrid: 0
   drawOccupied: 0
---- !u!1 &2510927620179975782
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5430050869433195580}
-  m_Layer: 5
-  m_Name: DrawOntopParent
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &5430050869433195580
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2510927620179975782}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7446848610782705518}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2578184096398984014
 GameObject:
   m_ObjectHideFlags: 0
@@ -3191,7 +3152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <PlayerInventory>k__BackingField: {fileID: 3213746008120322548}
-  drawOntopParent: {fileID: 286580219038698004}
+  drawOntopParent: {fileID: 8305857694639607580}
   descriptionText: {fileID: 6606689814848958321}
   <EquipmentGrid>k__BackingField: {fileID: 1895393186451387466}
   merchantInventory: {fileID: 2245311323525465561}
@@ -5604,6 +5565,41 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &4256577644285265786
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8305857694639607580}
+  m_Layer: 0
+  m_Name: DrawOntopParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8305857694639607580
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4256577644285265786}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8389098848727531039}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4293536413047109554
 GameObject:
   m_ObjectHideFlags: 0
@@ -10230,6 +10226,7 @@ RectTransform:
   - {fileID: 4889446675180822158}
   - {fileID: 1055330822461029714}
   - {fileID: 3843067706632655721}
+  - {fileID: 8305857694639607580}
   m_Father: {fileID: 1839446069745513705}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -10842,11 +10839,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
---- !u!224 &286580219038698004 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4877725515858018896, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
-  m_PrefabInstance: {fileID: 4632808408681482308}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &563471634038764955 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5159665865687612895, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
