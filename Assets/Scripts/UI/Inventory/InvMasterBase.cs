@@ -25,12 +25,17 @@ public abstract class InvMasterBase : MonoBehaviour
         get; private set;
     }
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         Instance = this;
     }
 
-#if DEBUG
+    protected virtual void Start()
+    {
+        
+    }
+
+#if DEBUG && UNITY_EDITOR
     protected virtual void OnValidate()
     {
         if (PlayerInventory == null)

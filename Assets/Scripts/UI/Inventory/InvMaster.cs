@@ -27,7 +27,7 @@ public class InvMaster : InvMasterBase
         base.Start();
     }
 
-#if DEBUG
+#if DEBUG && UNITY_EDITOR
     protected override void OnValidate()
     {
         base.OnValidate();

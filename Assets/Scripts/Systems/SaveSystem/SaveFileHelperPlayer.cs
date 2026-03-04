@@ -23,6 +23,8 @@ public class SaveFileHelperPlayer : MonoBehaviour
 
     public void Initialize(PlayerSaveData data)
     {
+        Debug.Log("from town:" + data.FromTown);
+
         if(data.FromTown)
         {
             FromTown();
