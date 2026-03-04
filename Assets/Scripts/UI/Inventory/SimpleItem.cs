@@ -1,5 +1,3 @@
-
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -26,6 +24,7 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     public string PrefabID { get { return prefabID; } }
 
     public UnityEvent? OnStopDrag;
+    private InventoryGrid? currentInventory;
 
     public RectTransform RectTransform { get { return (transform as RectTransform)!; } }
     private bool isDragging;
@@ -93,7 +92,6 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                 master.GetContextMenu().SelectItem(this, uses);
             }
         }
-
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -105,9 +103,8 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                 isDragging = false;
                 OnStopDrag?.Invoke();
             }
-
             
-            if (!InvMaster.Instance.TryPlaceItem(this))
+            if (!InvMasterBase.Instance.TryPlaceItem(this, out InventoryGrid? newGrid))
             {
                 RectTransform.position = returnPos;
                 transform.SetParent(returnParent);
@@ -139,6 +136,21 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     public void OnPointerExit(PointerEventData eventData)
     {
         InvMasterBase.Instance.ChangeHover(this, false);
+    }
+
+    internal void ReadyForDestory()
+    {
+        currentInventory?.TryRemoveSlottedItem(this);
+        currentInventory = null;
+    }
+
+    internal void MoveTo(InventoryGrid newGrid)
+    {
+        if (newGrid != currentInventory)
+        {
+            currentInventory?.TryRemoveSlottedItem(this);
+            currentInventory = newGrid;
+        }
     }
 }
 

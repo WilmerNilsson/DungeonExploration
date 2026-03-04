@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
 
@@ -5,6 +6,7 @@ public class InvMasterTown : InvMasterBase
 {
     [SerializeField] private MerchantInventory merchantInventory;
     [SerializeField] private TextMeshProUGUI itemGoldValueText;
+#nullable enable
 
     protected override void Start()
     {
@@ -32,38 +34,46 @@ public class InvMasterTown : InvMasterBase
         }
     }
 
-    public override bool TryPlaceItem(SimpleItem item)
+    public override bool TryPlaceItem(SimpleItem item, [NotNullWhen(true)] out InventoryGrid? inventoryGrid)
     {
-        //perhaps have a reference in SimpleItem to current inventory that we can remove it from
-        //when we move it from one inventory to another.
-
-
         // we check if merchant has the item first so player can re-arrange thier inventory
         // without interfearense
 
-        if(merchantInventory.HasItem(item))
+        if(merchantInventory.HasItem(item) && merchantInventory.CanAfford(item))
         {
-            if(merchantInventory.CanAfford(item) && PlayerInventory.TryPlaceItem(item))
+            if(PlayerInventory.TryPlaceItem(item))
             {
-                merchantInventory.TryRemoveSlottedItem(item);
+                inventoryGrid = PlayerInventory;
+                return true;
+            }
+            else if (EquipmentGrid.TryPlaceItem(item))
+            {
+                inventoryGrid = EquipmentGrid;
                 return true;
             }
         }
-        else if(PlayerInventory.HasItem(item))
+        else if(PlayerInventory.HasItem(item) || EquipmentGrid.HasItem(item))
         {
             if(PlayerInventory.TryPlaceItem(item)) //re-arrenge
             {
+                inventoryGrid = PlayerInventory;
+                return true;
+            }
+            else if(EquipmentGrid.TryPlaceItem(item))
+            {
+                inventoryGrid = EquipmentGrid;
                 return true;
             }
             else //try sell
             {
                 if(merchantInventory.TrySellItem(item))
                 {
-                    PlayerInventory.TryRemoveSlottedItem(item);
+                    inventoryGrid = merchantInventory.ActiveGrid;
                     return true;
                 }
             }
         }
+        inventoryGrid = null;
         return false;
     }
 }
