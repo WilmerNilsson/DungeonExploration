@@ -256,7 +256,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -345, y: -20}
-  m_SizeDelta: {x: 100, y: 300}
+  m_SizeDelta: {x: 100, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6060997760445576478
 CanvasRenderer:
@@ -309,9 +309,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collumns: 1
-  rows: 3
+  rows: 4
+  OnGetNewItem:
+    m_PersistentCalls:
+      m_Calls: []
   drawCenter: 0
   drawGrid: 0
+  drawOccupied: 0
 --- !u!1 &1265164431920441727
 GameObject:
   m_ObjectHideFlags: 0
@@ -559,7 +563,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3901068209093573305
 RectTransform:
   m_ObjectHideFlags: 0
@@ -695,8 +699,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collumns: 5
   rows: 5
+  OnGetNewItem:
+    m_PersistentCalls:
+      m_Calls: []
   drawCenter: 0
   drawGrid: 0
+  drawOccupied: 0
 --- !u!1 &2028788476806253493
 GameObject:
   m_ObjectHideFlags: 0
@@ -1631,10 +1639,7 @@ MonoBehaviour:
   <PlayerInventory>k__BackingField: {fileID: 508978749890990357}
   drawOntopParent: {fileID: 5340484629304313659}
   descriptionText: {fileID: 1274798032711675545}
-  equipmentGrid: {fileID: 415840000165690085}
-  OnEquip:
-    m_PersistentCalls:
-      m_Calls: []
+  <EquipmentGrid>k__BackingField: {fileID: 415840000165690085}
   contextMenu: {fileID: 4141649185545460554}
   worldContainerParent: {fileID: 826116566284243698}
   playerInventory: {fileID: 1628111738432857123}
