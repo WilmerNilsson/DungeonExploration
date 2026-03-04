@@ -19,7 +19,7 @@ public class WorldFromDataCreator : MonoBehaviour
 
     private void Start()
     {
-        if(GameManagerSO.Instance.TryConsumeSavefileData(out SavefileData? data))
+        if (GameManagerSO.Instance.TryConsumeSavefileData(out SavefileData? data))
         {
             if(data.World != null && data.World.Initialized)
             {
@@ -164,7 +164,6 @@ public class WorldFromDataCreator : MonoBehaviour
                 if (containerLibrary.TryGetPrefabByName(container.PrefabID, out GameObject? prefab))
                 {
                     GameObject containerInstance = Instantiate(prefab);
-
                     if (containerInstance.TryGetComponent<SaveFileHelperContainer>(out SaveFileHelperContainer helper))
                     {
                         helper.Intialize(container);

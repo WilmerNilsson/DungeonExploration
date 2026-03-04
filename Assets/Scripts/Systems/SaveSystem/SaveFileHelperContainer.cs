@@ -23,6 +23,8 @@ public class SaveFileHelperContainer : MonoBehaviour
         spawnTransform.position = data.Position;
         spawnTransform.rotation = data.Rotation;
 
+
+
         PopulateInventory(itemLibrary, data.Inventory, grid);
     }
 

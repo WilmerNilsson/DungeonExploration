@@ -304,10 +304,10 @@ public class InventoryGrid : MonoBehaviour
             return false;
         }
 #else //assume it won't error;
-        int row = slot % collumns;
-        int collum = slot - (row * collumns);
+        int collum = slot % (collumns);
+        int row = (slot - collum) / (collumns);
 
-        return TryPutItemInSlot(prefab.GetComponent<SimpleItem>(), row, collum, true);
+        return TryPutItemInSlot(prefab.GetComponent<SimpleItem>(), collum, row, true);
 #endif
     }
 
@@ -432,6 +432,7 @@ public class InventoryGrid : MonoBehaviour
         InvData[collum, row]!.IsPiviot = true;
 
         item.MoveTo(this);
+
         item.RectTransform.SetParent(transform, false);
         item.RectTransform.position = GetSlotRect(collum, row).center;
         return true;
