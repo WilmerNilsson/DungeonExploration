@@ -1,5 +1,3 @@
-
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -18,13 +16,20 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     [SerializeField] private string descriptionText;
     [SerializeField] private bool descriptionTextIsLibraryName;
     [SerializeField] private TextLibrarySO textLibrary;
+    [SerializeField] private string prefabID;
+    [field: SerializeField] public int CashValue { get; private set; }
 
-    public UnityEvent OnStopDrag;
+#nullable enable
 
-    public RectTransform RectTransform { get { return (transform as RectTransform); } }
+    public string PrefabID { get { return prefabID; } }
+
+    public UnityEvent? OnStopDrag;
+    private InventoryGrid? currentInventory;
+
+    public RectTransform RectTransform { get { return (transform as RectTransform)!; } }
     private bool isDragging;
-    Vector2 returnPos;
-    Transform returnParent;
+    private Vector2 returnPos;
+    private Transform? returnParent;
     public Vector2Int Pivot {get{ return pivot; } }
 
 #if DEBUG
@@ -76,15 +81,17 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             returnPos = RectTransform.position;
             returnParent = transform.parent;
 
-            InvMaster.Instance.ParentTransformOntop(transform);
+            InvMasterBase.Instance.ParentTransformOntop(transform);
 
             isDragging = true;
         }
         else if(eventData.button == PointerEventData.InputButton.Right)
         {
-            InvMaster.Instance.GetContextMenu().SelectItem(this, uses);
+            if(InvMasterBase.Instance is InvMaster master)
+            {
+                master.GetContextMenu().SelectItem(this, uses);
+            }
         }
-
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -94,11 +101,10 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             if(isDragging)
             {
                 isDragging = false;
-                OnStopDrag.Invoke();
+                OnStopDrag?.Invoke();
             }
-
             
-            if (!InvMaster.Instance.TryPlaceItem(this))
+            if (!InvMasterBase.Instance.TryPlaceItem(this, out InventoryGrid? newGrid))
             {
                 RectTransform.position = returnPos;
                 transform.SetParent(returnParent);
@@ -106,28 +112,45 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         }
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public string GetDescription()
     {
-        if(descriptionTextIsLibraryName)
+        if (descriptionTextIsLibraryName)
         {
-#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
             if (textLibrary.TryGetTextByName(descriptionText, out BookText? book))
             {
-                InvMaster.Instance.SetDescriptionText(book.Text);
+                return book.Text;
             }
-#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+            else { return descriptionText; }
         }
         else
         {
-            InvMaster.Instance.SetDescriptionText(descriptionText);
+            return descriptionText;
         }
+    }
 
-        
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        InvMasterBase.Instance.ChangeHover(this, true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        InvMaster.Instance.SetDescriptionText(string.Empty);
+        InvMasterBase.Instance.ChangeHover(this, false);
+    }
+
+    internal void ReadyForDestory()
+    {
+        currentInventory?.TryRemoveSlottedItem(this);
+        currentInventory = null;
+    }
+
+    internal void MoveTo(InventoryGrid newGrid)
+    {
+        if (newGrid != currentInventory)
+        {
+            currentInventory?.TryRemoveSlottedItem(this);
+            currentInventory = newGrid;
+        }
     }
 }
 

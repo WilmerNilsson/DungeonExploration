@@ -39,7 +39,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: -675, y: 428.9}
-  m_SizeDelta: {x: 90, y: 90}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3113354548642778703
 CanvasRenderer:
@@ -113,6 +113,7 @@ MonoBehaviour:
   descriptionText: Description(NoteEdwards)
   descriptionTextIsLibraryName: 1
   textLibrary: {fileID: 11400000, guid: 1b1f8771b2a7c1940b19f8003b6ca232, type: 2}
+  prefabID: Edwards
   OnStopDrag:
     m_PersistentCalls:
       m_Calls:
@@ -141,7 +142,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraDropOffset: -1
-  dropPrefab: {fileID: 2949275965137294258, guid: 1adc47150215cc74eb1c2eeb1968e6b3, type: 3}
+  prefabID: Edwards
+  itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
   myItem: {fileID: 8340747355471346599}
 --- !u!114 &-3702027065416735679
 MonoBehaviour:

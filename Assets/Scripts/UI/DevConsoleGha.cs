@@ -73,7 +73,8 @@ public class DevConsoleGha : MonoBehaviour
             new DebugCommand("get_pos", "gets the player current possistion", "get_pos", GetPosCommand),
             new DebugCommand("log_path", "gets the debug log path of the application", "log_path", LogPathCommand),
             new DebugCommand("kill_player", "deals 1000 damage to player", "kill_player", KillPlayerCommand),
-            new DebugCommand("debug_navmesh", "prints a lot of usefull nav mesh data", "debug_navmesh", DebugNavmeshCommand)
+            new DebugCommand("debug_navmesh", "prints a lot of usefull nav mesh data", "debug_navmesh", DebugNavmeshCommand),
+            new DebugCommand("set_sanity", "sets players sanity to value", "set_sanity int", SetSanity)
         };
     }
 
@@ -118,6 +119,24 @@ public class DevConsoleGha : MonoBehaviour
     }
 
     #region command methods 
+
+    private void SetSanity(string input)
+    {
+        if (input == null)
+        {
+            AddLine("That command requires paramiters");
+            return;
+        }
+
+        bool couldParse = int.TryParse(input, out int newValue);
+        if (!couldParse)
+        {
+            AddLine($"could not parse {input} as a sanity value (should be a int)");
+            return;
+        }
+
+        Sanity.Instance.SetSanity(newValue);
+    }
 
     private void DebugNavmeshCommand()
     {
@@ -276,6 +295,11 @@ public class DevConsoleGha : MonoBehaviour
         }
 
         GameObject.FindGameObjectWithTag("Player").transform.position = endLocation;
+        if (GameObject.FindGameObjectWithTag("Player").TryGetComponent<HumanoidMovement>(out HumanoidMovement humanoidMovement))
+        {
+            humanoidMovement.SupressMoveFrame();
+        }
+
         return;
 
         Failed:

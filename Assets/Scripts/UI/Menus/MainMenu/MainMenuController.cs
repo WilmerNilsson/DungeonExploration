@@ -45,13 +45,13 @@ public class MainMenuController : MonoBehaviour, IUIController
 
     public void ExitToDesktop()
     {
-        gameManager.SaveSettings();
+        gameManager.SavefileManager.SaveSettings();
         Application.Quit();
     }
 
     public void ToggleNonTitleScreen()
     {
-        gameManager.SaveSettings();
+        gameManager.SavefileManager.SaveSettings();
         nonTitleScreen.SetActive(!nonTitleScreen.activeSelf);
     }
 

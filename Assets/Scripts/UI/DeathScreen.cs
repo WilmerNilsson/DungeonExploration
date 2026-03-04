@@ -15,7 +15,10 @@ public class DeathScreen : MonoBehaviour
         GameManagerSO.Instance.FreezeTime(true);
         GameManagerSO.Instance.LockMouse(true);
 
-        InvMaster.Instance.ClosePlayerInventory();
+        if(InvMasterBase.Instance is InvMaster master)
+        {
+            master.ClosePlayerInventory();
+        }
 
         toggleObject.SetActive(true);
     }

@@ -1,0 +1,126 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7493b6246a18ce4ca3407bc85a819a4, type: 3}
+  m_Name: BGM
+  m_EditorClassIdentifier: 
+  category: BGM
+  events:
+  - eventName: Level1
+    eventReference:
+      Guid:
+        Data1: -430881641
+        Data2: 1288260347
+        Data3: 1506065793
+        Data4: -1662523842
+      Path: event:/Music/BGM/Dungeon
+    banks:
+    - Music
+    isOneShot: 0
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 1
+    parameters:
+    - paramName: Combat
+      isGlobal: 1
+      data1: 526677180
+      data2: 1017106037
+    - paramName: hpRatio
+      isGlobal: 1
+      data1: 1462849765
+      data2: 2054270614
+  - eventName: Test
+    eventReference:
+      Guid:
+        Data1: -1424829905
+        Data2: 1332609142
+        Data3: 1973993888
+        Data4: -556861212
+      Path: event:/Music/BGM/Test
+    banks:
+    - Music
+    isOneShot: 0
+    is3D: 1
+    isOcclusion: 1
+    minDistance: 1
+    maxDistance: 35
+    debug: 1
+    parameters:
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
+    - paramName: Walls
+      isGlobal: 0
+      data1: 3996502556
+      data2: 1746408966
+  - eventName: OpeningScene
+    eventReference:
+      Guid:
+        Data1: -2147219152
+        Data2: 1223937769
+        Data3: 1443655614
+        Data4: -692716788
+      Path: event:/Music/BGM/Menu
+    banks:
+    - Music
+    isOneShot: 0
+    is3D: 0
+    isOcclusion: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 1
+    parameters:
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
+  - eventName: MainMenu
+    eventReference:
+      Guid:
+        Data1: -2004815424
+        Data2: 1108822822
+        Data3: 1456864156
+        Data4: 1885158195
+      Path: event:/Music/BGM/Menu 2
+    banks:
+    - Music
+    isOneShot: 0
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 1
+    parameters: []
+  - eventName: Town
+    eventReference:
+      Guid:
+        Data1: -2038929842
+        Data2: 1091847565
+        Data3: -1464359528
+        Data4: -1141733489
+      Path: event:/Music/BGM/Town
+    banks:
+    - Music
+    isOneShot: 0
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 1
+    parameters:
+    - paramName: Location
+      isGlobal: 0
+      data1: 2969342620
+      data2: 2531022472
+  debug: 1

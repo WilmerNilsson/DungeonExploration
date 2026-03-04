@@ -8,7 +8,6 @@ public class InGameUIController : MonoBehaviour, IUIController
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject inGameUI;
 
-
     private GameObject currentScreen;
 
     private GameManagerSO gameManager;
@@ -77,7 +76,7 @@ public class InGameUIController : MonoBehaviour, IUIController
             if(gameIsPaused)
             {
                 Resume();
-                gameManager.SaveSettings();
+                gameManager.SavefileManager.SaveSettings();
             }
             else
             {
@@ -93,7 +92,10 @@ public class InGameUIController : MonoBehaviour, IUIController
             gameManager.FreezeTime(true);
             gameManager.LockMouse(true);
 
-            InvMaster.Instance.ClosePlayerInventory();
+            if(InvMasterBase.Instance is InvMaster invMaster)
+            {
+                invMaster.ClosePlayerInventory();
+            }
 
             gameIsPaused = true;
         }
@@ -122,7 +124,7 @@ public class InGameUIController : MonoBehaviour, IUIController
 
     public void ExitToMenu()
     {
-        gameManager.SaveSettings();
+        gameManager.SavefileManager.SaveSettings();
         gameManager.FreezeTime(false);
         if(cutsceneWindowActive)
         {
@@ -133,7 +135,7 @@ public class InGameUIController : MonoBehaviour, IUIController
 
     public void ExitToDesktop()
     {
-        gameManager.SaveSettings();
+        gameManager.SavefileManager.SaveSettings();
         Application.Quit();
     }
 

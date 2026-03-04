@@ -8,6 +8,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6487538067832763568}
     m_Modifications:
+    - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: onBlocked.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: onBlocked.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: onBlocked.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: onBlocked.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnStun
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: onBlocked.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: EnemyVOSoundLogic, GameAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: onBlocked.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6231285627939046001, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
       propertyPath: m_Name
       value: Basic_Sword
@@ -193,6 +217,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 9163837292846036514}
+        m_TargetAssemblyTypeName: EnemyVOSoundLogic, GameAssembly
+        m_MethodName: OnAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onBlockStateChange:
     m_PersistentCalls:
       m_Calls: []
@@ -299,7 +335,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.15
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -307,7 +343,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -492,6 +528,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4762914387664306239, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6828274868361272449}
+    - targetCorrespondingSourceObject: {fileID: 4762914387664306239, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5072373015846336972}
   m_SourcePrefab: {fileID: 100100000, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
 --- !u!114 &1749713730186701101 stripped
 MonoBehaviour:
@@ -527,7 +566,19 @@ MonoBehaviour:
   Vision: {fileID: 3879916398111493942}
   OnMadState:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: EnemyVOSoundLogic, GameAssembly
+        m_MethodName: OnMadStateChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   IdleState:
     MyMadAdventurerStateMachine: {fileID: 0}
     minDistanceToCorner: 0.1
@@ -550,7 +601,7 @@ MonoBehaviour:
     MyMadAdventurerStateMachine: {fileID: 0}
     minDistanceToCorner: 0.1
     target: {x: 0, y: 0, z: 0}
-    avatarIK: {fileID: 0}
+    avatarIK: {fileID: 2975564478171349694}
     maxMeleeRange: 3
     minMeleeRange: 2
   DyingState:
@@ -559,6 +610,21 @@ MonoBehaviour:
     target: {x: 0, y: 0, z: 0}
     timeUntilDeactivate: 4
     deactivateTimer: 0
+  HallucinationState:
+    MyMadAdventurerStateMachine: {fileID: 0}
+    minDistanceToCorner: 0.1
+    target: {x: 0, y: 0, z: 0}
+    wanderRange: 7
+    minWaitTime: 1
+    maxWaitTime: 2
+    minWalkTime: 2
+    maxWalkTime: 3
+    maxSightRange: 0
+    maxSoundRange: 0
+    sightThreshold: 0
+    soundThreshold: 0
+    halucinationLayer: 15
+    regularLayer: 12
   PlayerTransform: {fileID: 0}
   TargetTransform: {fileID: 0}
 --- !u!114 &3879916398111493942
@@ -579,15 +645,18 @@ MonoBehaviour:
   visionMask:
     serializedVersion: 2
     m_Bits: 5376
+  crouchSoundModifier: 0
   occlusionChecker:
     layerMask:
       serializedVersion: 2
       m_Bits: 1280
     spread: 1
     bounceValue: 0.5
+    maxBounces: 0
     linesOnEitherSide: 0
     allowBounce: 0
     drawDebug: 0
+    hitDatas: []
 --- !u!143 &9209436760628890261
 CharacterController:
   m_ObjectHideFlags: 0
@@ -648,8 +717,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 0}
-  currentHealth: 0
-  maxHealth: 3
+  _currentHealth: 0
+  _maxHealth: 1
   DurabilityDamage: 0
   OnChangeHealths:
     m_PersistentCalls:
@@ -660,6 +729,18 @@ MonoBehaviour:
       - m_Target: {fileID: 8503224205508373485}
         m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
         m_MethodName: PlayDamageSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: EnemyVOSoundLogic, GameAssembly
+        m_MethodName: OnHit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -708,6 +789,46 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: EnemyVOSoundLogic, GameAssembly
+        m_MethodName: OnDeath
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5072373015846336972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818795128226548232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e8a981fbacd5fc4d829661477fcd283, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: {fileID: 6828274868361272449}
+  spawnTransform: {fileID: 8286474408485520126}
+  movement: {fileID: 4698545371277439629}
+  agent: {fileID: 8156880709594735102}
+  prefabID: CrazedAdventurer
+--- !u!114 &4698545371277439629 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1878137323481184442, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
+  m_PrefabInstance: {fileID: 6567635767054797367}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818795128226548232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b62cb79775680864fbe12c086a03398d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8286474408485520126 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3016168738674608329, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
@@ -722,5 +843,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d931ca1dd1838a4bb460879b3218922, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9163837292846036514 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2596484175588703253, guid: 87c5042936ace32468002d79a25f4bf8, type: 3}
+  m_PrefabInstance: {fileID: 6567635767054797367}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f370090c5398e1d42860e9f8f0dde244, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

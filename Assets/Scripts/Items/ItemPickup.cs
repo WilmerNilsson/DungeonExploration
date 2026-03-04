@@ -2,18 +2,24 @@ using UnityEngine;
 
 public class ItemPickup : MonoBehaviour
 {
-    [SerializeField] private GameObject inventoryItem;
+    [SerializeField] private string prefabID;
+    [SerializeField] private ItemLibrarySO itemLibrary;
+
+    public string ItemID
+    {
+        get { return prefabID; }
+    }
 
 #if DEBUG
     private void OnValidate()
     {
-        if (inventoryItem == null)
+        if (itemLibrary == null)
         {
-            Debug.LogWarning("inventory item is null", this);
+            Debug.LogWarning("inventory library is null", this);
         }
-        else if(inventoryItem.GetComponent<SimpleItem>() == null)
+        else if(!itemLibrary.TryGetItemPairByName(prefabID, out _))
         {
-            Debug.LogWarning("inventory item is not a SimpleItem", this);
+            Debug.LogWarning("item library had no item by name: " + prefabID, this);
         }
     }
 #endif
@@ -23,9 +29,9 @@ public class ItemPickup : MonoBehaviour
     /// </summary>
     public void PickUp()
     {
-        SimpleItem item = inventoryItem.GetComponent<SimpleItem>();
+        itemLibrary.TryGetItemPairByName(prefabID, out ItemPairing pair);
 
-        if (InvMaster.Instance.PlayerInventory.TryInsertItem(item, true))
+        if (InvMaster.Instance.PlayerInventory.TryInsertItem(pair.UIPrefab.GetComponent<SimpleItem>(), true))
         {
             Destroy(gameObject);
         }
