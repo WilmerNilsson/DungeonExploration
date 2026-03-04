@@ -10,7 +10,7 @@ public class ItemPickup : MonoBehaviour
         get { return prefabID; }
     }
 
-#if DEBUG
+#if DEBUG && UNITY_EDITOR
     private void OnValidate()
     {
         if (itemLibrary == null)
@@ -31,7 +31,7 @@ public class ItemPickup : MonoBehaviour
     {
         itemLibrary.TryGetItemPairByName(prefabID, out ItemPairing pair);
 
-        if (InvMaster.Instance.PlayerInventory.TryInsertItem(pair.UIPrefab.GetComponent<SimpleItem>(), true))
+        if (InvMasterBase.Instance.PlayerInventory.TryInsertItem(pair.UIPrefab.GetComponent<SimpleItem>(), true))
         {
             Destroy(gameObject);
         }

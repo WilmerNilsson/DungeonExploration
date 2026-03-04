@@ -114,7 +114,7 @@ public class InventoryGrid : MonoBehaviour
     }
 #endif
 
-#if DEBUG
+#if DEBUG && UNITY_EDITOR
     private void OnValidate()
     {
         CheckSlotSize();
@@ -129,7 +129,7 @@ public class InventoryGrid : MonoBehaviour
             float delta = 0.0005f;
             if (Mathf.Abs(slotSize.x - slotSize.y) > delta)
             {
-                Debug.LogWarning($"inventory slot width and height does not match. width is {slotSize.x}, height is {slotSize.y}", this);
+                Debug.LogWarning($"inventory slot width and height does not match. width is {slotSize.x}, height is {slotSize.y}, name is {gameObject.name}", this);
             }
             if (Mathf.Abs((float)StandardGridSize - slotSize.y) > delta)
             {
@@ -286,7 +286,6 @@ public class InventoryGrid : MonoBehaviour
 
     public bool TryInstantiateItemInSlot(int slot, GameObject prefab)
     {
-#if DEBUG
         if (prefab.TryGetComponent<SimpleItem>(out SimpleItem component))
         {
             int collum = slot % (collumns);
@@ -303,12 +302,6 @@ public class InventoryGrid : MonoBehaviour
             Debug.LogError($"can't instanciate prefab {prefab}, cause it is not a simple item", this);
             return false;
         }
-#else //assume it won't error;
-        int row = slot % collumns;
-        int collum = slot - (row * collumns);
-
-        return TryPutItemInSlot(prefab.GetComponent<SimpleItem>(), row, collum, true);
-#endif
     }
 
     public List<InventorySaveData.InventoryItem> GetInventoryData()
@@ -432,6 +425,7 @@ public class InventoryGrid : MonoBehaviour
         InvData[collum, row]!.IsPiviot = true;
 
         item.MoveTo(this);
+
         item.RectTransform.SetParent(transform, false);
         item.RectTransform.position = GetSlotRect(collum, row).center;
         return true;

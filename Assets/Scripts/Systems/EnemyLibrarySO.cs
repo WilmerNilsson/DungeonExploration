@@ -18,7 +18,7 @@ public class EnemyLibrarySO : ScriptableObject
     [System.Serializable]
     public class Pair
     {
-        public string Name;
-        public GameObject Prefab;
+        public string? Name;
+        public GameObject? Prefab;
     }
 }

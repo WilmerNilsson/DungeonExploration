@@ -1,10 +1,6 @@
-
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using static PlasticGui.GetProcessName;
 
 [RequireComponent(typeof(RectTransform))]
 public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler

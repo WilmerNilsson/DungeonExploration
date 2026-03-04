@@ -184,6 +184,12 @@ public class EventList : ScriptableObject
 
         return hasChanged;
     }
+
+    public void ForceSave()
+    {
+        EditorUtility.SetDirty(this);
+        AssetDatabase.SaveAssetIfDirty(this);
+    }
     
 #endif
     

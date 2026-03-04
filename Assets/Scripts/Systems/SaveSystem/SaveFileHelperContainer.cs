@@ -23,6 +23,8 @@ public class SaveFileHelperContainer : MonoBehaviour
         spawnTransform.position = data.Position;
         spawnTransform.rotation = data.Rotation;
 
+
+
         PopulateInventory(itemLibrary, data.Inventory, grid);
     }
 
@@ -30,7 +32,6 @@ public class SaveFileHelperContainer : MonoBehaviour
     {
         foreach (InventorySaveData.InventoryItem item in inventory.Items)
         {
-#if DEBUG
             bool couldGetItem = library.TryGetItemPairByName(item.PrefabID, out var pair);
 
             if (!couldGetItem)
@@ -42,10 +43,6 @@ public class SaveFileHelperContainer : MonoBehaviour
             {
                 Debug.LogError($"failed to initialize item by name {item.PrefabID} in slot {item.Slot}");
             }
-#else
-            library.TryGetItemPairByName(item.PrefabID, out var pair);
-            grid.TryInstantiateItemInSlot(item.Slot, pair.UIPrefab);
-#endif
         }
     }
 
