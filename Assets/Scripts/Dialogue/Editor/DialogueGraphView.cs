@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -8,8 +9,10 @@ using UnityEngine.UIElements;
 public class DialogueGraphView : GraphView
 {
     public readonly Vector2 DefaultNodeSize = new Vector2(150, 200);
+
+    private NodeSearchWindow _searchWindow;
     
-    public DialogueGraphView()
+    public DialogueGraphView(EditorWindow editorWindow)
     {
         styleSheets.Add(Resources.Load<StyleSheet>("DialogueGraphEditor"));
         SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
@@ -23,6 +26,15 @@ public class DialogueGraphView : GraphView
         grid.StretchToParentSize();
         
         AddElement(GenerateEntryPointNode());
+        AddSearchWindow(editorWindow);
+    }
+
+    private void AddSearchWindow(EditorWindow editorWindow)
+    {
+        _searchWindow = ScriptableObject.CreateInstance<NodeSearchWindow>();
+        _searchWindow.Init(editorWindow, this);
+        nodeCreationRequest = context =>
+            SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), _searchWindow);
     }
 
     public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
@@ -69,12 +81,12 @@ public class DialogueGraphView : GraphView
         return node;
     }
 
-    public void CreateNode(string nodeName)
+    public void CreateNode(string nodeName, Vector2 position)
     {
-        AddElement(CreateDialogueNode(nodeName));
+        AddElement(CreateDialogueNode(nodeName, position));
     }
     
-    public NewDialogueNode CreateDialogueNode(string nodeName)
+    public NewDialogueNode CreateDialogueNode(string nodeName, Vector2 position)
     {
         var dialogueNode = new NewDialogueNode
         {
@@ -87,7 +99,7 @@ public class DialogueGraphView : GraphView
         inputPort.portName = "Input";
         dialogueNode.inputContainer.Add(inputPort);
 
-        //dialogueNode.styleSheets.Add(Resources.Load<StyleSheet>("Node"));
+        dialogueNode.styleSheets.Add(Resources.Load<StyleSheet>("NodeGraphEditor"));
         
         var button = new Button(() => {AddChoicePort(dialogueNode);});
         button.text = "New Choice";
@@ -104,7 +116,7 @@ public class DialogueGraphView : GraphView
         
         dialogueNode.RefreshExpandedState();
         dialogueNode.RefreshPorts();
-        dialogueNode.SetPosition(new Rect(Vector2.zero, DefaultNodeSize));
+        dialogueNode.SetPosition(new Rect(position, DefaultNodeSize));
         
         return dialogueNode;
     }
@@ -159,5 +171,9 @@ public class DialogueGraphView : GraphView
         dialogueNode.outputContainer.Remove(generatedPort);
         dialogueNode.RefreshPorts();
         dialogueNode.RefreshExpandedState();
+    }
+
+    public void AddPropertyToBlackboard()
+    {
     }
 }
