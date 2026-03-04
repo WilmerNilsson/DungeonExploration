@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &49819369380350566
+--- !u!1 &1659243512019290888
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,27 +8,26 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2607727855443481031}
-  - component: {fileID: 710923332417848550}
-  - component: {fileID: 3731366425002889705}
-  - component: {fileID: 1552641771045510037}
-  - component: {fileID: 1904539619708584076}
-  - component: {fileID: 8115980146239928323}
-  - component: {fileID: 4360357359780583894}
+  - component: {fileID: 6204482598412113094}
+  - component: {fileID: 5940615822023124246}
+  - component: {fileID: 1474761305827880754}
+  - component: {fileID: 6101294717193550440}
+  - component: {fileID: 1261072922002475423}
+  - component: {fileID: -3390355510129037723}
   m_Layer: 5
-  m_Name: UIRation
+  m_Name: UIDamascusSword
   m_TagString: Untagged
-  m_Icon: {fileID: 2800000, guid: 4f345a3454d988d4f90c04cef7728ab8, type: 3}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &2607727855443481031
+--- !u!224 &6204482598412113094
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 49819369380350566}
+  m_GameObject: {fileID: 1659243512019290888}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -39,23 +38,23 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 290, y: 190}
+  m_SizeDelta: {x: 100, y: 400}
   m_Pivot: {x: 0.5, y: 0.25}
---- !u!222 &710923332417848550
+--- !u!222 &5940615822023124246
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 49819369380350566}
+  m_GameObject: {fileID: 1659243512019290888}
   m_CullTransparentMesh: 1
---- !u!114 &3731366425002889705
+--- !u!114 &1474761305827880754
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 49819369380350566}
+  m_GameObject: {fileID: 1659243512019290888}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -69,7 +68,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 927245e7195e77a4c8d4a08700c21165, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bbfb4b073e04294449a54ab38f7d5a41, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -79,62 +78,30 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1552641771045510037
+--- !u!114 &6101294717193550440
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 49819369380350566}
+  m_GameObject: {fileID: 1659243512019290888}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a9096d6276c75447a4544d7a0927ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pivot: {x: 1, y: 0}
-  itemGridSize: 01010100010101000000000000000000
-  uses:
-  - text: Eat
-    OnUse:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1904539619708584076}
-          m_TargetAssemblyTypeName: FoodItem, GameAssembly
-          m_MethodName: Eat
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 4
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - text: Drop
-    OnUse:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 8115980146239928323}
-          m_TargetAssemblyTypeName: ItemDrop, GameAssembly
-          m_MethodName: Drop
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 4
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  descriptionText: Description(Ration)
-  descriptionTextIsLibraryName: 1
+  pivot: {x: 0, y: 0}
+  itemGridSize: 01000000010000000100000001000000
+  uses: []
+  descriptionText: Like the legendary exalibur (stone not included)
+  descriptionTextIsLibraryName: 0
   textLibrary: {fileID: 11400000, guid: 1b1f8771b2a7c1940b19f8003b6ca232, type: 2}
-  prefabID: Ration
-  <CashValue>k__BackingField: 0
+  prefabID: DamascusSword
+  <CashValue>k__BackingField: 150
   OnStopDrag:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4360357359780583894}
+      - m_Target: {fileID: -3390355510129037723}
         m_TargetAssemblyTypeName: OneShotPlayer, GameAssembly
         m_MethodName: Play
         m_Mode: 3
@@ -146,43 +113,25 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1904539619708584076
+--- !u!114 &1261072922002475423
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 49819369380350566}
+  m_GameObject: {fileID: 1659243512019290888}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbcfa20c44fa80348939163a7703c2c4, type: 3}
+  m_Script: {fileID: 11500000, guid: 31a292121bbdf1448a85769dde3916f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amount: 3
-  myItem: {fileID: 1552641771045510037}
---- !u!114 &8115980146239928323
+--- !u!114 &-3390355510129037723
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 49819369380350566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3a2cca0eed13d342944df7071a3f8d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraDropOffset: -1
-  prefabID: Ration
-  itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
-  myItem: {fileID: 1552641771045510037}
---- !u!114 &4360357359780583894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 49819369380350566}
+  m_GameObject: {fileID: 1659243512019290888}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc293c0446b8972448fbee1677af522d, type: 3}
