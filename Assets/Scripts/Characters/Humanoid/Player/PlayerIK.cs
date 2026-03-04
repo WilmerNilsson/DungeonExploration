@@ -19,7 +19,6 @@ public class PlayerIK : HumanoidIK
         {
             Reset();
             yRot = 0;
-            weapon.dealDamage = true;
             swingAngle = Mathf.Deg2Rad * angle;
             float x = Mathf.Cos(swingAngle) + .1f;
             float y = Mathf.Sin(swingAngle);
@@ -151,14 +150,12 @@ public class PlayerIK : HumanoidIK
                 {
                     if (blockState == BlockState.Start) // Move to Block
                     {
-                        weapon.dealDamage = false;
                         weapon.SetActive(true);
                         ChangeBlockState(BlockState.Block);
                     }
                     else if (blockState == BlockState.Block) // Block
                     {
                         weapon.SetActive(false);
-                        weapon.dealDamage = true;
                         ChangeBlockState(BlockState.Return);
                     }
                     else if (blockState == BlockState.Return) // Return
@@ -177,12 +174,6 @@ public class PlayerIK : HumanoidIK
                 Reset();
             }
         }
-    }
-
-    protected override void Reset()
-    {
-        base.Reset();
-        weapon.dealDamage = false;
     }
 
     private void OnDrawGizmos()

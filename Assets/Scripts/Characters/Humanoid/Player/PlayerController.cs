@@ -9,7 +9,6 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private HumanoidController controller;
-    [SerializeField, Tooltip("TODO add to HumanoidController instead")] private PlayerIK IK; //TODO add to HumanoidController instead
     
     [SerializeField] private float mouseSensitivity = 0.1f;
     [SerializeField] private float stickSensitivity = 5f;

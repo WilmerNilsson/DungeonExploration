@@ -82,6 +82,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     public void ChangeAttackState(AttackState newState)
     {
+        weaponScript.SetActive(newState == AttackState.Swing);
         attackState = newState;
         onAttackStateChange.Invoke(attackState);
         startTime = Time.time;
@@ -179,7 +180,10 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     {
         Destroy(weapon);
         weapon = Instantiate(newWeapon, hand);
-        Weapon script = weapon.GetComponent<Weapon>();
+        if (TryGetComponent(out Weapon script))
+        {
+            Debug.Log("No weapon script found on " + newWeapon);
+        }
         script.companion = this;
         script.swordArm = swordArm;
         script.head = head;

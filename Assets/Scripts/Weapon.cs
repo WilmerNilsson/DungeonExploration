@@ -7,15 +7,13 @@ public class Weapon : MonoBehaviour
 {
     [Header("Events")]
     public UnityEvent onDamage;
-    public UnityEvent onBlocked;
     
     [Header("Weapon Stats")]
     [SerializeField, Min(1)] private int damage = 1;
     [SerializeField, Min(1)] private int durability = 1;
     [SerializeField] private bool unbreakable;
-    [SerializeField] public bool dealDamage = true;
     [SerializeField] private bool unblockable = false;
-    private Collider body;
+    [SerializeField] private Collider body;
     
     [Header("Attack")]
     [SerializeField] public float angle;
@@ -62,11 +60,6 @@ public class Weapon : MonoBehaviour
     private Vector3 P1 => Vector3.Lerp(P0,P3,startBend/2) + Vector3.forward * curveHeight;
     private Vector3 P2 => Vector3.Lerp(P0,P3,1-endBend/2) + Vector3.forward * curveHeight;
     private Vector3 P3 => Quaternion.AngleAxis(angle, Vector3.forward) * Vector3.down + Vector3.forward;
-    
-    private void OnEnable()
-    {
-        body = GetComponent<Collider>();
-    }
 
     #region Attack
     
@@ -190,18 +183,51 @@ public class Weapon : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"OnTriggerEnter {other.gameObject.name}");
-        if(dealDamage && !transform.IsChildOf(other.transform) && other.TryGetComponent(out Health health))
+        Debug.Log($"OnTriggerEnter name {other.gameObject.name} tag {other.gameObject.tag}");
+        if (!transform.IsChildOf(other.transform))
         {
-            onDamage?.Invoke();
-            health.TakeDamage(damage);
-            LoseDurability(health.DurabilityDamage);
-            SetActive(false);
-            Debug.Log($"The target {other.gameObject.name} health is " + health.CurrentHealth);
-        }
-        if (!unblockable && other.TryGetComponent(out Weapon weapon))
-        {
-            onBlocked?.Invoke();
+            if (other.TryGetComponent(out Health health))
+            {
+                onDamage?.Invoke();
+                health.TakeDamage(damage);
+                LoseDurability(health.DurabilityDamage);
+                Debug.Log($"The target {other.gameObject.name} health is " + health.CurrentHealth);
+            }
+            else if (other.gameObject.layer == LayerMask.NameToLayer("Character")) // Potential fix for ragdoll 
+            {
+                health = other.gameObject.GetComponentInParent<Health>();
+                if (health != null)
+                {
+                    onDamage?.Invoke();
+                    health.TakeDamage(damage);
+                    LoseDurability(health.DurabilityDamage);
+                    Debug.Log($"The target {other.gameObject.name} health is " + health.CurrentHealth);
+                }
+                else
+                {
+                    Debug.Log($"The target {other.gameObject.name} health is NULL");
+                }
+            }
+            switch (other.tag) // Handle Audio Visual Feedback
+            {
+                case "Wood":
+                    Debug.Log("Wood");
+                    companion.ChangeAttackState(HumanoidAttackAnimatorCompanion.AttackState.Recoil);
+                    break;
+                case "Stone":
+                    Debug.Log("Stone");
+                    companion.ChangeAttackState(HumanoidAttackAnimatorCompanion.AttackState.Recoil);
+                    break;
+                case "Metal":
+                    Debug.Log("Metal");
+                    companion.ChangeAttackState(HumanoidAttackAnimatorCompanion.AttackState.Recoil);
+                    break;
+                case "Player":
+                case "Flesh":
+                    Debug.Log("Flesh");
+                    companion.ChangeAttackState(HumanoidAttackAnimatorCompanion.AttackState.Return);
+                    break;
+            }
         }
     }
     
