@@ -20,6 +20,7 @@ public class InventoryGrid : MonoBehaviour
     private bool hasBeenEnabled = false;
 
     public UnityEvent<SimpleItem>? OnGetNewItem;
+    public UnityEvent<SimpleItem>? OnRemoveItem;
 
     /// <summary>
     /// collum, row
@@ -470,6 +471,11 @@ public class InventoryGrid : MonoBehaviour
                     foundMatch = true;
                 }
             }
+        }
+
+        if(foundMatch)
+        {
+            OnRemoveItem?.Invoke(item);
         }
 
         return foundMatch;

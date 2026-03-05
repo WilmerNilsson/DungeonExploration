@@ -12,6 +12,13 @@ public class ItemUse
         return text;
     }
 
+#if UNITY_EDITOR
+    public void SetText(string text)
+    {
+        this.text = text;
+    }
+#endif
+
     public void Activate()
     {
         OnUse.Invoke(); 
