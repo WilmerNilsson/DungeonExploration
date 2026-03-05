@@ -200,18 +200,20 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         }
     }
 
-    public bool TryEquip(GameObject newWeaponPrefab, [NotNullWhen(true)] out Weapon? weaponScript)
+    public bool TryEquip(GameObject newWeaponPrefab, [NotNullWhen(true)] out Weapon? weaponScripta)
     {
         Destroy(weapon);
         weapon = Instantiate(newWeaponPrefab, hand);
         if (!weapon.TryGetComponent(out weaponScript))
         {
             Debug.LogError("No weapon script found on " + weapon);
+            weaponScripta = null;
             return false;
         }
-        weaponScript!.Companion = this;
+
+        weaponScripta = weaponScript;
         hasWeapon = true;
-        weaponScript.Companion = this;
+        weaponScript!.Companion = this;
         weaponScript.SwordArm = swordArm;
         weaponScript.Head = head;
         weaponScript.Core = core;
