@@ -428,6 +428,8 @@ public class InventoryGrid : MonoBehaviour
 
         item.RectTransform.SetParent(transform, false);
         item.RectTransform.position = GetSlotRect(collum, row).center;
+
+        OnGetNewItem?.Invoke(item);
         return true;
     }
 
