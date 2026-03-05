@@ -14,7 +14,7 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     [HideInInspector] public bool[] itemGridSize = new bool[GridHeight*GridWidth];
     //may just have simple bool for importing the default discard use
 #if UNITY_EDITOR
-    [SerializeField] private bool debugQuickConnectItemDrop = false;
+    [SerializeField] private bool debugQuickConnectDropItem = false;
 #endif
     [SerializeField] private ItemUse[] uses;
     [SerializeField] private string descriptionText;
@@ -39,9 +39,9 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 #if UNITY_EDITOR
     private void OnValidate()
     {
-        if(debugQuickConnectItemDrop)
+        if(debugQuickConnectDropItem)
         {
-            debugQuickConnectItemDrop = false;
+            debugQuickConnectDropItem = false;
 
             if(TryGetComponent(out ItemDrop itemDrop))
             {

@@ -6,7 +6,7 @@ public class HumanoidController : MonoBehaviour
     [SerializeField] private HumanoidMovement movement;
     [SerializeField] private HumanoidRotator rotator;
     [SerializeField] private HumanoidInteract interact;
-    [SerializeField] private HumanoidAttackAnimatorCompanion attacking;
+    [SerializeField] private HumanoidAttackAnimatorCompanion animateAttack;
 
     public bool isSprinting;
     public bool isCrouching;
@@ -49,8 +49,13 @@ public class HumanoidController : MonoBehaviour
         interact.Interact();
     }
 
-    public void Attack()
+    public void Attack(float angle)
     {
-        attacking.Attack();
+        animateAttack.Attack(angle);
+    }
+    
+    public void Block(float angle)
+    {
+        animateAttack.Block(angle);
     }
 }

@@ -1,30 +1,85 @@
+using System;
+using TMPro;
 using UnityEngine;
 
 public class UIWeapon : MonoBehaviour
 {
     [SerializeField] private GameObject weaponPrefab;
+    [SerializeField] private TextMeshProUGUI durabilityText;
+
+#nullable enable
+    private int Durability
+    {
+        get
+        {
+            if(worldWeapon == null)
+            {
+                return _durability;
+            }
+            else
+            {
+                return worldWeapon.Durability;
+            }
+        }
+        set
+        {
+            if (worldWeapon != null) Debug.LogWarning("can't change durability of world weapon", this);
+            _durability = value; 
+        }
+    }
+    private int _durability;
+    private Weapon? worldWeapon;
 
 #if UNITY_EDITOR
     private void OnValidate()
     {
         if(weaponPrefab == null)
         {
-            //Debug.LogWarning("weapon prefab is null", this);
+            Debug.LogWarning("weapon prefab is null", this);
         }
         else if (!weaponPrefab.TryGetComponent<Weapon>(out _))
         {
-            //Debug.LogWarning("weapon prefabs lack ___ script", this);
+            Debug.LogWarning("weapon prefabs lack Weapon script", this);
         }
+
+        if (durabilityText == null) Debug.LogWarning("durabilityText is null");
     }
 #endif
 
-    public void Unequip()
+    private void Start()
     {
-        Debug.Log("unequip :(", this);
+        if(weaponPrefab.TryGetComponent(out Weapon component))
+        {
+            Durability = component.Durability;
+            UpdateDurabilityText();
+        }
     }
 
-    public void Equip()
+    public void Unequip()
     {
-        Debug.Log("equip!", this);
+        worldWeapon = null;
+    }
+
+    public GameObject GetEquipPrefab()
+    {
+        return weaponPrefab;
+    }
+
+    public void ConnectToWeapon(Weapon weaponScript)
+    {
+        worldWeapon = weaponScript;
+        if(worldWeapon.Durability >  _durability)
+        {
+            int diff = worldWeapon.Durability - _durability;
+
+            worldWeapon.LoseDurability(diff);
+        }
+        UpdateDurabilityText();
+        worldWeapon.OnDamage.AddListener(UpdateDurabilityText);
+    }
+
+    private void UpdateDurabilityText()
+    {
+        durabilityText.text = Durability.ToString();
     }
 }
