@@ -1,4 +1,4 @@
-#speed:0.2
+#speed:0.025
 #name:Aiden
 #animation:AidenPlaceholder
 <i>Awfully chatty for a peasant..</i>

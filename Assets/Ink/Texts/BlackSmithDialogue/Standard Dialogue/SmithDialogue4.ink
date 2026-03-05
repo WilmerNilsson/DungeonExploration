@@ -1,4 +1,4 @@
-#speed:0.2
+#speed:0.025
 #animation:SagaPlaceholder
 #name:Saga 
 Oh grams, you’re back.

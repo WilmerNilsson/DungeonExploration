@@ -1,4 +1,4 @@
-#speed:0.2
+#speed:0.025
 #animation:AidenPlaceholder
 #name:Aiden
 Oh, hello madam, welcome back. You uhh, sure you’re getting enough sleep? You look a little… off…
