@@ -54,6 +54,10 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         else if (weaponScript == null)
         {
             hasWeapon = weapon.TryGetComponent(out weaponScript);
+            weaponScript.Companion = this;
+            weaponScript.SwordArm = swordArm;
+            weaponScript.Head = head;
+            weaponScript.Core = core;
         }
     }
 
@@ -93,13 +97,11 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     public void ChangeAttackState(AttackState newState)
     {
-        if (attackState == AttackState.Recoil) returnTime = 0;
-        if (attackState == AttackState.Swing) returnTime = 1;
+        if (attackState == AttackState.Swing || attackState == AttackState.Recoil) returnTime = time;
         else
         {
             weaponScript.SetDamageActive(false);
         }
-        
         
         attackState = newState;
         onAttackStateChange.Invoke(attackState);
@@ -199,15 +201,23 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     {
         Destroy(weapon);
         weapon = Instantiate(newWeaponPrefab, hand);
-        if (!weapon.TryGetComponent(out Weapon weaponScript))
+        if (!weapon.TryGetComponent(out weaponScript))
         {
             Debug.LogError("No weapon script found on " + weapon);
             return;
         }
+        hasWeapon = true;
         weaponScript.Companion = this;
         weaponScript.SwordArm = swordArm;
         weaponScript.Head = head;
         weaponScript.Core = core;
+    }
+
+    public void Unequip()
+    {
+        Destroy(weapon);
+        weaponScript = null;
+        hasWeapon = false;
     }
 
     public void Activate()

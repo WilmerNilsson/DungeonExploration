@@ -16,7 +16,6 @@ public class Weapon : MonoBehaviour
     [SerializeField] private bool dealDamage = false;
     [SerializeField] private bool isBlocking = false;
     [SerializeField] private bool unbreakable;
-    [SerializeField] private bool unblockable = false;
     [SerializeField] private Collider body;
     
     [Header("Attack")]
@@ -28,7 +27,6 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float attackHoldTime = 2f;
     [SerializeField] private float attackSwingTime = 1f;
     [SerializeField] private float attackResetTime = 1f;
-    [SerializeField] private float attackRecoilTime = 3f;
     
     [Header("Block")]
     [SerializeField] private float blockDistance = 0.5f;
@@ -103,7 +101,7 @@ public class Weapon : MonoBehaviour
         SwordArm.data.targetPositionWeight = 1 - time/attackResetTime;
         SwordArm.data.targetRotationWeight = 1 - time/attackResetTime;
         
-        SetPositionRotation(returnTime);
+        SetPositionRotation(returnTime / attackSwingTime);
         
         return time / attackResetTime >= 1;
     }
@@ -179,6 +177,7 @@ public class Weapon : MonoBehaviour
             Debug.Log($"OnTriggerEnter name {other.gameObject.name} tag {other.gameObject.tag}");
             if (!transform.IsChildOf(other.transform))
             {
+                dealDamage = false;
                 if (other.TryGetComponent(out Health health))
                 {
                     OnDamage?.Invoke();

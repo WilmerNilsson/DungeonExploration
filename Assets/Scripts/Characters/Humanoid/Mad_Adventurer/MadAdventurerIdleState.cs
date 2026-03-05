@@ -16,12 +16,6 @@ public class MadAdventurerIdleState : MadAventurerBaseState
     private float walkTime;
     private bool walking;
 
-    [Header("Player detection")] 
-    [SerializeField] private float maxSightRange;
-    [SerializeField] private float maxSoundRange;
-    [SerializeField] private float sightThreshold;
-    [SerializeField] private float soundThreshold;
-
     public override void Start()
     {
         base.Start();
@@ -34,19 +28,16 @@ public class MadAdventurerIdleState : MadAventurerBaseState
         FindPath(GetRandomPosition());
         target = GetNextCorner();
         Reset();
-        CombatChecker.RemoveFromChaseList(MyMadAdventurerStateMachine.gameObject);
-    }
-
-    public override void Exit()
-    {
-        CombatChecker.AddToChaseList(MyMadAdventurerStateMachine.gameObject);
     }
 
     public override void Update()
     {
         position = new Vector2(MyMadAdventurerStateMachine.transform.position.x, MyMadAdventurerStateMachine.transform.position.z);
         
-        if(DetectPlayer())MyMadAdventurerStateMachine.Transit(MyMadAdventurerStateMachine.ChasingState);
+        if (DetectPlayer())
+        { 
+            MyMadAdventurerStateMachine.Transit(MyMadAdventurerStateMachine.ChasingState);
+        }
         
         if (NavMeshPath.status == NavMeshPathStatus.PathInvalid || Vector2.Distance(position, new Vector2(NavMeshPath.corners[^1].x, NavMeshPath.corners[^1].z)) < minDistanceToCorner)
         {
@@ -79,11 +70,6 @@ public class MadAdventurerIdleState : MadAventurerBaseState
                 waitTime -= Time.deltaTime;
             }
         }
-    }
-
-    protected virtual bool DetectPlayer()
-    {
-        return MyMadAdventurerStateMachine.Vision.SightDetection(maxSightRange) > sightThreshold || MyMadAdventurerStateMachine.Vision.SoundDetection(maxSoundRange) > soundThreshold;
     }
 
     private void Reset()
