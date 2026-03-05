@@ -43,7 +43,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8068700651946846524}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 4a738b5641287864db5bc064005f872f, type: 2}
   m_CullingMode: 0
@@ -52539,7 +52539,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5601116623375559572, guid: a755e0e8d6f81bc46ba9e413d6d2e4f7, type: 3}
       propertyPath: m_VersionIndex
-      value: 852
+      value: 858
       objectReference: {fileID: 0}
     - target: {fileID: 5953202023887071910, guid: a755e0e8d6f81bc46ba9e413d6d2e4f7, type: 3}
       propertyPath: m_Name
@@ -52554,8 +52554,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5953202023887071910, guid: a755e0e8d6f81bc46ba9e413d6d2e4f7, type: 3}
-      insertIndex: 7
-      addedObject: {fileID: 2105777556097133294}
+      insertIndex: -1
+      addedObject: {fileID: 9015582365898870811}
     - targetCorrespondingSourceObject: {fileID: 5953202023887071910, guid: a755e0e8d6f81bc46ba9e413d6d2e4f7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7658934532551600221}
@@ -52565,7 +52565,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5953202023887071910, guid: a755e0e8d6f81bc46ba9e413d6d2e4f7, type: 3}
   m_PrefabInstance: {fileID: 5375337914068039877}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2105777556097133294
+--- !u!114 &9015582365898870811
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -52574,20 +52574,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1731366778331337315}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51f7f14f987392348b08c80e3260f384, type: 3}
+  m_Script: {fileID: 11500000, guid: a3735e958c7aa6e4fb672aed20d9b51f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 3
-  durability: 3
-  unbreakable: 1
-  dealDamage: 1
-  unblockable: 1
-  onDamage:
-    m_PersistentCalls:
-      m_Calls: []
-  onBlocked:
-    m_PersistentCalls:
-      m_Calls: []
+  damage: 200
 --- !u!65 &7658934532551600221
 BoxCollider:
   m_ObjectHideFlags: 0

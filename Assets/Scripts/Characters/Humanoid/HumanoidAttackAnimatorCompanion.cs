@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.Events;
@@ -28,7 +29,9 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     private float cutoffTime; // to track how far into attack it has to reverse
     private float returnTime; // What time of the previous swing to return from
     private Weapon weaponScript;
-    
+
+#nullable enable
+
     public enum AttackState
     {
         Charge,
@@ -195,19 +198,20 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         }
     }
 
-    public void Equip(GameObject newWeaponPrefab)
+    public bool TryEquip(GameObject newWeaponPrefab, [NotNullWhen(true)] out Weapon? weaponScript)
     {
         Destroy(weapon);
         weapon = Instantiate(newWeaponPrefab, hand);
-        if (!weapon.TryGetComponent(out Weapon weaponScript))
+        if (!weapon.TryGetComponent(out weaponScript))
         {
             Debug.LogError("No weapon script found on " + weapon);
-            return;
+            return false;
         }
-        weaponScript.Companion = this;
+        weaponScript!.Companion = this;
         weaponScript.SwordArm = swordArm;
         weaponScript.Head = head;
         weaponScript.Core = core;
+        return true;
     }
 
     public void Activate()
@@ -219,6 +223,4 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     {
         weapon.GetComponent<Collider>().enabled = false;
     }
-    
-    
 }
