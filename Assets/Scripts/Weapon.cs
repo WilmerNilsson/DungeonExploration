@@ -2,12 +2,13 @@ using System;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class Weapon : MonoBehaviour
 {
     [Header("Events")]
-    public UnityEvent onDamage;
-    public UnityEvent<string, Vector3> onDeflectCollision;
+    [FormerlySerializedAs("onDamage")] public UnityEvent OnDamage;
+    [FormerlySerializedAs("onDeflectCollision")] public UnityEvent<string, Vector3> OnDeflectCollision;
     
     [Header("Weapon Stats")]
     [SerializeField, Min(1)] private int damage = 1;
@@ -19,7 +20,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] private Collider body;
     
     [Header("Attack")]
-    [SerializeField] public float angle;
+    [SerializeField, FormerlySerializedAs("angle")] public float Angle;
     [SerializeField] private float curveHeight = 1.5f;
     [SerializeField, Tooltip("distance from middle toward start"), Range(0,1)] private float startBend;
     [SerializeField, Tooltip("distance from middle toward end"), Range(0,1)] private float endBend;
@@ -51,24 +52,24 @@ public class Weapon : MonoBehaviour
     }
     
     [Header("References")]
-    public HumanoidAttackAnimatorCompanion companion;
-    public TwoBoneIKConstraint swordArm;
-    public Transform head;
-    public Transform core;
-    private Transform HandIK => swordArm.data.target;
-    private Transform Shoulder => swordArm.data.root;
+    [FormerlySerializedAs("companion")] public HumanoidAttackAnimatorCompanion Companion;
+    [FormerlySerializedAs("swordArm")] public TwoBoneIKConstraint SwordArm;
+    [FormerlySerializedAs("head")] public Transform Head;
+    [FormerlySerializedAs("core")] public Transform Core;
+    private Transform HandIK => SwordArm.data.target;
+    private Transform Shoulder => SwordArm.data.root;
     
-    private Vector3 P0 => Quaternion.AngleAxis(angle, Vector3.forward) * Vector3.up;
+    private Vector3 P0 => Quaternion.AngleAxis(Angle, Vector3.forward) * Vector3.up;
     private Vector3 P1 => Vector3.Lerp(P0,P3,startBend/2) + Vector3.forward * curveHeight;
     private Vector3 P2 => Vector3.Lerp(P0,P3,1-endBend/2) + Vector3.forward * curveHeight;
-    private Vector3 P3 => Quaternion.AngleAxis(angle, Vector3.forward) * Vector3.down + Vector3.forward;
+    private Vector3 P3 => Quaternion.AngleAxis(Angle, Vector3.forward) * Vector3.down + Vector3.forward;
 
     #region Attack
     
     public bool ChargeAttack(float time) // Go from neutral to P0
     {
-        swordArm.data.targetPositionWeight = time / attackChargeTime;
-        swordArm.data.targetRotationWeight = time / attackChargeTime;
+        SwordArm.data.targetPositionWeight = time / attackChargeTime;
+        SwordArm.data.targetRotationWeight = time / attackChargeTime;
         
         SetPositionRotation(0);
         
@@ -77,8 +78,8 @@ public class Weapon : MonoBehaviour
     
     public bool HoldAttack(float time) // Stay at P0
     {
-        swordArm.data.targetPositionWeight = 1;
-        swordArm.data.targetRotationWeight = 1;
+        SwordArm.data.targetPositionWeight = 1;
+        SwordArm.data.targetRotationWeight = 1;
         
         SetPositionRotation(0);
         
@@ -87,8 +88,8 @@ public class Weapon : MonoBehaviour
     
     public bool Swing(float time) // Swing along bezier curve
     {
-        swordArm.data.targetPositionWeight = 1;
-        swordArm.data.targetRotationWeight = 1;
+        SwordArm.data.targetPositionWeight = 1;
+        SwordArm.data.targetRotationWeight = 1;
         
         SetPositionRotation(time / attackSwingTime);
         
@@ -99,8 +100,8 @@ public class Weapon : MonoBehaviour
     
     public bool ReturnAttack(float time, float returnTime) // Go back to Neutral from P3
     {
-        swordArm.data.targetPositionWeight = 1 - time/attackResetTime;
-        swordArm.data.targetRotationWeight = 1 - time/attackResetTime;
+        SwordArm.data.targetPositionWeight = 1 - time/attackResetTime;
+        SwordArm.data.targetRotationWeight = 1 - time/attackResetTime;
         
         SetPositionRotation(returnTime);
         
@@ -111,8 +112,8 @@ public class Weapon : MonoBehaviour
     {
         float localTime = (cutoffTime - time) / attackSwingTime;
         
-        swordArm.data.targetPositionWeight = 1;
-        swordArm.data.targetRotationWeight = 1;
+        SwordArm.data.targetPositionWeight = 1;
+        SwordArm.data.targetRotationWeight = 1;
         
         SetPositionRotation(localTime);
         
@@ -125,36 +126,36 @@ public class Weapon : MonoBehaviour
     
     public bool ChargeBlock(float time) // Go from neutral to BlockPos
     {
-        swordArm.data.targetPositionWeight = time / blockChargeTime;
-        swordArm.data.targetRotationWeight = time / blockChargeTime;
+        SwordArm.data.targetPositionWeight = time / blockChargeTime;
+        SwordArm.data.targetRotationWeight = time / blockChargeTime;
         
-        HandIK.position = head.position + RelativeRotation((blockAnglePos + blockOffsetPos).normalized + Vector3.forward * 0.5f) * blockDistance;
+        HandIK.position = Head.position + RelativeRotation((blockAnglePos + blockOffsetPos).normalized + Vector3.forward * 0.5f) * blockDistance;
         
-        HandIK.rotation = Quaternion.LookRotation(Vector3.forward * angle, RelativeRotation(blockAnglePos + blockOffsetPos * 0.5f));
+        HandIK.rotation = Quaternion.LookRotation(Vector3.forward * Angle, RelativeRotation(blockAnglePos + blockOffsetPos * 0.5f));
         
         return time / blockChargeTime > 1;
     }
     
     public bool Block(float time) // Stay at BlockPos
     {
-        swordArm.data.targetPositionWeight = 1;
-        swordArm.data.targetRotationWeight = 1;
+        SwordArm.data.targetPositionWeight = 1;
+        SwordArm.data.targetRotationWeight = 1;
         
-        HandIK.position = head.position + RelativeRotation((blockAnglePos + blockOffsetPos).normalized * blockDistance + Vector3.forward * 0.5f);
+        HandIK.position = Head.position + RelativeRotation((blockAnglePos + blockOffsetPos).normalized * blockDistance + Vector3.forward * 0.5f);
         
-        HandIK.rotation = Quaternion.LookRotation(Vector3.forward * angle, RelativeRotation(blockAnglePos + blockOffsetPos * 0.5f));
+        HandIK.rotation = Quaternion.LookRotation(Vector3.forward * Angle, RelativeRotation(blockAnglePos + blockOffsetPos * 0.5f));
         
         return time / blockHoldTime > 1;
     }
     
     public bool ReturnBlock(float time) // Go back to Neutral from BlockPos
     {
-        swordArm.data.targetPositionWeight = 1 - time / blockReturnTime;
-        swordArm.data.targetRotationWeight = 1 - time / blockReturnTime;
+        SwordArm.data.targetPositionWeight = 1 - time / blockReturnTime;
+        SwordArm.data.targetRotationWeight = 1 - time / blockReturnTime;
         
-        HandIK.position = head.position + RelativeRotation((blockAnglePos + blockOffsetPos).normalized + Vector3.forward * 0.5f) * blockDistance;
+        HandIK.position = Head.position + RelativeRotation((blockAnglePos + blockOffsetPos).normalized + Vector3.forward * 0.5f) * blockDistance;
         
-        HandIK.rotation = Quaternion.LookRotation(Vector3.forward * angle, RelativeRotation(blockAnglePos + blockOffsetPos * 0.5f));
+        HandIK.rotation = Quaternion.LookRotation(Vector3.forward * Angle, RelativeRotation(blockAnglePos + blockOffsetPos * 0.5f));
         
         return time / blockReturnTime > 1;
     }
@@ -180,7 +181,7 @@ public class Weapon : MonoBehaviour
             {
                 if (other.TryGetComponent(out Health health))
                 {
-                    onDamage?.Invoke();
+                    OnDamage?.Invoke();
                     health.TakeDamage(damage);
                     LoseDurability(health.DurabilityDamage);
                     Debug.Log($"The target {other.gameObject.name} health is " + health.CurrentHealth);
@@ -190,7 +191,7 @@ public class Weapon : MonoBehaviour
                     health = other.gameObject.GetComponentInParent<Health>();
                     if (health != null)
                     {
-                        onDamage?.Invoke();
+                        OnDamage?.Invoke();
                         health.TakeDamage(damage);
                         LoseDurability(health.DurabilityDamage);
                         Debug.Log($"The target {other.gameObject.name} health is " + health.CurrentHealth);
@@ -204,13 +205,13 @@ public class Weapon : MonoBehaviour
                 {
                     case "Wood":
                         Debug.Log("Wood");
-                        onDeflectCollision.Invoke("Wood", transform.position);
-                        companion.OnGetBlocked();
+                        OnDeflectCollision.Invoke("Wood", transform.position);
+                        Companion.OnGetBlocked();
                         break;
                     case "Stone":
                         Debug.Log("Stone");
-                        onDeflectCollision.Invoke("Stone", transform.position);
-                        companion.OnGetBlocked();
+                        OnDeflectCollision.Invoke("Stone", transform.position);
+                        Companion.OnGetBlocked();
                         break;
                     case "Metal":
                         Debug.Log("Metal");
@@ -219,14 +220,14 @@ public class Weapon : MonoBehaviour
                             Debug.Log("Other weapon not blocking");
                             break;
                         }
-                        onDeflectCollision.Invoke("Metal", transform.position);
-                        companion.OnGetBlocked();
+                        OnDeflectCollision.Invoke("Metal", transform.position);
+                        Companion.OnGetBlocked();
                         break;
                     case "Player":
                     case "Flesh":
                         Debug.Log("Flesh");
-                        onDeflectCollision.Invoke("Flesh", transform.position);
-                        companion.ChangeAttackState(HumanoidAttackAnimatorCompanion.AttackState.Return);
+                        OnDeflectCollision.Invoke("Flesh", transform.position);
+                        Companion.ChangeAttackState(HumanoidAttackAnimatorCompanion.AttackState.Return);
                         break;
                 }
             }
@@ -252,14 +253,14 @@ public class Weapon : MonoBehaviour
     {
         HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(time));
         
-        up = Quaternion.AngleAxis(angle+90, core.forward) * Vector3.ProjectOnPlane(head.up,Vector3.forward); // Doesnt account for head tilt
-        forward = RotateVecAroundPoint(GetCurveTangent(time), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
+        up = Quaternion.AngleAxis(Angle+90, Core.forward) * Vector3.ProjectOnPlane(Head.up,Vector3.forward); // Doesnt account for head tilt
+        forward = RotateVecAroundPoint(GetCurveTangent(time), Quaternion.AngleAxis(Core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
             
         HandIK.rotation = Quaternion.LookRotation(up, forward);
     }
     private Vector3 RelativeRotation(Vector3 rotation)
     {
-        return Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up) * Quaternion.AngleAxis(Mathf.Asin(head.forward.y) * Mathf.Rad2Deg, Vector3.left) * rotation;
+        return Quaternion.AngleAxis(Core.transform.eulerAngles.y, Vector3.up) * Quaternion.AngleAxis(Mathf.Asin(Head.forward.y) * Mathf.Rad2Deg, Vector3.left) * rotation;
     }
     
     private Vector3 GetCurvePosition(float t)
@@ -288,11 +289,16 @@ public class Weapon : MonoBehaviour
     }
     #endregion
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
+        if (Head == null) return;
+
         Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(head.position + RelativeRotation(blockAnglePos), 0.1f);
+        Gizmos.DrawSphere(Head.position + RelativeRotation(blockAnglePos), 0.1f);
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(head.position + RelativeRotation(blockOffsetPos), 0.1f);
+        Gizmos.DrawSphere(Head.position + RelativeRotation(blockOffsetPos), 0.1f);
     }
+#endif
+
 }
