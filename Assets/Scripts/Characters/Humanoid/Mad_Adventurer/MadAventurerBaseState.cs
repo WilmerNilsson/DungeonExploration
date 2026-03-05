@@ -45,7 +45,7 @@ public abstract class MadAventurerBaseState
 
     protected virtual void Move()
     {
-        MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((target-MyMadAdventurerStateMachine.transform.position)+Vector3.up));
+        MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((target-MyMadAdventurerStateMachine.transform.position)+Vector3.up*2f));
         MyMadAdventurerStateMachine.Controller.Move(Vector3.forward);
     }
     

@@ -10,4 +10,12 @@ public class EquipmentSlotCompanion : MonoBehaviour
         }
         //no else since the equipment grid is supposed to also deal with normal weapons
     }
+
+    public void OnRemove(SimpleItem item)
+    {
+        if (item.TryGetComponent(out UIWeapon weapon))
+        {
+            weapon.Unequip();
+        }
+    }
 }

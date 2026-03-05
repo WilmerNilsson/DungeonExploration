@@ -18,6 +18,11 @@ public class UIWeapon : MonoBehaviour
     }
 #endif
 
+    public void Unequip()
+    {
+        Debug.Log("unequip :(", this);
+    }
+
     public void Equip()
     {
         Debug.Log("equip!", this);
