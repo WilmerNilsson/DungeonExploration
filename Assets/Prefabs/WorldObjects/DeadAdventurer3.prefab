@@ -1,5 +1,88 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &475832802660430727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6913406791371508697}
+  - component: {fileID: 1735014823787301248}
+  - component: {fileID: 1241299020729930831}
+  m_Layer: 12
+  m_Name: SoundLogic
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6913406791371508697
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 475832802660430727}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2083758174200946835}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1735014823787301248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 475832802660430727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d931ca1dd1838a4bb460879b3218922, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footstepsActivatedBy: 0
+  walkPlayDelay: 0.5
+  sprintPlayDelay: 0.31
+  crouchWalkPlayDelay: 1
+  footstepPaths:
+    sneak: CrazedHumanoid/Walk
+    walk: CrazedHumanoid/Walk
+    sprint: CrazedHumanoid/Walk
+  crouchPath: 
+  jumpPath: 
+  landPath: 
+  hungerPath: 
+  weaponObject: {fileID: 0}
+  swingPath: CrazedHumanoid/Basic_Attack
+  blockPath: 
+  damagePath: CrazedHumanoid/Take_Damage
+  deathPath: CrazedHumanoid/Die
+--- !u!114 &1241299020729930831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 475832802660430727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f370090c5398e1d42860e9f8f0dde244, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voiceActorRange: {x: 0, y: 47}
+  enemyVoPath: CrazedHumanoid/VO
+  parameters:
+    voiceActor: EnemyVO
+    state: EnemyStance
+    attack: Attack
+    stun: Stun
+    damage: OnHit
+    death: Death
 --- !u!1 &8586164498364295269
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,6 +112,7 @@ Transform:
   m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
   m_ConstrainProportionsScale: 1
   m_Children:
+  - {fileID: 6913406791371508697}
   - {fileID: 3036217393310142206}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1459,35 +1543,8 @@ PrefabInstance:
       value: -130.124
       objectReference: {fileID: 0}
     m_RemovedComponents:
-<<<<<<< Updated upstream
-    - {fileID: 3467929583550465738, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 3879916398111493942, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 1749713730186701101, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 8808020814266179705, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 4698545371277439629, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 861456552232059256, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 5956875272125161806, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 9209436760628890261, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 8156880709594735102, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 6828274868361272449, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 5072373015846336972, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 8413195034935277611, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 3789835741834988421, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 1357664741972358889, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 5241219239993372683, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 1357664741972358889, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 3424193982477835333, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 5589152212033160131, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    m_RemovedGameObjects:
-    - {fileID: 3557307716919040397, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 4979365589279656891, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 5902201643884043709, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 6814197158850503151, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-    - {fileID: 7534514477765022186, guid: 4392311ebef9e574188c7f7fb5746c69, type: 3}
-=======
     - {fileID: 5866666021909216657, guid: 158bf6404f43d4f4992b14d60613b4b1, type: 3}
     m_RemovedGameObjects: []
->>>>>>> Stashed changes
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 366175167995203695, guid: 158bf6404f43d4f4992b14d60613b4b1, type: 3}
       insertIndex: 0
@@ -1499,9 +1556,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 158bf6404f43d4f4992b14d60613b4b1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2785769629367800422}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 158bf6404f43d4f4992b14d60613b4b1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5328825011873690596}
   m_SourcePrefab: {fileID: 100100000, guid: 158bf6404f43d4f4992b14d60613b4b1, type: 3}
 --- !u!1 &2407489618374906948 stripped
 GameObject:
@@ -1524,28 +1578,6 @@ MonoBehaviour:
   - m_Rig: {fileID: 0}
     m_Active: 1
   m_Effectors: []
---- !u!95 &5328825011873690596
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2407489618374906948}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &2935393390659647866 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 366175167995203695, guid: 158bf6404f43d4f4992b14d60613b4b1, type: 3}
