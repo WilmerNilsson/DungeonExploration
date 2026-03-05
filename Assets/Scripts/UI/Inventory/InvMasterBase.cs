@@ -2,7 +2,6 @@ using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
@@ -18,12 +17,12 @@ public abstract class InvMasterBase : MonoBehaviour
     {
         get; private set;
     }
-#nullable enable
 
     public static InvMasterBase Instance
     {
         get; private set;
     }
+#nullable enable
 
     protected virtual void Awake()
     {

@@ -20,6 +20,7 @@ public class InventoryGrid : MonoBehaviour
     private bool hasBeenEnabled = false;
 
     public UnityEvent<SimpleItem>? OnGetNewItem;
+    public UnityEvent<SimpleItem>? OnRemoveItem;
 
     /// <summary>
     /// collum, row
@@ -114,7 +115,7 @@ public class InventoryGrid : MonoBehaviour
     }
 #endif
 
-#if DEBUG
+#if DEBUG && UNITY_EDITOR
     private void OnValidate()
     {
         CheckSlotSize();
@@ -286,7 +287,6 @@ public class InventoryGrid : MonoBehaviour
 
     public bool TryInstantiateItemInSlot(int slot, GameObject prefab)
     {
-#if DEBUG
         if (prefab.TryGetComponent<SimpleItem>(out SimpleItem component))
         {
             int collum = slot % (collumns);
@@ -303,12 +303,6 @@ public class InventoryGrid : MonoBehaviour
             Debug.LogError($"can't instanciate prefab {prefab}, cause it is not a simple item", this);
             return false;
         }
-#else //assume it won't error;
-        int collum = slot % (collumns);
-        int row = (slot - collum) / (collumns);
-
-        return TryPutItemInSlot(prefab.GetComponent<SimpleItem>(), collum, row, true);
-#endif
     }
 
     public List<InventorySaveData.InventoryItem> GetInventoryData()
@@ -435,6 +429,8 @@ public class InventoryGrid : MonoBehaviour
 
         item.RectTransform.SetParent(transform, false);
         item.RectTransform.position = GetSlotRect(collum, row).center;
+
+        OnGetNewItem?.Invoke(item);
         return true;
     }
 
@@ -475,6 +471,11 @@ public class InventoryGrid : MonoBehaviour
                     foundMatch = true;
                 }
             }
+        }
+
+        if(foundMatch)
+        {
+            OnRemoveItem?.Invoke(item);
         }
 
         return foundMatch;

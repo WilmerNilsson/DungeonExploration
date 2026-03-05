@@ -1,5 +1,5 @@
 #speed: 0
-Long ago in the far reaches of the northern mountains rose a small village by the name of Günhildr. It was simply constructed so the miners would have shelter over their heads other than that of the cave’s ceiling. 
+Long ago in the far reaches of the northern mountains rose a small village by the name of Gunhildr. It was simply constructed so the miners would have shelter over their heads other than that of the cave’s ceiling. 
 #event:0
 However on a cold winter day, deep into the caverns they found.. something. 
 #event:1
@@ -11,7 +11,7 @@ At first, the ones who entered returned with glory and riches, yet seldom spoke 
 #event:4
 The word that would quickly become its name.
 #event:5
-Rumors soon spread of its treasures  and the once forgotten town of Günhildr size and influence followed suit. Thousands flocked to the now bustling city in hopes of finding whatever they could within Agathol’s depths. Hoping they would become one of the lucky ones.
+Rumors soon spread of its treasures  and the once forgotten town of Gunhildr size and influence followed suit. Thousands flocked to the now bustling city in hopes of finding whatever they could within Agathol’s depths. Hoping they would become one of the lucky ones.
 #event:6
 100 years…
 #event:7

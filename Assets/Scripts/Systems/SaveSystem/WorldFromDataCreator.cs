@@ -8,7 +8,7 @@ public class WorldFromDataCreator : MonoBehaviour
     [SerializeField] private GameObject[] newWorldObjects;
 #nullable enable
 
-#if DEBUG
+#if DEBUG && UNITY_EDITOR
     private void OnValidate()
     {
         if (itemLibrary == null) Debug.LogWarning("item library is null", this);
@@ -82,13 +82,11 @@ public class WorldFromDataCreator : MonoBehaviour
 
             SaveFileHelperPlayer helper = FindFirstObjectByType<SaveFileHelperPlayer>();
 
-#if DEBUG
             if(helper == null)
             {
                 Debug.LogError("could not find player save file helper in scene", this);
                 return;
             }
-#endif
 
             helper.Initialize(worldData.PlayerSaveData);
         }
@@ -107,13 +105,11 @@ public class WorldFromDataCreator : MonoBehaviour
                 {
                     Instantiate(pair.WorldPrefab, item.Position, item.Rotation);
                 }
-#if DEBUG
                 else
                 {
                     Debug.LogError("could not get item pair from save file ID: " + item.ItemID, this);
                     continue;
                 }
-#endif
             }
         }
 
@@ -134,21 +130,17 @@ public class WorldFromDataCreator : MonoBehaviour
                     {
                         helper.Intialize(enemy);
                     }
-#if DEBUG
                     else
                     {
                         Debug.LogError("instanciated enemy does not have helper, ID: " + enemy.PrefabID, this);
                         continue;
                     }
-#endif
                 }
-#if DEBUG
                 else
                 {
                     Debug.LogError("could not get enemy prefab from save file world data, ID: " + enemy.PrefabID, this);
                     continue;
                 }
-#endif
             }
         }
 
@@ -168,21 +160,17 @@ public class WorldFromDataCreator : MonoBehaviour
                     {
                         helper.Intialize(container);
                     }
-#if DEBUG
                     else
                     {
                         Debug.LogError("instanciated container does not have helper, ID: " + container.PrefabID, this);
                         continue;
                     }
-#endif
                 }
-#if DEBUG
                 else
                 {
                     Debug.LogError("could not get container prefab from save file world data, ID: " + container.PrefabID, this);
                     continue;
                 }
-#endif
             }
         }
     }
