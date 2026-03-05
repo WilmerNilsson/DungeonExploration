@@ -74,7 +74,7 @@ public class OcclusionChecker
                     break;
                 case FirstDistance.MaxInputDistance:
                     if (maxDistance > 0) _distance = maxDistance;
-                    else _distance = Mathf.Infinity;
+                    else _distance = Vector3.Distance(_sourcePos, _targetPos) * 2f;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -145,23 +145,27 @@ public class OcclusionChecker
             {
                 if (checkIfFirstMiss) //TODO: använda Hits[0].distance här?
                 {
-                    if (!Physics.Linecast(_sourcePos + (_direction * _distance), 
-                            _targetPos, out hitDatas[i].Hits[1], layerMask))
+                    if (!Physics.Linecast(_sourcePos + (_direction.normalized * _distance), 
+                            _targetPos, layerMask))
                     {
                         hitDatas[i].score += bounceValue;
-                        if (drawDebug) Debug.DrawLine(_sourcePos + (_direction * _distance),
-                            _targetPos, Color.green);
+                        if (drawDebug)
+                        {
+                            Debug.DrawLine(_sourcePos + (_direction.normalized * _distance),
+                                _targetPos, Color.green);
+                            Debug.DrawRay(_sourcePos, _direction.normalized * _distance, Color.blue);
+                        }
                         hitDatas[i].castIndex = 1;
                     }
                     else
                     {
-                        if (drawDebug)Debug.DrawRay(_sourcePos, _direction * _distance, Color.red);
+                        if (drawDebug)Debug.DrawRay(_sourcePos, _direction.normalized * _distance, Color.red);
                         hitDatas[i].score = 1;
                     }
                 }
                 else
                 {
-                    if (drawDebug)Debug.DrawRay(_sourcePos, _direction * _distance, Color.green);
+                    if (drawDebug)Debug.DrawRay(_sourcePos, _direction.normalized * _distance, Color.green);
                     hitDatas[i].score = 0;
                 }
                 
