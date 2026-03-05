@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class InvMasterTown : InvMasterBase
 {
-    [SerializeField] private TextMeshProUGUI itemGoldValueText;
 #nullable enable
 
     private MerchantInventory? merchantInventory;
@@ -18,13 +17,13 @@ public class InvMasterTown : InvMasterBase
     protected override void OnValidate()
     {
         base.OnValidate();
-        if (itemGoldValueText == null) Debug.LogWarning("item gold value text is null", this);
     }
 #endif
 
     public void SetActiveMerchantInventory(MerchantInventory merchant)
     {
         merchantInventory = merchant;
+        descriptionText = merchant.GetDescriptionTextField();
     }
 
     public void RemoveActiveMerchantInventory(MerchantInventory merchant)
@@ -32,20 +31,14 @@ public class InvMasterTown : InvMasterBase
         if(merchantInventory == merchant)
         {
             merchantInventory = null;
+            descriptionText = null;
         }
     }
 
     public override void ChangeHover(SimpleItem simpleItem, bool startHover)
     {
         base.ChangeHover(simpleItem, startHover);
-        if(startHover)
-        {
-            itemGoldValueText.text = simpleItem.CashValue.ToString();
-        }
-        else
-        {
-            itemGoldValueText.text = string.Empty;
-        }
+        merchantInventory?.ChangeHover(simpleItem, startHover);
     }
 
     public override bool TryPlaceItem(SimpleItem item, [NotNullWhen(true)] out InventoryGrid? inventoryGrid)

@@ -21,8 +21,6 @@ public class SaveFileManager
 
     public SaveFileManager()
     {
-        Debug.Log("creating save file manager");
-
         GlobalSettings = ReadGlobalSettings();
 
         GlobalSettings ReadGlobalSettings()

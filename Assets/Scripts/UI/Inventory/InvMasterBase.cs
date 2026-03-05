@@ -12,7 +12,7 @@ public abstract class InvMasterBase : MonoBehaviour
         get; protected set; 
     }
     [SerializeField] private Transform drawOntopParent;
-    [SerializeField] private TextMeshProUGUI descriptionText;
+    [SerializeField] protected TextMeshProUGUI descriptionText;
     [field: SerializeField, FormerlySerializedAs("equipmentGrid")] public InventoryGrid EquipmentGrid
     {
         get; private set;
@@ -96,6 +96,8 @@ public abstract class InvMasterBase : MonoBehaviour
 
     protected void SetDescriptionText(string newText)
     {
+        if (descriptionText == null) return;
+
         descriptionText.text = newText;
     }
 }

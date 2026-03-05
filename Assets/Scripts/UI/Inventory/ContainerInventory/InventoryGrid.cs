@@ -290,6 +290,38 @@ public class InventoryGrid : MonoBehaviour
 
 #endregion
 
+    /// <summary>
+    /// Empties inventory data, objects themselves are not touched
+    /// </summary>
+    /// <returns>all the items</returns>
+    public List<SimpleItem> EmptyInventory()
+    {
+        List<SimpleItem> items = new();
+
+        //i am starting to really feel the limits of this current system,
+        //reworking the structure to be more efficient is prob not worth it time wise
+        for (int x = 0; x < InvData.GetLength(0); x++)
+        {
+            for (int y = 0; y < InvData.GetLength(1); y++)
+            {
+                if (InvData[x,y] == null)
+                {
+                    continue;
+                }
+                else 
+                {
+                    if (!items.Contains(InvData[x, y]!.Item))
+                    {
+                        items.Add(InvData[x, y]!.Item);
+                    }
+                    InvData[x, y] = null;
+                }
+            }
+        }
+
+        return items;
+    }
+
     public bool TryInstantiateItemInSlot(int slot, GameObject prefab)
     {
         if (prefab.TryGetComponent<SimpleItem>(out SimpleItem component))
