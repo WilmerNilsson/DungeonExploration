@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1261072922002475423}
   - component: {fileID: -3390355510129037723}
   - component: {fileID: 6746438131535090535}
+  - component: {fileID: 2776692007426576153}
   m_Layer: 5
   m_Name: UIIronSword
   m_TagString: Untagged
@@ -93,7 +94,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pivot: {x: 0, y: 0}
   itemGridSize: 01000000010000000100000001000000
-  uses: []
+  uses:
+  - text: Drop
+    OnUse:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2776692007426576153}
+          m_TargetAssemblyTypeName: ItemDrop, GameAssembly
+          m_MethodName: Drop
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   descriptionText: Medical studies have shown a large variation in creatures that
     are fataly allergic to cuts by this weapon.
   descriptionTextIsLibraryName: 0
@@ -115,6 +132,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  debugConnectItemDrop: 0
 --- !u!114 &1261072922002475423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,3 +176,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 0}
+--- !u!114 &2776692007426576153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659243512019290888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3a2cca0eed13d342944df7071a3f8d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraDropOffset: -1
+  itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
+  myItem: {fileID: 6101294717193550440}

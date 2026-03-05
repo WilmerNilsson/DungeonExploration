@@ -54,19 +54,21 @@ public class EnemyVOSoundLogic : MonoBehaviour
         _lastState = newState;
     }
     
-    public void OnAttack(HumanoidIK.AttackState newState)
+    public void OnAttack(HumanoidAttackAnimatorCompanion.AttackState newState)
     {
         if (!AudioManager.IsValid) return;
         switch (newState)
         {
-            case HumanoidIK.AttackState.Start:
+            case HumanoidAttackAnimatorCompanion.AttackState.Charge:
                 break;
-            case HumanoidIK.AttackState.Swing:
+            case HumanoidAttackAnimatorCompanion.AttackState.Hold:
+                break;
+            case HumanoidAttackAnimatorCompanion.AttackState.Swing:
                 AudioManager.Instance.SetParameter(enemyVoPath, parameters.attack, 1, gameObject);
                 break;
-            case HumanoidIK.AttackState.Return:
+            case HumanoidAttackAnimatorCompanion.AttackState.Return:
                 break;
-            case HumanoidIK.AttackState.Interrupt:
+            case HumanoidAttackAnimatorCompanion.AttackState.Recoil:
                 AudioManager.Instance.SetParameter(enemyVoPath, parameters.stun, 1, gameObject);
                 break;
             default:

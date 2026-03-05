@@ -3,30 +3,21 @@ using UnityEngine;
 public class ItemDrop : MonoBehaviour
 {
     [SerializeField] private float cameraDropOffset;
-    [SerializeField] private string prefabID;
     [SerializeField] private ItemLibrarySO itemLibrary;
     [SerializeField] private SimpleItem myItem;
 
 #nullable enable
 
-#if DEBUG
+#if UNITY_EDITOR
     private void OnValidate()
     {
-        bool hasPrefabID = !(prefabID == null || prefabID == string.Empty);
-        bool hasLibrary = itemLibrary != null;
-
-        if (!hasPrefabID)
-        {
-            Debug.LogWarning("prefabID is empty", this);
-        }
-
-        if (!hasLibrary)
+        if (itemLibrary == null)
         {
             Debug.LogWarning("item library is null", this);
         }
-        else if(hasPrefabID && !itemLibrary!.TryGetItemPairByName(prefabID, out _))
+        else if(myItem != null && myItem.PrefabID != null && !itemLibrary!.TryGetItemPairByName(myItem.PrefabID, out _))
         {
-            Debug.LogWarning("item library does not have entry of: " + prefabID, this);
+            Debug.LogWarning("item library does not have entry of: " + myItem?.PrefabID, this);
         }
 
         
@@ -41,7 +32,7 @@ public class ItemDrop : MonoBehaviour
         dropPos.y += cameraDropOffset;
 
         //since we check this is valid on validate we can assume it will not be null
-        itemLibrary.TryGetItemPairByName(prefabID, out ItemPairing? pair);
+        itemLibrary.TryGetItemPairByName(myItem.PrefabID, out ItemPairing? pair);
 
         Instantiate(pair?.WorldPrefab, dropPos, Quaternion.identity);
 
