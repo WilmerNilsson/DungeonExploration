@@ -1,4 +1,4 @@
-#speed:0.2
+#speed:0.025
 #animation:AidenPlaceholder
 #name:Ingrid 
 Your name is a little unusual for these parts. You from around here?
