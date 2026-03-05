@@ -47,12 +47,13 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     private void Start()
     {
-        if (TryGetComponent(out weapon))
+        if (weapon == null)
         {
-            if (weaponScript == null)
-            {
-                hasWeapon = weapon.TryGetComponent(out weaponScript);
-            }
+            Debug.Log("no weapon has been assigned to " + this);
+        }
+        else if (weaponScript == null)
+        {
+            hasWeapon = weapon.TryGetComponent(out weaponScript);
         }
     }
 
