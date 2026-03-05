@@ -10,6 +10,8 @@ public class DialogueGraphView : GraphView
 {
     public readonly Vector2 DefaultNodeSize = new Vector2(150, 200);
 
+    public Blackboard Blackboard;
+    public List<ExposedProperty> ExposedProperties = new List<ExposedProperty>();
     private NodeSearchWindow _searchWindow;
     
     public DialogueGraphView(EditorWindow editorWindow)
@@ -173,7 +175,42 @@ public class DialogueGraphView : GraphView
         dialogueNode.RefreshExpandedState();
     }
 
-    public void AddPropertyToBlackboard()
+    public void ClearBlackboardAndExposedProperties()
     {
+        ExposedProperties.Clear();
+        Blackboard.Clear();
+    }
+
+    public void AddPropertyToBlackboard(ExposedProperty exposedProperty)
+    {
+        var localPropertyName = exposedProperty.PropertyName;
+        var localPropertyValue = exposedProperty.PropertyValue;
+        while (ExposedProperties.Any(x => x.PropertyName == localPropertyName))
+        {
+            localPropertyName = $"{localPropertyName}(1)";
+        }
+        
+        var property = new ExposedProperty();
+        property.PropertyName  = localPropertyName;
+        property.PropertyValue = localPropertyValue;
+        ExposedProperties.Add(property);
+
+        var container = new VisualElement();
+        var blackboardField = new BlackboardField{text = property.PropertyName, typeText = "string property"};
+        container.Add(blackboardField);
+        
+        var propertyValueTextField = new TextField("Value")
+        {
+            value = localPropertyValue
+        };
+        propertyValueTextField.RegisterValueChangedCallback(evt =>
+        {
+            var changingPropertyIndex = ExposedProperties.FindIndex(x => x.PropertyName == property.PropertyName);
+            ExposedProperties[changingPropertyIndex].PropertyValue = evt.newValue;
+        });
+        var blackBoardValueRow = new BlackboardRow(blackboardField,propertyValueTextField);
+        container.Add(blackBoardValueRow);
+        
+        Blackboard.Add(container);
     }
 }

@@ -1,6 +1,8 @@
 using UnityEngine;
 
-public class ExposedProperty : MonoBehaviour
+[System.Serializable]
+public class ExposedProperty
 {
-    //15:25
+    public string PropertyName = "New String";
+    public string PropertyValue = "New Value";
 }

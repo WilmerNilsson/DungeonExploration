@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.UIElements;
@@ -31,11 +32,26 @@ public class DialogueGraph : EditorWindow
         blackboard.Add(new BlackboardSection{ title = "Exposed Properties"});
         blackboard.addItemRequested = _blackboard =>
         {
-            _graphView.AddPropertyToBlackboard();
+            _graphView.AddPropertyToBlackboard(new ExposedProperty());
         };
-        blackboard.SetPosition(new Rect(10, 30, 200, 300));
+        blackboard.editTextRequested = (blackboard1, element, newValue) =>
+        {
+            var oldPropertyName = ((BlackboardField)element).text;
+            if (_graphView.ExposedProperties.Any(x => x.PropertyName == newValue))
+            {
+                EditorUtility.DisplayDialog("Error", "This property name already exist, please choose another one!",
+                    "OK");
+                return;
+            }
+            
+            var propertyIndex = _graphView.ExposedProperties.FindIndex(x => x.PropertyName == oldPropertyName);
+            _graphView.ExposedProperties[propertyIndex].PropertyName = newValue;
+            ((BlackboardField) element).text = newValue;
+        };
         
+        blackboard.SetPosition(new Rect(10, 30, 200, 300));
         _graphView.Add(blackboard);
+        _graphView.Blackboard = blackboard;
     }
 
     private void ConstructGraphView()

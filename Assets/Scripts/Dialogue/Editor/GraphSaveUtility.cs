@@ -23,13 +23,24 @@ public class GraphSaveUtility
 
     public void SaveGraph(string fileName)
     {
-        if (!Edges.Any())
+        var dialogueContainer = ScriptableObject.CreateInstance<DialogueContainer>();
+        if (!SaveNodes(dialogueContainer))
         {
             return;
         }
+        SaveExposedProperties(dialogueContainer);
 
-        var dialogueContainer = ScriptableObject.CreateInstance<DialogueContainer>();
+        AssetDatabase.CreateAsset(dialogueContainer, $"Assets/Scripts/Dialogue/Editor/Resources/{fileName}.asset");
+        AssetDatabase.SaveAssets();
+    }
 
+    private bool SaveNodes(DialogueContainer dialogueContainer)
+    {
+        if (!Edges.Any())
+        {
+            return false;
+        }
+        
         var connectedPorts = Edges.Where(x => x.input.node != null).ToArray();
         for (int i = 0; i < connectedPorts.Length; i++)
         {
@@ -53,9 +64,12 @@ public class GraphSaveUtility
                 Position = dialogueNode.GetPosition().position
             });
         }
-        
-        AssetDatabase.CreateAsset(dialogueContainer, $"Assets/Scripts/Dialogue/Editor/Resources/{fileName}.asset");
-        AssetDatabase.SaveAssets();
+        return true;
+    }
+
+    private void SaveExposedProperties(DialogueContainer dialogueContainer)
+    {
+        dialogueContainer.ExposedProperties.AddRange(_targetGraphView.ExposedProperties);
     }
 
     public void LoadGraph(string fileName)
@@ -70,6 +84,17 @@ public class GraphSaveUtility
         ClearGraph();
         CreateNodes();
         ConnectNodes();
+        CreateExposedProperties();
+    }
+
+    private void CreateExposedProperties()
+    {
+        _targetGraphView.ClearBlackboardAndExposedProperties();
+        
+        foreach (var exposedProperty in _containerCache.ExposedProperties)
+        {
+            _targetGraphView.AddPropertyToBlackboard(exposedProperty);
+        }
     }
 
     private void ConnectNodes()
