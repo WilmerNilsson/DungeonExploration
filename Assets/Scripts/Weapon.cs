@@ -7,10 +7,13 @@ public class Weapon : MonoBehaviour
 {
     [Header("Events")]
     public UnityEvent onDamage;
+    public UnityEvent<string, Vector3> onDeflectCollision;
     
     [Header("Weapon Stats")]
     [SerializeField, Min(1)] private int damage = 1;
     [SerializeField, Min(1)] private int durability = 1;
+    [SerializeField] private bool dealDamage = false;
+    [SerializeField] private bool isBlocking = false;
     [SerializeField] private bool unbreakable;
     [SerializeField] private bool unblockable = false;
     [SerializeField] private Collider body;
@@ -25,7 +28,6 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float attackSwingTime = 1f;
     [SerializeField] private float attackResetTime = 1f;
     [SerializeField] private float attackRecoilTime = 3f;
-    private float cutoffTime;
     
     [Header("Block")]
     [SerializeField] private float blockDistance = 0.5f;
@@ -68,11 +70,7 @@ public class Weapon : MonoBehaviour
         swordArm.data.targetPositionWeight = time / attackChargeTime;
         swordArm.data.targetRotationWeight = time / attackChargeTime;
         
-        HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(0));
-        up = Quaternion.AngleAxis(angle+90, core.forward) * head.up;
-        forward = RotateVecAroundPoint(GetCurveTangent(0), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
-            
-        HandIK.rotation = Quaternion.LookRotation(up, forward);
+        SetPositionRotation(0);
         
         return time / attackChargeTime >= 1;
     }
@@ -82,11 +80,7 @@ public class Weapon : MonoBehaviour
         swordArm.data.targetPositionWeight = 1;
         swordArm.data.targetRotationWeight = 1;
         
-        HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(0));
-        up = Quaternion.AngleAxis(angle+90, core.forward) * head.up;
-        forward = RotateVecAroundPoint(GetCurveTangent(0), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
-            
-        HandIK.rotation = Quaternion.LookRotation(up, forward);
+        SetPositionRotation(0);
         
         return time / attackHoldTime >= 1;
     }
@@ -96,42 +90,33 @@ public class Weapon : MonoBehaviour
         swordArm.data.targetPositionWeight = 1;
         swordArm.data.targetRotationWeight = 1;
         
-        HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(time / attackSwingTime));
-        up = Quaternion.AngleAxis(angle+90, core.forward) * head.up;
-        forward = RotateVecAroundPoint(GetCurveTangent(time / attackSwingTime), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
-            
-        HandIK.rotation = Quaternion.LookRotation(up, forward);
-
+        SetPositionRotation(time / attackSwingTime);
+        
+        SetDamageActive(time / attackSwingTime > .1 && time / attackSwingTime < .9);
+        
         return time / attackSwingTime >= 1;
     }
     
-    public bool ReturnAttack(float time) // Go back to Neutral from P3
+    public bool ReturnAttack(float time, float returnTime) // Go back to Neutral from P3
     {
         swordArm.data.targetPositionWeight = 1 - time/attackResetTime;
         swordArm.data.targetRotationWeight = 1 - time/attackResetTime;
         
-        HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(1));
-        up = Quaternion.AngleAxis(angle+90, core.forward) * head.up;
-        forward = RotateVecAroundPoint(GetCurveTangent(1), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
-            
-        HandIK.rotation = Quaternion.LookRotation(up, forward);
+        SetPositionRotation(returnTime);
         
         return time / attackResetTime >= 1;
     }
     
-    public bool RecoilAttack(float time) // Bounce back along curve to P0
+    public bool RecoilAttack(float time, float cutoffTime) // Bounce back along curve to P0
     {
+        float localTime = (cutoffTime - time) / attackSwingTime;
+        
         swordArm.data.targetPositionWeight = 1;
         swordArm.data.targetRotationWeight = 1;
         
-        HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(time / attackRecoilTime));
+        SetPositionRotation(localTime);
         
-        up = Quaternion.AngleAxis(angle, core.forward) * head.up;
-        forward = RotateVecAroundPoint(GetCurveTangent(time / attackRecoilTime), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
-            
-        HandIK.rotation = Quaternion.LookRotation(up, forward);
-        
-        return time / attackRecoilTime <= 0;
+        return localTime <= 0;
     }
     
     #endregion
@@ -176,57 +161,74 @@ public class Weapon : MonoBehaviour
     
     #endregion
 
-    public void SetActive(bool value)
+    public void SetDamageActive(bool value)
     {
-        body.enabled = value;
+        dealDamage = value;
+    }
+    
+    public void SetBlockActive(bool value)
+    {
+        isBlocking = value;
     }
     
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"OnTriggerEnter name {other.gameObject.name} tag {other.gameObject.tag}");
-        if (!transform.IsChildOf(other.transform))
+        if (dealDamage)
         {
-            if (other.TryGetComponent(out Health health))
+            Debug.Log($"OnTriggerEnter name {other.gameObject.name} tag {other.gameObject.tag}");
+            if (!transform.IsChildOf(other.transform))
             {
-                onDamage?.Invoke();
-                health.TakeDamage(damage);
-                LoseDurability(health.DurabilityDamage);
-                Debug.Log($"The target {other.gameObject.name} health is " + health.CurrentHealth);
-            }
-            else if (other.gameObject.layer == LayerMask.NameToLayer("Character")) // Potential fix for ragdoll 
-            {
-                health = other.gameObject.GetComponentInParent<Health>();
-                if (health != null)
+                if (other.TryGetComponent(out Health health))
                 {
                     onDamage?.Invoke();
                     health.TakeDamage(damage);
                     LoseDurability(health.DurabilityDamage);
                     Debug.Log($"The target {other.gameObject.name} health is " + health.CurrentHealth);
                 }
-                else
+                else if (other.gameObject.layer == LayerMask.NameToLayer("Character")) // Potential fix for ragdoll 
                 {
-                    Debug.Log($"The target {other.gameObject.name} health is NULL");
+                    health = other.gameObject.GetComponentInParent<Health>();
+                    if (health != null)
+                    {
+                        onDamage?.Invoke();
+                        health.TakeDamage(damage);
+                        LoseDurability(health.DurabilityDamage);
+                        Debug.Log($"The target {other.gameObject.name} health is " + health.CurrentHealth);
+                    }
+                    else
+                    {
+                        Debug.Log($"The target {other.gameObject.name} health is NULL");
+                    }
                 }
-            }
-            switch (other.tag) // Handle Audio Visual Feedback
-            {
-                case "Wood":
-                    Debug.Log("Wood");
-                    companion.ChangeAttackState(HumanoidAttackAnimatorCompanion.AttackState.Recoil);
-                    break;
-                case "Stone":
-                    Debug.Log("Stone");
-                    companion.ChangeAttackState(HumanoidAttackAnimatorCompanion.AttackState.Recoil);
-                    break;
-                case "Metal":
-                    Debug.Log("Metal");
-                    companion.ChangeAttackState(HumanoidAttackAnimatorCompanion.AttackState.Recoil);
-                    break;
-                case "Player":
-                case "Flesh":
-                    Debug.Log("Flesh");
-                    companion.ChangeAttackState(HumanoidAttackAnimatorCompanion.AttackState.Return);
-                    break;
+                switch (other.tag) // Handle Audio Visual Feedback
+                {
+                    case "Wood":
+                        Debug.Log("Wood");
+                        onDeflectCollision.Invoke("Wood", transform.position);
+                        companion.OnGetBlocked();
+                        break;
+                    case "Stone":
+                        Debug.Log("Stone");
+                        onDeflectCollision.Invoke("Stone", transform.position);
+                        companion.OnGetBlocked();
+                        break;
+                    case "Metal":
+                        Debug.Log("Metal");
+                        if (other.TryGetComponent(out Weapon weapon) && !weapon.isBlocking)
+                        {
+                            Debug.Log("Other weapon not blocking");
+                            break;
+                        }
+                        onDeflectCollision.Invoke("Metal", transform.position);
+                        companion.OnGetBlocked();
+                        break;
+                    case "Player":
+                    case "Flesh":
+                        Debug.Log("Flesh");
+                        onDeflectCollision.Invoke("Flesh", transform.position);
+                        companion.ChangeAttackState(HumanoidAttackAnimatorCompanion.AttackState.Return);
+                        break;
+                }
             }
         }
     }
@@ -245,6 +247,16 @@ public class Weapon : MonoBehaviour
     }
     
     #region Support Functions
+
+    private void SetPositionRotation(float time)
+    {
+        HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(time));
+        
+        up = Quaternion.AngleAxis(angle+90, core.forward) * Vector3.ProjectOnPlane(head.up,Vector3.forward); // Doesnt account for head tilt
+        forward = RotateVecAroundPoint(GetCurveTangent(time), Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
+            
+        HandIK.rotation = Quaternion.LookRotation(up, forward);
+    }
     private Vector3 RelativeRotation(Vector3 rotation)
     {
         return Quaternion.AngleAxis(core.transform.eulerAngles.y, Vector3.up) * Quaternion.AngleAxis(Mathf.Asin(head.forward.y) * Mathf.Rad2Deg, Vector3.left) * rotation;

@@ -26,6 +26,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     private float startTime;
     private float time;
     private float cutoffTime; // to track how far into attack it has to reverse
+    private float returnTime; // What time of the previous swing to return from
     private Weapon weaponScript;
     
     public enum AttackState
@@ -82,7 +83,14 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     public void ChangeAttackState(AttackState newState)
     {
-        weaponScript.SetActive(newState == AttackState.Swing);
+        if (attackState == AttackState.Recoil) returnTime = 0;
+        if (attackState == AttackState.Swing) returnTime = 1;
+        else
+        {
+            weaponScript.SetDamageActive(false);
+        }
+        
+        
         attackState = newState;
         onAttackStateChange.Invoke(attackState);
         startTime = Time.time;
@@ -91,6 +99,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     public void ChangeBlockState(BlockState newState)
     {
         blockState = newState;
+        weaponScript.SetBlockActive(blockState == BlockState.Block);
         onBlockStateChange.Invoke(blockState);
         startTime = Time.time;
     }
@@ -99,7 +108,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     {
         onGetBlocked.Invoke();
         cutoffTime = time;
-        attackState = AttackState.Recoil;
+        ChangeAttackState(AttackState.Recoil);
     }
 
     private void Update()
@@ -130,13 +139,13 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
                         }
                         break;
                     case AttackState.Recoil:
-                        if (weaponScript.RecoilAttack(cutoffTime - time))
+                        if (weaponScript.RecoilAttack(time,cutoffTime))
                         {
                             ChangeAttackState(AttackState.Return);
                         }
                         break;
                     case AttackState.Return:
-                        if (weaponScript.ReturnAttack(time))
+                        if (weaponScript.ReturnAttack(time, returnTime))
                         {
                             attacking = false;
                         }
