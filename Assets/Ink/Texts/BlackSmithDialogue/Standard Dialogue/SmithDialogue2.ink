@@ -1,4 +1,4 @@
-#speed:0.2
+#speed:0.025
 #animation:SagaPlaceholder
 #name:Saga 
 Oh, you’re back. I-... I’m really sorry I can't help you right now, im in a bit of a creative slump heh…
