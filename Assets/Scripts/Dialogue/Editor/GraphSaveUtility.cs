@@ -23,14 +23,28 @@ public class GraphSaveUtility
 
     public void SaveGraph(string fileName)
     {
-        var dialogueContainer = ScriptableObject.CreateInstance<DialogueContainer>();
+        DialogueContainer dialogueContainer = null;
+        bool containerExists = false;
+        if (Resources.Load<DialogueContainer>(fileName))
+        {
+            containerExists = true;
+            dialogueContainer = Resources.Load<DialogueContainer>(fileName);
+            dialogueContainer.Clear();
+        }
+        else
+        {
+            dialogueContainer = ScriptableObject.CreateInstance<DialogueContainer>();
+        }
         if (!SaveNodes(dialogueContainer))
         {
             return;
         }
         SaveExposedProperties(dialogueContainer);
 
-        AssetDatabase.CreateAsset(dialogueContainer, $"Assets/Scripts/Dialogue/Editor/Resources/{fileName}.asset");
+        if (!containerExists)
+        {
+            AssetDatabase.CreateAsset(dialogueContainer, $"Assets/Scripts/Dialogue/Editor/Resources/{fileName}.asset");
+        }
         AssetDatabase.SaveAssets();
     }
 
@@ -57,17 +71,13 @@ public class GraphSaveUtility
 
         foreach (var dialogueNode in Nodes.Where(node => !node.EntryPoint))
         {
-            TextAsset tempAsset = null;
-            if (dialogueNode.DialogueAsset)
-            {
-                tempAsset = dialogueNode.DialogueAsset;
-            }
             dialogueContainer.DialogueNodeData.Add(new DialogueNodeData
             {
                 Guid = dialogueNode.GUID,
                 DialogueText =  dialogueNode.DialogueText,
-                DialogueAsset = tempAsset,
+                DialogueAsset = dialogueNode.DialogueAsset,
                 Position = dialogueNode.GetPosition().position,
+                HasBeenRead = dialogueNode.HasBeenRead,
             });
         }
         return true;
@@ -139,7 +149,7 @@ public class GraphSaveUtility
     {
         foreach (var nodeData in _containerCache.DialogueNodeData)
         {
-            var tempNode = _targetGraphView.CreateDialogueNode(nodeData.DialogueText, Vector2.zero, nodeData.DialogueAsset);
+            var tempNode = _targetGraphView.CreateDialogueNode(nodeData.DialogueText, Vector2.zero, nodeData.DialogueAsset, nodeData.HasBeenRead);
             tempNode.GUID = nodeData.Guid;
             _targetGraphView.AddElement(tempNode);
 

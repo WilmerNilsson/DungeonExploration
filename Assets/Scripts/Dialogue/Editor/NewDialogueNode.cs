@@ -10,4 +10,6 @@ public class NewDialogueNode : Node
     public bool EntryPoint = false;
     
     public TextAsset DialogueAsset;
+    
+    public bool HasBeenRead;
 }

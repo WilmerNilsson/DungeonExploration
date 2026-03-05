@@ -84,19 +84,20 @@ public class DialogueGraphView : GraphView
         return node;
     }
 
-    public void CreateNode(string nodeName, Vector2 position, TextAsset textAsset)
+    public void CreateNode(string nodeName, Vector2 position, TextAsset textAsset, bool hasBeenRead)
     {
-        AddElement(CreateDialogueNode(nodeName, position, textAsset));
+        AddElement(CreateDialogueNode(nodeName, position, textAsset,  hasBeenRead));
     }
     
-    public NewDialogueNode CreateDialogueNode(string nodeName, Vector2 position, TextAsset textAsset)
+    public NewDialogueNode CreateDialogueNode(string nodeName, Vector2 position, TextAsset textAsset, bool hasBeenRead)
     {
         var dialogueNode = new NewDialogueNode
         {
             title = nodeName,
             DialogueText = nodeName,
             GUID = Guid.NewGuid().ToString(),
-            DialogueAsset = textAsset
+            DialogueAsset = textAsset,
+            HasBeenRead = hasBeenRead
         };
         
         var inputPort = GeneratePort(dialogueNode, Direction.Input, Port.Capacity.Multi);
@@ -125,6 +126,14 @@ public class DialogueGraphView : GraphView
         });
         assetField.SetValueWithoutNotify(dialogueNode.DialogueAsset);
         dialogueNode.mainContainer.Add(assetField);
+
+        var readField = new Toggle("Has been read");
+        readField.RegisterValueChangedCallback(evt =>
+        {
+            dialogueNode.HasBeenRead = evt.newValue;
+        });
+        readField.SetValueWithoutNotify(dialogueNode.HasBeenRead);
+        dialogueNode.mainContainer.Add(readField);
         
         dialogueNode.RefreshExpandedState();
         dialogueNode.RefreshPorts();
