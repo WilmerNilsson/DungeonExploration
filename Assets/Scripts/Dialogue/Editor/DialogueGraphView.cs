@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -83,18 +84,19 @@ public class DialogueGraphView : GraphView
         return node;
     }
 
-    public void CreateNode(string nodeName, Vector2 position)
+    public void CreateNode(string nodeName, Vector2 position, TextAsset textAsset)
     {
-        AddElement(CreateDialogueNode(nodeName, position));
+        AddElement(CreateDialogueNode(nodeName, position, textAsset));
     }
     
-    public NewDialogueNode CreateDialogueNode(string nodeName, Vector2 position)
+    public NewDialogueNode CreateDialogueNode(string nodeName, Vector2 position, TextAsset textAsset)
     {
         var dialogueNode = new NewDialogueNode
         {
             title = nodeName,
             DialogueText = nodeName,
-            GUID = Guid.NewGuid().ToString()
+            GUID = Guid.NewGuid().ToString(),
+            DialogueAsset = textAsset
         };
         
         var inputPort = GeneratePort(dialogueNode, Direction.Input, Port.Capacity.Multi);
@@ -115,6 +117,14 @@ public class DialogueGraphView : GraphView
         });
         textField.SetValueWithoutNotify(dialogueNode.title);
         dialogueNode.mainContainer.Add(textField);
+        
+        var assetField = new ObjectField();
+        assetField.RegisterValueChangedCallback(evt =>
+        {
+            dialogueNode.DialogueAsset = (TextAsset)evt.newValue;
+        });
+        assetField.SetValueWithoutNotify(dialogueNode.DialogueAsset);
+        dialogueNode.mainContainer.Add(assetField);
         
         dialogueNode.RefreshExpandedState();
         dialogueNode.RefreshPorts();

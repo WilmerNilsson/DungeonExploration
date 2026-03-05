@@ -8,4 +8,6 @@ public class NewDialogueNode : Node
     public string DialogueText;
     
     public bool EntryPoint = false;
+    
+    public TextAsset DialogueAsset;
 }

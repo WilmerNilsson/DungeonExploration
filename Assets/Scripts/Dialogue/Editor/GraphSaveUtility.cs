@@ -51,17 +51,23 @@ public class GraphSaveUtility
             {
                 BaseNodeGuid = outputNode.GUID,
                 PortName = connectedPorts[i].output.portName,
-                TargetNodeGuid = inputNode.GUID
+                TargetNodeGuid = inputNode.GUID,
             });
         }
 
         foreach (var dialogueNode in Nodes.Where(node => !node.EntryPoint))
         {
+            TextAsset tempAsset = null;
+            if (dialogueNode.DialogueAsset)
+            {
+                tempAsset = dialogueNode.DialogueAsset;
+            }
             dialogueContainer.DialogueNodeData.Add(new DialogueNodeData
             {
                 Guid = dialogueNode.GUID,
                 DialogueText =  dialogueNode.DialogueText,
-                Position = dialogueNode.GetPosition().position
+                DialogueAsset = tempAsset,
+                Position = dialogueNode.GetPosition().position,
             });
         }
         return true;
@@ -133,7 +139,7 @@ public class GraphSaveUtility
     {
         foreach (var nodeData in _containerCache.DialogueNodeData)
         {
-            var tempNode = _targetGraphView.CreateDialogueNode(nodeData.DialogueText, Vector2.zero);
+            var tempNode = _targetGraphView.CreateDialogueNode(nodeData.DialogueText, Vector2.zero, nodeData.DialogueAsset);
             tempNode.GUID = nodeData.Guid;
             _targetGraphView.AddElement(tempNode);
 
