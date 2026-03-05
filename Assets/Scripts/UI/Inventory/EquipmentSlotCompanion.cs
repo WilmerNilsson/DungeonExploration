@@ -6,7 +6,7 @@ public class EquipmentSlotCompanion : MonoBehaviour
     {
         if(item.TryGetComponent(out UIWeapon weapon))
         {
-
+            weapon.Equip();
         }
         //no else since the equipment grid is supposed to also deal with normal weapons
     }
