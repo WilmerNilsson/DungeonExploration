@@ -33,9 +33,14 @@ public class EquipmentSlotCompanion : MonoBehaviour
 
     public void OnEquip(SimpleItem item)
     {
-        if(item.TryGetComponent(out UIWeapon weapon))
+        if(item.TryGetComponent(out UIWeapon uIWeapon))
         {
-            humanoidAttackCompanion.Equip(weapon.GetEquipPrefab());
+            GameObject prefab = uIWeapon.GetEquipPrefab();
+
+            if (humanoidAttackCompanion.TryEquip(prefab, out Weapon? weaponScript))
+            {
+                uIWeapon.ConnectToWeapon(weaponScript);
+            }
         }
         //no else since the equipment grid is supposed to also deal with normal weapons
     }

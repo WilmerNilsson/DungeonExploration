@@ -5,6 +5,7 @@ public class ContainerController : MonoBehaviour
     //we prob want a scrriptable object with a list of all items with thier UI variants, and if so we can reference them here.
     [SerializeField] private GameObject[] spawnItems;
     [SerializeField] private InventoryGrid myGrid;
+    [SerializeField] private Transform canvasTransform;
 
     public InventoryGrid Grid { get { return myGrid; } }
 
@@ -15,7 +16,6 @@ public class ContainerController : MonoBehaviour
         
         foreach (GameObject item in spawnItems)
         {
-
             if(item == null)
             {
                 Debug.LogWarning("spawn items has a null entry", this);
@@ -70,7 +70,7 @@ public class ContainerController : MonoBehaviour
 
     public void Close()
     {
-        myGrid.transform.SetParent(transform, false);
+        myGrid.transform.SetParent(canvasTransform, false);
         myGrid.gameObject.SetActive(false);
     }
 }

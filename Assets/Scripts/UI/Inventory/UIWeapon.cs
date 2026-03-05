@@ -1,8 +1,34 @@
+using System;
+using TMPro;
 using UnityEngine;
 
 public class UIWeapon : MonoBehaviour
 {
     [SerializeField] private GameObject weaponPrefab;
+    [SerializeField] private TextMeshProUGUI durabilityText;
+
+#nullable enable
+    private int Durability
+    {
+        get
+        {
+            if(worldWeapon == null)
+            {
+                return _durability;
+            }
+            else
+            {
+                return worldWeapon.Durability;
+            }
+        }
+        set
+        {
+            if (worldWeapon != null) Debug.LogWarning("can't change durability of world weapon", this);
+            _durability = value; 
+        }
+    }
+    private int _durability;
+    private Weapon? worldWeapon;
 
 #if UNITY_EDITOR
     private void OnValidate()
@@ -15,20 +41,45 @@ public class UIWeapon : MonoBehaviour
         {
             Debug.LogWarning("weapon prefabs lack Weapon script", this);
         }
+
+        if (durabilityText == null) Debug.LogWarning("durabilityText is null");
     }
 #endif
 
-    public void Unequip()
+    private void Start()
     {
-
+        if(weaponPrefab.TryGetComponent(out Weapon component))
+        {
+            Durability = component.Durability;
+            UpdateDurabilityText();
+        }
     }
 
-    /// <summary>
-    /// returns the prefab
-    /// </summary>
-    /// <returns></returns>
+    public void Unequip()
+    {
+        worldWeapon = null;
+    }
+
     public GameObject GetEquipPrefab()
     {
         return weaponPrefab;
+    }
+
+    public void ConnectToWeapon(Weapon weaponScript)
+    {
+        worldWeapon = weaponScript;
+        if(worldWeapon.Durability >  _durability)
+        {
+            int diff = worldWeapon.Durability - _durability;
+
+            worldWeapon.LoseDurability(diff);
+        }
+        UpdateDurabilityText();
+        worldWeapon.OnDamage.AddListener(UpdateDurabilityText);
+    }
+
+    private void UpdateDurabilityText()
+    {
+        durabilityText.text = Durability.ToString();
     }
 }
