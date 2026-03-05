@@ -801,9 +801,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6190631081220298327, guid: d97210db1b67d4147b101a952d97bb0a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 496881180765593457}
-    - targetCorrespondingSourceObject: {fileID: 6190631081220298327, guid: d97210db1b67d4147b101a952d97bb0a, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2566017086557738624}
   m_SourcePrefab: {fileID: 100100000, guid: d97210db1b67d4147b101a952d97bb0a, type: 3}
 --- !u!1 &5952382912171683795 stripped
@@ -811,29 +808,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6190631081220298327, guid: d97210db1b67d4147b101a952d97bb0a, type: 3}
   m_PrefabInstance: {fileID: 536656867820697988}
   m_PrefabAsset: {fileID: 0}
---- !u!136 &496881180765593457
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5952382912171683795}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 75
-  m_Height: 204.34248
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: -39.22}
 --- !u!114 &2566017086557738624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3980,7 +3954,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Brute Variant
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6193220051377203220, guid: 9f65ddbfe6b2ce048995fa84391f18df, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -4531,24 +4506,8 @@ PrefabInstance:
       value: Crazed Adventurer
       objectReference: {fileID: 0}
     - target: {fileID: 6585525176343910314, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
-      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6585525176343910314, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
-      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[3].m_Target
-      value: 
-      objectReference: {fileID: 5400127360633558297}
-    - target: {fileID: 6585525176343910314, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
       propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
-      value: SetActive
-      objectReference: {fileID: 0}
-    - target: {fileID: 6585525176343910314, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
-      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
-      value: UnityEngine.GameObject, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 6585525176343910314, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
-      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_BoolArgument
-      value: 1
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8600154565869652437, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4590,7 +4549,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3237472068707862933, guid: 28c0a8d2fc8fcb842a8527c365133173, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -5297,11 +5257,6 @@ PrefabInstance:
 --- !u!4 &4305520528759956904 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8991584332346246409, guid: ab9cab605a06f5045a5b58189bf5af56, type: 3}
-  m_PrefabInstance: {fileID: 5118567838433730721}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &5400127360633558297 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1007070657314993592, guid: ab9cab605a06f5045a5b58189bf5af56, type: 3}
   m_PrefabInstance: {fileID: 5118567838433730721}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &8346862650472214973 stripped
