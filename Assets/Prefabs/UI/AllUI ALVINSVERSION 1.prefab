@@ -232,6 +232,7 @@ GameObject:
   - component: {fileID: 6060997760445576478}
   - component: {fileID: 8754690738832312826}
   - component: {fileID: 415840000165690085}
+  - component: {fileID: 6201132772843411520}
   m_Layer: 5
   m_Name: EquipmentGrid
   m_TagString: Untagged
@@ -256,7 +257,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -345, y: -20}
-  m_SizeDelta: {x: 100, y: 300}
+  m_SizeDelta: {x: 100, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6060997760445576478
 CanvasRenderer:
@@ -309,9 +310,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collumns: 1
-  rows: 3
-  drawCenter: 0
+  rows: 4
+  OnGetNewItem:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6201132772843411520}
+        m_TargetAssemblyTypeName: EquipmentSlotCompanion, GameAssembly
+        m_MethodName: OnEquip
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnRemoveItem:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6201132772843411520}
+        m_TargetAssemblyTypeName: EquipmentSlotCompanion, GameAssembly
+        m_MethodName: OnRemove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  drawCenter: 1
   drawGrid: 0
+  drawOccupied: 0
+--- !u!114 &6201132772843411520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206623218900397818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3870f4a2d5b1c4548936bd03aec4d493, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1265164431920441727
 GameObject:
   m_ObjectHideFlags: 0
@@ -465,6 +509,7 @@ Transform:
   - {fileID: 439861106684584939}
   - {fileID: 5299878276788398101}
   - {fileID: 3267315949973736005}
+  - {fileID: 6601003828523324850}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1625763706233792773
@@ -695,8 +740,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collumns: 5
   rows: 5
+  OnGetNewItem:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRemoveItem:
+    m_PersistentCalls:
+      m_Calls: []
   drawCenter: 0
   drawGrid: 0
+  drawOccupied: 0
 --- !u!1 &2028788476806253493
 GameObject:
   m_ObjectHideFlags: 0
@@ -1631,10 +1683,7 @@ MonoBehaviour:
   <PlayerInventory>k__BackingField: {fileID: 508978749890990357}
   drawOntopParent: {fileID: 5340484629304313659}
   descriptionText: {fileID: 1274798032711675545}
-  equipmentGrid: {fileID: 415840000165690085}
-  OnEquip:
-    m_PersistentCalls:
-      m_Calls: []
+  <EquipmentGrid>k__BackingField: {fileID: 415840000165690085}
   contextMenu: {fileID: 4141649185545460554}
   worldContainerParent: {fileID: 826116566284243698}
   playerInventory: {fileID: 1628111738432857123}
@@ -4093,6 +4142,68 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SceneName: Town_Scene
+--- !u!1001 &1162330400538153921
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1018606354579577374}
+    m_Modifications:
+    - target: {fileID: 5456699554023245427, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5456699554023245427, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5456699554023245427, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5456699554023245427, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5456699554023245427, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5456699554023245427, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5456699554023245427, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5456699554023245427, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5456699554023245427, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5456699554023245427, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5721559782761071114, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
+      propertyPath: m_Name
+      value: Minimap
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
+--- !u!4 &6601003828523324850 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5456699554023245427, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
+  m_PrefabInstance: {fileID: 1162330400538153921}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1389397217698127642
 PrefabInstance:
   m_ObjectHideFlags: 0
