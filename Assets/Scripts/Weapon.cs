@@ -253,7 +253,7 @@ public class Weapon : MonoBehaviour
     {
         HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(time));
         
-        up = Quaternion.AngleAxis(Angle+90, Core.forward) * Vector3.ProjectOnPlane(Head.up,Vector3.forward); // Doesnt account for head tilt
+        up = Quaternion.AngleAxis(Angle+90, Head.forward) * Head.up; // Doesnt account for head tilt
         forward = RotateVecAroundPoint(GetCurveTangent(time), Quaternion.AngleAxis(Core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
             
         HandIK.rotation = Quaternion.LookRotation(up, forward);
