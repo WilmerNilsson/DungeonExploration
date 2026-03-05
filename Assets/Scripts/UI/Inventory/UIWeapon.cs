@@ -9,22 +9,26 @@ public class UIWeapon : MonoBehaviour
     {
         if(weaponPrefab == null)
         {
-            //Debug.LogWarning("weapon prefab is null", this);
+            Debug.LogWarning("weapon prefab is null", this);
         }
         else if (!weaponPrefab.TryGetComponent<Weapon>(out _))
         {
-            //Debug.LogWarning("weapon prefabs lack ___ script", this);
+            Debug.LogWarning("weapon prefabs lack Weapon script", this);
         }
     }
 #endif
 
     public void Unequip()
     {
-        Debug.Log("unequip :(", this);
+
     }
 
-    public void Equip()
+    /// <summary>
+    /// returns the prefab
+    /// </summary>
+    /// <returns></returns>
+    public GameObject GetEquipPrefab()
     {
-        Debug.Log("equip!", this);
+        return weaponPrefab;
     }
 }

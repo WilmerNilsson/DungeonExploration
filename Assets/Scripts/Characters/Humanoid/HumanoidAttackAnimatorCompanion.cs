@@ -47,7 +47,11 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     private void Start()
     {
-        if (weaponScript == null)
+        if (weapon == null)
+        {
+            Debug.Log("no weapon has been assigned to " + this);
+        }
+        else if (weaponScript == null)
         {
             hasWeapon = weapon.TryGetComponent(out weaponScript);
         }
@@ -55,29 +59,35 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     public void Attack(float angle)
     {
-        if (!attacking && !blocking)
+        if (hasWeapon)
         {
-            ChangeAttackState(AttackState.Charge);
-            attacking = true;
-            weaponScript.angle = angle;
+            if (!attacking && !blocking)
+            {
+                ChangeAttackState(AttackState.Charge);
+                attacking = true;
+                weaponScript.Angle = angle;
+            }
         }
     }
     
     public void Block(float angle)
     {
-        if (!attacking && !blocking)
+        if (hasWeapon)
         {
-            ChangeBlockState(BlockState.Charge);
-            blocking = true;
-            weaponScript.angle = angle;
-            Vector3 anglePos = new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), -Mathf.Cos(angle * Mathf.Deg2Rad), 0);
-            Vector3 offsetPos = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0);
-            if (angle > 0)
+            if (!attacking && !blocking)
             {
-                offsetPos = -offsetPos;
+                ChangeBlockState(BlockState.Charge);
+                blocking = true;
+                weaponScript.Angle = angle;
+                Vector3 anglePos = new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), -Mathf.Cos(angle * Mathf.Deg2Rad), 0);
+                Vector3 offsetPos = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0);
+                if (angle > 0)
+                {
+                    offsetPos = -offsetPos;
+                }
+                weaponScript.BlockPos = anglePos;
+                weaponScript.BlockOffset = offsetPos;
             }
-            weaponScript.BlockPos = anglePos;
-            weaponScript.BlockOffset = offsetPos;
         }
     }
 
@@ -185,18 +195,19 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         }
     }
 
-    public void Equip(GameObject newWeapon)
+    public void Equip(GameObject newWeaponPrefab)
     {
         Destroy(weapon);
-        weapon = Instantiate(newWeapon, hand);
-        if (TryGetComponent(out Weapon script))
+        weapon = Instantiate(newWeaponPrefab, hand);
+        if (!weapon.TryGetComponent(out Weapon weaponScript))
         {
-            Debug.Log("No weapon script found on " + newWeapon);
+            Debug.LogError("No weapon script found on " + weapon);
+            return;
         }
-        script.companion = this;
-        script.swordArm = swordArm;
-        script.head = head;
-        script.core = core;
+        weaponScript.Companion = this;
+        weaponScript.SwordArm = swordArm;
+        weaponScript.Head = head;
+        weaponScript.Core = core;
     }
 
     public void Activate()
