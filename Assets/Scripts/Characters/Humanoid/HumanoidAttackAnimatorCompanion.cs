@@ -50,7 +50,11 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     private void Start()
     {
-        if (weaponScript == null)
+        if (weapon == null)
+        {
+            Debug.Log("no weapon has been assigned to " + this);
+        }
+        else if (weaponScript == null)
         {
             hasWeapon = weapon.TryGetComponent(out weaponScript);
         }
@@ -58,29 +62,35 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     public void Attack(float angle)
     {
-        if (!attacking && !blocking)
+        if (hasWeapon)
         {
-            ChangeAttackState(AttackState.Charge);
-            attacking = true;
-            weaponScript.Angle = angle;
+            if (!attacking && !blocking)
+            {
+                ChangeAttackState(AttackState.Charge);
+                attacking = true;
+                weaponScript.Angle = angle;
+            }
         }
     }
     
     public void Block(float angle)
     {
-        if (!attacking && !blocking)
+        if (hasWeapon)
         {
-            ChangeBlockState(BlockState.Charge);
-            blocking = true;
-            weaponScript.Angle = angle;
-            Vector3 anglePos = new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), -Mathf.Cos(angle * Mathf.Deg2Rad), 0);
-            Vector3 offsetPos = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0);
-            if (angle > 0)
+            if (!attacking && !blocking)
             {
-                offsetPos = -offsetPos;
+                ChangeBlockState(BlockState.Charge);
+                blocking = true;
+                weaponScript.Angle = angle;
+                Vector3 anglePos = new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), -Mathf.Cos(angle * Mathf.Deg2Rad), 0);
+                Vector3 offsetPos = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0);
+                if (angle > 0)
+                {
+                    offsetPos = -offsetPos;
+                }
+                weaponScript.BlockPos = anglePos;
+                weaponScript.BlockOffset = offsetPos;
             }
-            weaponScript.BlockPos = anglePos;
-            weaponScript.BlockOffset = offsetPos;
         }
     }
 
