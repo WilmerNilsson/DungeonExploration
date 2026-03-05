@@ -65,11 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Hello Hello I''m Aiden, I am listening to Symphony No. 5 in C minor, Op.
-    67
-
-
-    Pwease buy my Bitcoins :)'
+  m_text: 'If you see this then something has gone wrong '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 56321e81821ad78428942d9943f1e90d, type: 2}
   m_sharedMaterial: {fileID: -4238060652222663036, guid: 56321e81821ad78428942d9943f1e90d, type: 2}
@@ -205,7 +201,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Welcome to G\xFCnhildr "
+  m_text: 'Welcome to Gunhildr '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 56321e81821ad78428942d9943f1e90d, type: 2}
   m_sharedMaterial: {fileID: -4238060652222663036, guid: 56321e81821ad78428942d9943f1e90d, type: 2}
@@ -863,7 +859,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Go back to the Dungeon
+  m_text: 'Venture back into
+
+    Agathol'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 56321e81821ad78428942d9943f1e90d, type: 2}
   m_sharedMaterial: {fileID: -4238060652222663036, guid: 56321e81821ad78428942d9943f1e90d, type: 2}
@@ -1850,6 +1848,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
+        m_MethodName: ChangeLocation
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Outside
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1345385112755540474
 GameObject:
   m_ObjectHideFlags: 0
@@ -2087,9 +2097,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Go to the Smith
-
-'
+  m_text: Visit the blacksmith
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 56321e81821ad78428942d9943f1e90d, type: 2}
   m_sharedMaterial: {fileID: -4238060652222663036, guid: 56321e81821ad78428942d9943f1e90d, type: 2}
@@ -2630,7 +2638,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: I won't talk to you anymore
+  m_text: Back
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 56321e81821ad78428942d9943f1e90d, type: 2}
   m_sharedMaterial: {fileID: -4238060652222663036, guid: 56321e81821ad78428942d9943f1e90d, type: 2}
@@ -2991,6 +2999,9 @@ MonoBehaviour:
   collumns: 5
   rows: 5
   OnGetNewItem:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRemoveItem:
     m_PersistentCalls:
       m_Calls: []
   drawCenter: 0
@@ -7006,6 +7017,9 @@ MonoBehaviour:
   OnGetNewItem:
     m_PersistentCalls:
       m_Calls: []
+  OnRemoveItem:
+    m_PersistentCalls:
+      m_Calls: []
   drawCenter: 0
   drawGrid: 0
   drawOccupied: 0
@@ -7336,6 +7350,9 @@ MonoBehaviour:
   collumns: 1
   rows: 4
   OnGetNewItem:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRemoveItem:
     m_PersistentCalls:
       m_Calls: []
   drawCenter: 0
@@ -7852,6 +7869,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
+        m_MethodName: ChangeLocation
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Blacksmith
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &5934387239132045577
@@ -8389,9 +8418,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Go to the Merchant
-
-'
+  m_text: Visit the general store
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 56321e81821ad78428942d9943f1e90d, type: 2}
   m_sharedMaterial: {fileID: -4238060652222663036, guid: 56321e81821ad78428942d9943f1e90d, type: 2}
@@ -8556,6 +8583,9 @@ MonoBehaviour:
   collumns: 1
   rows: 5
   OnGetNewItem:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRemoveItem:
     m_PersistentCalls:
       m_Calls: []
   drawCenter: 0
@@ -11624,6 +11654,12 @@ PrefabInstance:
     - target: {fileID: 7076339026390234441, guid: 45ac0dbe1ab7a66489e1e7f6fd5e54f3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7450670354168757697, guid: 45ac0dbe1ab7a66489e1e7f6fd5e54f3, type: 3}
+      propertyPath: m_text
+      value: 'Back
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 7450670354168757697, guid: 45ac0dbe1ab7a66489e1e7f6fd5e54f3, type: 3}
       propertyPath: m_fontSize

@@ -181,6 +181,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collumns: 7
   rows: 4
+  OnGetNewItem:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRemoveItem:
+    m_PersistentCalls:
+      m_Calls: []
   drawCenter: 0
   drawGrid: 0
   drawOccupied: 1
@@ -619,6 +625,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnItems: []
   myGrid: {fileID: 8767876181034157955}
+  canvasTransform: {fileID: 5713375083104676381}
 --- !u!1001 &2759032842727245898
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -718,8 +725,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7039417583642897791, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 888623324702191847}
   m_SourcePrefab: {fileID: 100100000, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
+--- !u!1 &5186745161048696117 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7039417583642897791, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
+  m_PrefabInstance: {fileID: 2759032842727245898}
+  m_PrefabAsset: {fileID: 0}
+--- !u!208 &888623324702191847
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5186745161048696117}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!4 &6531636182816706209 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9002419953319806699, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
@@ -730,7 +761,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5768141320601430604, guid: 04b09b9e06629824394fb6979915ecc1, type: 3}
   m_PrefabInstance: {fileID: 2759032842727245898}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 5186745161048696117}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a814d164a17170438a13d63660122b5, type: 3}

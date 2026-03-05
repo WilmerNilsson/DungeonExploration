@@ -12,7 +12,12 @@ public class Weapon : MonoBehaviour
     
     [Header("Weapon Stats")]
     [SerializeField, Min(1)] private int damage = 1;
-    [SerializeField, Min(1)] private int durability = 1;
+    [field: SerializeField, Min(1), FormerlySerializedAs("durability")] 
+    public int Durability 
+    {
+        get;
+        private set;
+    } = 1;
     [SerializeField] private bool dealDamage = false;
     [SerializeField] private bool isBlocking = false;
     [SerializeField] private bool unbreakable;
@@ -239,8 +244,8 @@ public class Weapon : MonoBehaviour
         {
             return;
         }
-        durability -= amount;
-        if (durability <= 0)
+        Durability -= amount;
+        if (Durability <= 0)
         {
             Destroy(gameObject);
         }

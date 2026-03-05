@@ -1,4 +1,4 @@
-#speed:0.2
+#speed:0.025
 #animation:AidenPlaceholder
 #name:Aiden
 <i>ugghhhh… maybe dad was right, even with her help i can barely scrape by anymore. Fuck all of this… </i>

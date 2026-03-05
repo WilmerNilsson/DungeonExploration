@@ -1,4 +1,4 @@
-#speed:0.2
+#speed:0.025
 #animation:AidenPlaceholder
 #name:Aiden
 <i>ugghhhhhhh…. What the hell is wrong with me? </i>
