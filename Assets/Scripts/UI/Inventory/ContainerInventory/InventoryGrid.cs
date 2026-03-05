@@ -17,6 +17,7 @@ public class InventoryGrid : MonoBehaviour
     [SerializeField, Min(1)] private int rows = 1;
 
     private bool hasBeenEnabled = false;
+#nullable enable
 
     public UnityEvent<SimpleItem>? OnGetNewItem;
     public UnityEvent<SimpleItem>? OnRemoveItem;
