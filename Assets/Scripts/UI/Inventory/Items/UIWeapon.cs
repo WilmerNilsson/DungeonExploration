@@ -63,6 +63,7 @@ public class UIWeapon : MonoBehaviour
 
     public void Unequip()
     {
+        _durability = worldWeapon.Durability;
         worldWeapon = null;
     }
 

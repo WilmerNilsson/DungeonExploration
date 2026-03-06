@@ -9,6 +9,8 @@ public class SaveFileHelperContainer : MonoBehaviour
     [SerializeField] private string prefabID;
     [SerializeField] private ItemLibrarySO itemLibrary;
 
+#nullable enable
+
 #if UNITY_EDITOR
     private void OnValidate()
     {
@@ -23,8 +25,6 @@ public class SaveFileHelperContainer : MonoBehaviour
         spawnTransform.position = data.Position;
         spawnTransform.rotation = data.Rotation;
 
-
-
         PopulateInventory(itemLibrary, data.Inventory, grid);
     }
 
@@ -32,17 +32,27 @@ public class SaveFileHelperContainer : MonoBehaviour
     {
         foreach (InventorySaveData.InventoryItem item in inventory.Items)
         {
-            bool couldGetItem = library.TryGetItemPairByName(item.PrefabID, out var pair);
-
-            if (!couldGetItem)
+            if(library.TryGetItemPairByName(item.PrefabID, out var pair))
+            {
+                if (grid.TryInstantiateItemInSlot(item.Slot, pair.UIPrefab, out SimpleItem? newItem))
+                {
+                    if(newItem.TryGetComponent(out IExtraDataHelper helper))
+                    {
+                        helper.GiveExtraData(item.ExtraJsonSerializeData);
+                    }
+                }
+                else
+                {
+                    Debug.LogError($"failed to initialize item by name {item.PrefabID} in slot {item.Slot}");
+                    continue;
+                }
+            }
+            else
             {
                 Debug.LogError("failed to get item by name: " + item.PrefabID);
                 continue;
             }
-            if (!grid.TryInstantiateItemInSlot(item.Slot, pair.UIPrefab))
-            {
-                Debug.LogError($"failed to initialize item by name {item.PrefabID} in slot {item.Slot}");
-            }
+
         }
     }
 

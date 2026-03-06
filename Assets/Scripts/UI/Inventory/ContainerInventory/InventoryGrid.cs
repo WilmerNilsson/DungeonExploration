@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -324,7 +325,12 @@ public class InventoryGrid : MonoBehaviour
 
     public bool TryInstantiateItemInSlot(int slot, GameObject prefab)
     {
-        if (prefab.TryGetComponent<SimpleItem>(out SimpleItem component))
+        return TryInstantiateItemInSlot(slot, prefab, out _);
+    }
+
+    public bool TryInstantiateItemInSlot(int slot, GameObject prefab, [NotNullWhen(true)] out SimpleItem? item)
+    {
+        if (prefab.TryGetComponent(out SimpleItem component))
         {
             int collum = slot % (collumns);
             int row = (slot - collum) / (collumns);
@@ -333,11 +339,12 @@ public class InventoryGrid : MonoBehaviour
             //7890123
             //0123456
 
-            return TryPutItemInSlot(component, collum, row, true);
+            return TryPutItemInSlot(component, collum, row, out item, true);
         }
         else
         {
             Debug.LogError($"can't instanciate prefab {prefab}, cause it is not a simple item", this);
+            item = null;
             return false;
         }
     }
@@ -359,6 +366,10 @@ public class InventoryGrid : MonoBehaviour
                 //4567
                 //0123
                 item.Slot = (row * collumns) + collum;
+                if(InvData[collum, row]!.Item.TryGetComponent(out IExtraDataHelper extraDataHelper))
+                {
+                    item.ExtraJsonSerializeData = extraDataHelper.GetExtraData();
+                }
 
                 data.Add(item);
             }
@@ -420,7 +431,13 @@ public class InventoryGrid : MonoBehaviour
 
     private bool TryPutItemInSlot(SimpleItem item, int collum, int row, bool instantiate = false)
     {
+        return TryPutItemInSlot(item, collum, row, out _, instantiate);
+    }
+
+    private bool TryPutItemInSlot(SimpleItem item, int collum, int row, out SimpleItem? instanciateItem, bool instantiate = false)
+    {
         bool[,] itemSlots = item.GetSizeMatrix();
+        instanciateItem = null;
 
         for (int x = 0; x < itemSlots.GetLength(0); x++)
         {
@@ -443,6 +460,7 @@ public class InventoryGrid : MonoBehaviour
         if ( instantiate )
         {
             item = Instantiate(item.gameObject).GetComponent<SimpleItem>();
+            instanciateItem = item;
         }
         else
         {
