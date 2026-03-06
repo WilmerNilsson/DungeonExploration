@@ -7,7 +7,7 @@ public class ItemLibrarySO : ScriptableObject
 {
     [SerializeField] private ItemPairing[] itemPairs = { };
 
-#if DEBUG
+#if DEBUG && UNITY_EDITOR
     private void OnValidate()
     {
         for (int i = 0; i < itemPairs.Length; i++)
@@ -19,20 +19,20 @@ public class ItemLibrarySO : ScriptableObject
             }
             if (pair.UIPrefab == null)
             {
-                Debug.LogWarning($"pair index {i} lacks UI prefab", this);
+                Debug.LogWarning($"pair index {i}, name {pair.Name} lacks UI prefab", this);
             }
             else if(!pair.UIPrefab.TryGetComponent<SimpleItem>(out _))
             {
-                Debug.LogWarning($"pair index {i} UI prefab has no SimpleItem Script", this);
+                Debug.LogWarning($"pair index {i}, name {pair.Name} UI prefab has no SimpleItem Script", this);
             }
 
             if (pair.WorldPrefab == null)
             {
-                Debug.LogWarning($"pair index {i} lacks World prefab", this);
+                Debug.LogWarning($"pair index {i}, name {pair.Name} lacks World prefab", this);
             }
             else if (!pair.WorldPrefab.TryGetComponent<ItemPickup>(out _))
             {
-                Debug.LogWarning($"pair index {i} World prefab has no ItemPickup Script", this);
+                Debug.LogWarning($"pair index {i}, name {pair.Name} World prefab has no ItemPickup Script", this);
             }
         }
     }

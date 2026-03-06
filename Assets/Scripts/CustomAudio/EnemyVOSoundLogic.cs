@@ -41,32 +41,36 @@ public class EnemyVOSoundLogic : MonoBehaviour
     
     private MadAventurerBaseState _lastState = new MadAdventurerIdleState();
     
-    public void OnMadStateChange(MadAventurerBaseState newState) //TODO: fixa så att den använder nya systemet när det finns
+    public void OnMadStateChange(MadAventurerBaseState newState)
     {
         if (newState.GetType() == typeof(MadAdventurerChasingState) && _lastState.GetType() == typeof(MadAdventurerIdleState))
         {
             AudioManager.Instance.SetParameter(enemyVoPath, parameters.state, 1, gameObject);
+            CombatChecker.AddToChaseList(gameObject);
         }
         if (_lastState.GetType() == typeof(MadAdventurerChasingState) && newState.GetType() == typeof(MadAdventurerIdleState))
         {
             AudioManager.Instance.SetParameter(enemyVoPath, parameters.state, 0, gameObject);
+            CombatChecker.RemoveFromChaseList(gameObject);
         }
         _lastState = newState;
     }
     
-    public void OnAttack(HumanoidIK.AttackState newState)
+    public void OnAttack(HumanoidAttackAnimatorCompanion.AttackState newState)
     {
         if (!AudioManager.IsValid) return;
         switch (newState)
         {
-            case HumanoidIK.AttackState.Start:
+            case HumanoidAttackAnimatorCompanion.AttackState.Charge:
                 break;
-            case HumanoidIK.AttackState.Swing:
+            case HumanoidAttackAnimatorCompanion.AttackState.Hold:
+                break;
+            case HumanoidAttackAnimatorCompanion.AttackState.Swing:
                 AudioManager.Instance.SetParameter(enemyVoPath, parameters.attack, 1, gameObject);
                 break;
-            case HumanoidIK.AttackState.Return:
+            case HumanoidAttackAnimatorCompanion.AttackState.Return:
                 break;
-            case HumanoidIK.AttackState.Interrupt:
+            case HumanoidAttackAnimatorCompanion.AttackState.Recoil:
                 AudioManager.Instance.SetParameter(enemyVoPath, parameters.stun, 1, gameObject);
                 break;
             default:
@@ -86,6 +90,7 @@ public class EnemyVOSoundLogic : MonoBehaviour
         AudioManager.Instance.SetParameter(enemyVoPath, parameters.death, 1, gameObject);
         AudioManager.Instance.StopEvent(enemyVoPath, STOP_MODE.ALLOWFADEOUT, gameObject);
         AudioManager.Instance.ReleaseInstance(enemyVoPath, gameObject);
+        CombatChecker.RemoveFromChaseList(gameObject);
     }
     
     private void OnDestroy()
@@ -93,5 +98,6 @@ public class EnemyVOSoundLogic : MonoBehaviour
         if (!AudioManager.IsValid) return;
         AudioManager.Instance.StopEvent(enemyVoPath, STOP_MODE.ALLOWFADEOUT, gameObject);
         AudioManager.Instance.ReleaseInstance(enemyVoPath, gameObject);
+        CombatChecker.RemoveFromChaseList(gameObject);
     }
 }

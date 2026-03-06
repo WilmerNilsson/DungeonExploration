@@ -9,7 +9,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
     [SerializeField] private Hunger hunger;
     [SerializeField] private Sanity sanity;
 
-#if DEBUG
+#if DEBUG && UNITY_EDITOR
     private void OnValidate()
     {
         if (spawnTransform == null) Debug.LogWarning("spawn transform is null", this);
@@ -23,6 +23,8 @@ public class SaveFileHelperPlayer : MonoBehaviour
 
     public void Initialize(PlayerSaveData data)
     {
+        Debug.Log("from town:" + data.FromTown);
+
         if(data.FromTown)
         {
             FromTown();

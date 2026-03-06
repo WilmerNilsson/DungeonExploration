@@ -13,6 +13,30 @@ public class MerchantInventory : MonoBehaviour
 
 #nullable enable
 
+    private void OnEnable()
+    {
+        if(InvMasterBase.Instance is InvMasterTown town)
+        {
+            town.SetActiveMerchantInventory(this);
+        }
+        else
+        {
+            Debug.LogError("inventory master base is not town", this);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (InvMasterBase.Instance is InvMasterTown town)
+        {
+            town.RemoveActiveMerchantInventory(this);
+        }
+        else
+        {
+            Debug.LogError("inventory master base is not town", this);
+        }
+    }
+
     private bool buyIsActiveGrid = true;
     public InventoryGrid ActiveGrid
     {
@@ -119,14 +143,11 @@ public class MerchantInventory : MonoBehaviour
         return playerCashSO.CanAfford(item.CashValue);
     }
 
-    /// <summary>
-    /// Check CostPredicate before doing this
-    /// removes the item cost from player cash
-    /// </summary>
-    public bool TryRemoveSlottedItem(SimpleItem item)
+    public void BuyItem(SimpleItem item)
     {
-        playerCashSO.TryBuy(item.CashValue);
-
-        return ActiveGrid.TryRemoveSlottedItem(item);
+        if(!playerCashSO.TryBuy(item.CashValue))
+        {
+            Debug.LogError("failed to buy item", this);
+        }
     }
 }
