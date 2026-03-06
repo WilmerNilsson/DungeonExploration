@@ -66,11 +66,12 @@ public class DialogueGraphView : GraphView
         {
             title = "START",
             GUID = Guid.NewGuid().ToString(),
-            DialogueText = "ENTRYPOINT",
-            EntryPoint = true
+            ButtonText = "ENTRYPOINT",
+            EntryPoint = true,
+            HasBeenRead = true
         };
         
-        var generatedPort = GeneratePort(node, Direction.Output);
+        var generatedPort = GeneratePort(node, Direction.Output, Port.Capacity.Multi);
         generatedPort.portName = "Next";
         node.outputContainer.Add(generatedPort);
         
@@ -84,20 +85,27 @@ public class DialogueGraphView : GraphView
         return node;
     }
 
-    public void CreateNode(string nodeName, Vector2 position, TextAsset textAsset, bool hasBeenRead)
+    public void CreateNode(string nodeName, Vector2 position, TextAsset textAsset, bool hasBeenRead, int readDuring, int unlockWait)
     {
-        AddElement(CreateDialogueNode(nodeName, position, textAsset,  hasBeenRead));
+        AddElement(CreateDialogueNode(nodeName, position, textAsset,  hasBeenRead, readDuring, unlockWait));
     }
     
-    public NewDialogueNode CreateDialogueNode(string nodeName, Vector2 position, TextAsset textAsset, bool hasBeenRead)
+    public NewDialogueNode CreateDialogueNode(string nodeName, Vector2 position, TextAsset textAsset, bool hasBeenRead, int readDuring, int unlockWait)
     {
+        string newTitle = "Dialogue Node";
+        if (textAsset)
+        {
+            newTitle = textAsset.name;
+        }
         var dialogueNode = new NewDialogueNode
         {
-            title = nodeName,
-            DialogueText = nodeName,
+            title = newTitle,
+            ButtonText = nodeName,
             GUID = Guid.NewGuid().ToString(),
             DialogueAsset = textAsset,
-            HasBeenRead = hasBeenRead
+            HasBeenRead = hasBeenRead,
+            ReadRun = readDuring,
+            RunWaitAmount = unlockWait
         };
         
         var inputPort = GeneratePort(dialogueNode, Direction.Input, Port.Capacity.Multi);
@@ -110,22 +118,22 @@ public class DialogueGraphView : GraphView
         button.text = "New Choice";
         dialogueNode.titleContainer.Add(button);
         
-        var textField = new TextField(string.Empty);
-        textField.RegisterValueChangedCallback(evt =>
-        {
-            dialogueNode.DialogueText = evt.newValue;
-            dialogueNode.title = evt.newValue;
-        });
-        textField.SetValueWithoutNotify(dialogueNode.title);
-        dialogueNode.mainContainer.Add(textField);
-        
-        var assetField = new ObjectField();
+        var assetField = new ObjectField("Text asset");
         assetField.RegisterValueChangedCallback(evt =>
         {
             dialogueNode.DialogueAsset = (TextAsset)evt.newValue;
+            dialogueNode.title = evt.newValue.name;
         });
         assetField.SetValueWithoutNotify(dialogueNode.DialogueAsset);
         dialogueNode.mainContainer.Add(assetField);
+        
+        var textField = new TextField("Button text");
+        textField.RegisterValueChangedCallback(evt =>
+        {
+            dialogueNode.ButtonText = evt.newValue;
+        });
+        textField.SetValueWithoutNotify(dialogueNode.ButtonText);
+        dialogueNode.mainContainer.Add(textField);
 
         var readField = new Toggle("Has been read");
         readField.RegisterValueChangedCallback(evt =>
@@ -134,6 +142,22 @@ public class DialogueGraphView : GraphView
         });
         readField.SetValueWithoutNotify(dialogueNode.HasBeenRead);
         dialogueNode.mainContainer.Add(readField);
+        
+        var readRunField = new IntegerField("Run this was read during");
+        readRunField.RegisterValueChangedCallback(evt =>
+        {
+            dialogueNode.ReadRun = evt.newValue;
+        });
+        readRunField.SetValueWithoutNotify(dialogueNode.ReadRun);
+        dialogueNode.mainContainer.Add(readRunField);
+        
+        var runWaitField = new IntegerField("Runs after unlock");
+        runWaitField.RegisterValueChangedCallback(evt =>
+        {
+            dialogueNode.RunWaitAmount = evt.newValue;
+        });
+        runWaitField.SetValueWithoutNotify(dialogueNode.RunWaitAmount);
+        dialogueNode.mainContainer.Add(runWaitField);
         
         dialogueNode.RefreshExpandedState();
         dialogueNode.RefreshPorts();

@@ -15,4 +15,15 @@ public class DialogueContainer : ScriptableObject
         DialogueNodeData.Clear();
         ExposedProperties.Clear();
     }
+
+    public void MarkNodeAsRead(string nodeName)
+    {
+        Debug.Log(DialogueNodeData.Count);
+        DialogueNodeData.Find(x => x.DialogueAsset.name == nodeName).HasBeenRead = true;
+    }
+    
+    public void MarkNodeAsUnread(string nodeName)
+    {
+        DialogueNodeData.Find(x => x.DialogueAsset.name == nodeName).HasBeenRead = false;
+    }
 }

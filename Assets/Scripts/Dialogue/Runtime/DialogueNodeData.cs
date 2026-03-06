@@ -5,8 +5,10 @@ using UnityEngine;
 public class DialogueNodeData
 {
     public string Guid;
-    public string DialogueText;
+    public string ButtonText;
     public TextAsset DialogueAsset;
     public bool HasBeenRead;
     public Vector2 Position;
+    public int ReadRun;
+    public int RunWaitAmount;
 }

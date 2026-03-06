@@ -43,7 +43,7 @@ public class NodeSearchWindow : ScriptableObject, ISearchWindowProvider
         switch (SearchTreeEntry.userData)
         {
             case NewDialogueNode dialogueNode:
-                _graphView.CreateNode("Dialogue Node", localMousePosition, null, false);
+                _graphView.CreateNode("Dialogue Node", localMousePosition, null, false, 0, 0);
                 return true;
             default:
                 return false;
