@@ -79,6 +79,7 @@ public class GraphSaveUtility
                 DialogueAsset = dialogueNode.DialogueAsset,
                 Position = dialogueNode.GetPosition().position,
                 HasBeenRead = dialogueNode.HasBeenRead,
+                FriendshipRange = dialogueNode.FriendshipRange,
                 ReadRun = dialogueNode.ReadRun,
                 RunWaitAmount = dialogueNode.RunWaitAmount,
             });
@@ -152,7 +153,7 @@ public class GraphSaveUtility
     {
         foreach (var nodeData in _containerCache.DialogueNodeDatas)
         {
-            var tempNode = _targetGraphView.CreateDialogueNode(nodeData.Title, nodeData.ButtonText, nodeData.Position, nodeData.DialogueAsset, nodeData.HasBeenRead, nodeData.ReadRun, nodeData.RunWaitAmount);
+            var tempNode = _targetGraphView.CreateDialogueNode(nodeData.Title, nodeData.ButtonText, nodeData.Position, nodeData.DialogueAsset, nodeData.HasBeenRead, nodeData.FriendshipRange,nodeData.ReadRun, nodeData.RunWaitAmount);
             tempNode.GUID = nodeData.Guid;
             _targetGraphView.AddElement(tempNode);
 

@@ -85,12 +85,12 @@ public class DialogueGraphView : GraphView
         return node;
     }
 
-    public void CreateNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, int readDuring, int unlockWait)
+    public void CreateNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, Vector2Int friendRange, int readDuring, int unlockWait)
     {
-        AddElement(CreateDialogueNode(nodeName, buttonText, position, textAsset,  hasBeenRead, readDuring, unlockWait));
+        AddElement(CreateDialogueNode(nodeName, buttonText, position, textAsset,  hasBeenRead, friendRange, readDuring, unlockWait));
     }
     
-    public NewDialogueNode CreateDialogueNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, int readDuring, int unlockWait)
+    public NewDialogueNode CreateDialogueNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, Vector2Int friendRange, int readDuring, int unlockWait)
     {
         var dialogueNode = new NewDialogueNode
         {
@@ -100,6 +100,7 @@ public class DialogueGraphView : GraphView
             GUID = Guid.NewGuid().ToString(),
             DialogueAsset = textAsset,
             HasBeenRead = hasBeenRead,
+            FriendshipRange = friendRange,
             ReadRun = readDuring,
             RunWaitAmount = unlockWait
         };
@@ -145,6 +146,14 @@ public class DialogueGraphView : GraphView
         });
         readField.SetValueWithoutNotify(dialogueNode.HasBeenRead);
         dialogueNode.mainContainer.Add(readField);
+
+        var friendField = new Vector2IntField("Friendship range");
+        friendField.RegisterValueChangedCallback(evt =>
+        {
+            dialogueNode.FriendshipRange = evt.newValue;
+        });
+        friendField.SetValueWithoutNotify(dialogueNode.FriendshipRange);
+        dialogueNode.mainContainer.Add(friendField);
         
         var readRunField = new IntegerField("Run this was read during");
         readRunField.RegisterValueChangedCallback(evt =>
