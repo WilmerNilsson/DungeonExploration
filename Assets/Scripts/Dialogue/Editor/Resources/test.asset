@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c601d1eb34776d14bab4ae1bd173ef8c, type: 3}
+  m_Name: test
+  m_EditorClassIdentifier: 
+  NodeLinks:
+  - BaseNodeGuid: fbadcef1-df2f-43e1-9203-a5d2bcf58110
+    PortName: Next
+    TargetNodeGuid: 104f286e-1d09-4d5e-9d1c-87373adca948
+  - BaseNodeGuid: 23e7fda5-78bd-42c0-a174-df78ac105103
+    PortName: Choice 1
+    TargetNodeGuid: 1b30a897-a392-4544-96bb-980e18da8a46
+  - BaseNodeGuid: 104f286e-1d09-4d5e-9d1c-87373adca948
+    PortName: Choice 1
+    TargetNodeGuid: 1b30a897-a392-4544-96bb-980e18da8a46
+  - BaseNodeGuid: 104f286e-1d09-4d5e-9d1c-87373adca948
+    PortName: Choice 2
+    TargetNodeGuid: 548e2fa9-d4d7-42a6-a01f-5b823119b94c
+  DialogueNodeData:
+  - Guid: 548e2fa9-d4d7-42a6-a01f-5b823119b94c
+    ButtonText: 3
+    DialogueAsset: {fileID: 4900000, guid: fb36b0f97a0a3894b8a64f2a78eea8a5, type: 3}
+    HasBeenRead: 1
+    Position: {x: 765, y: 315}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: 1b30a897-a392-4544-96bb-980e18da8a46
+    ButtonText: 2
+    DialogueAsset: {fileID: 4900000, guid: 51aeac5de0ea1f3439082e745259cc14, type: 3}
+    HasBeenRead: 0
+    Position: {x: 778, y: 79}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: 23e7fda5-78bd-42c0-a174-df78ac105103
+    ButtonText: 4
+    DialogueAsset: {fileID: 4900000, guid: 0248d0fbb448f71439ad3e604e836564, type: 3}
+    HasBeenRead: 0
+    Position: {x: 314, y: -146}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: 104f286e-1d09-4d5e-9d1c-87373adca948
+    ButtonText: 1
+    DialogueAsset: {fileID: 0}
+    HasBeenRead: 1
+    Position: {x: 286, y: 143}
+    ReadRun: 0
+    RunWaitAmount: 0
+  ExposedProperties: []

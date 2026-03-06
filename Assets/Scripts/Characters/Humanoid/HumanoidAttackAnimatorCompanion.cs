@@ -57,6 +57,10 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         else if (weaponScript == null)
         {
             hasWeapon = weapon.TryGetComponent(out weaponScript);
+            weaponScript.Companion = this;
+            weaponScript.SwordArm = swordArm;
+            weaponScript.Head = head;
+            weaponScript.Core = core;
         }
     }
 
@@ -96,13 +100,11 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     public void ChangeAttackState(AttackState newState)
     {
-        if (attackState == AttackState.Recoil) returnTime = 0;
-        if (attackState == AttackState.Swing) returnTime = 1;
+        if (attackState == AttackState.Swing || attackState == AttackState.Recoil) returnTime = time;
         else
         {
             weaponScript.SetDamageActive(false);
         }
-        
         
         attackState = newState;
         onAttackStateChange.Invoke(attackState);
@@ -143,6 +145,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
                         if (weaponScript.HoldAttack(time))
                         {
                             ChangeAttackState(AttackState.Swing);
+                            weaponScript.onSwing.Invoke();
                         }
                         break;
                     case AttackState.Swing:
@@ -198,20 +201,31 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         }
     }
 
-    public bool TryEquip(GameObject newWeaponPrefab, [NotNullWhen(true)] out Weapon? weaponScript)
+    public bool TryEquip(GameObject newWeaponPrefab, [NotNullWhen(true)] out Weapon? weaponScripta)
     {
         Destroy(weapon);
         weapon = Instantiate(newWeaponPrefab, hand);
         if (!weapon.TryGetComponent(out weaponScript))
         {
             Debug.LogError("No weapon script found on " + weapon);
+            weaponScripta = null;
             return false;
         }
+
+        weaponScripta = weaponScript;
+        hasWeapon = true;
         weaponScript!.Companion = this;
         weaponScript.SwordArm = swordArm;
         weaponScript.Head = head;
         weaponScript.Core = core;
         return true;
+    }
+
+    public void Unequip()
+    {
+        Destroy(weapon);
+        weaponScript = null;
+        hasWeapon = false;
     }
 
     public void Activate()

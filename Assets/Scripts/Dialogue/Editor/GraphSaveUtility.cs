@@ -1,0 +1,186 @@
+#if UNITY_EDITOR
+using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+public class GraphSaveUtility
+{
+    private DialogueGraphView _targetGraphView;
+    private DialogueContainer _containerCache;
+
+    private List<Edge> Edges => _targetGraphView.edges.ToList();
+    private List<NewDialogueNode> Nodes => _targetGraphView.nodes.ToList().Cast<NewDialogueNode>().ToList();
+    
+    public static GraphSaveUtility GetInstance(DialogueGraphView targetGraphView)
+    {
+        return new GraphSaveUtility()
+        {
+            _targetGraphView = targetGraphView
+        };
+    }
+
+    public void SaveGraph(string fileName)
+    {
+        DialogueContainer dialogueContainer = null;
+        bool containerExists = false;
+        if (Resources.Load<DialogueContainer>(fileName))
+        {
+            containerExists = true;
+            dialogueContainer = Resources.Load<DialogueContainer>(fileName);
+            dialogueContainer.Clear();
+        }
+        else
+        {
+            dialogueContainer = ScriptableObject.CreateInstance<DialogueContainer>();
+        }
+        if (!SaveNodes(dialogueContainer))
+        {
+            return;
+        }
+        SaveExposedProperties(dialogueContainer);
+
+        if (!containerExists)
+        {
+            AssetDatabase.CreateAsset(dialogueContainer, $"Assets/Scripts/Dialogue/Editor/Resources/{fileName}.asset");
+        }
+        AssetDatabase.SaveAssets();
+    }
+
+    private bool SaveNodes(DialogueContainer dialogueContainer)
+    {
+        if (!Edges.Any())
+        {
+            return false;
+        }
+        
+        var connectedPorts = Edges.Where(x => x.input.node != null).ToArray();
+        for (int i = 0; i < connectedPorts.Length; i++)
+        {
+            var outputNode = connectedPorts[i].output.node as NewDialogueNode;
+            var inputNode = connectedPorts[i].input.node as NewDialogueNode;
+            
+            dialogueContainer.NodeLinks.Add(new NodeLinkData
+            {
+                BaseNodeGuid = outputNode.GUID,
+                PortName = connectedPorts[i].output.portName,
+                TargetNodeGuid = inputNode.GUID,
+            });
+        }
+
+        foreach (var dialogueNode in Nodes.Where(node => !node.EntryPoint))
+        {
+            dialogueContainer.DialogueNodeDatas.Add(new DialogueNodeData
+            {
+                Guid = dialogueNode.GUID,
+                Title = dialogueNode.Title,
+                ButtonText =  dialogueNode.ButtonText,
+                DialogueAsset = dialogueNode.DialogueAsset,
+                Position = dialogueNode.GetPosition().position,
+                HasBeenRead = dialogueNode.HasBeenRead,
+                ReadRun = dialogueNode.ReadRun,
+                RunWaitAmount = dialogueNode.RunWaitAmount,
+            });
+        }
+        return true;
+    }
+
+    private void SaveExposedProperties(DialogueContainer dialogueContainer)
+    {
+        dialogueContainer.ExposedProperties.AddRange(_targetGraphView.ExposedProperties);
+    }
+
+    public void LoadGraph(string fileName)
+    {
+        _containerCache = Resources.Load<DialogueContainer>(fileName);
+        if (_containerCache == null)
+        {
+            EditorUtility.DisplayDialog("File not found", "Target dialogue graph file does not exist!", "OK");
+            return;
+        }
+
+        ClearGraph();
+        CreateNodes();
+        ConnectNodes();
+        CreateExposedProperties();
+    }
+
+    private void CreateExposedProperties()
+    {
+        _targetGraphView.ClearBlackboardAndExposedProperties();
+        
+        foreach (var exposedProperty in _containerCache.ExposedProperties)
+        {
+            _targetGraphView.AddPropertyToBlackboard(exposedProperty);
+        }
+    }
+
+    private void ConnectNodes()
+    {
+        for (int i = 0; i < Nodes.Count; i++)
+        {
+            var connections = _containerCache.NodeLinks.Where(x => x.BaseNodeGuid == Nodes[i].GUID).ToList();
+            for (int j = 0; j < connections.Count; j++)
+            {
+                var targetNodeGuid = connections[j].TargetNodeGuid;
+                var targetNode = Nodes.First(x => x.GUID == targetNodeGuid);
+                LinkNodes(Nodes[i].outputContainer[j].Q<Port>(), (Port) targetNode.inputContainer[0]);
+                
+                targetNode.SetPosition(new Rect(
+                    _containerCache.DialogueNodeDatas.First(x => x.Guid == targetNodeGuid).Position,
+                    _targetGraphView.DefaultNodeSize));
+            }
+        }
+    }
+
+    private void LinkNodes(Port output, Port input)
+    {
+        var tempEdge = new Edge
+        {
+            output = output,
+            input = input
+        };
+        
+        tempEdge?.input.Connect(tempEdge);
+        tempEdge?.output.Connect(tempEdge);
+        
+        _targetGraphView.Add(tempEdge);
+    }
+    
+    private void CreateNodes()
+    {
+        foreach (var nodeData in _containerCache.DialogueNodeDatas)
+        {
+            var tempNode = _targetGraphView.CreateDialogueNode(nodeData.Title, nodeData.ButtonText, nodeData.Position, nodeData.DialogueAsset, nodeData.HasBeenRead, nodeData.ReadRun, nodeData.RunWaitAmount);
+            tempNode.GUID = nodeData.Guid;
+            _targetGraphView.AddElement(tempNode);
+
+            var nodePorts = _containerCache.NodeLinks.Where(x => x.BaseNodeGuid == nodeData.Guid).ToList();
+            nodePorts.ForEach(x => _targetGraphView.AddChoicePort(tempNode, x.PortName));
+        }
+    }
+
+    private void ClearGraph()
+    {
+        //Set entry points guid back from the save, Discard existing guid.
+        Nodes.Find(x => x.EntryPoint).GUID = _containerCache.NodeLinks[0].BaseNodeGuid;
+
+        foreach (var node in Nodes)
+        {
+            if (node.EntryPoint)
+            {
+                continue;
+            }
+
+            //Remove edges that connect to this node
+            Edges.Where(x => x.input.node == node).ToList()
+                .ForEach(edge => _targetGraphView.RemoveElement(edge));
+            
+            //Then remove the node
+            _targetGraphView.RemoveElement(node);
+        }
+    }
+}
+#endif

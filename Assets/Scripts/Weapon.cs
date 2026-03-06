@@ -9,6 +9,8 @@ public class Weapon : MonoBehaviour
     [Header("Events")]
     [FormerlySerializedAs("onDamage")] public UnityEvent OnDamage;
     [FormerlySerializedAs("onDeflectCollision")] public UnityEvent<string, Vector3> OnDeflectCollision;
+    public UnityEvent onParry;
+    public UnityEvent onSwing;
     
     [Header("Weapon Stats")]
     [SerializeField, Min(1)] private int damage = 1;
@@ -21,7 +23,6 @@ public class Weapon : MonoBehaviour
     [SerializeField] private bool dealDamage = false;
     [SerializeField] private bool isBlocking = false;
     [SerializeField] private bool unbreakable;
-    [SerializeField] private bool unblockable = false;
     [SerializeField] private Collider body;
     
     [Header("Attack")]
@@ -33,7 +34,6 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float attackHoldTime = 2f;
     [SerializeField] private float attackSwingTime = 1f;
     [SerializeField] private float attackResetTime = 1f;
-    [SerializeField] private float attackRecoilTime = 3f;
     
     [Header("Block")]
     [SerializeField] private float blockDistance = 0.5f;
@@ -76,7 +76,7 @@ public class Weapon : MonoBehaviour
         SwordArm.data.targetPositionWeight = time / attackChargeTime;
         SwordArm.data.targetRotationWeight = time / attackChargeTime;
         
-        SetPositionRotation(0);
+        AttackPositionRotation(0);
         
         return time / attackChargeTime >= 1;
     }
@@ -86,7 +86,7 @@ public class Weapon : MonoBehaviour
         SwordArm.data.targetPositionWeight = 1;
         SwordArm.data.targetRotationWeight = 1;
         
-        SetPositionRotation(0);
+        AttackPositionRotation(0);
         
         return time / attackHoldTime >= 1;
     }
@@ -96,7 +96,7 @@ public class Weapon : MonoBehaviour
         SwordArm.data.targetPositionWeight = 1;
         SwordArm.data.targetRotationWeight = 1;
         
-        SetPositionRotation(time / attackSwingTime);
+        AttackPositionRotation(time / attackSwingTime);
         
         SetDamageActive(time / attackSwingTime > .1 && time / attackSwingTime < .9);
         
@@ -108,7 +108,7 @@ public class Weapon : MonoBehaviour
         SwordArm.data.targetPositionWeight = 1 - time/attackResetTime;
         SwordArm.data.targetRotationWeight = 1 - time/attackResetTime;
         
-        SetPositionRotation(returnTime);
+        AttackPositionRotation(returnTime / attackSwingTime);
         
         return time / attackResetTime >= 1;
     }
@@ -120,7 +120,7 @@ public class Weapon : MonoBehaviour
         SwordArm.data.targetPositionWeight = 1;
         SwordArm.data.targetRotationWeight = 1;
         
-        SetPositionRotation(localTime);
+        AttackPositionRotation(localTime);
         
         return localTime <= 0;
     }
@@ -134,9 +134,7 @@ public class Weapon : MonoBehaviour
         SwordArm.data.targetPositionWeight = time / blockChargeTime;
         SwordArm.data.targetRotationWeight = time / blockChargeTime;
         
-        HandIK.position = Head.position + RelativeRotation((blockAnglePos + blockOffsetPos).normalized + Vector3.forward * 0.5f) * blockDistance;
-        
-        HandIK.rotation = Quaternion.LookRotation(Vector3.forward * Angle, RelativeRotation(blockAnglePos + blockOffsetPos * 0.5f));
+        BlockPositionRotation(1);
         
         return time / blockChargeTime > 1;
     }
@@ -146,9 +144,7 @@ public class Weapon : MonoBehaviour
         SwordArm.data.targetPositionWeight = 1;
         SwordArm.data.targetRotationWeight = 1;
         
-        HandIK.position = Head.position + RelativeRotation((blockAnglePos + blockOffsetPos).normalized * blockDistance + Vector3.forward * 0.5f);
-        
-        HandIK.rotation = Quaternion.LookRotation(Vector3.forward * Angle, RelativeRotation(blockAnglePos + blockOffsetPos * 0.5f));
+        BlockPositionRotation(1);
         
         return time / blockHoldTime > 1;
     }
@@ -158,9 +154,7 @@ public class Weapon : MonoBehaviour
         SwordArm.data.targetPositionWeight = 1 - time / blockReturnTime;
         SwordArm.data.targetRotationWeight = 1 - time / blockReturnTime;
         
-        HandIK.position = Head.position + RelativeRotation((blockAnglePos + blockOffsetPos).normalized + Vector3.forward * 0.5f) * blockDistance;
-        
-        HandIK.rotation = Quaternion.LookRotation(Vector3.forward * Angle, RelativeRotation(blockAnglePos + blockOffsetPos * 0.5f));
+        BlockPositionRotation(1);
         
         return time / blockReturnTime > 1;
     }
@@ -184,6 +178,7 @@ public class Weapon : MonoBehaviour
             Debug.Log($"OnTriggerEnter name {other.gameObject.name} tag {other.gameObject.tag}");
             if (!transform.IsChildOf(other.transform))
             {
+                dealDamage = false;
                 if (other.TryGetComponent(out Health health))
                 {
                     OnDamage?.Invoke();
@@ -191,7 +186,7 @@ public class Weapon : MonoBehaviour
                     LoseDurability(health.DurabilityDamage);
                     Debug.Log($"The target {other.gameObject.name} health is " + health.CurrentHealth);
                 }
-                else if (other.gameObject.layer == LayerMask.NameToLayer("Character")) // Potential fix for ragdoll 
+                else if (other.gameObject.CompareTag("Flesh")) // Potential fix for ragdoll 
                 {
                     health = other.gameObject.GetComponentInParent<Health>();
                     if (health != null)
@@ -220,9 +215,16 @@ public class Weapon : MonoBehaviour
                         break;
                     case "Metal":
                         Debug.Log("Metal");
-                        if (other.TryGetComponent(out Weapon weapon) && !weapon.isBlocking)
+                        if (other.TryGetComponent(out Weapon weapon))
                         {
-                            Debug.Log("Other weapon not blocking");
+                            if (!weapon.isBlocking)
+                            {
+                                Debug.Log("Other weapon not blocking");
+                            }
+                            else
+                            {
+                                onParry.Invoke();
+                            }
                             break;
                         }
                         OnDeflectCollision.Invoke("Metal", transform.position);
@@ -254,7 +256,7 @@ public class Weapon : MonoBehaviour
     
     #region Support Functions
 
-    private void SetPositionRotation(float time)
+    private void AttackPositionRotation(float time)
     {
         HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(time));
         
@@ -262,6 +264,13 @@ public class Weapon : MonoBehaviour
         forward = RotateVecAroundPoint(GetCurveTangent(time), Quaternion.AngleAxis(Core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
             
         HandIK.rotation = Quaternion.LookRotation(up, forward);
+    }
+
+    private void BlockPositionRotation(float time)
+    {
+        HandIK.position = Head.position + RelativeRotation((blockAnglePos + blockOffsetPos).normalized * blockDistance + Vector3.forward * 0.5f);
+        
+        HandIK.rotation = Quaternion.LookRotation(RelativeRotation((Vector3.forward * Angle).normalized), RelativeRotation(blockAnglePos + blockOffsetPos * 0.5f));
     }
     private Vector3 RelativeRotation(Vector3 rotation)
     {
