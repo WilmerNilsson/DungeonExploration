@@ -16,7 +16,7 @@ public class MadAdventurerAttackState : MadAventurerBaseState
     public override void Update()
     {
         target = MyMadAdventurerStateMachine.PlayerTransform.position;
-        MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((target-MyMadAdventurerStateMachine.transform.position)));
+        MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((target-MyMadAdventurerStateMachine.transform.position)+Vector3.up));
         
         distance = Vector3.Distance(MyMadAdventurerStateMachine.transform.position, MyMadAdventurerStateMachine.PlayerTransform.position);
         

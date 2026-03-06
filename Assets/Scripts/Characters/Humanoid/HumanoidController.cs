@@ -1,8 +1,5 @@
 using UnityEngine;
 
-
-[RequireComponent(typeof(HumanoidAttackAnimatorCompanion),typeof(HumanoidMovement),typeof(HumanoidRotator))]
-[RequireComponent(typeof(HumanoidInteract))]
 public class HumanoidController : MonoBehaviour
 {
     [Header("Sub Scripts")]

@@ -5,6 +5,9 @@ public class HumanoidRotator : MonoBehaviour
     [SerializeField] private Transform bodyTransform;
     [SerializeField] private Transform headTransform;
     
+    [SerializeField, Range(0,1)] private float bodyRotationSpeed = .5f;
+    [SerializeField, Range(0,1)] private float headRotationSpeed = .5f;
+    
     private Vector3 rotationVector;
 
     private Quaternion targetHeadQuaternion;

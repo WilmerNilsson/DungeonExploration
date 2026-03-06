@@ -14,12 +14,6 @@ public class MadAdventurerStateMachine : MonoBehaviour
     [SerializeField] public Animator Animator;
     [SerializeField] public DetectPlayer Vision;
     
-    [Header("Player detection")] 
-    [SerializeField] private float maxSightRange;
-    [SerializeField] private float maxSoundRange;
-    [SerializeField] private float sightThreshold;
-    [SerializeField] private float soundThreshold;
-    
     [Header("States")]
     public UnityEvent<MadAventurerBaseState> OnMadState;
     public MadAventurerBaseState CurrentState;
@@ -30,7 +24,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
     public MadAdventurerDyingState DyingState = new();
     public MadAdventurerHallucinationState HallucinationState = new();
     [SerializeField] private bool startInHallucination = false;
-    
+
     [HideInInspector] public Transform PlayerTransform;
     [HideInInspector] public Transform TargetTransform;
 
@@ -96,17 +90,6 @@ public class MadAdventurerStateMachine : MonoBehaviour
         CurrentState = targetState;
         OnMadState.Invoke(CurrentState);
         CurrentState.Enter();
-    }
-    
-    public bool DetectPlayer()
-    {
-        return Vision.Detect(sightThreshold, soundThreshold, maxSoundRange, maxSightRange);
-    }
-
-    public void Attack()
-    {
-        float angle = Random.Range(-160f, 160f);
-        Controller.Attack(angle);
     }
 
     public void Attack()
