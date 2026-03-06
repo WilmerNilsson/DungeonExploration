@@ -5,6 +5,7 @@ using UnityEngine;
 public class DialogueNodeData
 {
     public string Guid;
+    public string Title;
     public string ButtonText;
     public TextAsset DialogueAsset;
     public bool HasBeenRead;

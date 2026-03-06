@@ -85,22 +85,18 @@ public class DialogueGraphView : GraphView
         return node;
     }
 
-    public void CreateNode(string nodeName, Vector2 position, TextAsset textAsset, bool hasBeenRead, int readDuring, int unlockWait)
+    public void CreateNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, int readDuring, int unlockWait)
     {
-        AddElement(CreateDialogueNode(nodeName, position, textAsset,  hasBeenRead, readDuring, unlockWait));
+        AddElement(CreateDialogueNode(nodeName, buttonText, position, textAsset,  hasBeenRead, readDuring, unlockWait));
     }
     
-    public NewDialogueNode CreateDialogueNode(string nodeName, Vector2 position, TextAsset textAsset, bool hasBeenRead, int readDuring, int unlockWait)
+    public NewDialogueNode CreateDialogueNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, int readDuring, int unlockWait)
     {
-        string newTitle = "Dialogue Node";
-        if (textAsset)
-        {
-            newTitle = textAsset.name;
-        }
         var dialogueNode = new NewDialogueNode
         {
-            title = newTitle,
-            ButtonText = nodeName,
+            title = nodeName,
+            Title = nodeName,
+            ButtonText = buttonText,
             GUID = Guid.NewGuid().ToString(),
             DialogueAsset = textAsset,
             HasBeenRead = hasBeenRead,
@@ -117,12 +113,19 @@ public class DialogueGraphView : GraphView
         var button = new Button(() => {AddChoicePort(dialogueNode);});
         button.text = "New Choice";
         dialogueNode.titleContainer.Add(button);
+
+        var nameField = new TextField("Title");
+        nameField.RegisterValueChangedCallback(evt =>
+        {
+            dialogueNode.Title = evt.newValue;
+        });
+        nameField.SetValueWithoutNotify(dialogueNode.Title);
+        dialogueNode.mainContainer.Add(nameField);
         
         var assetField = new ObjectField("Text asset");
         assetField.RegisterValueChangedCallback(evt =>
         {
             dialogueNode.DialogueAsset = (TextAsset)evt.newValue;
-            dialogueNode.title = evt.newValue.name;
         });
         assetField.SetValueWithoutNotify(dialogueNode.DialogueAsset);
         dialogueNode.mainContainer.Add(assetField);
