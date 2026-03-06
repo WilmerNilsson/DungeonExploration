@@ -515,9 +515,6 @@ public class EventList : ScriptableObject
         if (!AudioManager.Listener) return;
         foreach (var kvp in InstanceList)
         {
-            kvp.Value.getPlaybackState(out var state);
-            kvp.Value.isVirtual(out var virtualState);
-            if (state == PLAYBACK_STATE.STOPPED || state == PLAYBACK_STATE.STARTING || virtualState) continue;
             if (!InstanceToEventData.TryGetValue(kvp.Value, out var eventData)) continue;
             if (!eventData.isOcclusion) continue;
             if (Vector3.Distance(kvp.Key.transform.position, AudioManager.Listener.transform.position) <
@@ -671,6 +668,7 @@ public class EventList : ScriptableObject
     }
     
     #endregion
+    
 
     [ContextMenu("Toggle Debug")]
     public void ToggleDebug()
