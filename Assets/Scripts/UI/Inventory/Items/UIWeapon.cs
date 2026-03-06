@@ -6,6 +6,7 @@ public class UIWeapon : MonoBehaviour
 {
     [SerializeField] private GameObject weaponPrefab;
     [SerializeField] private TextMeshProUGUI durabilityText;
+    [SerializeField] public BlacksmithHelper BlacksmithHelper;
 
 #nullable enable
     public int Durability
@@ -31,10 +32,12 @@ public class UIWeapon : MonoBehaviour
             {
                 worldWeapon.Durability = value;
             }
+            UpdateDurabilityText();
         }
     }
     private int _durability;
     private Weapon? worldWeapon;
+    private bool stopSelfIntialize = false;
 
 #if UNITY_EDITOR
     private void OnValidate()
@@ -54,6 +57,8 @@ public class UIWeapon : MonoBehaviour
 
     private void Start()
     {
+        if (stopSelfIntialize) return;
+
         if(weaponPrefab.TryGetComponent(out Weapon component))
         {
             Durability = component.Durability;
@@ -61,10 +66,18 @@ public class UIWeapon : MonoBehaviour
         }
     }
 
+    public void StopSelfIntialize()
+    {
+        stopSelfIntialize = true;
+    }
+
     public void Unequip()
     {
-        _durability = worldWeapon.Durability;
-        worldWeapon = null;
+        if(worldWeapon != null)
+        {
+            _durability = worldWeapon.Durability;
+            worldWeapon = null;
+        }
     }
 
     public GameObject GetEquipPrefab()

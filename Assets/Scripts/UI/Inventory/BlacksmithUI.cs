@@ -4,7 +4,11 @@ using UnityEngine;
 public class BlacksmithUI : MerchantInventory
 {
     [SerializeField] private GameObject deliverWeaponPanel;
+#nullable enable
 
+    private UIWeapon? weaponInDonateGrid;
+
+    private List<string> donatedWeapons = new();
 
 #if UNITY_EDITOR
     protected override void OnValidate()
@@ -26,13 +30,44 @@ public class BlacksmithUI : MerchantInventory
         }
     }
 
+    public void OnGetNewItemInDonationGrid(SimpleItem item)
+    {
+        if(item.TryGetComponent(out UIWeapon weapon))
+        {
+            weaponInDonateGrid = weapon;
+        }
+        else
+        {
+            Debug.LogWarning("non weapon put in donation grid", this);
+        }
+    }
+
+    public void OnRemoveItemFromDonatioNGrid(SimpleItem item)
+    {
+        if (item.TryGetComponent(out UIWeapon weapon))
+        {
+            if(weaponInDonateGrid == weapon)
+            {
+                weaponInDonateGrid = null;
+            }
+            else
+            {
+                Debug.LogWarning("weapon taken from donation grid that was not the tracked weapon", this);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("non weapon removed from donation grid", this);
+        }
+    }
+
     public override bool TryPutItemInMerchantGrid(SimpleItem item)
     {
         if (buyIsActiveGrid)
         {
             return false;
         }
-        else if (ActiveGrid.TryPlaceItem(item))
+        else if (item.TryGetComponent<UIWeapon>(out _) && ActiveGrid.TryPlaceItem(item))
         {
             return true;
         }
@@ -83,11 +118,29 @@ public class BlacksmithUI : MerchantInventory
 
     public void OnDonate()
     {
+        if(buyIsActiveGrid)
+        {
+            Debug.LogWarning("active grid is buy, but on donate invoked", this);
+        }
+        else
+        {
+            
+        }
+
         SetDescriptionText("yoink");
     }
 
     public void OnRepair()
     {
+        if (buyIsActiveGrid)
+        {
+            Debug.LogWarning("active grid is buy, but on repair invoked", this);
+        }
+        else
+        {
+
+        }
+
         SetDescriptionText("looks fine to me");
     }
 }

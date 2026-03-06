@@ -18,12 +18,20 @@ public class ItemDurabilityExtraHelper : MonoBehaviour, IExtraDataHelper
 
     public bool GiveExtraData(string json)
     {
-        if(int.TryParse(json, out int result))
+        if (int.TryParse(json, out int result))
         {
+            Debug.Log("giving extra data: " + result);
+
+            uIWeapon.StopSelfIntialize();
             uIWeapon.Durability = result;
 
             return true;
         }
-        else return false;
+        else
+        {
+            Debug.Log("failed to parse");
+            return false;
+        }
+
     }
 }
