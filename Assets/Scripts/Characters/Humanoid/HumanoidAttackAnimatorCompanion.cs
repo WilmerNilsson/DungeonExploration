@@ -145,6 +145,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
                         if (weaponScript.HoldAttack(time))
                         {
                             ChangeAttackState(AttackState.Swing);
+                            weaponScript.onSwing.Invoke();
                         }
                         break;
                     case AttackState.Swing:
