@@ -6,24 +6,39 @@ using UnityEngine;
 public class DialogueContainer : ScriptableObject
 {
     public List<NodeLinkData> NodeLinks = new List<NodeLinkData>();
-    public List<DialogueNodeData> DialogueNodeData = new List<DialogueNodeData>();
+    public List<DialogueNodeData> DialogueNodeDatas = new List<DialogueNodeData>();
     public List<ExposedProperty>  ExposedProperties = new List<ExposedProperty>();
 
     public void Clear()
     {
         NodeLinks.Clear();
-        DialogueNodeData.Clear();
+        DialogueNodeDatas.Clear();
         ExposedProperties.Clear();
     }
 
     public void MarkNodeAsRead(string nodeName)
     {
-        Debug.Log(DialogueNodeData.Count);
-        DialogueNodeData.Find(x => x.DialogueAsset.name == nodeName).HasBeenRead = true;
+        DialogueNodeData dialogueNodeData = DialogueNodeDatas.Find(x => x.Title == nodeName);
+        if (dialogueNodeData != null)
+        {
+            dialogueNodeData.HasBeenRead = true;
+        }
+        else
+        {
+            Debug.LogWarning("No dialogue node with the name " + nodeName, this);
+        }
     }
     
     public void MarkNodeAsUnread(string nodeName)
     {
-        DialogueNodeData.Find(x => x.DialogueAsset.name == nodeName).HasBeenRead = false;
+        DialogueNodeData dialogueNodeData = DialogueNodeDatas.Find(x => x.Title == nodeName);
+        if (dialogueNodeData != null)
+        {
+            dialogueNodeData.HasBeenRead = false;
+        }
+        else
+        {
+            Debug.LogWarning("No dialogue node with the name " + nodeName, this);
+        }
     }
 }

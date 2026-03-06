@@ -97,16 +97,20 @@ public class NewDialogueManager : MonoBehaviour
 
     public void EnterDialogueMode(string DialogueName)
     {
-        for (int i = 0; i < dialogueTree.DialogueNodeData.Count; i++)
+        for (int i = 0; i < dialogueTree.DialogueNodeDatas.Count; i++)
         {
-            if (dialogueTree.DialogueNodeData[i].DialogueAsset.name == DialogueName)
+            if (!dialogueTree.DialogueNodeDatas[i].DialogueAsset)
+            {
+                continue;
+            }
+            if (dialogueTree.DialogueNodeDatas[i].DialogueAsset.name == DialogueName)
             {
                 onDialogueEnter?.Invoke(DialogueName);
-                dialogueTree.DialogueNodeData[i].HasBeenRead = true;
+                dialogueTree.DialogueNodeDatas[i].HasBeenRead = true;
                 //Debug.Log("entering dialogue mode");
                 isTyping = false;
                 lineIndex = 0;
-                currentStory = new Story(dialogueTree.DialogueNodeData[i].DialogueAsset.text);
+                currentStory = new Story(dialogueTree.DialogueNodeDatas[i].DialogueAsset.text);
                 dialogueIsPlaying = true;
                 continueButton.SetActive(true);
                 //InputManager.GetInstance().isLevelPlaying = false;

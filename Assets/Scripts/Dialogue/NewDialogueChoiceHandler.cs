@@ -22,9 +22,9 @@ public class NewDialogueChoiceHandler : MonoBehaviour
             selectButtons[i].gameObject.SetActive(false);
         }
         List<DialogueNodeData> currentNodes = new List<DialogueNodeData>();
-        for (int i = 0; i < dialogueTree.DialogueNodeData.Count && currentNodes.Count < selectButtons.Count; i++)
+        for (int i = 0; i < dialogueTree.DialogueNodeDatas.Count && currentNodes.Count < selectButtons.Count; i++)
         {
-            FindDialogue(dialogueTree, currentNodes, dialogueTree.DialogueNodeData[i]);
+            FindDialogue(dialogueTree, currentNodes, dialogueTree.DialogueNodeDatas[i]);
         }
 
         for (int i = 0; i < currentNodes.Count; i++)
@@ -47,13 +47,7 @@ public class NewDialogueChoiceHandler : MonoBehaviour
         for (int i = 0; i < links.Count && parentsRead; i++)
         {
             //Check if parent is read
-            Debug.Log(links[i].BaseNodeGuid);
-            for (int j = 0; j < dialogueContainer.DialogueNodeData.Count; j++)
-            {
-                Debug.Log(dialogueContainer.NodeLinks[j].BaseNodeGuid);
-                Debug.Log(dialogueContainer.NodeLinks[j].TargetNodeGuid);
-            }
-            parentsRead = dialogueContainer.DialogueNodeData.Find(x => x.Guid == links[i].BaseNodeGuid).HasBeenRead;
+            parentsRead = dialogueContainer.DialogueNodeDatas.Find(x => x.Guid == links[i].BaseNodeGuid).HasBeenRead;
         }
 
         if (parentsRead)

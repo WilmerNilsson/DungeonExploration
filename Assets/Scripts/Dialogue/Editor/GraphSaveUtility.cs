@@ -71,7 +71,7 @@ public class GraphSaveUtility
 
         foreach (var dialogueNode in Nodes.Where(node => !node.EntryPoint))
         {
-            dialogueContainer.DialogueNodeData.Add(new DialogueNodeData
+            dialogueContainer.DialogueNodeDatas.Add(new DialogueNodeData
             {
                 Guid = dialogueNode.GUID,
                 Title = dialogueNode.Title,
@@ -128,7 +128,7 @@ public class GraphSaveUtility
                 LinkNodes(Nodes[i].outputContainer[j].Q<Port>(), (Port) targetNode.inputContainer[0]);
                 
                 targetNode.SetPosition(new Rect(
-                    _containerCache.DialogueNodeData.First(x => x.Guid == targetNodeGuid).Position,
+                    _containerCache.DialogueNodeDatas.First(x => x.Guid == targetNodeGuid).Position,
                     _targetGraphView.DefaultNodeSize));
             }
         }
@@ -150,7 +150,7 @@ public class GraphSaveUtility
     
     private void CreateNodes()
     {
-        foreach (var nodeData in _containerCache.DialogueNodeData)
+        foreach (var nodeData in _containerCache.DialogueNodeDatas)
         {
             var tempNode = _targetGraphView.CreateDialogueNode(nodeData.Title, nodeData.ButtonText, nodeData.Position, nodeData.DialogueAsset, nodeData.HasBeenRead, nodeData.ReadRun, nodeData.RunWaitAmount);
             tempNode.GUID = nodeData.Guid;
