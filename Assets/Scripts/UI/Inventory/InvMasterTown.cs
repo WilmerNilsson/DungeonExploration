@@ -48,16 +48,10 @@ public class InvMasterTown : InvMasterBase
 
         if(merchantInventory != null && merchantInventory.HasItem(item) && merchantInventory.CanAfford(item))
         {
-            if(PlayerInventory.TryPlaceItem(item))
+            if(PlayerInventory.TryPlaceItem(item) || EquipmentGrid.TryPlaceItem(item))
             {
                 merchantInventory.BuyItem(item);
                 inventoryGrid = PlayerInventory;
-                return true;
-            }
-            else if (EquipmentGrid.TryPlaceItem(item))
-            {
-                merchantInventory.BuyItem(item);
-                inventoryGrid = EquipmentGrid;
                 return true;
             }
         }
@@ -75,7 +69,7 @@ public class InvMasterTown : InvMasterBase
             }
             else if(merchantInventory != null)
             {
-                if(merchantInventory.TrySellItem(item))
+                if(merchantInventory.TryPutItemInMerchantGrid(item))
                 {
                     inventoryGrid = merchantInventory.ActiveGrid;
                     return true;

@@ -121,7 +121,7 @@ public class MerchantInventory : MonoBehaviour
         }
     }
 
-    public bool TrySellItem(SimpleItem item)
+    public virtual bool TryPutItemInMerchantGrid(SimpleItem item)
     {
         if (buyIsActiveGrid)
         {
@@ -143,12 +143,12 @@ public class MerchantInventory : MonoBehaviour
     {
         return ActiveGrid.HasItem(item);
     }
-    public bool CanAfford(SimpleItem item)
+    public virtual bool CanAfford(SimpleItem item)
     {
         return playerCashSO.CanAfford(item.CashValue);
     }
 
-    public void BuyItem(SimpleItem item)
+    public virtual void BuyItem(SimpleItem item)
     {
         if(!playerCashSO.TryBuy(item.CashValue))
         {

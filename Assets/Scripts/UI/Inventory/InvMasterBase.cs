@@ -29,6 +29,14 @@ public abstract class InvMasterBase : MonoBehaviour
         Instance = this;
     }
 
+    public void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+    }
+
     protected virtual void Start()
     {
         

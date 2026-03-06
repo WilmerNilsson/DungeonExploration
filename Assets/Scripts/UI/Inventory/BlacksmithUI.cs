@@ -15,6 +15,37 @@ public class BlacksmithUI : MerchantInventory
         }
     }
 
+    public override bool TryPutItemInMerchantGrid(SimpleItem item)
+    {
+        if (buyIsActiveGrid)
+        {
+            return false;
+        }
+        else if (ActiveGrid.TryPlaceItem(item))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public override bool CanAfford(SimpleItem item)
+    {
+        if (buyIsActiveGrid)
+        {
+            return base.CanAfford(item);
+        }
+        else return true;
+    }
+
+    public override void BuyItem(SimpleItem item)
+    {
+        if (buyIsActiveGrid)
+        {
+            base.BuyItem(item);
+        }
+        //else do nothing since we are not going to buy from repair grid
+    }
+
     public override void SelectGrid(bool buy)
     {
         base.SelectGrid(buy);

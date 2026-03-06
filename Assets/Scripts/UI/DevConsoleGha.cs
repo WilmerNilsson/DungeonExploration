@@ -12,31 +12,30 @@ public class DevConsoleGha : MonoBehaviour
     {
         public DebugCommand(string id, string description, string format, Action<string> command)
         {
-            _commandId = id;
-            _commandDescription = description;
-            _commandFormat = format;
+            CommandId = id;
+            CommandDescription = description;
+            CommandFormat = format;
 
             _commandS = command;
         }
 
         public DebugCommand(string id, string description, string format, Action command)
         {
-            _commandId = id;
-            _commandDescription = description;
-            _commandFormat = format;
+            CommandId = id;
+            CommandDescription = description;
+            CommandFormat = format;
 
             _command = command;
         }
 
-        public string _commandId { get; }
-        public string _commandDescription { get; }
-        public string _commandFormat { get; }
-#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
-        private Action<string>? _commandS;
-        private Action? _command;
-#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+        public readonly string CommandId;
+        public readonly string CommandDescription;
+        public readonly string CommandFormat;
+#nullable enable
+        private readonly Action<string?>? _commandS;
+        private readonly Action? _command;
 
-        public void Invoke(string value = null)
+        public void Invoke(string? value = null)
         {
             if(_commandS != null)
             {
@@ -44,13 +43,15 @@ public class DevConsoleGha : MonoBehaviour
             }
             else
             {
-                _command.Invoke();
+                _command!.Invoke();
             }
         }
+#nullable disable
     }
 
-    [SerializeField] TMP_Text _infoTextWindow;
-    [SerializeField] TMP_InputField _inputTextWindow;
+    [SerializeField] private TMP_Text infoTextWindow;
+    [SerializeField] private TMP_InputField inputTextWindow;
+    [SerializeField] private ItemLibrarySO itemLibrarySO;
 
     private GameObject toggleObject;
     public static DevConsoleGha Instance {  get; private set; }
@@ -74,9 +75,19 @@ public class DevConsoleGha : MonoBehaviour
             new DebugCommand("log_path", "gets the debug log path of the application", "log_path", LogPathCommand),
             new DebugCommand("kill_player", "deals 1000 damage to player", "kill_player", KillPlayerCommand),
             new DebugCommand("debug_navmesh", "prints a lot of usefull nav mesh data", "debug_navmesh", DebugNavmeshCommand),
-            new DebugCommand("set_sanity", "sets players sanity to value", "set_sanity int", SetSanity)
+            new DebugCommand("set_sanity", "sets players sanity to value", "set_sanity int", SetSanity),
+            new DebugCommand("give_item", "tries to insert a item into player inventory", "give_item itemID", GiveItemCommand)
         };
     }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (infoTextWindow == null) Debug.LogWarning("info text window is null", this);
+        if (inputTextWindow == null) Debug.LogWarning("input text window is null", this);
+        if (itemLibrarySO == null) Debug.LogWarning("item library is null", this);
+    }
+#endif
 
     public void HandleInput(string input)
     {
@@ -84,11 +95,11 @@ public class DevConsoleGha : MonoBehaviour
         {
             return;
         }
-        _inputTextWindow.text = string.Empty;
+        inputTextWindow.text = string.Empty;
 
         string[] properties = input.Split(' ', 2);
 
-        int index = commandList.FindIndex(item => item._commandId == properties[0]);
+        int index = commandList.FindIndex(item => item.CommandId == properties[0]);
 
         if(index != -1)
         {
@@ -96,7 +107,7 @@ public class DevConsoleGha : MonoBehaviour
         }
         else
         {
-            _infoTextWindow.text += "No command with that id found, try \"help\"\n";
+            infoTextWindow.text += "No command with that id found, try \"help\"\n";
         }
     }
 
@@ -114,11 +125,47 @@ public class DevConsoleGha : MonoBehaviour
 
     private void AddLine(string line)
     {
-        _infoTextWindow.text += line;
-        _infoTextWindow.text += "\n";
+        infoTextWindow.text += line;
+        infoTextWindow.text += "\n";
     }
 
     #region command methods 
+
+#nullable enable
+
+    private void GiveItemCommand(string input)
+    {
+        if (input == null)
+        {
+            AddLine("That command requires paramiters");
+            return;
+        }
+
+
+        ItemPairing? pair;
+        if (itemLibrarySO == null)
+        {
+            AddLine("item library is null");
+            return;
+        }
+        else if(!itemLibrarySO.TryGetItemPairByName(input, out pair))
+        {
+            AddLine($"item library had no item by id \"{input}\""); // chose to have quotation marks to highlight any blank spaces
+            return;
+        }
+
+        if(InvMasterBase.Instance == null)
+        {
+            AddLine("there is no inventory master");
+            return;
+        }
+        else if(!InvMasterBase.Instance.PlayerInventory.TryInsertItem(pair.UIPrefab.GetComponent<SimpleItem>(), true))
+        {
+            AddLine("failed to insert item into inventory");
+            return;
+        }
+
+    }
 
     private void SetSanity(string input)
     {
@@ -135,7 +182,7 @@ public class DevConsoleGha : MonoBehaviour
             return;
         }
 
-        Sanity.Instance.SetSanity(newValue);
+        Sanity.Instance?.SetSanity(newValue);
     }
 
     private void DebugNavmeshCommand()
@@ -162,25 +209,25 @@ public class DevConsoleGha : MonoBehaviour
         {
             foreach(DebugCommand command in commandList)
             {
-                _infoTextWindow.text += $"{command._commandFormat} - {command._commandDescription}\n";
+                infoTextWindow.text += $"{command.CommandFormat} - {command.CommandDescription}\n";
             }
-            _infoTextWindow.text += "\n";
+            infoTextWindow.text += "\n";
         }
         else
         {
             bool foundCommandId = false;
             foreach(DebugCommand command in commandList)
             {
-                if(input == command._commandId)
+                if(input == command.CommandId)
                 {
                     foundCommandId = true;
 
-                    _infoTextWindow.text += $"\n{command._commandFormat} - {command._commandDescription}\n\n";
+                    infoTextWindow.text += $"\n{command.CommandFormat} - {command.CommandDescription}\n\n";
                 }
             }
             if(!foundCommandId)
             {
-                _infoTextWindow.text += $"Failed to find the command \"{input}\", example format: help get_resolution\n";
+                infoTextWindow.text += $"Failed to find the command \"{input}\", example format: help get_resolution\n";
             }
         }
     }
@@ -189,7 +236,7 @@ public class DevConsoleGha : MonoBehaviour
     {
         if(input == null)
         {
-            _infoTextWindow.text += "That command requires paramiters\n";
+            infoTextWindow.text += "That command requires paramiters\n";
             return;
         }
 
@@ -204,7 +251,7 @@ public class DevConsoleGha : MonoBehaviour
 
         if(properties.Length != 4)
         {
-            _infoTextWindow.text += "Wrong number of paramiters\n";
+            infoTextWindow.text += "Wrong number of paramiters\n";
             return;
         }
 
@@ -240,12 +287,12 @@ public class DevConsoleGha : MonoBehaviour
         return;
 
         Failed:
-            _infoTextWindow.text += $"Failed to parse paramiter {failedParamiter}\n";
+            infoTextWindow.text += $"Failed to parse paramiter {failedParamiter}\n";
     }
 
     private void GetResolutionCommand()
     {
-        _infoTextWindow.text += $"{Screen.width} x {Screen.height}, {Screen.fullScreenMode}, {Screen.currentResolution.refreshRateRatio}\n\n"; 
+        infoTextWindow.text += $"{Screen.width} x {Screen.height}, {Screen.fullScreenMode}, {Screen.currentResolution.refreshRateRatio}\n\n"; 
     }
 
     private void LogPathCommand()
@@ -257,7 +304,7 @@ public class DevConsoleGha : MonoBehaviour
     {
         if(input == null)
         {
-            _infoTextWindow.text += "That command requires paramiters\n";
+            infoTextWindow.text += "That command requires paramiters\n";
             return;
         }
 
@@ -269,7 +316,7 @@ public class DevConsoleGha : MonoBehaviour
 
         if(properties.Length != 3)
         {
-            _infoTextWindow.text += "Wrong number of paramiters\n";
+            infoTextWindow.text += "Wrong number of paramiters\n";
             return;
         }
         
@@ -303,12 +350,12 @@ public class DevConsoleGha : MonoBehaviour
         return;
 
         Failed:
-            _infoTextWindow.text += $"Failed to parse paramiter {failedParamiter}\n";
+            infoTextWindow.text += $"Failed to parse paramiter {failedParamiter}\n";
     }
 
     private void GetPosCommand()
     {
-        _infoTextWindow.text += $"{GameObject.FindGameObjectWithTag("Player").transform.position}\n\n";
+        infoTextWindow.text += $"{GameObject.FindGameObjectWithTag("Player").transform.position}\n\n";
     }
 
     #endregion
