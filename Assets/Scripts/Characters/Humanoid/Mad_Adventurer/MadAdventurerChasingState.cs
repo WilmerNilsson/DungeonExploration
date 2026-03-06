@@ -19,6 +19,11 @@ public class MadAdventurerChasingState : MadAventurerBaseState
 
     public override void Update()
     {
+        if (!DetectPlayer())
+        {
+            MyMadAdventurerStateMachine.Transit(MyMadAdventurerStateMachine.IdleState);
+        }
+        
         if (Vector3.Distance(MyMadAdventurerStateMachine.PlayerTransform.position, MyMadAdventurerStateMachine.transform.position) <= minDistanceToPlayer)
         {
             MyMadAdventurerStateMachine.Transit(MyMadAdventurerStateMachine.AttackState);
