@@ -8,6 +8,6 @@ public class DialogueSelectButton : MonoBehaviour
 
     public void OnClick()
     {
-        DialogueManager.GetInstance().EnterDialogueMode(DialogueName);
+        NewDialogueManager.GetInstance().EnterDialogueMode(DialogueName);
     }
 }
