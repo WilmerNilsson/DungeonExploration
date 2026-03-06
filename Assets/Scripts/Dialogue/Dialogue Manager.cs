@@ -7,20 +7,19 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 public class DialogueManager : MonoBehaviour
 {
-    [SerializeField] private string StartDialogueName;
     [SerializeField] private bool playOnStart = false;
-    [SerializeField] private DialogueTree dialogueTree;
+    [SerializeField] public DialogueTree dialogueTree;
     [Header("Dialogue UI")] 
-    [SerializeField] private GameObject dialoguePanel;
 
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private TextMeshProUGUI dialogueName;
+    [SerializeField] private GameObject continueButton;
 
     [SerializeField] private Animator portraitAnimator;
-    [SerializeField] private List<DialogueSelectButton> selectButtons = new List<DialogueSelectButton>();
     //[SerializeField] private AudioSource audioSource;
 
     //[SerializeField] private DataStorage data;
@@ -64,17 +63,16 @@ public class DialogueManager : MonoBehaviour
             Debug.Log("More than one Dialogue Manager found");
         }
         instance = this;
+        continueButton.SetActive(false);
     }
 
     private void Start()
     {
         dialogueIsPlaying = false;
-        dialoguePanel.SetActive(false);
         if (playOnStart)
         {
-            EnterDialogueMode(StartDialogueName);
+            PlayGreeting();
         }
-        HandleDialogue();
     }
 
     private void Update()
@@ -102,7 +100,6 @@ public class DialogueManager : MonoBehaviour
 
     public void EnterDialogueMode(string DialogueName)
     {
-        TextAsset InkJSON = new TextAsset();
         for (int i = 0; i < dialogueTree.Dialogues.Count; i++)
         {
             if (dialogueTree.Dialogues[i].Name == DialogueName)
@@ -114,7 +111,7 @@ public class DialogueManager : MonoBehaviour
                 lineIndex = 0;
                 currentStory = new Story(dialogueTree.Dialogues[i].InkJson.text);
                 dialogueIsPlaying = true;
-                dialoguePanel.SetActive(true);
+                continueButton.SetActive(true);
                 //InputManager.GetInstance().isLevelPlaying = false;
         
                 ContinueStory();
@@ -122,14 +119,28 @@ public class DialogueManager : MonoBehaviour
             }
         }
     }
+    
+    public void EnterDialogueMode(TextAsset inkJSON)
+    {
+        onDialogueEnter?.Invoke(inkJSON.name);
+        //Debug.Log("entering dialogue mode");
+        isTyping = false;
+        lineIndex = 0;
+        currentStory = new Story(inkJSON.text);
+        dialogueIsPlaying = true;
+        //InputManager.GetInstance().isLevelPlaying = false;
+        continueButton.SetActive(true);
+
+        ContinueStory();
+    }
 
     private IEnumerator ExitDialogueMode()
     {
         yield return new WaitForSeconds(0.2f);
         
         dialogueIsPlaying = false;
-        dialoguePanel.SetActive(false);
         dialogueText.text = "";
+        continueButton.SetActive(false);
         //InputManager.GetInstance().isLevelPlaying = true;
         //data.playStoryAtStart = false;
         onDialogueExit.Invoke();
@@ -327,48 +338,25 @@ public class DialogueManager : MonoBehaviour
         return result;
     }
 
-    private void HandleDialogue()
+    private void PlayGreeting()
     {
-        for (int i = 0; i < selectButtons.Count; i++)
+        List<DialogueNode> currentGreetings =  new List<DialogueNode>();
+        for (int i = 0; i < dialogueTree.Greetings.Count; i++)
         {
-            selectButtons[i].gameObject.SetActive(true);
-        }
-        int currentButtons = 0;
-        for (int i = 0; i < dialogueTree.Dialogues.Count && currentButtons < selectButtons.Count; i++) //all dialogues in tree
-        {
-            if (!dialogueTree.Dialogues[i].HasBeenRead || !dialogueTree.Dialogues[i].IsUnreadable) //do not display dialogue that has already been read
+            if (dialogueTree.Greetings[i].FriendshipRequirement == dialogueTree.friendshipLevel)
             {
-                bool prerequisitesRead = true;
-                for (int j = 0; j < dialogueTree.Dialogues[i].PrerequisiteNames.Count && prerequisitesRead; j++) //all prerequisites to play this dialogue
-                {
-                    for (int k = 0; k < dialogueTree.Dialogues.Count; k++) //all dialogues in tree
-                    {
-                        if (dialogueTree.Dialogues[i].PrerequisiteNames[j] == dialogueTree.Dialogues[k].Name) //find prerequisites
-                        {
-                            if (!dialogueTree.Dialogues[k].HasBeenRead) //check if prerequisite is read
-                            {
-                                prerequisitesRead = false;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (prerequisitesRead)
-                {
-                    selectButtons[currentButtons].DialogueName =  dialogueTree.Dialogues[i].Name;
-                    selectButtons[currentButtons].buttonText.text = dialogueTree.Dialogues[i].ButtonText;
-                    currentButtons++;
-                }
+                currentGreetings.Add(dialogueTree.Greetings[i]);
             }
         }
+        Debug.Log(currentGreetings.Count);
 
-        if (currentButtons < selectButtons.Count)
+        if (currentGreetings.Count > 0)
         {
-            for (int i = currentButtons; i < selectButtons.Count; i++)
-            {
-                selectButtons[i].gameObject.SetActive(false);
-            }
+            EnterDialogueMode(currentGreetings[Random.Range(0, currentGreetings.Count - 1)].InkJson);
+        }
+        else
+        {
+            Debug.LogWarning("No greeting found", this);
         }
     }
 }

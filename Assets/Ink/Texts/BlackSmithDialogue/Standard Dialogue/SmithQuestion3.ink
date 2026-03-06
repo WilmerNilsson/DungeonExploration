@@ -1,7 +1,9 @@
-#speed:0.2
+#speed:0.025
 #animation:SagaPlaceholder
 #name:Saga 
-Just bring me weapons you find and be able to replicate and repair them in exchange for some coin. Simple as that
+If you find any weapons in Agathol then you can just bring them here and I'll be able repair them. Doesn't matter how broken, I'll fix them up lickety-split.  
+
+Alternatively, I can take them off of your hands and replicate them how many times you want, might be a little costly though. 
 
 #name:Ingrid
 Good to know.

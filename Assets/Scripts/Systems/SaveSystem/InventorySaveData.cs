@@ -7,6 +7,17 @@ public class InventorySaveData
 {
     public List<InventoryItem> Items;
 
+    public override string ToString()
+    {
+        string str = string.Empty;
+
+        foreach (InventoryItem inventoryItem in Items)
+        {
+            str += inventoryItem.ToString();
+        }
+        return str;
+    }
+
     public InventorySaveData(List<InventoryItem> items)
     {
         Items = items;
@@ -25,6 +36,11 @@ public class InventorySaveData
     public struct InventoryItem
     {
         public string PrefabID;
-        public int Slot; 
+        public int Slot;
+
+        public override string ToString()
+        {
+            return $"[prefab ID: {PrefabID}, slot: {Slot}]";
+        }
     }
 }

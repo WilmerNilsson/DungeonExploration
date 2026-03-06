@@ -1,5 +1,4 @@
-
-using System.Collections.Generic;
+using UnityEditor.Events;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -14,6 +13,9 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     private Vector2Int pivot;
     [HideInInspector] public bool[] itemGridSize = new bool[GridHeight*GridWidth];
     //may just have simple bool for importing the default discard use
+#if UNITY_EDITOR
+    [SerializeField] private bool debugQuickConnectDropItem = false;
+#endif
     [SerializeField] private ItemUse[] uses;
     [SerializeField] private string descriptionText;
     [SerializeField] private bool descriptionTextIsLibraryName;
@@ -26,6 +28,7 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     public string PrefabID { get { return prefabID; } }
 
     public UnityEvent? OnStopDrag;
+    private InventoryGrid? currentInventory;
 
     public RectTransform RectTransform { get { return (transform as RectTransform)!; } }
     private bool isDragging;
@@ -33,9 +36,40 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     private Transform? returnParent;
     public Vector2Int Pivot {get{ return pivot; } }
 
-#if DEBUG
+#if UNITY_EDITOR
     private void OnValidate()
     {
+        if(debugQuickConnectDropItem)
+        {
+            debugQuickConnectDropItem = false;
+
+            if(TryGetComponent(out ItemDrop itemDrop))
+            {
+                if (uses == null)
+                {
+                    uses = new ItemUse[1];
+                    uses[0] = new();
+                    uses[0].SetText("Drop");
+                    uses[0].OnUse = new();
+                    UnityEventTools.AddPersistentListener(uses[0].OnUse, itemDrop.Drop);
+                }
+                else
+                {
+                    ItemUse[] newUses = new ItemUse[uses.Length + 1];
+                    uses.CopyTo(newUses, 0);
+                    newUses[newUses.Length-1]=new();
+                    newUses[newUses.Length - 1].SetText("Drop");
+                    newUses[newUses.Length - 1].OnUse = new();
+                    UnityEventTools.AddPersistentListener(newUses[newUses.Length - 1].OnUse, itemDrop.Drop);
+                    uses = newUses;
+                }
+            }
+            else
+            {
+                Debug.Log("found no item drop script");
+            }
+        }
+
         if (descriptionText == null || descriptionText == string.Empty)
         {
             Debug.LogWarning("item description text is empty", this);
@@ -93,7 +127,6 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                 master.GetContextMenu().SelectItem(this, uses);
             }
         }
-
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -105,9 +138,8 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
                 isDragging = false;
                 OnStopDrag?.Invoke();
             }
-
             
-            if (!InvMaster.Instance.TryPlaceItem(this))
+            if (!InvMasterBase.Instance.TryPlaceItem(this, out InventoryGrid? newGrid))
             {
                 RectTransform.position = returnPos;
                 transform.SetParent(returnParent);
@@ -139,6 +171,21 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     public void OnPointerExit(PointerEventData eventData)
     {
         InvMasterBase.Instance.ChangeHover(this, false);
+    }
+
+    internal void ReadyForDestory()
+    {
+        currentInventory?.TryRemoveSlottedItem(this);
+        currentInventory = null;
+    }
+
+    internal void MoveTo(InventoryGrid newGrid)
+    {
+        if (newGrid != currentInventory)
+        {
+            currentInventory?.TryRemoveSlottedItem(this);
+            currentInventory = newGrid;
+        }
     }
 }
 

@@ -1,23 +1,39 @@
+using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
 
 public class InvMasterTown : InvMasterBase
 {
-    [SerializeField] private MerchantInventory merchantInventory;
     [SerializeField] private TextMeshProUGUI itemGoldValueText;
+#nullable enable
+
+    private MerchantInventory? merchantInventory;
 
     protected override void Start()
     {
         base.Start();
     }
 
-#if DEBUG
+#if DEBUG && UNITY_EDITOR
     protected override void OnValidate()
     {
         base.OnValidate();
-        if (merchantInventory == null) Debug.LogWarning("merchant inventory is null", this);
+        if (itemGoldValueText == null) Debug.LogWarning("item gold value text is null", this);
     }
 #endif
+
+    public void SetActiveMerchantInventory(MerchantInventory merchant)
+    {
+        merchantInventory = merchant;
+    }
+
+    public void RemoveActiveMerchantInventory(MerchantInventory merchant)
+    {
+        if(merchantInventory == merchant)
+        {
+            merchantInventory = null;
+        }
+    }
 
     public override void ChangeHover(SimpleItem simpleItem, bool startHover)
     {
@@ -32,38 +48,48 @@ public class InvMasterTown : InvMasterBase
         }
     }
 
-    public override bool TryPlaceItem(SimpleItem item)
+    public override bool TryPlaceItem(SimpleItem item, [NotNullWhen(true)] out InventoryGrid? inventoryGrid)
     {
-        //perhaps have a reference in SimpleItem to current inventory that we can remove it from
-        //when we move it from one inventory to another.
-
-
         // we check if merchant has the item first so player can re-arrange thier inventory
         // without interfearense
 
-        if(merchantInventory.HasItem(item))
+        if(merchantInventory != null && merchantInventory.HasItem(item) && merchantInventory.CanAfford(item))
         {
-            if(merchantInventory.CanAfford(item) && PlayerInventory.TryPlaceItem(item))
+            if(PlayerInventory.TryPlaceItem(item))
             {
-                merchantInventory.TryRemoveSlottedItem(item);
+                merchantInventory.BuyItem(item);
+                inventoryGrid = PlayerInventory;
+                return true;
+            }
+            else if (EquipmentGrid.TryPlaceItem(item))
+            {
+                merchantInventory.BuyItem(item);
+                inventoryGrid = EquipmentGrid;
                 return true;
             }
         }
-        else if(PlayerInventory.HasItem(item))
+        else if(PlayerInventory.HasItem(item) || EquipmentGrid.HasItem(item))
         {
             if(PlayerInventory.TryPlaceItem(item)) //re-arrenge
             {
+                inventoryGrid = PlayerInventory;
                 return true;
             }
-            else //try sell
+            else if(EquipmentGrid.TryPlaceItem(item))
+            {
+                inventoryGrid = EquipmentGrid;
+                return true;
+            }
+            else if(merchantInventory != null)
             {
                 if(merchantInventory.TrySellItem(item))
                 {
-                    PlayerInventory.TryRemoveSlottedItem(item);
+                    inventoryGrid = merchantInventory.ActiveGrid;
                     return true;
                 }
             }
         }
+        inventoryGrid = null;
         return false;
     }
 }

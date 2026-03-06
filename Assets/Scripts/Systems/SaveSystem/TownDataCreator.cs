@@ -6,6 +6,7 @@ public static class TownDataCreator
     {
         public int Cash;
         public InventorySaveData Inventory;
+        public InventorySaveData Equipment;
     }
 
     public static TownData GetTownData()
@@ -18,6 +19,7 @@ public static class TownDataCreator
 
         data.Cash = helper.GetCash();
         data.Inventory = helper.GetPlayerInventory();
+        data.Equipment = helper.GetPlayerEquipment();
 
         return data;
     }

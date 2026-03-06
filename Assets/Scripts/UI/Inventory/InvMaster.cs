@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -16,6 +17,8 @@ public class InvMaster : InvMasterBase
     /// collum, row
     /// </summary>
 
+#nullable enable
+
     //dunno what we expect to be the max open container amount, but going with 1 for now
     private List<ContainerController> openContainers = new(1);
 
@@ -24,7 +27,7 @@ public class InvMaster : InvMasterBase
         base.Start();
     }
 
-#if DEBUG
+#if DEBUG && UNITY_EDITOR
     protected override void OnValidate()
     {
         base.OnValidate();
@@ -38,21 +41,13 @@ public class InvMaster : InvMasterBase
     public ItemContextMenu GetContextMenu()
         { return contextMenu; }
 
-    public override bool TryPlaceItem(SimpleItem item)
+    public override bool TryPlaceItem(SimpleItem item, [NotNullWhen(true)] out InventoryGrid? inventoryGrid)
     {
         //perhaps have a reference in SimpleItem to current inventory that we can remove it from
         //when we move it from one inventory to another.
 
-        if(PlayerInventory.TryPlaceItem(item))
+        if(base.TryPlaceItem(item, out inventoryGrid))
         {
-            foreach (ContainerController container in openContainers)
-            {
-                if(container.Grid.TryRemoveSlottedItem(item))
-                {
-                    break;
-                }
-            }
-
             return true;
         }
         else
@@ -62,25 +57,14 @@ public class InvMaster : InvMasterBase
                 ContainerController container = openContainers[i];
                 if (container.Grid.TryPlaceItem(item))
                 {
-                    if(PlayerInventory.TryRemoveSlottedItem(item))
-                    {
-                        return true;
-                    }
-
-                    //we did not move the item from players inventory,
-                    //so we need to check if there is another inventory to remove the item from
-                    for (int i2 = 0; i2 < openContainers.Count; i2++)
-                    {
-                        if(i == i2) continue;
-
-                        if (openContainers[i2].Grid.TryRemoveSlottedItem(item)) break;
-                    }
+                    inventoryGrid = container.Grid;
 
                     return true;
                 }
             }
         }
 
+        inventoryGrid = null;
         return false;
     }
 
@@ -153,23 +137,9 @@ public class InvMaster : InvMasterBase
 
     public override void DestroyItem(SimpleItem item)
     {
-        if (PlayerInventory.TryRemoveSlottedItem(item))
-        {
-            
-        }
-        else
-        {
-            foreach (ContainerController container in openContainers)
-            {
-                if (container.Grid.TryRemoveSlottedItem(item))
-                {
-                    break;
-                }
-            }
-        }
+        base.DestroyItem(item);
 
         contextMenu.TryDeselectItem(item);
-        Destroy(item.gameObject);
     }
 
     public void OpenText(string newText)

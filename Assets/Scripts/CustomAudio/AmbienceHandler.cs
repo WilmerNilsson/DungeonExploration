@@ -10,9 +10,12 @@ public class AmbienceHandler : MonoBehaviour
       if (!AudioManager.IsValid) return;
       AudioManager.Instance.CreateInstance(ambiencePath, gameObject);
       AudioManager.Instance.StartEvent(ambiencePath, gameObject);
+      AudioManager.Instance.CreateInstance(slapbackPath, gameObject);
+      AudioManager.Instance.StartEvent(slapbackPath, gameObject);
    }
 
    [SerializeField] private string ambiencePath;
+   [SerializeField] private string slapbackPath;
 
    private RaycastHit[] _hits = new RaycastHit[8];
 
@@ -42,6 +45,9 @@ public class AmbienceHandler : MonoBehaviour
 
    [Range(-180,180)]
    [SerializeField]private float maxDistanceAngle;
+
+   [Range(-180, 180)] 
+   [SerializeField] private float minDistanceAngle;
    
    [Range(0, 1f)]
    [SerializeField] private float seekSpeed;
@@ -92,12 +98,21 @@ public class AmbienceHandler : MonoBehaviour
       if (maxDistanceAngle < -180) maxDistanceAngle += 360f;
       else if (maxDistanceAngle > 180) maxDistanceAngle -= 360f;
       
+      minDistanceAngle += Mathf.DeltaAngle(minDistanceAngle + 180, (min * 45) - 180) * seekSpeed * 0.5f;
+      if (minDistanceAngle < -180) minDistanceAngle += 360f;
+      else if (minDistanceAngle > 180) minDistanceAngle -= 360f;
+      
       if (useHeightAsMultiplier)
       {
          Physics.Raycast(AudioManager.Listener.transform.position, Vector3.up, out _heightHits[0], layerMask);
          Physics.Raycast(AudioManager.Listener.transform.position, Vector3.down, out _heightHits[1], layerMask);
          _height = Vector3.Distance(_heightHits[0].point, _heightHits[1].point);
          if (heightMultiplier > 0) _height *= heightMultiplier;
+         else _height = 0f;
+      }
+      else
+      {
+         _height = 1;
       }
       
       if (!AudioManager.IsValid) return;
@@ -105,13 +120,17 @@ public class AmbienceHandler : MonoBehaviour
       if (useMean)
       {
          AudioManager.Instance.SetGlobalParameter("RoomSize", meanDistance * roomSizeMultiplier * _height, false);
-         currentRoomSize = meanDistance * roomSizeMultiplier;
       }
       else
       {
          AudioManager.Instance.SetGlobalParameter("RoomSize", medianDistance * roomSizeMultiplier * _height, false);
-         currentRoomSize = medianDistance * roomSizeMultiplier;
       }
+      
+      AudioManager.Instance.SetGlobalParameter("ReverbPanner", maxDistanceAngle, false);
+      AudioManager.Instance.SetGlobalParameter("ClosestWallDistance", _hits[min].distance, false);
+      AudioManager.Instance.SetGlobalParameter("DelayPanner", minDistanceAngle, false);
+
+      currentRoomSize = meanDistance * roomSizeMultiplier * _height;
    }
 
    private void OnDrawGizmos()
@@ -171,5 +190,7 @@ public class AmbienceHandler : MonoBehaviour
       if (!AudioManager.IsValid) return;
       AudioManager.Instance.StopEvent(ambiencePath, STOP_MODE.ALLOWFADEOUT, gameObject);
       AudioManager.Instance.ReleaseInstance(ambiencePath, gameObject);
+      AudioManager.Instance.StopEvent(slapbackPath, STOP_MODE.ALLOWFADEOUT, gameObject);
+      AudioManager.Instance.ReleaseInstance(slapbackPath, gameObject);
    }
 }

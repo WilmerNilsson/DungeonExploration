@@ -38,6 +38,11 @@ public class EventListEditor : Editor
         {
             eventList.ToggleDebug();
         }
+
+        if (GUILayout.Button("Force Save"))
+        {
+            eventList.ForceSave();
+        }
         
         serializedObject.ApplyModifiedProperties();
     }

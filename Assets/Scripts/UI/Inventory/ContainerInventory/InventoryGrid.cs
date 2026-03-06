@@ -2,25 +2,30 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(RectTransform))]
 public class InventoryGrid : MonoBehaviour
 {
-    [SerializeField, Min(1)] private int collumns = 1;
-    [SerializeField, Min(1)] private int rows = 1;
-
     /// <summary>
     /// the standard grid size in pixels at 1920x1080
     /// </summary>
     public const int StandardGridSize = 100;
 
+    [SerializeField, Min(1)] private int collumns = 1;
+    [SerializeField, Min(1)] private int rows = 1;
+
     private bool hasBeenEnabled = false;
+#nullable enable
+
+    public UnityEvent<SimpleItem>? OnGetNewItem;
+    public UnityEvent<SimpleItem>? OnRemoveItem;
 
     /// <summary>
     /// collum, row
     /// </summary>
-    private ItemWithPiviot[,] InvData
+    private ItemWithPiviot?[,] InvData
     {
         get
         {
@@ -31,7 +36,7 @@ public class InventoryGrid : MonoBehaviour
             return _invData;
         }
     }
-    private ItemWithPiviot[,] _invData;
+    private ItemWithPiviot[,]? _invData;
 
     private void OnEnable()
     {
@@ -42,9 +47,9 @@ public class InventoryGrid : MonoBehaviour
         {
             for (int y = 0; y < InvData.GetLength(1); y++)
             {
-                if (InvData[x,y] != null && InvData[x,y].IsPiviot)
+                if (InvData[x,y] != null && InvData[x,y]!.IsPiviot)
                 {
-                    InvData[x, y].Item.RectTransform.position = GetSlotRect(x, y).center;
+                    InvData[x, y]!.Item.RectTransform.position = GetSlotRect(x, y).center;
                 }
             }
         }
@@ -54,11 +59,40 @@ public class InventoryGrid : MonoBehaviour
     [Header("gizmos")]
     [SerializeField] private bool drawCenter;
     [SerializeField] private bool drawGrid;
+    [SerializeField] private bool drawOccupied;
+
+    private void OnDrawGizmos()
+    {
+        if (drawOccupied)
+        {
+            for (int collum = 0; collum < collumns; collum++)
+            {
+                for (int row = 0; row < rows; row++)
+                {
+                    if (InvData[collum, row] == null) continue;
+
+                    if (InvData[collum, row]!.IsPiviot)
+                    {
+                        Gizmos.color = Color.yellow;
+                    }
+                    else
+                    {
+                        Gizmos.color = Color.blue;
+                    }
+
+                    Rect slot = GetSlotRect(collum, row);
+
+                    Gizmos.DrawWireSphere(slot.center, slot.height / 3f);
+                }
+            }
+        }
+    }
 
     private void OnDrawGizmosSelected()
     {
         if(drawGrid)
         {
+            Gizmos.color = Color.white;
             for (int collum = 0; collum < collumns; collum++)
             {
                 for (int row = 0; row < rows; row++)
@@ -70,7 +104,7 @@ public class InventoryGrid : MonoBehaviour
             }
         }
 
-        if(drawCenter)
+        if (drawCenter)
         {
             Rect globalRect = GlobalRect();
 
@@ -79,14 +113,12 @@ public class InventoryGrid : MonoBehaviour
             Gizmos.DrawWireSphere(globalRect.center, globalRect.width / 4f);
         }
     }
-#endif
 
-#if DEBUG
     private void OnValidate()
     {
         CheckSlotSize();
 
-        if ((transform as RectTransform).pivot.y != 0.5f || (transform as RectTransform).pivot.x != 0.5f)
+        if ((transform as RectTransform)!.pivot.y != 0.5f || (transform as RectTransform)!.pivot.x != 0.5f)
             Debug.LogWarning("inventory grid pivot is not 0.5 in x and y", this);
 
         void CheckSlotSize()
@@ -96,7 +128,7 @@ public class InventoryGrid : MonoBehaviour
             float delta = 0.0005f;
             if (Mathf.Abs(slotSize.x - slotSize.y) > delta)
             {
-                Debug.LogWarning($"inventory slot width and height does not match. width is {slotSize.x}, height is {slotSize.y}", this);
+                Debug.LogWarning($"inventory slot width and height does not match. width is {slotSize.x}, height is {slotSize.y}, name is {gameObject.name}", this);
             }
             if (Mathf.Abs((float)StandardGridSize - slotSize.y) > delta)
             {
@@ -110,7 +142,7 @@ public class InventoryGrid : MonoBehaviour
 
         Vector2 SlotSizeWOScaler()
         {
-            Rect bigRect = (transform as RectTransform).rect;
+            Rect bigRect = (transform as RectTransform)!.rect;
 
             float scaleX = 1f;
             float scaleY = 1f;
@@ -153,46 +185,53 @@ public class InventoryGrid : MonoBehaviour
         //alternative is to go with the corners, and then counter rotate them
         //i do not think one or the other is much more preformance heavy
 
-        RectTransform rt = (transform as RectTransform);
+        RectTransform rt = (transform as RectTransform)!;
 
         Rect bigRect = rt.rect;
 
-#if UNITY_EDITOR
-        float scaleX = 1f;
-        float scaleY = 1f;
-
-        int sanity = 100;
-
-        for (Transform t = transform; t.parent != null; t = t.parent)
+        if (Application.isPlaying)
         {
-            if(t.TryGetComponent<CanvasScaler>(out CanvasScaler scaler))
-            {
-                scaleX *= scaler.scaleFactor;
-                scaleY *= scaler.scaleFactor;
-            }
-            else
-            {
-                scaleX *= t.localScale.x;
-                scaleY *= t.localScale.y;
-            }
+            bigRect.width = bigRect.width * rt.lossyScale.x;
+            bigRect.height = bigRect.height * rt.lossyScale.y;
 
-            sanity--;
-            if (sanity <= 0)
-            {
-                Debug.Log("hit sanity cap", this);
-                break;
-            }
+            bigRect.center = rt.position;
+
+            return bigRect;
         }
-        bigRect.width = bigRect.width * scaleX;
-        bigRect.height = bigRect.height * scaleY;
-#else
-        bigRect.width = bigRect.width * rt.lossyScale.x;
-        bigRect.height = bigRect.height * rt.lossyScale.y;
-#endif
+        else
+        {
+            float scaleX = 1f;
+            float scaleY = 1f;
 
-        bigRect.center = rt.position;
+            int sanity = 100;
 
-        return bigRect;
+            for (Transform t = transform; t.parent != null; t = t.parent)
+            {
+                if (t.TryGetComponent<CanvasScaler>(out CanvasScaler scaler))
+                {
+                    scaleX *= scaler.scaleFactor;
+                    scaleY *= scaler.scaleFactor;
+                }
+                else
+                {
+                    scaleX *= t.localScale.x;
+                    scaleY *= t.localScale.y;
+                }
+
+                sanity--;
+                if (sanity <= 0)
+                {
+                    Debug.Log("hit sanity cap", this);
+                    break;
+                }
+            }
+            bigRect.width = bigRect.width * scaleX;
+            bigRect.height = bigRect.height * scaleY;
+
+            bigRect.center = rt.position;
+
+            return bigRect;
+        }
     }
 
     private Rect GetSlotRect(int collum, int row)
@@ -253,7 +292,6 @@ public class InventoryGrid : MonoBehaviour
 
     public bool TryInstantiateItemInSlot(int slot, GameObject prefab)
     {
-#if DEBUG
         if (prefab.TryGetComponent<SimpleItem>(out SimpleItem component))
         {
             int collum = slot % (collumns);
@@ -270,12 +308,6 @@ public class InventoryGrid : MonoBehaviour
             Debug.LogError($"can't instanciate prefab {prefab}, cause it is not a simple item", this);
             return false;
         }
-#else //assume it won't error;
-        int row = slot % collumns;
-        int collum = slot - (row * collumns);
-
-        return TryPutItemInSlot(prefab.GetComponent<SimpleItem>(), row, collum, true);
-#endif
     }
 
     public List<InventorySaveData.InventoryItem> GetInventoryData()
@@ -287,10 +319,10 @@ public class InventoryGrid : MonoBehaviour
             for (int row = 0; row < InvData.GetLength(1); row++)
             {
                 if (InvData[collum, row] == null) continue;
-                if (InvData[collum, row].IsPiviot == false) continue;
+                if (InvData[collum, row]!.IsPiviot == false) continue;
 
                 InventorySaveData.InventoryItem item = new();
-                item.PrefabID = InvData[collum, row].Item.PrefabID;
+                item.PrefabID = InvData[collum, row]!.Item.PrefabID;
 
                 //4567
                 //0123
@@ -369,7 +401,7 @@ public class InventoryGrid : MonoBehaviour
                 if(! invSlotExists) return false;
 
                 bool spaceIsFreeIfItemIsAbsent = InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y] == null ||
-                    InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y].Item == item;
+                    InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y]!.Item == item;
 
                 if (!spaceIsFreeIfItemIsAbsent) return false;
             }
@@ -391,16 +423,19 @@ public class InventoryGrid : MonoBehaviour
             {
                 if (itemSlots[x, y] == true)
                 {
-                    InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y] = new();
-                    InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y].Item = item;
+                    InvData[collum + x - item.Pivot.x, row + y - item.Pivot.y] = new(item, false);
                 }
             }
         }
 
-        InvData[collum, row].IsPiviot = true;
+        InvData[collum, row]!.IsPiviot = true;
+
+        item.MoveTo(this);
 
         item.RectTransform.SetParent(transform, false);
         item.RectTransform.position = GetSlotRect(collum, row).center;
+
+        OnGetNewItem?.Invoke(item);
         return true;
     }
 
@@ -411,7 +446,7 @@ public class InventoryGrid : MonoBehaviour
             for (int row = 0; row < InvData.GetLength(1); row++)
             {
                 if (InvData[collum, row] == null) { continue; }
-                else if (InvData[collum, row].Item == item)
+                else if (InvData[collum, row]!.Item == item)
                 {
                     return true;
                 }
@@ -421,6 +456,9 @@ public class InventoryGrid : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// generally called from simple item, but also when moving from and to same grid
+    /// </summary>
     public bool TryRemoveSlottedItem(SimpleItem item)
     {
         //we have to itterate trough all cause items can be bigger
@@ -432,12 +470,17 @@ public class InventoryGrid : MonoBehaviour
             for (int row = 0; row < InvData.GetLength(1); row++)
             {
                 if(InvData[collum, row] == null) { continue; }
-                else if (InvData[collum, row].Item == item)
+                else if (InvData[collum, row]!.Item == item)
                 {
                     InvData[collum, row] = null;
                     foundMatch = true;
                 }
             }
+        }
+
+        if(foundMatch)
+        {
+            OnRemoveItem?.Invoke(item);
         }
 
         return foundMatch;
@@ -447,5 +490,11 @@ public class InventoryGrid : MonoBehaviour
     {
         public SimpleItem Item;
         public bool IsPiviot;
+
+        public ItemWithPiviot(SimpleItem item, bool isPiviot)
+        {
+            Item = item;
+            IsPiviot = isPiviot;
+        }
     }
 }
