@@ -39835,7 +39835,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 377534378}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 4791065649244214859, guid: 9417b44d3b6562347ac6a3ba170e91cc, type: 3}
+    - {fileID: 8032396259742257005, guid: 9417b44d3b6562347ac6a3ba170e91cc, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9417b44d3b6562347ac6a3ba170e91cc, type: 3}
@@ -100844,63 +100846,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1001 &1227018259
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2560569649525435868, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
-      propertyPath: m_Name
-      value: TownSoundLogic
-      objectReference: {fileID: 0}
-    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -126.84764
-      objectReference: {fileID: 0}
-    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 7.519803
-      objectReference: {fileID: 0}
-    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 39.24203
-      objectReference: {fileID: 0}
-    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
 --- !u!43 &1230067765
 Mesh:
   m_ObjectHideFlags: 0
@@ -157890,8 +157835,8 @@ Mesh:
     path: 
 --- !u!114 &1974210751 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7961188666442847656, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
-  m_PrefabInstance: {fileID: 1227018259}
+  m_CorrespondingSourceObject: {fileID: 4180977678112525054, guid: 46d006db2458e5243828141b74a812e6, type: 3}
+  m_PrefabInstance: {fileID: 6404956813135150731}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -172317,6 +172262,62 @@ PrefabInstance:
       propertyPath: m_Name
       value: Town UI
       objectReference: {fileID: 0}
+    - target: {fileID: 3213746008120322548, guid: 46d006db2458e5243828141b74a812e6, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3213746008120322548, guid: 46d006db2458e5243828141b74a812e6, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3213746008120322548, guid: 46d006db2458e5243828141b74a812e6, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3213746008120322548, guid: 46d006db2458e5243828141b74a812e6, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3213746008120322548, guid: 46d006db2458e5243828141b74a812e6, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1974210751}
+    - target: {fileID: 3213746008120322548, guid: 46d006db2458e5243828141b74a812e6, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1974210751}
+    - target: {fileID: 3213746008120322548, guid: 46d006db2458e5243828141b74a812e6, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3213746008120322548, guid: 46d006db2458e5243828141b74a812e6, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3213746008120322548, guid: 46d006db2458e5243828141b74a812e6, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayBuySound
+      objectReference: {fileID: 0}
+    - target: {fileID: 3213746008120322548, guid: 46d006db2458e5243828141b74a812e6, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlaySellSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 3213746008120322548, guid: 46d006db2458e5243828141b74a812e6, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TownSoundLogic, GameAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 3213746008120322548, guid: 46d006db2458e5243828141b74a812e6, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TownSoundLogic, GameAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 3213746008120322548, guid: 46d006db2458e5243828141b74a812e6, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3213746008120322548, guid: 46d006db2458e5243828141b74a812e6, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3357457352553995635, guid: 46d006db2458e5243828141b74a812e6, type: 3}
       propertyPath: m_text
       value: 'Welcome to Gunhildr '
@@ -172333,18 +172334,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 1624210138}
-    - target: {fileID: 4312473231575614700, guid: 46d006db2458e5243828141b74a812e6, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[5].m_Target
-      value: 
-      objectReference: {fileID: 1974210751}
     - target: {fileID: 5540933592808582145, guid: 46d006db2458e5243828141b74a812e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1624210138}
-    - target: {fileID: 5540933592808582145, guid: 46d006db2458e5243828141b74a812e6, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
-      value: 
-      objectReference: {fileID: 1974210751}
     - target: {fileID: 7040800342017228197, guid: 46d006db2458e5243828141b74a812e6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -172371,4 +172364,3 @@ SceneRoots:
   - {fileID: 371670144}
   - {fileID: 570447857}
   - {fileID: 1981918425}
-  - {fileID: 1227018259}
