@@ -184,7 +184,7 @@ public class Weapon : MonoBehaviour
                     LoseDurability(health.DurabilityDamage);
                     Debug.Log($"The target {other.gameObject.name} health is " + health.CurrentHealth);
                 }
-                else if (other.gameObject.layer == LayerMask.NameToLayer("Character")) // Potential fix for ragdoll 
+                else if (other.gameObject.CompareTag("Flesh")) // Potential fix for ragdoll 
                 {
                     health = other.gameObject.GetComponentInParent<Health>();
                     if (health != null)
