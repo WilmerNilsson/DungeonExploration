@@ -85,12 +85,12 @@ public class DialogueGraphView : GraphView
         return node;
     }
 
-    public void CreateNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, Vector2Int friendRange, int readDuring, int unlockWait)
+    public void CreateNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, string flag, Vector2Int friendRange, int readDuring, int unlockWait)
     {
-        AddElement(CreateDialogueNode(nodeName, buttonText, position, textAsset,  hasBeenRead, friendRange, readDuring, unlockWait));
+        AddElement(CreateDialogueNode(nodeName, buttonText, position, textAsset,  hasBeenRead, flag, friendRange, readDuring, unlockWait));
     }
     
-    public NewDialogueNode CreateDialogueNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, Vector2Int friendRange, int readDuring, int unlockWait)
+    public NewDialogueNode CreateDialogueNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, string flag, Vector2Int friendRange, int readDuring, int unlockWait)
     {
         var dialogueNode = new NewDialogueNode
         {
@@ -100,6 +100,7 @@ public class DialogueGraphView : GraphView
             GUID = Guid.NewGuid().ToString(),
             DialogueAsset = textAsset,
             HasBeenRead = hasBeenRead,
+            Flag = flag,
             FriendshipRange = friendRange,
             ReadRun = readDuring,
             RunWaitAmount = unlockWait
@@ -154,6 +155,14 @@ public class DialogueGraphView : GraphView
         });
         friendField.SetValueWithoutNotify(dialogueNode.FriendshipRange);
         dialogueNode.mainContainer.Add(friendField);
+        
+        var flagField = new TextField("Flags");
+        flagField.RegisterValueChangedCallback(evt =>
+        {
+            dialogueNode.Flag = evt.newValue;
+        });
+        flagField.SetValueWithoutNotify(dialogueNode.Flag);
+        dialogueNode.mainContainer.Add(flagField);
         
         var readRunField = new IntegerField("Run this was read during");
         readRunField.RegisterValueChangedCallback(evt =>

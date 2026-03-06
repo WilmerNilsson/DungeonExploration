@@ -14,6 +14,8 @@ public class NewDialogueNode : Node
     public TextAsset DialogueAsset;
     
     public bool HasBeenRead;
+    
+    public string Flag;
 
     public Vector2Int FriendshipRange;
 
