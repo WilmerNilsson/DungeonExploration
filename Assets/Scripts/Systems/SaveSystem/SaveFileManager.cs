@@ -21,8 +21,6 @@ public class SaveFileManager
 
     public SaveFileManager()
     {
-        Debug.Log("creating save file manager");
-
         GlobalSettings = ReadGlobalSettings();
 
         GlobalSettings ReadGlobalSettings()
@@ -104,8 +102,8 @@ public class SaveFileManager
         SavefileData data = ReadSavefile(CurrentSavefileNr); //we prob want to keep track of journals in real time aswell
         Debug.Log("reading save to get full data, need to split it up better");
 
-        data.World = WorldDataCreator.CreateWorldData();
-        if(newScene != null)
+        WorldDataCreator.CreateWorldData(out data.Dungeon, out data.PlayerSaveData);
+        if (newScene != null)
         {
             data.SceneName = newScene;
             SaveSavefile(data, backup);
@@ -129,7 +127,7 @@ public class SaveFileManager
         Debug.Log("reading save to get full data, need to split it up better");
 
 #if DEBUG
-        if(data.World == null)
+        if(data.Dungeon == null)
         {
             Debug.LogError("World is null when saving from town");
             return;
@@ -137,14 +135,23 @@ public class SaveFileManager
 #endif
         TownDataCreator.TownData townData = TownDataCreator.GetTownData();
 
-        data.World.PlayerSaveData.FromTown = true;
-        data.PlayerGold = townData.Cash;
-        data.World.PlayerSaveData.Inventory = townData.Inventory;
-
-        foreach(var item in data.World.PlayerSaveData.Inventory.Items)
+        if(data.PlayerSaveData == null)
         {
-            Debug.Log($"name: {item.PrefabID}, slot {item.Slot}");
+            data.PlayerSaveData = new(townData.Inventory, townData.Equipment, true, 1, 1, 1);
+            data.PlayerGold = townData.Cash;
         }
+        else
+        {
+            data.PlayerSaveData.FromTown = true;
+            data.PlayerGold = townData.Cash;
+            data.PlayerSaveData.Inventory = townData.Inventory;
+            data.PlayerSaveData.Equipment = townData.Equipment;
+        }
+
+        //foreach(var item in data.PlayerSaveData.Inventory.Items)
+        //{
+        //    Debug.Log($"name: {item.PrefabID}, slot {item.Slot}");
+        //}
 
         if (newScene != null)
         {

@@ -1,17 +1,37 @@
+using System;
 using System.Diagnostics.Contracts;
+using TMPro;
 using UnityEngine;
 
 public class MerchantInventory : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI itemGoldValueText;
+    [SerializeField] private TextMeshProUGUI descriptionTextField;
     //the reason i use 2 grids instead of just keeping track of the data is that
     //i want to avoid instansiating and destroying items unneseserarly
     [SerializeField] private InventoryGrid buyGrid;
-    [SerializeField] private InventoryGrid sellGrid;
+    [SerializeField] protected InventoryGrid sellGrid;
     [SerializeField] private string[] SpawnItems;
     [SerializeField] private ItemLibrarySO itemLibrary;
     [SerializeField] private PlayerCashSO playerCashSO;
 
 #nullable enable
+
+    protected bool buyIsActiveGrid = true;
+    public InventoryGrid ActiveGrid
+    {
+        get
+        {
+            if (buyIsActiveGrid)
+            {
+                return buyGrid;
+            }
+            else
+            {
+                return sellGrid;
+            }
+        }
+    }
 
     private void OnEnable()
     {
@@ -37,23 +57,6 @@ public class MerchantInventory : MonoBehaviour
         }
     }
 
-    private bool buyIsActiveGrid = true;
-    public InventoryGrid ActiveGrid
-    {
-        get
-        {
-            if(buyIsActiveGrid)
-            {
-                return buyGrid;
-            }
-            else
-            {
-                return sellGrid;
-            }
-        }
-    }
-
-
     private void Start()
     {
 #if DEBUG
@@ -72,11 +75,13 @@ public class MerchantInventory : MonoBehaviour
         }
     }
 
-#if DEBUG
-    private void OnValidate()
+#if UNITY_EDITOR
+    protected virtual void OnValidate()
     {
         if (buyGrid == null) Debug.LogWarning("Buy inventory grid is null", this);
         if (sellGrid == null) Debug.LogWarning("Sell inventory grid is null", this);
+        if (descriptionTextField == null) Debug.LogWarning("description text field is null", this);
+        if (itemGoldValueText == null) Debug.LogWarning("item gold value text is null", this);
         if (itemLibrary == null)
         {
             Debug.LogWarning("item library is null", this);
@@ -101,7 +106,7 @@ public class MerchantInventory : MonoBehaviour
     }
 #endif
 
-    public void SelectGrid(bool buy)
+    public virtual void SelectGrid(bool buy)
     {
         buyIsActiveGrid = buy;
         if(buyIsActiveGrid)
@@ -116,7 +121,7 @@ public class MerchantInventory : MonoBehaviour
         }
     }
 
-    public bool TrySellItem(SimpleItem item)
+    public virtual bool TryPutItemInMerchantGrid(SimpleItem item)
     {
         if (buyIsActiveGrid)
         {
@@ -138,16 +143,38 @@ public class MerchantInventory : MonoBehaviour
     {
         return ActiveGrid.HasItem(item);
     }
-    public bool CanAfford(SimpleItem item)
+    public virtual bool CanAfford(SimpleItem item)
     {
         return playerCashSO.CanAfford(item.CashValue);
     }
 
-    public void BuyItem(SimpleItem item)
+    public virtual void BuyItem(SimpleItem item)
     {
         if(!playerCashSO.TryBuy(item.CashValue))
         {
             Debug.LogError("failed to buy item", this);
         }
+    }
+
+    public virtual void ChangeHover(SimpleItem simpleItem, bool startHover)
+    {
+        if (startHover)
+        {
+            SetDescriptionText(simpleItem.CashValue.ToString());
+        }
+        else
+        {
+            SetDescriptionText(string.Empty);
+        }
+    }
+
+    protected void SetDescriptionText(string newText)
+    {
+        itemGoldValueText.text = newText;
+    }
+
+    public TextMeshProUGUI GetDescriptionTextField()
+    {
+        return descriptionTextField;
     }
 }

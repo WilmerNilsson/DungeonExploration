@@ -9,6 +9,8 @@ public class Weapon : MonoBehaviour
     [Header("Events")]
     [FormerlySerializedAs("onDamage")] public UnityEvent OnDamage;
     [FormerlySerializedAs("onDeflectCollision")] public UnityEvent<string, Vector3> OnDeflectCollision;
+    public UnityEvent onParry;
+    public UnityEvent onSwing;
     
     [Header("Weapon Stats")]
     [SerializeField, Min(1)] private int damage = 1;
@@ -16,7 +18,7 @@ public class Weapon : MonoBehaviour
     public int Durability 
     {
         get;
-        private set;
+        set;
     } = 1;
     [SerializeField] private bool dealDamage = false;
     [SerializeField] private bool isBlocking = false;
@@ -213,9 +215,16 @@ public class Weapon : MonoBehaviour
                         break;
                     case "Metal":
                         Debug.Log("Metal");
-                        if (other.TryGetComponent(out Weapon weapon) && !weapon.isBlocking)
+                        if (other.TryGetComponent(out Weapon weapon))
                         {
-                            Debug.Log("Other weapon not blocking");
+                            if (!weapon.isBlocking)
+                            {
+                                Debug.Log("Other weapon not blocking");
+                            }
+                            else
+                            {
+                                onParry.Invoke();
+                            }
                             break;
                         }
                         OnDeflectCollision.Invoke("Metal", transform.position);
