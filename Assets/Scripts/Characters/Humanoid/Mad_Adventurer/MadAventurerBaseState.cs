@@ -38,6 +38,10 @@ public abstract class MadAventurerBaseState
     
     protected virtual void OnDeath(){}
 
+    protected virtual bool DetectPlayer()
+    {
+        return MyMadAdventurerStateMachine.DetectPlayer();
+    }
     protected void Stop()
     {
         MyMadAdventurerStateMachine.Controller.Move(Vector3.zero);
@@ -45,7 +49,7 @@ public abstract class MadAventurerBaseState
 
     protected virtual void Move()
     {
-        MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((target-MyMadAdventurerStateMachine.transform.position)+Vector3.up*2f));
+        MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((target-MyMadAdventurerStateMachine.transform.position)));
         MyMadAdventurerStateMachine.Controller.Move(Vector3.forward);
     }
     
