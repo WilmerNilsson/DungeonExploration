@@ -323,6 +323,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1693646842145338136, guid: fdfb716d633cd764d8d2f125af43c0a9, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1693646842145338136, guid: fdfb716d633cd764d8d2f125af43c0a9, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1693646842145338136, guid: fdfb716d633cd764d8d2f125af43c0a9, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4809270010935084812}
+    - target: {fileID: 1693646842145338136, guid: fdfb716d633cd764d8d2f125af43c0a9, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1693646842145338136, guid: fdfb716d633cd764d8d2f125af43c0a9, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Die
+      objectReference: {fileID: 0}
+    - target: {fileID: 1693646842145338136, guid: fdfb716d633cd764d8d2f125af43c0a9, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MadAdventurerStateMachine, GameAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 1693646842145338136, guid: fdfb716d633cd764d8d2f125af43c0a9, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1915925689787853200, guid: fdfb716d633cd764d8d2f125af43c0a9, type: 3}
       propertyPath: m_Name
       value: CrazedAdventurer Variant
@@ -407,6 +435,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7078762868544999442, guid: fdfb716d633cd764d8d2f125af43c0a9, type: 3}
   m_PrefabInstance: {fileID: 5601622297080965633}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4809270010935084812 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1081145749708909837, guid: fdfb716d633cd764d8d2f125af43c0a9, type: 3}
+  m_PrefabInstance: {fileID: 5601622297080965633}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea107c8abef7ba94da20fef4aa14aa0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &5282817048964513273 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 354838589764474872, guid: fdfb716d633cd764d8d2f125af43c0a9, type: 3}

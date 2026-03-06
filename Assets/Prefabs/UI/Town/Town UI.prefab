@@ -589,7 +589,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 4180977678112525054}
         m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
         m_MethodName: ChangeLocation
         m_Mode: 5
@@ -1848,7 +1848,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 4180977678112525054}
         m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
         m_MethodName: ChangeLocation
         m_Mode: 5
@@ -3000,10 +3000,34 @@ MonoBehaviour:
   rows: 5
   OnGetNewItem:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4180977678112525054}
+        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
+        m_MethodName: PlaySellSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnRemoveItem:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4180977678112525054}
+        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
+        m_MethodName: PlayBuySound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   drawCenter: 0
   drawGrid: 0
   drawOccupied: 0
@@ -3208,6 +3232,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3741561623702648169}
   - {fileID: 5318907387837132086}
   - {fileID: 9180905512362484927}
   - {fileID: 8816031221172783591}
@@ -3482,7 +3507,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3021529616140954573}
   - component: {fileID: 1850314732361901234}
-  - component: {fileID: 5017372227381459727}
+  - component: {fileID: 8273711842185768509}
   m_Layer: 0
   m_Name: GiveThisCameraANamePlease
   m_TagString: MainCamera
@@ -3556,14 +3581,20 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &5017372227381459727
-AudioListener:
+--- !u!114 &8273711842185768509
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2669668088356225926}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nonRigidbodyVelocity: 0
+  attenuationObject: {fileID: 0}
 --- !u!1 &2776145776627071294
 GameObject:
   m_ObjectHideFlags: 0
@@ -7871,10 +7902,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 4180977678112525054}
         m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
         m_MethodName: ChangeLocation
         m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Blacksmith
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4180977678112525054}
+        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
+        m_MethodName: PlayDoorbellSound
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -8584,10 +8627,34 @@ MonoBehaviour:
   rows: 5
   OnGetNewItem:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4180977678112525054}
+        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
+        m_MethodName: PlaySellSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnRemoveItem:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4180977678112525054}
+        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
+        m_MethodName: PlayBuySound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   drawCenter: 0
   drawGrid: 0
   drawOccupied: 0
@@ -9566,8 +9633,8 @@ MonoBehaviour:
   dialogueTree: {fileID: 11400000, guid: 29c7b02dc5b17c3408af661f3bd49c40, type: 2}
   dialogueText: {fileID: 4949786742432613427}
   dialogueName: {fileID: 6486441060312357466}
-  continueButton: {fileID: 0}
-  portraitAnimator: {fileID: 0}
+  continueButton: {fileID: 640448948170146050}
+  portraitAnimator: {fileID: 2840735580665067292}
   onDialogueEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -9890,18 +9957,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
-        m_MethodName: ChangeLocation
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: Merchant
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 5606646214452780456}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -9936,6 +9991,30 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4180977678112525054}
+        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
+        m_MethodName: ChangeLocation
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Merchant
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4180977678112525054}
+        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
+        m_MethodName: PlayDoorbellSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Merchant
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &8055669524545112073
@@ -11177,6 +11256,118 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 3377220526939929423, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377220526939929423, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377220526939929423, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377220526939929423, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377220526939929423, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4180977678112525054}
+    - target: {fileID: 3377220526939929423, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4180977678112525054}
+    - target: {fileID: 3377220526939929423, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377220526939929423, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377220526939929423, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlaySellSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377220526939929423, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayBuySound
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377220526939929423, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TownSoundLogic, GameAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377220526939929423, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TownSoundLogic, GameAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377220526939929423, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3377220526939929423, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4864247598894987594, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4864247598894987594, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4864247598894987594, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4864247598894987594, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4864247598894987594, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4180977678112525054}
+    - target: {fileID: 4864247598894987594, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4180977678112525054}
+    - target: {fileID: 4864247598894987594, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4864247598894987594, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4864247598894987594, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlaySellSound
+      objectReference: {fileID: 0}
+    - target: {fileID: 4864247598894987594, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayBuySound
+      objectReference: {fileID: 0}
+    - target: {fileID: 4864247598894987594, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TownSoundLogic, GameAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 4864247598894987594, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TownSoundLogic, GameAssembly
+      objectReference: {fileID: 0}
+    - target: {fileID: 4864247598894987594, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4864247598894987594, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5159665865687612895, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -11441,6 +11632,79 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1001 &6088308017874149206
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1839446069745513705}
+    m_Modifications:
+    - target: {fileID: 2560569649525435868, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
+      propertyPath: m_Name
+      value: TownSoundLogic
+      objectReference: {fileID: 0}
+    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1086.8477
+      objectReference: {fileID: 0}
+    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -532.4802
+      objectReference: {fileID: 0}
+    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 39.24203
+      objectReference: {fileID: 0}
+    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
+--- !u!4 &3741561623702648169 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7463222814175832639, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
+  m_PrefabInstance: {fileID: 6088308017874149206}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4180977678112525054 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7961188666442847656, guid: 970a55f71c6accf4aba9a519885f2d7b, type: 3}
+  m_PrefabInstance: {fileID: 6088308017874149206}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02bbd963b07fa6e4db15ab2ee223245c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &8020782387418481550
