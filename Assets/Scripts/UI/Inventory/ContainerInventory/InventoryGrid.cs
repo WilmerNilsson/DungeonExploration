@@ -15,9 +15,9 @@ public class InventoryGrid : MonoBehaviour
 
     [SerializeField, Min(1)] private int collumns = 1;
     [SerializeField, Min(1)] private int rows = 1;
+#nullable enable
 
     private bool hasBeenEnabled = false;
-#nullable enable
 
     public UnityEvent<SimpleItem>? OnGetNewItem;
     public UnityEvent<SimpleItem>? OnRemoveItem;
@@ -113,7 +113,9 @@ public class InventoryGrid : MonoBehaviour
             Gizmos.DrawWireSphere(globalRect.center, globalRect.width / 4f);
         }
     }
+#endif
 
+#if DEBUG && UNITY_EDITOR
     private void OnValidate()
     {
         CheckSlotSize();
@@ -189,49 +191,42 @@ public class InventoryGrid : MonoBehaviour
 
         Rect bigRect = rt.rect;
 
-        if (Application.isPlaying)
+#if UNITY_EDITOR
+        float scaleX = 1f;
+        float scaleY = 1f;
+
+        int sanity = 100;
+
+        for (Transform t = transform; t.parent != null; t = t.parent)
         {
-            bigRect.width = bigRect.width * rt.lossyScale.x;
-            bigRect.height = bigRect.height * rt.lossyScale.y;
-
-            bigRect.center = rt.position;
-
-            return bigRect;
-        }
-        else
-        {
-            float scaleX = 1f;
-            float scaleY = 1f;
-
-            int sanity = 100;
-
-            for (Transform t = transform; t.parent != null; t = t.parent)
+            if(t.TryGetComponent<CanvasScaler>(out CanvasScaler scaler))
             {
-                if (t.TryGetComponent<CanvasScaler>(out CanvasScaler scaler))
-                {
-                    scaleX *= scaler.scaleFactor;
-                    scaleY *= scaler.scaleFactor;
-                }
-                else
-                {
-                    scaleX *= t.localScale.x;
-                    scaleY *= t.localScale.y;
-                }
-
-                sanity--;
-                if (sanity <= 0)
-                {
-                    Debug.Log("hit sanity cap", this);
-                    break;
-                }
+                scaleX *= scaler.scaleFactor;
+                scaleY *= scaler.scaleFactor;
             }
-            bigRect.width = bigRect.width * scaleX;
-            bigRect.height = bigRect.height * scaleY;
+            else
+            {
+                scaleX *= t.localScale.x;
+                scaleY *= t.localScale.y;
+            }
 
-            bigRect.center = rt.position;
-
-            return bigRect;
+            sanity--;
+            if (sanity <= 0)
+            {
+                Debug.Log("hit sanity cap", this);
+                break;
+            }
         }
+        bigRect.width = bigRect.width * scaleX;
+        bigRect.height = bigRect.height * scaleY;
+#else
+        bigRect.width = bigRect.width * rt.lossyScale.x;
+        bigRect.height = bigRect.height * rt.lossyScale.y;
+#endif
+
+        bigRect.center = rt.position;
+
+        return bigRect;
     }
 
     private Rect GetSlotRect(int collum, int row)

@@ -26,11 +26,7 @@ public static class WorldDataCreator
 
             foreach (SaveFileHelperEnemy enemy in enemies)
             {
-                DungeonSaveData.Enemy? data = enemy.GetData();
-                if (data != null) //it is null when enemy is dead;
-                {
-                    dungeonSaveData.Enemies.Add((DungeonSaveData.Enemy) data);
-                }
+                dungeonSaveData.Enemies.Add(enemy.GetData());
             }
         }
 

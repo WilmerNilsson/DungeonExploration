@@ -1,4 +1,4 @@
-#speed:0.025
+#speed:0.2
 #animation:AidenPlaceholder
 #name:Aiden
 Ah my favorite client, What is it you bring today?

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7934163805299523794}
   - component: {fileID: 8521583110136809241}
   - component: {fileID: 5312586877076002000}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: SpearTrap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -788,7 +788,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1136
+  m_VersionIndex: 1067
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -915,14 +915,38 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 829697725043926310}
         m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
-        m_MethodName: Play
+        m_MethodName: SetTrigger
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Spear_Trap_Animation
+          m_StringArgument: PlayerDetected
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 730499465777285280}
+        m_TargetAssemblyTypeName: UnityEngine.MeshRenderer, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: PlayerDetected
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 8521583110136809241}
+        m_TargetAssemblyTypeName: UnityEngine.CapsuleCollider, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: PlayerDetected
           m_BoolArgument: 0
         m_CallState: 2
   OnTriggerExited:
@@ -946,7 +970,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1881116776712069972, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2772907834293826661, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}
       propertyPath: m_LocalScale.y
@@ -997,10 +1021,6 @@ PrefabInstance:
       value: Spear (1)
       objectReference: {fileID: 0}
     - target: {fileID: 8981432554990663350, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8981432554990663350, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -1010,6 +1030,9 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 79918886863815297, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 9031000123750811592}
+    - targetCorrespondingSourceObject: {fileID: 79918886863815297, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 7423465523247237833}
     - targetCorrespondingSourceObject: {fileID: 79918886863815297, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}
       insertIndex: -1
@@ -1017,10 +1040,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 79918886863815297, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2070523275219130756}
-    - targetCorrespondingSourceObject: {fileID: 79918886863815297, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2728362613085559607}
   m_SourcePrefab: {fileID: 100100000, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}
+--- !u!23 &730499465777285280 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1881116776712069972, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}
+  m_PrefabInstance: {fileID: 1168772996890356724}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &829697725043926310 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 1998469544972553938, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}
@@ -1031,6 +1056,29 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 79918886863815297, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}
   m_PrefabInstance: {fileID: 1168772996890356724}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9031000123750811592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235038620602804597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51f7f14f987392348b08c80e3260f384, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 7
+  durability: 1
+  unbreakable: 1
+  dealDamage: 1
+  unblockable: 1
+  onDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  onBlocked:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!65 &7423465523247237833
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1048,7 +1096,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 6, y: 64.3, z: 6}
   m_Center: {x: 0, y: 33.8, z: 0}
@@ -1066,7 +1114,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onPlay:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 730499465777285280}
+        m_TargetAssemblyTypeName: UnityEngine.MeshRenderer, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8521583110136809241}
+        m_TargetAssemblyTypeName: UnityEngine.CapsuleCollider, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 7423465523247237833}
+        m_TargetAssemblyTypeName: UnityEngine.BoxCollider, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &2070523275219130756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1092,19 +1176,6 @@ MonoBehaviour:
     parametersToSet: []
     bankName: 
     loadSampleData: 0
---- !u!114 &2728362613085559607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1235038620602804597}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3735e958c7aa6e4fb672aed20d9b51f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 30
 --- !u!4 &3909977847892860817 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2772907834293826661, guid: 2925f97ee18b5aa47a0880e0bae18b6f, type: 3}

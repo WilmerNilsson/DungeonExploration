@@ -1,4 +1,4 @@
-#speed:0.025
+#speed:0.2
 #animation:AidenPlaceholder
 #name:Ingrid
 You’re from a noble house right? 

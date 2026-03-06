@@ -1,4 +1,4 @@
-#speed:0.025
+#speed:0.2
 #animation:AidenPlaceholder
 #name:Aiden
 <i>Uuurrrrggggh, why was I the one who stayed?</i>

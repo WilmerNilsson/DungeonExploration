@@ -54,9 +54,9 @@ public class HumanoidSoundLogic : MonoBehaviour
     }
 #endif
     
-    public void HandleAttackStateChange(HumanoidAttackAnimatorCompanion.AttackState newState)
+    public void HandleAttackStateChange(HumanoidIK.AttackState newState)
     {
-        if (AudioManager.IsValid && newState == HumanoidAttackAnimatorCompanion.AttackState.Swing)
+        if (AudioManager.IsValid && newState == HumanoidIK.AttackState.Swing)
         {
             AudioManager.Instance.PlayOneShot(swingPath, null, null, weaponObject, true);
         }

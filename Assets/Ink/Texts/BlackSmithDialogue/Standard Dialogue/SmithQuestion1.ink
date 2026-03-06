@@ -1,4 +1,4 @@
-#speed:0.025
+#speed:0.2
 #animation:SagaPlaceholder
 #name:Saga 
 Agathol? Oh grams don't get me started. I have been infatuated with that place ever since I was a little girl. Barely felt like I had a choice not to. 

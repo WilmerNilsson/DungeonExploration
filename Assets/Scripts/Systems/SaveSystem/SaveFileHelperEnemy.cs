@@ -34,10 +34,8 @@ public class SaveFileHelperEnemy : MonoBehaviour
         health.SetCurrentHealth(data.CurrentHP);
     }
 
-    public DungeonSaveData.Enemy? GetData()
+    public DungeonSaveData.Enemy GetData()
     {
-        if (health.Dead) return null;
-
         Vector3 pos = spawnTransform.position;
         Quaternion rot = spawnTransform.rotation;
 

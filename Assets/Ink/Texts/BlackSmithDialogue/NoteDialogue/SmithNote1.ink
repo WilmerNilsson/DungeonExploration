@@ -1,4 +1,4 @@
-#speed:0.025
+#speed:0.2
 #animation:SagaPlaceholder
 #name:Ingrid
 Saga, I think I found a journal from someone in your family. At least that's what it looks like.  

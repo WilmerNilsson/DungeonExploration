@@ -1,4 +1,4 @@
-#speed:0.025
+#speed:0.2
 #animation:SagaPlaceholder
 #name:Saga 
 Well most of them were adventurers and expected me to follow suit. They originally came here to Gunhildr just for Agathol and all its riches. 

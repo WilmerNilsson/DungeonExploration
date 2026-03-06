@@ -1,4 +1,4 @@
-#speed:0.025
+#speed:0.2
 #animation:SagaPlaceholder
 #name:Saga 
 Oh hello. I've not seen you around before. 

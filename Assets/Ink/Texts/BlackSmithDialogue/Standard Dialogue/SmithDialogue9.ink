@@ -1,4 +1,4 @@
-#speed:0.025
+#speed:0.2
 #animation:SagaPlaceholder
 #name:Saga
 Grams, you look even worse. You sure you’re fine?
