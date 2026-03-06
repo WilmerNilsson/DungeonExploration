@@ -3,6 +3,17 @@ using UnityEngine;
 
 public class BlacksmithUI : MerchantInventory
 {
+    [SerializeField] private GameObject deliverWeaponPanel;
+
+
+#if UNITY_EDITOR
+    protected override void OnValidate()
+    {
+        base.OnValidate();
+        if (deliverWeaponPanel == null) Debug.LogWarning("deliver weapon panel is null", this);
+    }
+#endif
+
     public override void ChangeHover(SimpleItem simpleItem, bool startHover)
     {
         if(buyIsActiveGrid)
@@ -61,6 +72,12 @@ public class BlacksmithUI : MerchantInventory
                     Debug.LogError("failed to return item from donation grid in blacksmith", this);
                 }
             }
+
+            deliverWeaponPanel.SetActive(false);
+        }
+        else
+        {
+            deliverWeaponPanel.SetActive(true);
         }
     }
 

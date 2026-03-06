@@ -76,7 +76,7 @@ public class MerchantInventory : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    private void OnValidate()
+    protected virtual void OnValidate()
     {
         if (buyGrid == null) Debug.LogWarning("Buy inventory grid is null", this);
         if (sellGrid == null) Debug.LogWarning("Sell inventory grid is null", this);
