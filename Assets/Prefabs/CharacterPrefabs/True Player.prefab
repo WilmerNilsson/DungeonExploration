@@ -1351,8 +1351,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyTransform: {fileID: 1879338547510664418}
   headTransform: {fileID: 7929286171431266012}
-  bodyRotationSpeed: 0.5
-  headRotationSpeed: 0.5
 --- !u!114 &7891534330549021677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1420,7 +1418,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 11400000, guid: 8d1752d3d4465884c80e0304113f59c8, type: 2}
   _currentHealth: 0
-  _maxHealth: 1
+  _maxHealth: 100
   DurabilityDamage: 0
   OnChangeHealths:
     m_PersistentCalls:
@@ -2827,6 +2825,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 5946369356162777952}
     m_Modifications:
     - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: Core
+      value: 
+      objectReference: {fileID: 5528919353053895491}
+    - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: Head
+      value: 
+      objectReference: {fileID: 7929286171431266012}
+    - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
       propertyPath: core
       value: 
       objectReference: {fileID: 5528919353053895491}
@@ -2835,17 +2841,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7929286171431266012}
     - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+      propertyPath: SwordArm
+      value: 
+      objectReference: {fileID: 4533973860125210449}
+    - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
       propertyPath: swordArm
       value: 
       objectReference: {fileID: 4533973860125210449}
     - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
-      propertyPath: companion
+      propertyPath: Companion
       value: 
       objectReference: {fileID: 4568483986974908513}
     - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
-      propertyPath: attackHoldTime
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: companion
+      value: 
+      objectReference: {fileID: 4568483986974908513}
     - target: {fileID: 1178927529589992586, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
       propertyPath: attackResetTime
       value: 0.5
