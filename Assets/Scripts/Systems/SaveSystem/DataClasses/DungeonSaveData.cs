@@ -9,6 +9,7 @@ public class DungeonSaveData
     public List<DroppedItem> DroppedItems = new();
     public List<Enemy> Enemies = new();
     public List<Container> Containers = new();
+    public bool Initialized = false;
 
     internal DungeonSaveData Clone()
     {
@@ -18,6 +19,8 @@ public class DungeonSaveData
         cloneData.Containers = new(Containers.Count);
 
         cloneData.Containers.AddRange(Containers.Select(i => i.Clone()));
+
+        cloneData.Initialized = Initialized;
         return cloneData;
     }
 

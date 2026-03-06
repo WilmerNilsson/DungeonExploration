@@ -8,7 +8,7 @@ public class UIWeapon : MonoBehaviour
     [SerializeField] private TextMeshProUGUI durabilityText;
 
 #nullable enable
-    private int Durability
+    public int Durability
     {
         get
         {
@@ -23,8 +23,14 @@ public class UIWeapon : MonoBehaviour
         }
         set
         {
-            if (worldWeapon != null) Debug.LogWarning("can't change durability of world weapon", this);
-            _durability = value; 
+            if (worldWeapon == null)
+            {
+                _durability = value;
+            }
+            else
+            {
+                worldWeapon.Durability = value;
+            }
         }
     }
     private int _durability;
@@ -68,12 +74,7 @@ public class UIWeapon : MonoBehaviour
     public void ConnectToWeapon(Weapon weaponScript)
     {
         worldWeapon = weaponScript;
-        if(worldWeapon.Durability >  _durability)
-        {
-            int diff = worldWeapon.Durability - _durability;
-
-            worldWeapon.LoseDurability(diff);
-        }
+        worldWeapon.Durability = _durability;
         UpdateDurabilityText();
         worldWeapon.OnDamage.AddListener(UpdateDurabilityText);
     }

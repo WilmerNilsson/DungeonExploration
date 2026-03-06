@@ -37,10 +37,11 @@ public class InventorySaveData
     {
         public string PrefabID;
         public int Slot;
+        public string ExtraJsonSerializeData;
 
         public override string ToString()
         {
-            return $"[prefab ID: {PrefabID}, slot: {Slot}]";
+            return $"[prefab ID: {PrefabID}, slot: {Slot}, extra serialize data: {ExtraJsonSerializeData}]";
         }
     }
 }

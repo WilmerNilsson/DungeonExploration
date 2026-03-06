@@ -37,7 +37,6 @@ public class SaveFileHelperPlayer : MonoBehaviour
         void FromWorld()
         {
             health.StopSelfInitialize();
-            health.SetMaxHealth(data.MaxHP);
             health.SetCurrentHealth(data.CurrentHP);
 
             spawnTransform.position = data.Position;
@@ -53,10 +52,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
 
         void FromTown()
         {
-            health.StopSelfInitialize();
-            health.SetMaxHealth(data.MaxHP);
-            health.SetCurrentHealth(data.MaxHP);
-
+            //health starts at max
             //hunger starts at max
             //sanity starts at max
 
@@ -68,7 +64,6 @@ public class SaveFileHelperPlayer : MonoBehaviour
     public PlayerSaveData GetData()
     {
         int currentHP = health.CurrentHealth;
-        int maxHP = health.MaxHealth;
         Vector3 pos = spawnTransform.position;
         Quaternion rot = spawnTransform.rotation;
         InventorySaveData inventory = new(InvMasterBase.Instance.PlayerInventory.GetInventoryData());
@@ -76,7 +71,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
         int hungerInt = hunger.GetHungerValue();
         int sanityInt = sanity.GetSanityValue();
 
-        PlayerSaveData data = new(inventory, equipment, pos, rot, maxHP, currentHP, sanityInt, hungerInt);
+        PlayerSaveData data = new(inventory, equipment, pos, rot, currentHP, sanityInt, hungerInt);
         return data;
     }
 }

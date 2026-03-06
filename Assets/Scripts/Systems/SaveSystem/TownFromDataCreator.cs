@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class SaveFileHelperTown : MonoBehaviour
+public class TownFromDataCreator : MonoBehaviour
 {
     [SerializeField] private PlayerCashSO playerCashSO;
     [SerializeField] private ItemLibrarySO itemLibrary;
 #nullable enable
 
-#if DEBUG
+#if UNITY_EDITOR
     private void OnValidate()
     {
         if (playerCashSO == null) Debug.LogError("player cash is null", this);
@@ -22,8 +22,15 @@ public class SaveFileHelperTown : MonoBehaviour
 
             playerCashSO.SetCash(data.PlayerGold);
 
-            SaveFileHelperContainer.PopulateInventory(itemLibrary, data.World!.PlayerSaveData.Inventory, InvMasterBase.Instance.PlayerInventory);
-            SaveFileHelperContainer.PopulateInventory(itemLibrary, data.World!.PlayerSaveData.Equipment, InvMasterBase.Instance.EquipmentGrid);
+            if(data.PlayerSaveData != null)
+            {
+                SaveFileHelperContainer.PopulateInventory(itemLibrary, data.PlayerSaveData.Inventory, InvMasterBase.Instance.PlayerInventory);
+                SaveFileHelperContainer.PopulateInventory(itemLibrary, data.PlayerSaveData.Equipment, InvMasterBase.Instance.EquipmentGrid);
+            }
+            else
+            {
+                Debug.LogWarning("player save data is null", this);
+            }
         }
         else
         {

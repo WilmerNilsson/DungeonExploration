@@ -15,7 +15,7 @@ public static class TownDataCreator
 
         //will not null check since we want it to throw errors if needed
 
-        SaveFileHelperTown helper = GameObject.FindAnyObjectByType<SaveFileHelperTown>();
+        TownFromDataCreator helper = GameObject.FindAnyObjectByType<TownFromDataCreator>();
 
         data.Cash = helper.GetCash();
         data.Inventory = helper.GetPlayerInventory();
