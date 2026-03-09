@@ -17,6 +17,7 @@ public class NewDialogueManager : MonoBehaviour
     [SerializeField] private GameObject continueButton;
 
     [SerializeField] private Animator portraitAnimator;
+    private DialogueNodeData currentDialogueNode;
     //[SerializeField] private AudioSource audioSource;
 
     //[SerializeField] private DataStorage data;
@@ -68,7 +69,12 @@ public class NewDialogueManager : MonoBehaviour
         dialogueIsPlaying = false;
         if (playOnStart)
         {
-            //PlayGreeting();
+            List<DialogueNodeData> greetingDatas = new List<DialogueNodeData>();
+            for (int i = 0; i < dialogueTree.DialogueNodeDatas.Count; i++)
+            {
+                FindGreeting(dialogueTree, greetingDatas, dialogueTree.DialogueNodeDatas[i]);
+            }
+            EnterDialogueMode(greetingDatas[Random.Range(0, greetingDatas.Count - 1)].Title);
         }
     }
 
@@ -97,28 +103,19 @@ public class NewDialogueManager : MonoBehaviour
 
     public void EnterDialogueMode(string DialogueName)
     {
-        for (int i = 0; i < dialogueTree.DialogueNodeDatas.Count; i++)
+        currentDialogueNode = dialogueTree.DialogueNodeDatas.Find(x => x.Title == DialogueName);
+        if (!currentDialogueNode.DialogueAsset)
         {
-            if (!dialogueTree.DialogueNodeDatas[i].DialogueAsset)
-            {
-                continue;
-            }
-            if (dialogueTree.DialogueNodeDatas[i].DialogueAsset.name == DialogueName)
-            {
-                onDialogueEnter?.Invoke(DialogueName);
-                dialogueTree.DialogueNodeDatas[i].HasBeenRead = true;
-                //Debug.Log("entering dialogue mode");
-                isTyping = false;
-                lineIndex = 0;
-                currentStory = new Story(dialogueTree.DialogueNodeDatas[i].DialogueAsset.text);
-                dialogueIsPlaying = true;
-                continueButton.SetActive(true);
-                //InputManager.GetInstance().isLevelPlaying = false;
-        
-                ContinueStory();
-                return;
-            }
+            Debug.LogWarning("Dialogue node contains no dialogue asset");
+            return;
         }
+        onDialogueEnter?.Invoke(DialogueName);
+        isTyping = false;
+        lineIndex = 0;
+        currentStory = new Story(currentDialogueNode.DialogueAsset.text);
+        dialogueIsPlaying = true;
+        continueButton.SetActive(true);
+        ContinueStory();
     }
     
     public void EnterDialogueMode(TextAsset inkJSON)
@@ -142,6 +139,7 @@ public class NewDialogueManager : MonoBehaviour
         dialogueIsPlaying = false;
         dialogueText.text = "";
         continueButton.SetActive(false);
+        currentDialogueNode.HasBeenRead = true;
         //InputManager.GetInstance().isLevelPlaying = true;
         //data.playStoryAtStart = false;
         onDialogueExit.Invoke();
@@ -339,25 +337,30 @@ public class NewDialogueManager : MonoBehaviour
         return result;
     }
 
-    /*private void PlayGreeting()
+    private void PlayGreeting()
     {
-        List<DialogueNode> currentGreetings =  new List<DialogueNode>();
-        for (int i = 0; i < dialogueTree.Greetings.Count; i++)
+        
+    }
+    
+    private void FindGreeting(DialogueContainer dialogueContainer, List<DialogueNodeData> dialogueNodeDatas, DialogueNodeData dialogueNodeData)
+    {
+        //Check if is valid greeting
+        if ((dialogueNodeData.HasBeenRead && dialogueNodeData.ReadOnlyOnce) || !dialogueNodeData.DialogueAsset || !dialogueNodeData.IsGreeting)
         {
-            if (dialogueTree.Greetings[i].FriendshipRequirement == dialogueTree.friendshipLevel)
-            {
-                currentGreetings.Add(dialogueTree.Greetings[i]);
-            }
+            return;
         }
-        Debug.Log(currentGreetings.Count);
+        //Find links
+        List<NodeLinkData> links = dialogueContainer.NodeLinks.FindAll(x => x.TargetNodeGuid == dialogueNodeData.Guid);
+        bool parentsRead = true;
+        for (int i = 0; i < links.Count && parentsRead; i++)
+        {
+            //Check if parent is read
+            parentsRead = dialogueContainer.DialogueNodeDatas.Find(x => x.Guid == links[i].BaseNodeGuid).HasBeenRead;
+        }
 
-        if (currentGreetings.Count > 0)
+        if (parentsRead)
         {
-            EnterDialogueMode(currentGreetings[Random.Range(0, currentGreetings.Count - 1)].InkJson);
+            dialogueNodeDatas.Add(dialogueNodeData);
         }
-        else
-        {
-            Debug.LogWarning("No greeting found", this);
-        }
-    }*/
+    }
 }

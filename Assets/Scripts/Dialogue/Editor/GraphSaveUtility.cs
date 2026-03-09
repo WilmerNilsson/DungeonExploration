@@ -80,6 +80,10 @@ public class GraphSaveUtility
                 DialogueAsset = dialogueNode.DialogueAsset,
                 Position = dialogueNode.GetPosition().position,
                 HasBeenRead = dialogueNode.HasBeenRead,
+                IsGreeting = dialogueNode.IsGreeting,
+                ReadOnlyOnce = dialogueNode.ReadOnlyOnce,
+                Flag = dialogueNode.Flag,
+                FriendshipRange = dialogueNode.FriendshipRange,
                 ReadRun = dialogueNode.ReadRun,
                 RunWaitAmount = dialogueNode.RunWaitAmount,
             });
@@ -153,7 +157,7 @@ public class GraphSaveUtility
     {
         foreach (var nodeData in _containerCache.DialogueNodeDatas)
         {
-            var tempNode = _targetGraphView.CreateDialogueNode(nodeData.Title, nodeData.ButtonText, nodeData.Position, nodeData.DialogueAsset, nodeData.HasBeenRead, nodeData.ReadRun, nodeData.RunWaitAmount);
+            var tempNode = _targetGraphView.CreateDialogueNode(nodeData.Title, nodeData.ButtonText, nodeData.Position, nodeData.DialogueAsset, nodeData.HasBeenRead, nodeData.IsGreeting, nodeData.ReadOnlyOnce, nodeData.Flag, nodeData.FriendshipRange, nodeData.ReadRun, nodeData.RunWaitAmount);
             tempNode.GUID = nodeData.Guid;
             _targetGraphView.AddElement(tempNode);
 
@@ -165,7 +169,7 @@ public class GraphSaveUtility
     private void ClearGraph()
     {
         //Set entry points guid back from the save, Discard existing guid.
-        Nodes.Find(x => x.EntryPoint).GUID = _containerCache.NodeLinks[0].BaseNodeGuid;
+        //Nodes.Find(x => x.EntryPoint).GUID = _containerCache.NodeLinks[0].BaseNodeGuid;
 
         foreach (var node in Nodes)
         {
