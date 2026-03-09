@@ -37,6 +37,7 @@ public class NewDialogueChoiceHandler : MonoBehaviour
 
     private void FindDialogue(DialogueContainer dialogueContainer, List<DialogueNodeData> dialogueNodeDatas, DialogueNodeData dialogueNodeData)
     {
+        int runCount = NewDialogueManager.GetInstance().RunCount;
         if (dialogueNodeData.HasBeenRead || !dialogueNodeData.DialogueAsset || dialogueNodeData.IsGreeting)
         {
             return;
@@ -46,8 +47,10 @@ public class NewDialogueChoiceHandler : MonoBehaviour
         bool parentsRead = true;
         for (int i = 0; i < links.Count && parentsRead; i++)
         {
+            DialogueNodeData parentData = dialogueContainer.DialogueNodeDatas.Find(x => x.Guid == links[i].BaseNodeGuid);
             //Check if parent is read
-            parentsRead = dialogueContainer.DialogueNodeDatas.Find(x => x.Guid == links[i].BaseNodeGuid).HasBeenRead;
+            parentsRead = parentData.HasBeenRead && parentData.ReadRun + dialogueNodeData.RunWaitAmount <= runCount;
+            //parentsRead = dialogueContainer.DialogueNodeDatas.Find(x => x.Guid == links[i].BaseNodeGuid).HasBeenRead;
         }
 
         if (parentsRead)
