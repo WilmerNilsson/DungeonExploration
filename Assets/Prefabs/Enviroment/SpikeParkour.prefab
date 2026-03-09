@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1633251632900613357}
-  - component: {fileID: 7563228469371424008}
-  - component: {fileID: 5863660746579042885}
+  - component: {fileID: 1515208085390064344}
+  - component: {fileID: 3146112167803823370}
   m_Layer: 6
   m_Name: SpikeParkour
   m_TagString: Untagged
@@ -39,7 +39,7 @@ Transform:
   - {fileID: 9185313141334579591}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7563228469371424008
+--- !u!114 &1515208085390064344
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -48,11 +48,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 431645321708818170}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3735e958c7aa6e4fb672aed20d9b51f, type: 3}
+  m_Script: {fileID: 11500000, guid: 3366f110e26ccaf46a50ce9f4a3f9c21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 300
---- !u!65 &5863660746579042885
+--- !u!65 &3146112167803823370
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -71,8 +70,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 15, y: 1.7943182, z: 6.454319}
-  m_Center: {x: -3, y: 0.7617345, z: 0.24690437}
+  m_Size: {x: 14, y: 5, z: 5}
+  m_Center: {x: -3.23, y: 8.12, z: 0}
 --- !u!1 &1278745377289958950
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,6 +148,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1986087871904019648}
+  - component: {fileID: 2593890269113415603}
+  - component: {fileID: 2775990388560338057}
   m_Layer: 6
   m_Name: Spikes
   m_TagString: Untagged
@@ -435,6 +436,40 @@ Transform:
   - {fileID: 4157712244637970920}
   m_Father: {fileID: 1633251632900613357}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2593890269113415603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4381548252049014417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3735e958c7aa6e4fb672aed20d9b51f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 300
+--- !u!65 &2775990388560338057
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4381548252049014417}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 15, y: 1.7943182, z: 6.454319}
+  m_Center: {x: -3, y: 0.7617345, z: 0.24690437}
 --- !u!1 &5655535103868638401
 GameObject:
   m_ObjectHideFlags: 0
