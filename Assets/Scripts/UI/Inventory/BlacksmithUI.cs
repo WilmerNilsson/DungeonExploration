@@ -33,6 +33,8 @@ public class BlacksmithUI : MerchantInventory
 
     public void GiveSaveData(List<string> donatedWeapons)
     {
+        Debug.Log("givingSaveData");
+
         this.donatedWeapons = donatedWeapons;
         foreach(string weapon in donatedWeapons)
         {
