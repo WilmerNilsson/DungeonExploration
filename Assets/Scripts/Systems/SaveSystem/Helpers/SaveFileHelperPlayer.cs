@@ -8,6 +8,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
     [SerializeField] private ItemLibrarySO itemLibrary;
     [SerializeField] private Hunger hunger;
     [SerializeField] private Sanity sanity;
+    [SerializeField] private int runCount;
 
 #if DEBUG && UNITY_EDITOR
     private void OnValidate()
@@ -45,6 +46,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
 
             hunger.Initialize(data.Hunger);
             sanity.Initialize(data.Sanity);
+            runCount = data.RunCount;
 
             SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Inventory, InvMasterBase.Instance.PlayerInventory);
             SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Equipment, InvMasterBase.Instance.EquipmentGrid);
@@ -55,6 +57,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
             //health starts at max
             //hunger starts at max
             //sanity starts at max
+            runCount = data.RunCount;
 
             SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Inventory, InvMasterBase.Instance.PlayerInventory);
             SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Equipment, InvMasterBase.Instance.EquipmentGrid);
@@ -71,7 +74,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
         int hungerInt = hunger.GetHungerValue();
         int sanityInt = sanity.GetSanityValue();
 
-        PlayerSaveData data = new(inventory, equipment, pos, rot, currentHP, sanityInt, hungerInt);
+        PlayerSaveData data = new(inventory, equipment, pos, rot, currentHP, sanityInt, hungerInt, runCount);
         return data;
     }
 }
