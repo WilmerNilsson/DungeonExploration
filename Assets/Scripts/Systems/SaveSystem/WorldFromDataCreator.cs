@@ -21,10 +21,10 @@ public class WorldFromDataCreator : MonoBehaviour
     {
         if (GameManagerSO.Instance.TryConsumeSavefileData(out SavefileData? data))
         {
-            if(data.World != null && data.World.Initialized)
+            if(data.Dungeon != null && data.Dungeon.Initialized)
             {
                 DestoryNewWorld();
-                InitializeWorld(data.World);
+                InitializeWorld(data.Dungeon, data.PlayerSaveData);
             }
             else
             {
@@ -61,20 +61,24 @@ public class WorldFromDataCreator : MonoBehaviour
     }
 
 #if UNIT_TESTS
-    public void InitializeWorld(SavefileData.WorldData worldData)
+    public void InitializeWorld(DungeonSaveData dungeonSaveData, PlayerSaveData playerSaveData)
 #else
-    private void InitializeWorld(SavefileData.WorldData worldData)
+    private void InitializeWorld(DungeonSaveData? dungeonSaveData, PlayerSaveData? playerSaveData)
 #endif
     {
-        InitializeContainers(worldData);
-        InitializeEnemies(worldData);
-        InitializeDroppedItems(worldData);
-
-        InitializePlayer(worldData);
-
-        void InitializePlayer(SavefileData.WorldData worldData)
+        if (dungeonSaveData != null)
         {
-            if(worldData.PlayerSaveData == null)
+            InitializeContainers(dungeonSaveData);
+            InitializeEnemies(dungeonSaveData);
+            InitializeDroppedItems(dungeonSaveData);
+        }
+
+
+        InitializePlayer(playerSaveData);
+
+        void InitializePlayer(PlayerSaveData? playerSaveData)
+        {
+            if(playerSaveData == null)
             {
                 Debug.Log("player data null, skipping initialize in helper", this);
                 return;
@@ -88,18 +92,18 @@ public class WorldFromDataCreator : MonoBehaviour
                 return;
             }
 
-            helper.Initialize(worldData.PlayerSaveData);
+            helper.Initialize(playerSaveData);
         }
 
-        void InitializeDroppedItems(SavefileData.WorldData worldData)
+        void InitializeDroppedItems(DungeonSaveData dungeonSaveData)
         {
-            if (worldData.DungeonSaveData.DroppedItems == null)
+            if (dungeonSaveData.DroppedItems == null)
             {
                 Debug.Log("dropped items null, skipping spawning", this);
                 return;
             }
 
-            foreach (DungeonSaveData.DroppedItem item in worldData.DungeonSaveData.DroppedItems)
+            foreach (DungeonSaveData.DroppedItem item in dungeonSaveData.DroppedItems)
             {
                 if(itemLibrary.TryGetItemPairByName(item.ItemID, out ItemPairing? pair))
                 {
@@ -113,14 +117,14 @@ public class WorldFromDataCreator : MonoBehaviour
             }
         }
 
-        void InitializeEnemies(SavefileData.WorldData worldData)
+        void InitializeEnemies(DungeonSaveData dungeonSaveData)
         {
-            if(worldData.DungeonSaveData.Enemies == null)
+            if(dungeonSaveData.Enemies == null)
             {
                 Debug.Log("enemies save data null, skipping initialize");
                 return;
             }
-            foreach (DungeonSaveData.Enemy enemy in worldData.DungeonSaveData.Enemies)
+            foreach (DungeonSaveData.Enemy enemy in dungeonSaveData.Enemies)
             {
                 if (enemyLibrary.TryGetPrefabByName(enemy.PrefabID, out GameObject? prefab))
                 {
@@ -144,14 +148,14 @@ public class WorldFromDataCreator : MonoBehaviour
             }
         }
 
-        void InitializeContainers(SavefileData.WorldData worldData)
+        void InitializeContainers(DungeonSaveData dungeonSaveData)
         {
-            if(worldData.DungeonSaveData.Containers == null)
+            if(dungeonSaveData.Containers == null)
             {
                 Debug.Log("container save data null, skipping initialize", this);
                 return;
             }
-            foreach (DungeonSaveData.Container container in worldData.DungeonSaveData.Containers)
+            foreach (DungeonSaveData.Container container in dungeonSaveData.Containers)
             {
                 if (containerLibrary.TryGetPrefabByName(container.PrefabID, out GameObject? prefab))
                 {

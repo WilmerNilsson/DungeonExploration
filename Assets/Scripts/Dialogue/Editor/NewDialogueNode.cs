@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -27,3 +28,4 @@ public class NewDialogueNode : Node
 
     public int RunWaitAmount;
 }
+#endif
