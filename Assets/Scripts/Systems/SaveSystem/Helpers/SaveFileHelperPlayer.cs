@@ -37,7 +37,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
 
     public void InitializeNew()
     {
-        if(itemLibrary.TryGetItemPairByName(startingWeaponID, out ItemPairing pair))
+        if (itemLibrary.TryGetItemPairByName(startingWeaponID, out ItemPairing pair))
         {
             InvMasterBase.Instance.EquipmentGrid.TryInsertItem(pair.UIPrefab.GetComponent<SimpleItem>(), true);
         }

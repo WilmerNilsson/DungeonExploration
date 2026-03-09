@@ -52,6 +52,11 @@ public class HumanoidController : MonoBehaviour
         interact.Interact();
     }
 
+    public void PrepareAttack(float angle)
+    {
+
+    }
+
     public void Attack(float angle)
     {
         animateAttack.Attack(angle);

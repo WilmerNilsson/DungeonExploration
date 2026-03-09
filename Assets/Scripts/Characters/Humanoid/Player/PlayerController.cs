@@ -54,6 +54,11 @@ public class PlayerController : MonoBehaviour
         {
             Rotate(lookInput);
         }
+
+        if(startedAttack && Vector2.Distance(mouseStart, mouseEnd) > 10)
+        {
+            controller.PrepareAttack(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
+        }
     }
 
     private void OnDestroy()
