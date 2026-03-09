@@ -33,7 +33,6 @@ public class BlacksmithUI : MerchantInventory
 
     public void GiveSaveData(List<string> donatedWeapons)
     {
-        Debug.Log("givingSaveData");
 
         this.donatedWeapons = donatedWeapons;
         foreach(string weapon in donatedWeapons)
@@ -61,13 +60,19 @@ public class BlacksmithUI : MerchantInventory
 
     public override void ChangeHover(SimpleItem simpleItem, bool startHover)
     {
-        if(buyIsActiveGrid)
+        if (buyIsActiveGrid)
         {
             base.ChangeHover(simpleItem, startHover);
         }
+        else if (startHover && simpleItem.TryGetComponent(out UIWeapon uIWeapon))
+        {
+            SetDescriptionText(simpleItem.GetDescription());
+            int repairCost = (uIWeapon.BlacksmithHelper.MaxDurability - uIWeapon.Durability) * uIWeapon.BlacksmithHelper.CostPerDurability;
+            SetGoldValueText($"Repair cost is {repairCost} crowns.");
+        }
         else
         {
-            SetDescriptionText("repair cost is OwO and 3 fiddy");
+            base.ChangeHover(simpleItem, startHover);
         }
     }
 
@@ -193,6 +198,8 @@ public class BlacksmithUI : MerchantInventory
                 {
                     Debug.LogWarning("invalid weapon id donated to blacksmit, id: " + weaponInDonateGridSI.PrefabID, this);
                 }
+
+                InvMasterBase.Instance.DestroyItem(weaponInDonateGridSI);
             }
         }
     }

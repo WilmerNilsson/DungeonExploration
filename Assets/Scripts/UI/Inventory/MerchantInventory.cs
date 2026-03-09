@@ -160,17 +160,24 @@ public class MerchantInventory : MonoBehaviour
     {
         if (startHover)
         {
-            SetDescriptionText(simpleItem.CashValue.ToString());
+            SetGoldValueText(simpleItem.CashValue.ToString());
+            SetDescriptionText(simpleItem.GetDescription());
         }
         else
         {
+            SetGoldValueText(string.Empty);
             SetDescriptionText(string.Empty);
         }
     }
 
-    protected void SetDescriptionText(string newText)
+    public void SetGoldValueText(string newText)
     {
         itemGoldValueText.text = newText;
+    }
+
+    protected void SetDescriptionText(string newText)
+    {
+        descriptionTextField.text = newText;
     }
 
     public TextMeshProUGUI GetDescriptionTextField()
