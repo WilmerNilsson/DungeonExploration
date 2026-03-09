@@ -30,18 +30,18 @@ public class NewDialogueChoiceHandler : MonoBehaviour
         for (int i = 0; i < currentNodes.Count; i++)
         {
             selectButtons[i].gameObject.SetActive(true);
-            selectButtons[i].DialogueName = currentNodes[i].DialogueAsset.name;
+            selectButtons[i].DialogueName = currentNodes[i].Title;
             selectButtons[i].buttonText.text = currentNodes[i].ButtonText;
         }
     }
 
     private void FindDialogue(DialogueContainer dialogueContainer, List<DialogueNodeData> dialogueNodeDatas, DialogueNodeData dialogueNodeData)
     {
-        //Find links
-        if (dialogueNodeData.HasBeenRead || !dialogueNodeData.DialogueAsset)
+        if (dialogueNodeData.HasBeenRead || !dialogueNodeData.DialogueAsset || dialogueNodeData.IsGreeting)
         {
             return;
         }
+        //Find links
         List<NodeLinkData> links = dialogueContainer.NodeLinks.FindAll(x => x.TargetNodeGuid == dialogueNodeData.Guid);
         bool parentsRead = true;
         for (int i = 0; i < links.Count && parentsRead; i++)
