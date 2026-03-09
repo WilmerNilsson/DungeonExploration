@@ -5,20 +5,18 @@ public static class WorldDataCreator
     /// <summary>
     /// without settings
     /// </summary>
-    public static SavefileData.WorldData CreateWorldData()
+    public static void CreateWorldData(out DungeonSaveData dungeonSaveData, out PlayerSaveData playerSaveData)
     {
-        DungeonSaveData dungeonSaveData = new();
+        dungeonSaveData = new();
 
         AddContainerData(dungeonSaveData);
         AddDroppedItemData(dungeonSaveData);
         AddEnemyData(dungeonSaveData);
 
-        PlayerSaveData playerSaveData = GameObject.FindAnyObjectByType<SaveFileHelperPlayer>(FindObjectsInactive.Exclude).GetData();
+        playerSaveData = GameObject.FindAnyObjectByType<SaveFileHelperPlayer>(FindObjectsInactive.Exclude).GetData();
+        dungeonSaveData.Initialized = true;
 
-        SavefileData.WorldData worldData = new(playerSaveData, dungeonSaveData);
-        worldData.Initialized = true;
-
-        return worldData;
+        return;
 
         static void AddEnemyData(DungeonSaveData dungeonSaveData)
         {

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: -3390355510129037723}
   - component: {fileID: 1068279826599745969}
   - component: {fileID: -9108539040615138340}
+  - component: {fileID: 4096526758933086186}
   m_Layer: 5
   m_Name: UIBasicSword
   m_TagString: Untagged
@@ -179,6 +180,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 6231285627939046001, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
   durabilityText: {fileID: 7484359017320565594}
+  BlacksmithHelper:
+    MaxDurability: 10
+    CostPerDurability: 2
+    CanBeDonated: 1
 --- !u!114 &-9108539040615138340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,6 +199,19 @@ MonoBehaviour:
   cameraDropOffset: -1
   itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
   myItem: {fileID: 6101294717193550440}
+--- !u!114 &4096526758933086186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659243512019290888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71cd5a62b6054214da7d813137c9b372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uIWeapon: {fileID: 1068279826599745969}
 --- !u!1 &3774929366689480808
 GameObject:
   m_ObjectHideFlags: 0

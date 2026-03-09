@@ -18,7 +18,7 @@ public class Weapon : MonoBehaviour
     public int Durability 
     {
         get;
-        private set;
+        set;
     } = 1;
     [SerializeField] private bool dealDamage = false;
     [SerializeField] private bool isBlocking = false;

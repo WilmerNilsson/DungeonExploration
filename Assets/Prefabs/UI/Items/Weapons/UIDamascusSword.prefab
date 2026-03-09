@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: -3390355510129037723}
   - component: {fileID: 531662749354800754}
   - component: {fileID: 6463389068888343420}
+  - component: {fileID: 5375661453273275839}
   m_Layer: 5
   m_Name: UIDamascusSword
   m_TagString: Untagged
@@ -179,6 +180,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 6646508777335614828, guid: ecc535ad4875c384cbd2e0dbd30c7dd5, type: 3}
   durabilityText: {fileID: 637366664620460065}
+  BlacksmithHelper:
+    MaxDurability: 30
+    CostPerDurability: 10
+    CanBeDonated: 1
 --- !u!114 &6463389068888343420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,6 +199,19 @@ MonoBehaviour:
   cameraDropOffset: -1
   itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
   myItem: {fileID: 6101294717193550440}
+--- !u!114 &5375661453273275839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659243512019290888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71cd5a62b6054214da7d813137c9b372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uIWeapon: {fileID: 531662749354800754}
 --- !u!1 &7592007739601234903
 GameObject:
   m_ObjectHideFlags: 0
