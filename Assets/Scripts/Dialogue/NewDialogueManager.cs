@@ -18,6 +18,7 @@ public class NewDialogueManager : MonoBehaviour
 
     [SerializeField] private Animator portraitAnimator;
     private DialogueNodeData currentDialogueNode;
+    public int RunCount = 0;
     //[SerializeField] private AudioSource audioSource;
 
     //[SerializeField] private DataStorage data;
@@ -62,6 +63,7 @@ public class NewDialogueManager : MonoBehaviour
         }
         instance = this;
         continueButton.SetActive(false);
+        RunCount = FindAnyObjectByType<TownFromDataCreator>().RunCount;
     }
 
     private void Start()
@@ -140,6 +142,7 @@ public class NewDialogueManager : MonoBehaviour
         dialogueText.text = "";
         continueButton.SetActive(false);
         currentDialogueNode.HasBeenRead = true;
+        currentDialogueNode.ReadRun = RunCount;
         //InputManager.GetInstance().isLevelPlaying = true;
         //data.playStoryAtStart = false;
         onDialogueExit.Invoke();
@@ -335,11 +338,6 @@ public class NewDialogueManager : MonoBehaviour
         bool result = skipDialogue;
         skipDialogue = false;
         return result;
-    }
-
-    private void PlayGreeting()
-    {
-        
     }
     
     private void FindGreeting(DialogueContainer dialogueContainer, List<DialogueNodeData> dialogueNodeDatas, DialogueNodeData dialogueNodeData)

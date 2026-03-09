@@ -137,7 +137,7 @@ public class SaveFileManager
 
         if(data.PlayerSaveData == null)
         {
-            data.PlayerSaveData = new(townData.Inventory, townData.Equipment, true, 1, 1, 1);
+            data.PlayerSaveData = new(townData.Inventory, townData.Equipment, true, 1, 1, 1, 0);
             data.PlayerGold = townData.Cash;
         }
         else
@@ -146,12 +146,10 @@ public class SaveFileManager
             data.PlayerGold = townData.Cash;
             data.PlayerSaveData.Inventory = townData.Inventory;
             data.PlayerSaveData.Equipment = townData.Equipment;
+            data.PlayerSaveData.RunCount++;
         }
 
-        //foreach(var item in data.PlayerSaveData.Inventory.Items)
-        //{
-        //    Debug.Log($"name: {item.PrefabID}, slot {item.Slot}");
-        //}
+        data.DonatedWeapons = townData.DonatedWeapons;
 
         if (newScene != null)
         {
@@ -180,7 +178,7 @@ public class SaveFileManager
     /// </summary>
     private void SaveSavefile(SavefileData data, bool backup = false)
     {
-        string json = JsonUtility.ToJson(data);
+        string json = JsonUtility.ToJson(data, true);
 
         if(backup)
         {
