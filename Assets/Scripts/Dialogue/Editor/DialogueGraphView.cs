@@ -85,12 +85,13 @@ public class DialogueGraphView : GraphView
         return node;
     }
 
-    public void CreateNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, string flag, Vector2Int friendRange, int readDuring, int unlockWait)
+    public void CreateNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, bool isGreeting, bool onlyOnce, string flag, Vector2Int friendRange, int readDuring, int unlockWait)
     {
-        AddElement(CreateDialogueNode(nodeName, buttonText, position, textAsset,  hasBeenRead, flag, friendRange, readDuring, unlockWait));
+        AddElement(CreateDialogueNode(nodeName, buttonText, position, textAsset,  hasBeenRead, isGreeting, onlyOnce, flag, friendRange, readDuring, unlockWait));
     }
     
-    public NewDialogueNode CreateDialogueNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, string flag, Vector2Int friendRange, int readDuring, int unlockWait)
+    
+    public NewDialogueNode CreateDialogueNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, bool isGreeting, bool onlyOnce, string flag, Vector2Int friendRange, int readDuring, int unlockWait)
     {
         var dialogueNode = new NewDialogueNode
         {
@@ -100,6 +101,8 @@ public class DialogueGraphView : GraphView
             GUID = Guid.NewGuid().ToString(),
             DialogueAsset = textAsset,
             HasBeenRead = hasBeenRead,
+            IsGreeting = isGreeting,
+            ReadOnlyOnce = onlyOnce,
             Flag = flag,
             FriendshipRange = friendRange,
             ReadRun = readDuring,
@@ -120,6 +123,7 @@ public class DialogueGraphView : GraphView
         nameField.RegisterValueChangedCallback(evt =>
         {
             dialogueNode.Title = evt.newValue;
+            dialogueNode.title = dialogueNode.Title;
         });
         nameField.SetValueWithoutNotify(dialogueNode.Title);
         dialogueNode.mainContainer.Add(nameField);
@@ -147,6 +151,22 @@ public class DialogueGraphView : GraphView
         });
         readField.SetValueWithoutNotify(dialogueNode.HasBeenRead);
         dialogueNode.mainContainer.Add(readField);
+        
+        var greetingField = new Toggle("Is this a greeting?");
+        greetingField.RegisterValueChangedCallback(evt =>
+        {
+            dialogueNode.IsGreeting = evt.newValue;
+        });
+        greetingField.SetValueWithoutNotify(dialogueNode.IsGreeting);
+        dialogueNode.mainContainer.Add(greetingField);
+        
+        var onlyOnceField = new Toggle("Read only once");
+        onlyOnceField.RegisterValueChangedCallback(evt =>
+        {
+            dialogueNode.ReadOnlyOnce = evt.newValue;
+        });
+        onlyOnceField.SetValueWithoutNotify(dialogueNode.ReadOnlyOnce);
+        dialogueNode.mainContainer.Add(onlyOnceField);
 
         var friendField = new Vector2IntField("Friendship range");
         friendField.RegisterValueChangedCallback(evt =>

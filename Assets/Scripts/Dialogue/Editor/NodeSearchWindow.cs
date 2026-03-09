@@ -28,7 +28,7 @@ public class NodeSearchWindow : ScriptableObject, ISearchWindowProvider
             new SearchTreeGroupEntry(new GUIContent("Dialogue"), 1),
             new SearchTreeEntry(new GUIContent("Dialogue Node", _indentationIcon))
             {
-                userData = new NewDialogueNode(), level = 2
+                userData = "Node", level = 2
             },
         };
         return tree;
@@ -42,8 +42,8 @@ public class NodeSearchWindow : ScriptableObject, ISearchWindowProvider
         
         switch (SearchTreeEntry.userData)
         {
-            case NewDialogueNode dialogueNode:
-                _graphView.CreateNode("Dialogue Node", "Button text", localMousePosition, null, false, "",new Vector2Int(0, 0),0, 0);
+            case "Node":
+                _graphView.CreateNode("Dialogue Node", "Button text", localMousePosition, null, false, false, false, "",new Vector2Int(0, 0),0, 0);
                 return true;
             default:
                 return false;

@@ -14,6 +14,10 @@ public class NewDialogueNode : Node
     public TextAsset DialogueAsset;
     
     public bool HasBeenRead;
+
+    public bool IsGreeting;
+
+    public bool ReadOnlyOnce;
     
     public string Flag;
 
