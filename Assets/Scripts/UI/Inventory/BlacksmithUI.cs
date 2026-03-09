@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using static Codice.Client.Common.Connection.AskCredentialsToUser;
 
 public class BlacksmithUI : MerchantInventory
@@ -15,6 +16,9 @@ public class BlacksmithUI : MerchantInventory
 
     private UIWeapon? weaponInDonateGrid;
     private SimpleItem? weaponInDonateGridSI;
+
+    public UnityEvent OnDonateEvent = new();
+    public UnityEvent OnRepairEvent = new();
 
     private List<string> donatedWeapons = new();
 
@@ -199,6 +203,7 @@ public class BlacksmithUI : MerchantInventory
                     Debug.LogWarning("invalid weapon id donated to blacksmit, id: " + weaponInDonateGridSI.PrefabID, this);
                 }
 
+                OnDonateEvent.Invoke();
                 InvMasterBase.Instance.DestroyItem(weaponInDonateGridSI);
             }
         }
@@ -222,6 +227,7 @@ public class BlacksmithUI : MerchantInventory
             {
                 SetDescriptionText(couldRepairWeaponText);
                 weaponInDonateGrid.Durability = weaponInDonateGrid.BlacksmithHelper.MaxDurability;
+                OnRepairEvent.Invoke();
             }
             else
             {
