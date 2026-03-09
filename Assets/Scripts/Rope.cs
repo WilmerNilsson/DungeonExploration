@@ -1,11 +1,15 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Rope : MonoBehaviour
 {
     [SerializeField, Tooltip("The Top and Bottom Teleport points")] private Transform Top, Bottom;
-
+    [SerializeField, Tooltip("The Piton, for enable/disable")] private GameObject piton;
+    [SerializeField, Tooltip("The Crack, for enable/disable")] private Collider crack;
     [SerializeField, Min(2), Tooltip("how long the fade lasts")] private float fadeTime = 2;
+
+    public UnityEvent<bool> onTryActivateRope;
     
     private Vector3 targetPosition;
     private Vector3 PlayerPosition => PlayerTrackerSingleton.Instance.player.transform.position;
@@ -24,13 +28,29 @@ public class Rope : MonoBehaviour
         }
     }
 
+    public void Activate()
+    {
+        if (InvMasterBase.Instance.PlayerInventory.HasItemID("Rep", out SimpleItem item))
+        {
+            Top.gameObject.SetActive(true);
+            Bottom.gameObject.SetActive(true);
+            piton.gameObject.SetActive(true);
+            crack.enabled = false;
+            InvMasterBase.Instance.DestroyItem(item);
+            onTryActivateRope.Invoke(true);
+        }
+        else
+        {
+            onTryActivateRope.Invoke(false);
+        }
+    }
+
     public void Climb()
     {
         if (foundPlayer)
         {
             // set target to the furthest TP point
             targetPosition = TopDistance < BottomDistance ? Bottom.position : Top.position;
-            Debug.Log($"targetPosition: {targetPosition}, topdistance: {TopDistance}, bottomdistance: {BottomDistance}");
             // Start the fade
             SceneTransition.GetInstance().PlayFade(fadeTime);
             StartCoroutine(TpDelay());
