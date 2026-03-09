@@ -148,10 +148,7 @@ public class SaveFileManager
             data.PlayerSaveData.Equipment = townData.Equipment;
         }
 
-        //foreach(var item in data.PlayerSaveData.Inventory.Items)
-        //{
-        //    Debug.Log($"name: {item.PrefabID}, slot {item.Slot}");
-        //}
+        data.DonatedWeapons = townData.DonatedWeapons;
 
         if (newScene != null)
         {
@@ -180,7 +177,7 @@ public class SaveFileManager
     /// </summary>
     private void SaveSavefile(SavefileData data, bool backup = false)
     {
-        string json = JsonUtility.ToJson(data);
+        string json = JsonUtility.ToJson(data, true);
 
         if(backup)
         {
