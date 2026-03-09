@@ -1,81 +1,182 @@
+using System;
 using UnityEngine;
 
 [System.Serializable]
 public class OcclusionChecker
 {
-    private static float _hits;
+    public enum FirstDistance
+    {
+        DistanceToPlayer,
+        MaxInputDistance,
+    }
+    
+    private static float _occlusionScore;
     [SerializeField] private LayerMask layerMask;
-    [Range(0, 3)][SerializeField] private float spread = 1f;
-    [Range(0, 1)] [SerializeField] private float bounceValue = 0.5f;
+    [Range(0, 60)][SerializeField] private float spread = 4;
+    [Range(0, 1)] [SerializeField] private float bounceValue = 0.25f;
+    [Range(0, 8)] [SerializeField] private int maxBounces;
     [Range(0,4)][SerializeField] private int linesOnEitherSide;
+
+    private const float Offset = 0.02f;
     
     private int _lineCount;
     private int _posModifier;
+    private Vector3 _direction;
+    private float _distance;
+    private float _totalDistance;
     private Vector3 _sourcePos;
     private Vector3 _targetPos;
-
+    
+    
+    [SerializeField] private FirstDistance firstDistance;
     [SerializeField] private bool allowBounce;
+    [SerializeField] private bool checkIfFirstMiss;
     [SerializeField] private bool drawDebug;
 
-    private struct HitData
+    [Serializable]
+    public struct HitData
     {
-        public bool Hit1;
-        public RaycastHit Hit1Info;
-        public bool Hit2;
-        public RaycastHit Hit2Info;
+        public float score;
+        public RaycastHit[] Hits;
+        public int castIndex;
     }
+    public HitData[] hitDatas;
     
-    //TODO: punkterna följer inte spelarens rotation, utan istället emittern? prob inte göra detta
     //TODO: weighting på normalkurva? baserat på spread?
     //TODO: kolla ovan och under spelaren också?
-    
-    public void CheckOcclusion(GameObject sourceGo, GameObject targetGo, out float occlusion)
+
+    public void CheckOcclusion(GameObject sourceGo, GameObject targetGo, out float occlusion, float maxDistance = -1)
     {
         _lineCount = linesOnEitherSide * 2 + 1;
-        var hits = new HitData[_lineCount];
+        hitDatas = new HitData[_lineCount];
+        for (var i = 0; i < _lineCount; i++)
+        {
+            hitDatas[i] = new HitData()
+            {
+                score = 0,
+                Hits = new RaycastHit[1 + maxBounces]
+            };
+        }
+
         _posModifier = -linesOnEitherSide - 1;
         occlusion = 0f;
-        _hits = 0;
+        _occlusionScore = 0;
         _sourcePos = sourceGo.transform.position;
-        for (int i = 0; i < _lineCount; i++)
+
+        for (var i = 0; i < hitDatas.Length; i++)
         {
             _posModifier++;
-            _targetPos = targetGo.transform.position + targetGo.transform.right * (spread * _posModifier);
-            hits[i].Hit1 = Physics.Linecast(_sourcePos, _targetPos, out hits[i].Hit1Info, layerMask);
-            if (hits[i].Hit1)
+            _targetPos = targetGo.transform.position;
+            switch (firstDistance)
             {
-                if (allowBounce)
-                {
-                    hits[i].Hit2 = Physics.Linecast(hits[i].Hit1Info.point, targetGo.transform.position, out hits[i].Hit2Info, layerMask);
-                    if (hits[i].Hit2) _hits++;
-                    else _hits += bounceValue;
-                }
-                else
-                {
-                    _hits++;
-                }
+                case FirstDistance.DistanceToPlayer:
+                    _distance = Vector3.Distance(_sourcePos, _targetPos);
+                    break;
+                case FirstDistance.MaxInputDistance:
+                    if (maxDistance > 0) _distance = maxDistance;
+                    else _distance = Vector3.Distance(_sourcePos, _targetPos) * 2f;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
             
-            //Draw lines
-            if (!drawDebug) continue;
+            _direction = (_targetPos - _sourcePos).normalized;
+            _direction = (Quaternion.AngleAxis(spread * _posModifier, Vector3.up) * _direction).normalized;
 
-            if (hits[i].Hit1)
+            if (Physics.Raycast(_sourcePos, _direction, out hitDatas[i].Hits[0], _distance, layerMask))
             {
-                if (!hits[i].Hit2 && allowBounce)
+                if (drawDebug) Debug.DrawLine(_sourcePos, hitDatas[i].Hits[0].point, Color.red);
+
+                if (!allowBounce)
                 {
-                    Debug.DrawLine(_sourcePos, hits[i].Hit1Info.point, Color.cyan);
-                    Debug.DrawLine(hits[i].Hit1Info.point, targetGo.transform.position, Color.green);
+                    hitDatas[i].score = 1;
+                    continue;
                 }
-                else
+                
+                for (var j = 1; j < hitDatas[i].Hits.Length; j++)
                 {
-                    Debug.DrawLine(_sourcePos, hits[i].Hit1Info.point, Color.red);
+                    hitDatas[i].score += bounceValue;
+                    if (hitDatas[i].score > 1)
+                    {
+                        break;
+                    }
+                    
+                    if (!Physics.Linecast(hitDatas[i].Hits[j - 1].point + hitDatas[i].Hits[j - 1].normal * Offset,
+                            _targetPos, out hitDatas[i].Hits[j], layerMask))
+                    {
+                        if (drawDebug) Debug.DrawLine(hitDatas[i].Hits[j - 1].point + hitDatas[i].Hits[j - 1].normal * Offset,
+                            _targetPos, Color.green);
+                        hitDatas[i].castIndex = j;
+                        break;
+                    }
+                    
+                    _direction = Vector3.Reflect(_direction, hitDatas[i].Hits[j - 1].normal);
+                    
+                    if (j == hitDatas[i].Hits.Length - 1)
+                    {
+                        hitDatas[i].castIndex = j;
+                        hitDatas[i].score = 1;
+                        if (drawDebug)
+                        {
+                            _distance = Vector3.Distance(_targetPos, hitDatas[i].Hits[j - 1].point);
+                            Debug.DrawRay(hitDatas[i].Hits[j - 1].point, _direction * _distance, Color.black);
+                        }
+                        break;
+                    }
+                    
+                    if (maxDistance > 0) _distance = maxDistance;
+                    else _distance = Mathf.Infinity;
+                    
+                    if (Physics.Raycast(hitDatas[i].Hits[j - 1].point, _direction, out hitDatas[i].Hits[j], _distance, layerMask))
+                    {
+                        if (drawDebug) Debug.DrawLine(hitDatas[i].Hits[j - 1].point, hitDatas[i].Hits[j].point, Color.blue);
+                    }
+                    else
+                    {
+                        if (drawDebug) Debug.DrawRay(hitDatas[i].Hits[j - 1].point, _direction * _distance, Color.black);
+                        hitDatas[i].score = 1;
+                        hitDatas[i].castIndex = j;
+                        break;
+                    }
                 }
+                
             }
             else
             {
-                Debug.DrawLine(_sourcePos, _targetPos, Color.green);
+                if (checkIfFirstMiss) //TODO: använda Hits[0].distance här?
+                {
+                    if (!Physics.Linecast(_sourcePos + (_direction.normalized * _distance), 
+                            _targetPos, layerMask))
+                    {
+                        hitDatas[i].score += bounceValue;
+                        if (drawDebug)
+                        {
+                            Debug.DrawLine(_sourcePos + (_direction.normalized * _distance),
+                                _targetPos, Color.green);
+                            Debug.DrawRay(_sourcePos, _direction.normalized * _distance, Color.blue);
+                        }
+                        hitDatas[i].castIndex = 1;
+                    }
+                    else
+                    {
+                        if (drawDebug)Debug.DrawRay(_sourcePos, _direction.normalized * _distance, Color.red);
+                        hitDatas[i].score = 1;
+                    }
+                }
+                else
+                {
+                    if (drawDebug)Debug.DrawRay(_sourcePos, _direction.normalized * _distance, Color.green);
+                    hitDatas[i].score = 0;
+                }
+                
             }
+
+            
         }
-        occlusion = _hits / _lineCount;
+        foreach (var hitData in hitDatas)
+        {
+            _occlusionScore += Mathf.Clamp01(hitData.score);
+        }
+        occlusion += _occlusionScore / _lineCount;
     }
 }

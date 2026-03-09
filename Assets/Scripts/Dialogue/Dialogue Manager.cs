@@ -7,20 +7,20 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 public class DialogueManager : MonoBehaviour
 {
     [SerializeField] private bool playOnStart = false;
-    [SerializeField] private TextAsset startTextAsset;
+    [SerializeField] public DialogueTree dialogueTree;
     [Header("Dialogue UI")] 
-    [SerializeField] private GameObject dialoguePanel;
 
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private TextMeshProUGUI dialogueName;
+    [SerializeField] private GameObject continueButton;
 
     [SerializeField] private Animator portraitAnimator;
     //[SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip audioClip;
 
     //[SerializeField] private DataStorage data;
     
@@ -38,13 +38,13 @@ public class DialogueManager : MonoBehaviour
     private const string INDEX_TAG = "index";
     private const string EVENT_TAG = "event";
 
-
-    public UnityEvent onDialogueEnter, onStartLine, onEndLine, onDialogueExit;
+    
+    public UnityEvent<string> onDialogueEnter;
+    public UnityEvent<int> onStartLine;
+    public UnityEvent onEndLine, onDialogueExit;
     public List<UnityEvent> storyEvents = new List<UnityEvent>();
     private int lineIndex = 0;
 
-    //[Header("Choices UI")] 
-    [SerializeField] private GameObject[] choices;
     
     private TextMeshProUGUI[] choicesText;
 
@@ -63,31 +63,15 @@ public class DialogueManager : MonoBehaviour
             Debug.Log("More than one Dialogue Manager found");
         }
         instance = this;
+        continueButton.SetActive(false);
     }
 
     private void Start()
     {
         dialogueIsPlaying = false;
-        dialoguePanel.SetActive(false);
         if (playOnStart)
         {
-            EnterDialogueMode(startTextAsset);
-        }
-        /*if (data.playStoryAtStart)
-        {
-            PlayIntroStory.Invoke();
-        }
-        else
-        {
-            InputManager.GetInstance().isLevelPlaying = true;
-        }*/
-
-        choicesText = new TextMeshProUGUI[choices.Length];
-        int index = 0;
-        foreach (GameObject choice in choices)
-        {
-            choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
-            index++;
+            PlayGreeting();
         }
     }
 
@@ -114,16 +98,39 @@ public class DialogueManager : MonoBehaviour
         return instance;
     }
 
-    public void EnterDialogueMode(TextAsset InkJSON)
+    public void EnterDialogueMode(string DialogueName)
     {
-        onDialogueEnter?.Invoke();
+        for (int i = 0; i < dialogueTree.Dialogues.Count; i++)
+        {
+            if (dialogueTree.Dialogues[i].Name == DialogueName)
+            {
+                onDialogueEnter?.Invoke(DialogueName);
+                dialogueTree.Dialogues[i].HasBeenRead = true;
+                //Debug.Log("entering dialogue mode");
+                isTyping = false;
+                lineIndex = 0;
+                currentStory = new Story(dialogueTree.Dialogues[i].InkJson.text);
+                dialogueIsPlaying = true;
+                continueButton.SetActive(true);
+                //InputManager.GetInstance().isLevelPlaying = false;
+        
+                ContinueStory();
+                return;
+            }
+        }
+    }
+    
+    public void EnterDialogueMode(TextAsset inkJSON)
+    {
+        onDialogueEnter?.Invoke(inkJSON.name);
         //Debug.Log("entering dialogue mode");
         isTyping = false;
-        currentStory = new Story(InkJSON.text);
+        lineIndex = 0;
+        currentStory = new Story(inkJSON.text);
         dialogueIsPlaying = true;
-        dialoguePanel.SetActive(true);
         //InputManager.GetInstance().isLevelPlaying = false;
-        
+        continueButton.SetActive(true);
+
         ContinueStory();
     }
 
@@ -132,12 +139,8 @@ public class DialogueManager : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         
         dialogueIsPlaying = false;
-        dialoguePanel.SetActive(false);
         dialogueText.text = "";
-        for (int i = 0; i < choices.Length; i++)
-        {
-            choices[i].gameObject.SetActive(false);
-        }
+        continueButton.SetActive(false);
         //InputManager.GetInstance().isLevelPlaying = true;
         //data.playStoryAtStart = false;
         onDialogueExit.Invoke();
@@ -159,20 +162,11 @@ public class DialogueManager : MonoBehaviour
             isTyping = false;
             return;
         }
-        if (currentStory.currentChoices.Count > 0)
-        {
-            //onEndLine?.Invoke();
-            //Debug.Log("endLine choice");
-            StopAllCoroutines();
-            dialogueText.text = sentence;
-            isTyping = false;
-            return;
-        }
         if (currentStory.canContinue)
         {
             //audioSource.Stop();
             //Debug.Log("startLine");
-            onStartLine?.Invoke();
+            onStartLine?.Invoke(lineIndex);
             sentence = currentStory.Continue();
             lineIndex++;
             
@@ -187,11 +181,6 @@ public class DialogueManager : MonoBehaviour
             {
                 dialogueText.text = sentence;
             }
-
-            
-            //audioSource.PlayOneShot(audioClip);
-            
-            DisplayChoices();
         }
         else
         {
@@ -310,57 +299,7 @@ public class DialogueManager : MonoBehaviour
         isTyping = false;
         //audioSource.Stop();
     }
-
-    private void DisplayChoices()
-    {
-        if (choices.Length == 0)
-        {
-            return;
-        }
-        List<Choice> currentChoices = currentStory.currentChoices;
-
-        if (currentChoices.Count > choices.Length)
-        {
-            Debug.Log("Need more choices");
-        }
-
-        int index = 0;
-        foreach (Choice choice in currentChoices)
-        {
-            choices[index].gameObject.SetActive(true);
-            choicesText[index].text = choice.text;
-            index++;
-        }
-
-        for (int i = index; i < choices.Length; i++)
-        {
-            choices[i].gameObject.SetActive(false);
-        }
-
-        StartCoroutine(SelectFirstChoice());
-    }
-
-    private IEnumerator SelectFirstChoice()
-    {
-        EventSystem.current.SetSelectedGameObject(null);
-        yield return new WaitForEndOfFrame();
-        EventSystem.current.SetSelectedGameObject(choices[0].gameObject);
-    }
-
-    public void MakeChoice(int index)
-    {
-        if (isTyping)
-        {
-            StopAllCoroutines();
-            dialogueText.text = sentence;
-            isTyping = false;
-            return;
-        }
-        else
-        {
-            currentStory.ChooseChoiceIndex(index);
-        }
-    }
+    
 
     public void OnAdvancePressed(InputAction.CallbackContext context)
     {
@@ -397,5 +336,27 @@ public class DialogueManager : MonoBehaviour
         bool result = skipDialogue;
         skipDialogue = false;
         return result;
+    }
+
+    private void PlayGreeting()
+    {
+        List<DialogueNode> currentGreetings =  new List<DialogueNode>();
+        for (int i = 0; i < dialogueTree.Greetings.Count; i++)
+        {
+            if (dialogueTree.Greetings[i].FriendshipRequirement == dialogueTree.friendshipLevel)
+            {
+                currentGreetings.Add(dialogueTree.Greetings[i]);
+            }
+        }
+        Debug.Log(currentGreetings.Count);
+
+        if (currentGreetings.Count > 0)
+        {
+            EnterDialogueMode(currentGreetings[Random.Range(0, currentGreetings.Count - 1)].InkJson);
+        }
+        else
+        {
+            Debug.LogWarning("No greeting found", this);
+        }
     }
 }

@@ -21,8 +21,6 @@ public class SaveFileManager
 
     public SaveFileManager()
     {
-        Debug.Log("creating save file manager");
-
         GlobalSettings = ReadGlobalSettings();
 
         GlobalSettings ReadGlobalSettings()
@@ -73,7 +71,7 @@ public class SaveFileManager
         SaveSavefileSettings();
     }
 
-    public void PlaySavefile(int saveFileNr)
+    public void PlaySavefile(int saveFileNr) //should also be a private one that takes savefile data
     {
         CurrentSavefileNr = saveFileNr;
 
@@ -97,45 +95,75 @@ public class SaveFileManager
 
     /// <summary>
     /// makes a save file from world data and settings and then writes it to storage
+    /// If there is a new scene then it also plays the save file after
     /// </summary>
-    public void SaveInWorld(bool backup = false)
+    public void SaveInWorld(bool backup = false, string? newScene = null)
     {
         SavefileData data = ReadSavefile(CurrentSavefileNr); //we prob want to keep track of journals in real time aswell
         Debug.Log("reading save to get full data, need to split it up better");
 
-        data.World = WorldDataCreator.CreateWorldData();
-        data.SceneName = SceneManager.GetActiveScene().name;
-
-        SaveSavefile(data, backup);
+        WorldDataCreator.CreateWorldData(out data.Dungeon, out data.PlayerSaveData);
+        if (newScene != null)
+        {
+            data.SceneName = newScene;
+            SaveSavefile(data, backup);
+            PlaySavefile(CurrentSavefileNr);
+        }
+        else
+        {
+            data.SceneName = SceneManager.GetActiveScene().name;
+            SaveSavefile(data, backup);
+        }
     }
 
     /// <summary>
     /// makes a save file that keeps dungeon data and settings and then writes it to storage
     /// loading this save file will not move the player and reset thier health etc
+    /// If there is a new scene then it also plays the save file after
     /// </summary>
-    public void SaveFromTown(bool backup = false)
+    public void SaveFromTown(bool backup = false, string? newScene = null)
     {
         SavefileData data = ReadSavefile(CurrentSavefileNr); //we prob want to keep track of journals in real time aswell
         Debug.Log("reading save to get full data, need to split it up better");
 
 #if DEBUG
-        if(data.World == null)
+        if(data.Dungeon == null)
         {
             Debug.LogError("World is null when saving from town");
             return;
         }
+#endif
+        TownDataCreator.TownData townData = TownDataCreator.GetTownData();
+
+        if(data.PlayerSaveData == null)
+        {
+            data.PlayerSaveData = new(townData.Inventory, townData.Equipment, true, 1, 1, 1);
+            data.PlayerGold = townData.Cash;
+        }
         else
         {
-            data.World.PlayerSaveData.FromTown = true;
+            data.PlayerSaveData.FromTown = true;
+            data.PlayerGold = townData.Cash;
+            data.PlayerSaveData.Inventory = townData.Inventory;
+            data.PlayerSaveData.Equipment = townData.Equipment;
         }
-#else
-        data.World!.PlayerSaveData.FromTown = true;
-#endif
 
-        data.World.PlayerSaveData.FromTown = true;
-        data.SceneName = SceneManager.GetActiveScene().name;
+        //foreach(var item in data.PlayerSaveData.Inventory.Items)
+        //{
+        //    Debug.Log($"name: {item.PrefabID}, slot {item.Slot}");
+        //}
 
-        SaveSavefile(data, backup);
+        if (newScene != null)
+        {
+            data.SceneName = newScene;
+            SaveSavefile(data, backup);
+            PlaySavefile(CurrentSavefileNr);
+        }
+        else
+        {
+            data.SceneName = SceneManager.GetActiveScene().name;
+            SaveSavefile(data, backup);
+        }
     }
 
     private void CreateSaveFileDirectory()

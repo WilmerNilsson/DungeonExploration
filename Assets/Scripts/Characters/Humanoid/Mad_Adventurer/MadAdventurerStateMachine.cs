@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class MadAdventurerStateMachine : MonoBehaviour
 {
@@ -13,6 +14,12 @@ public class MadAdventurerStateMachine : MonoBehaviour
     [SerializeField] public Animator Animator;
     [SerializeField] public DetectPlayer Vision;
     
+    [Header("Player detection")] 
+    [SerializeField] private float maxSightRange;
+    [SerializeField] private float maxSoundRange;
+    [SerializeField] private float sightThreshold;
+    [SerializeField] private float soundThreshold;
+    
     [Header("States")]
     public UnityEvent<MadAventurerBaseState> OnMadState;
     public MadAventurerBaseState CurrentState;
@@ -21,6 +28,8 @@ public class MadAdventurerStateMachine : MonoBehaviour
     public MadAdventurerAttackState AttackState = new MadAdventurerAttackState();
     public MadAdventurerSearchingState SearchingState = new MadAdventurerSearchingState();
     public MadAdventurerDyingState DyingState = new();
+    public MadAdventurerHallucinationState HallucinationState = new();
+    [SerializeField] private bool startInHallucination = false;
     
     [HideInInspector] public Transform PlayerTransform;
     [HideInInspector] public Transform TargetTransform;
@@ -33,6 +42,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
         AttackState.OnValidate(this);
         SearchingState.OnValidate(this);
         DyingState.OnValidate(this);
+        HallucinationState.OnValidate(this);
     }
 #endif
 
@@ -55,16 +65,23 @@ public class MadAdventurerStateMachine : MonoBehaviour
         AttackState.Intialize(this);
         SearchingState.Intialize(this);
         DyingState.Intialize(this);
+        HallucinationState.Intialize(this);
 
         IdleState.Start();
         ChasingState.Start();
         AttackState.Start();
         SearchingState.Start();
         DyingState.Start();
-        CurrentState = IdleState;
+        HallucinationState.Start();
+        if(startInHallucination)
+        {
+            CurrentState = HallucinationState;
+        }
+        else
+        {
+            CurrentState = IdleState;
+        }
         CurrentState.Enter();
-
-        //agent
     }
 
     // Update is called once per frame
@@ -79,6 +96,17 @@ public class MadAdventurerStateMachine : MonoBehaviour
         CurrentState = targetState;
         OnMadState.Invoke(CurrentState);
         CurrentState.Enter();
+    }
+    
+    public bool DetectPlayer()
+    {
+        return Vision.Detect(sightThreshold, soundThreshold, maxSoundRange, maxSightRange);
+    }
+
+    public void Attack()
+    {
+        float angle = Random.Range(-160f, 160f);
+        Controller.Attack(angle);
     }
 
     public void Die()

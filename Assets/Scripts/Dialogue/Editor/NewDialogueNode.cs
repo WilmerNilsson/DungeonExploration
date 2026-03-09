@@ -1,0 +1,31 @@
+#if UNITY_EDITOR
+using UnityEditor.Experimental.GraphView;
+using UnityEngine;
+
+public class NewDialogueNode : Node
+{
+    public string GUID;
+
+    public string Title;
+    
+    public string ButtonText;
+    
+    public bool EntryPoint = false;
+    
+    public TextAsset DialogueAsset;
+    
+    public bool HasBeenRead;
+
+    public bool IsGreeting;
+
+    public bool ReadOnlyOnce;
+    
+    public string Flag;
+
+    public Vector2Int FriendshipRange;
+
+    public int ReadRun;
+
+    public int RunWaitAmount;
+}
+#endif

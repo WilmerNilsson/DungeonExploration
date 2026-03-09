@@ -53,18 +53,31 @@ public class AudioManager : MonoBehaviour
         AudioDebug.Print("AudioManager Initialized");
     }
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void CheckIfExists()
+    {
+        var go = GameObject.FindObjectsByType<AudioManager>(FindObjectsSortMode.None);
+        if (go.Length < 1 || go == null)
+        {
+            Debug.LogWarning("AudioManager not found in scene, creating one");
+            Instantiate(Resources.Load<GameObject>("AudioManager"));
+        }
+    }
+
     public static bool IsValid;
 
     #endregion
 
     #region Events
 
-    public EventList[] eventLists;
+    [HideInInspector] public EventList[] eventLists;
 
     public Dictionary<string, EventList> EventListCache; //För snabbare lookup än foreach
 
     private void RefreshEventListCache() //Lägger till alla eventLists i eventListCache
     {
+        eventLists = Resources.LoadAll<EventList>("EventLists/");
+        
         EventListCache = new Dictionary<string, EventList>();
         if (eventLists == null)
         {
@@ -82,10 +95,7 @@ public class AudioManager : MonoBehaviour
     #if UNITY_EDITOR
     public void FillAllEventData()
     {
-        foreach (var list in eventLists)
-        {
-            list.FillEventData();
-        }
+        EventDataRefresher.RefreshEventData();
     }
     #endif
     

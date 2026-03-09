@@ -6,6 +6,8 @@ public class ReadItemUse : MonoBehaviour
     [SerializeField] private bool textIsLibraryName;
     [SerializeField] private TextLibrarySO textLibrary;
 
+#nullable enable
+
 #if DEBUG
     private void OnValidate()
     {
@@ -26,18 +28,19 @@ public class ReadItemUse : MonoBehaviour
 
     public void Read()
     {
-        if (textIsLibraryName)
+        if(InvMaster.Instance is InvMaster invMaster)
         {
-#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
-            if (textLibrary.TryGetTextByName(text, out BookText? book))
+            if (textIsLibraryName)
             {
-                InvMaster.Instance.OpenText(book.Text);
+                if (textLibrary.TryGetTextByName(text, out BookText? book))
+                {
+                    invMaster.OpenText(book.Text);
+                }
             }
-#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
-        }
-        else
-        {
-            InvMaster.Instance.OpenText(text);
+            else
+            {
+                invMaster.OpenText(text);
+            }
         }
     }
 }

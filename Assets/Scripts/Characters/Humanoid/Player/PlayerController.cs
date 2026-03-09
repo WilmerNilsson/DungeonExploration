@@ -9,7 +9,6 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private HumanoidController controller;
-    [SerializeField, Tooltip("TODO add to HumanoidController instead")] private PlayerIK IK; //TODO add to HumanoidController instead
     
     [SerializeField] private float mouseSensitivity = 0.1f;
     [SerializeField] private float stickSensitivity = 5f;
@@ -142,7 +141,7 @@ public class PlayerController : MonoBehaviour
             startedAttack = false;
             if (Vector2.Distance(mouseStart, mouseEnd) > 10)
             {
-                IK.Attack(Vector2.SignedAngle(Vector2.left, (mouseEnd - mouseStart)));
+                controller.Attack(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
             }
             GameManagerSO.Instance.LockCamera(false);
         }
@@ -163,7 +162,7 @@ public class PlayerController : MonoBehaviour
             startedBlock = false;
             if (Vector2.Distance(mouseStart, mouseEnd) > 10)
             {
-                IK.Block(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
+                controller.Block(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
             }
             GameManagerSO.Instance.LockCamera(false);
         }
