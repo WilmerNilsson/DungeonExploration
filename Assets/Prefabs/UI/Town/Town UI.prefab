@@ -2144,7 +2144,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Blacksmith
+  m_text: Visit the blacksmith
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 56321e81821ad78428942d9943f1e90d, type: 2}
   m_sharedMaterial: {fileID: -4238060652222663036, guid: 56321e81821ad78428942d9943f1e90d, type: 2}
@@ -2955,13 +2955,13 @@ MonoBehaviour:
   itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
   playerCashSO: {fileID: 11400000, guid: ffae8245bc035e74c8db57a6b9da2ca3, type: 2}
   deliverWeaponPanel: {fileID: 1884521984008488567}
-  weaponAlreadyDonatedText: 'Don''t really need more of them. '
-  couldDonateText: "I\u2019ll gladly take that of your hands. "
-  couldRepairWeaponText: As good as new.
-  weaponTypeCantBeDonatedText: "I\u2026 Don\u2019t think I can make use of that."
-  weaponAlreadyFullDurabilityText: 'I don''t think I can make that thing any shinier. '
-  weaponCostsToMuchToRepairText: "you\u2019re gonna have to cough up a few more crowns
-    for that grams. "
+  weaponAlreadyDonatedText: Already have those.
+  couldDonateText: Interesting, i will keep this stocked.
+  couldRepairWeaponText: CLANK CLANK CLANK CLANK GET FIXED GET FIXED GET FIXED
+  weaponTypeCantBeDonatedText: That knife too cool for my school bro.
+  weaponAlreadyFullDurabilityText: Looks fine to me.
+  weaponCostsToMuchToRepairText: Sorry, Ingrid. I can't give credit. Come back when
+    you're a little... mmmmm... richer!
 --- !u!1 &2495740166984162305
 GameObject:
   m_ObjectHideFlags: 0
@@ -8538,7 +8538,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: General store
+  m_text: Visit the general store
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 56321e81821ad78428942d9943f1e90d, type: 2}
   m_sharedMaterial: {fileID: -4238060652222663036, guid: 56321e81821ad78428942d9943f1e90d, type: 2}
@@ -9707,6 +9707,7 @@ MonoBehaviour:
   dialogueName: {fileID: 6486441060312357466}
   continueButton: {fileID: 640448948170146050}
   portraitAnimator: {fileID: 2840735580665067292}
+  RunCount: 0
   onDialogueEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -9718,7 +9719,19 @@ MonoBehaviour:
       m_Calls: []
   onDialogueExit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3397467498683635322}
+        m_TargetAssemblyTypeName: NewDialogueChoiceHandler, GameAssembly
+        m_MethodName: HandleDialogue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   storyEvents: []
 --- !u!1 &7796620134886370778
 GameObject:
@@ -10736,6 +10749,7 @@ MonoBehaviour:
   dialogueName: {fileID: 8135852833376931271}
   continueButton: {fileID: 5094875904446286907}
   portraitAnimator: {fileID: 2840735580665067292}
+  RunCount: 0
   onDialogueEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -10747,7 +10761,19 @@ MonoBehaviour:
       m_Calls: []
   onDialogueExit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1584754746207474282}
+        m_TargetAssemblyTypeName: NewDialogueChoiceHandler, GameAssembly
+        m_MethodName: HandleDialogue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   storyEvents: []
 --- !u!1 &8527101245082747120
 GameObject:
@@ -12117,3 +12143,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7076339026390234441, guid: 45ac0dbe1ab7a66489e1e7f6fd5e54f3, type: 3}
   m_PrefabInstance: {fileID: 8020782387418481550}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1584754746207474282 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8841029092997747172, guid: 45ac0dbe1ab7a66489e1e7f6fd5e54f3, type: 3}
+  m_PrefabInstance: {fileID: 8020782387418481550}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67453859565418309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bb7de5628cbeba45a09d9806d05787b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
