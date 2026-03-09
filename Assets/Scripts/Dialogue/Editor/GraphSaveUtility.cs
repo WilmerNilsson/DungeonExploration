@@ -169,7 +169,7 @@ public class GraphSaveUtility
     private void ClearGraph()
     {
         //Set entry points guid back from the save, Discard existing guid.
-        Nodes.Find(x => x.EntryPoint).GUID = _containerCache.NodeLinks[0].BaseNodeGuid;
+        //Nodes.Find(x => x.EntryPoint).GUID = _containerCache.NodeLinks[0].BaseNodeGuid;
 
         foreach (var node in Nodes)
         {
