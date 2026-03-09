@@ -460,6 +460,7 @@ public class InventoryGrid : MonoBehaviour
         if ( instantiate )
         {
             item = Instantiate(item.gameObject).GetComponent<SimpleItem>();
+            item.name = item.gameObject.name;
             instanciateItem = item;
         }
         else
@@ -503,6 +504,24 @@ public class InventoryGrid : MonoBehaviour
             }
         }
 
+        return false;
+    }
+
+    public bool HasItemID(string stringID,[NotNullWhen(true)] out SimpleItem? item)
+    {
+        for (int collum = 0; collum < InvData.GetLength(0); collum++)
+        {
+            for (int row = 0; row < InvData.GetLength(1); row++)
+            {
+                if (InvData[collum, row] == null) { continue; }
+                if (InvData[collum, row]!.Item.PrefabID == stringID)
+                {
+                    item = InvData[collum, row]!.Item;
+                    return true;
+                }
+            }
+        }
+        item = null;
         return false;
     }
 
