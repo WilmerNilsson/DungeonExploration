@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 
 [RequireComponent(typeof(HumanoidController),typeof(HumanoidMovement),typeof(HumanoidRotator))]
-[RequireComponent(typeof(HumanoidInteract),typeof(PlayerInput))]
+[RequireComponent(typeof(HumanoidInteract),typeof(PlayerInput), typeof(PlayerTrackerSingleton))]
 [RequireComponent(typeof(PlayerUIController),typeof(OneShotPlayer))]
 public class PlayerController : MonoBehaviour
 {

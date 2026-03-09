@@ -58,6 +58,9 @@ public class WorldFromDataCreator : MonoBehaviour
         {
             item.gameObject.SetActive(true);
         }
+
+        SaveFileHelperPlayer helper = FindFirstObjectByType<SaveFileHelperPlayer>();
+        helper.InitializeNew();
     }
 
 #if UNIT_TESTS
