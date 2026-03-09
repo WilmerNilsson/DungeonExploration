@@ -103,7 +103,7 @@ public class HumanoidMovement : MonoBehaviour
     }
 
     /// <summary>
-    /// makes the charachter controller not move next fixed update
+    /// makes the character controller not move next fixed update
     /// </summary>
     public void SupressMoveFrame()
     {
@@ -143,15 +143,13 @@ public class HumanoidMovement : MonoBehaviour
         Vector3 heightMod = new Vector3(0, 0.5f, 0);
         if (isCrouching && grounded)
         {
-            GetComponent<CapsuleCollider>().height = 1.5f;
-            GetComponent<CharacterController>().height = 1.5f;
+            CC.height = 1.5f;
             //bodyTransform.position -= heightMod;
         }
         else if (!Physics.Raycast(transform.position, Vector3.up, out RaycastHit hit, 0.1f))
         {
             //bodyTransform.position += heightMod;
-            GetComponent<CapsuleCollider>().height = 3;
-            GetComponent<CharacterController>().height = 3;
+            CC.height = 3;
         }
     }
 }

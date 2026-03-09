@@ -51,12 +51,14 @@ public class MadAdventurerStateMachine : MonoBehaviour
     {
         if (PlayerTransform == null)
         {
-            PlayerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-
-            if (PlayerTransform == null)
+            try
             {
-                Debug.LogWarning("Cant find Player", this);
-                return;
+                PlayerTransform = PlayerTrackerSingleton.Instance.player.transform;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not find player transform");
+                throw;
             }
         }
 
