@@ -5,6 +5,7 @@ using UnityEngine;
 [Serializable]
 public class DialogueContainer : ScriptableObject
 {
+    public int FriendshipLevel = 1;
     public List<NodeLinkData> NodeLinks = new List<NodeLinkData>();
     public List<DialogueNodeData> DialogueNodeDatas = new List<DialogueNodeData>();
     public List<ExposedProperty>  ExposedProperties = new List<ExposedProperty>();
@@ -40,5 +41,15 @@ public class DialogueContainer : ScriptableObject
         {
             Debug.LogWarning("No dialogue node with the name " + nodeName, this);
         }
+    }
+
+    public void SetFriendshipLevel(int level)
+    {
+        FriendshipLevel = level;
+    }
+
+    public void IncreaseFriendshipLevel(int amount)
+    {
+        FriendshipLevel += amount;
     }
 }
