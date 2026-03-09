@@ -9,11 +9,11 @@ public class MerchantInventory : MonoBehaviour
     [SerializeField] private TextMeshProUGUI descriptionTextField;
     //the reason i use 2 grids instead of just keeping track of the data is that
     //i want to avoid instansiating and destroying items unneseserarly
-    [SerializeField] private InventoryGrid buyGrid;
+    [SerializeField] protected InventoryGrid buyGrid;
     [SerializeField] protected InventoryGrid sellGrid;
     [SerializeField] private string[] SpawnItems;
-    [SerializeField] private ItemLibrarySO itemLibrary;
-    [SerializeField] private PlayerCashSO playerCashSO;
+    [SerializeField] protected ItemLibrarySO itemLibrary;
+    [SerializeField] protected PlayerCashSO playerCashSO;
 
 #nullable enable
 
@@ -160,17 +160,24 @@ public class MerchantInventory : MonoBehaviour
     {
         if (startHover)
         {
-            SetDescriptionText(simpleItem.CashValue.ToString());
+            SetGoldValueText(simpleItem.CashValue.ToString());
+            SetDescriptionText(simpleItem.GetDescription());
         }
         else
         {
+            SetGoldValueText(string.Empty);
             SetDescriptionText(string.Empty);
         }
     }
 
-    protected void SetDescriptionText(string newText)
+    public void SetGoldValueText(string newText)
     {
         itemGoldValueText.text = newText;
+    }
+
+    protected void SetDescriptionText(string newText)
+    {
+        descriptionTextField.text = newText;
     }
 
     public TextMeshProUGUI GetDescriptionTextField()
