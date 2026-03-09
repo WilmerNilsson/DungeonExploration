@@ -29,7 +29,7 @@ public class DialogueGraphView : GraphView
         Insert(0, grid);
         grid.StretchToParentSize();
         
-        AddElement(GenerateEntryPointNode());
+        //AddElement(GenerateEntryPointNode());
         AddSearchWindow(editorWindow);
     }
 
@@ -61,7 +61,7 @@ public class DialogueGraphView : GraphView
         return node.InstantiatePort(Orientation.Horizontal, portDirection, capacity, typeof(float)); //Arbitrary type
     }
 
-    private NewDialogueNode GenerateEntryPointNode()
+    /*private NewDialogueNode GenerateEntryPointNode()
     {
         var node = new NewDialogueNode
         {
@@ -84,7 +84,7 @@ public class DialogueGraphView : GraphView
         
         node.SetPosition(new Rect(100, 200, 100, 150));
         return node;
-    }
+    }*/
 
     public void CreateNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, bool isGreeting, bool onlyOnce, string flag, Vector2Int friendRange, int readDuring, int unlockWait)
     {
