@@ -61,21 +61,12 @@ MonoBehaviour:
   - BaseNodeGuid: b5a482f8-fae7-4d3d-a9c7-567e19071139
     PortName: Choice 8
     TargetNodeGuid: a14006bd-d4a5-4757-a616-dea29f23ddec
-  - BaseNodeGuid: b5a482f8-fae7-4d3d-a9c7-567e19071139
-    PortName: Choice 9
-    TargetNodeGuid: b78f3b6d-275e-4ee2-b4a5-d94b2f56bcd4
   - BaseNodeGuid: b78f3b6d-275e-4ee2-b4a5-d94b2f56bcd4
     PortName: Choice 1
     TargetNodeGuid: 02fa3e81-b8e1-4adc-971f-351ffb85276b
   - BaseNodeGuid: a1d97b2b-1040-4a6b-8086-d90119d3b58a
     PortName: Choice 1
     TargetNodeGuid: b78f3b6d-275e-4ee2-b4a5-d94b2f56bcd4
-  - BaseNodeGuid: 02fa3e81-b8e1-4adc-971f-351ffb85276b
-    PortName: Choice 1
-    TargetNodeGuid: 139359ba-2f06-4952-81c6-318e5ad824d7
-  - BaseNodeGuid: 139359ba-2f06-4952-81c6-318e5ad824d7
-    PortName: Choice 1
-    TargetNodeGuid: 89a895ce-1671-4e36-a774-bb22e8152b66
   - BaseNodeGuid: 445d0ae4-3ac9-432d-b4fa-2789cfc7359c
     PortName: Choice 1
     TargetNodeGuid: 89a895ce-1671-4e36-a774-bb22e8152b66
@@ -94,6 +85,15 @@ MonoBehaviour:
   - BaseNodeGuid: 532ac360-9147-4ba5-a4ac-1164b05016bd
     PortName: Choice 1
     TargetNodeGuid: 368010a8-af74-4fab-b428-8e329563d087
+  - BaseNodeGuid: b5a482f8-fae7-4d3d-a9c7-567e19071139
+    PortName: Choice 9
+    TargetNodeGuid: a1d97b2b-1040-4a6b-8086-d90119d3b58a
+  - BaseNodeGuid: 02fa3e81-b8e1-4adc-971f-351ffb85276b
+    PortName: Choice 1
+    TargetNodeGuid: daaa8564-2a5e-4095-884c-333714915077
+  - BaseNodeGuid: daaa8564-2a5e-4095-884c-333714915077
+    PortName: Choice 1
+    TargetNodeGuid: 445d0ae4-3ac9-432d-b4fa-2789cfc7359c
   DialogueNodeDatas:
   - Guid: fca12040-41e8-4cc0-a0f7-9308510c674b
     Title: ShopQuestion1
@@ -251,45 +251,9 @@ MonoBehaviour:
     Position: {x: 1516, y: 347}
     ReadRun: 0
     RunWaitAmount: 0
-  - Guid: b5a482f8-fae7-4d3d-a9c7-567e19071139
-    Title: ShopDialogue1
-    ButtonText: Button text
-    DialogueAsset: {fileID: 4900000, guid: fb36b0f97a0a3894b8a64f2a78eea8a5, type: 3}
-    HasBeenRead: 0
-    IsGreeting: 1
-    ReadOnlyOnce: 1
-    Flag: 
-    FriendshipRange: {x: 1, y: 1}
-    Position: {x: -875, y: 766}
-    ReadRun: 0
-    RunWaitAmount: 0
-  - Guid: b78f3b6d-275e-4ee2-b4a5-d94b2f56bcd4
-    Title: ShopDialogue5
-    ButtonText: ...
-    DialogueAsset: {fileID: 4900000, guid: 0248d0fbb448f71439ad3e604e836564, type: 3}
-    HasBeenRead: 0
-    IsGreeting: 0
-    ReadOnlyOnce: 0
-    Flag: 
-    FriendshipRange: {x: 1, y: 10}
-    Position: {x: -564, y: 1574}
-    ReadRun: 0
-    RunWaitAmount: 0
-  - Guid: a1d97b2b-1040-4a6b-8086-d90119d3b58a
-    Title: AriDeath
-    ButtonText: Button text
-    DialogueAsset: {fileID: 0}
-    HasBeenRead: 0
-    IsGreeting: 0
-    ReadOnlyOnce: 0
-    Flag: 
-    FriendshipRange: {x: 0, y: 0}
-    Position: {x: -940, y: 1640}
-    ReadRun: 0
-    RunWaitAmount: 0
   - Guid: 02fa3e81-b8e1-4adc-971f-351ffb85276b
     Title: ShopDialogue6
-    ButtonText: Button text
+    ButtonText: what?
     DialogueAsset: {fileID: 4900000, guid: 5d6fa02cc4e357548a77b27d2dffa734, type: 3}
     HasBeenRead: 0
     IsGreeting: 0
@@ -299,30 +263,6 @@ MonoBehaviour:
     Position: {x: 1603, y: 769}
     ReadRun: 0
     RunWaitAmount: 1
-  - Guid: 139359ba-2f06-4952-81c6-318e5ad824d7
-    Title: ShopDialogue7
-    ButtonText: Aiden?
-    DialogueAsset: {fileID: 4900000, guid: 171c9c8febbfde443993cd54281be492, type: 3}
-    HasBeenRead: 0
-    IsGreeting: 0
-    ReadOnlyOnce: 0
-    Flag: 
-    FriendshipRange: {x: 2, y: 10}
-    Position: {x: 2018, y: 445}
-    ReadRun: 0
-    RunWaitAmount: 2
-  - Guid: 445d0ae4-3ac9-432d-b4fa-2789cfc7359c
-    Title: AgatholDepths
-    ButtonText: Button text
-    DialogueAsset: {fileID: 0}
-    HasBeenRead: 0
-    IsGreeting: 0
-    ReadOnlyOnce: 0
-    Flag: 
-    FriendshipRange: {x: 0, y: 0}
-    Position: {x: 2199, y: 85}
-    ReadRun: 0
-    RunWaitAmount: 0
   - Guid: 89a895ce-1671-4e36-a774-bb22e8152b66
     Title: ShopDialogue8
     ButtonText: You doing all right?
@@ -395,4 +335,64 @@ MonoBehaviour:
     Position: {x: 330, y: 355}
     ReadRun: 2
     RunWaitAmount: 1
+  - Guid: b5a482f8-fae7-4d3d-a9c7-567e19071139
+    Title: ShopDialogue1
+    ButtonText: Button text
+    DialogueAsset: {fileID: 4900000, guid: fb36b0f97a0a3894b8a64f2a78eea8a5, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 1
+    ReadOnlyOnce: 1
+    Flag: 
+    FriendshipRange: {x: 1, y: 1}
+    Position: {x: -955, y: 879}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: b78f3b6d-275e-4ee2-b4a5-d94b2f56bcd4
+    Title: ShopDialogue5
+    ButtonText: ...
+    DialogueAsset: {fileID: 4900000, guid: 0248d0fbb448f71439ad3e604e836564, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 1, y: 10}
+    Position: {x: -380, y: 1535}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: a1d97b2b-1040-4a6b-8086-d90119d3b58a
+    Title: AriDeath
+    ButtonText: Button text
+    DialogueAsset: {fileID: 0}
+    HasBeenRead: 0
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 0, y: 0}
+    Position: {x: -651, y: 1403}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: daaa8564-2a5e-4095-884c-333714915077
+    Title: 'ShopDialogue7 '
+    ButtonText: Aiden?
+    DialogueAsset: {fileID: 4900000, guid: 171c9c8febbfde443993cd54281be492, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 0, y: 0}
+    Position: {x: 1905, y: 506}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: 445d0ae4-3ac9-432d-b4fa-2789cfc7359c
+    Title: AgatholDepths
+    ButtonText: Button text
+    DialogueAsset: {fileID: 0}
+    HasBeenRead: 0
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 0, y: 0}
+    Position: {x: 2238, y: 447}
+    ReadRun: 0
+    RunWaitAmount: 0
   ExposedProperties: []
