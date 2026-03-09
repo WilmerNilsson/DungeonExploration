@@ -9,7 +9,7 @@ public class NewDialogueChoiceHandler : MonoBehaviour
     }
 
     [SerializeField] private List<DialogueSelectButton> selectButtons = new List<DialogueSelectButton>();
-    private void HandleDialogue()
+    public void HandleDialogue()
     {
         if (!NewDialogueManager.GetInstance())
         {
@@ -38,7 +38,8 @@ public class NewDialogueChoiceHandler : MonoBehaviour
     private void FindDialogue(DialogueContainer dialogueContainer, List<DialogueNodeData> dialogueNodeDatas, DialogueNodeData dialogueNodeData)
     {
         int runCount = NewDialogueManager.GetInstance().RunCount;
-        if (dialogueNodeData.HasBeenRead || !dialogueNodeData.DialogueAsset || dialogueNodeData.IsGreeting)
+        if (dialogueNodeData.HasBeenRead || !dialogueNodeData.DialogueAsset || dialogueNodeData.IsGreeting || 
+            dialogueNodeData.FriendshipRange.x > dialogueContainer.FriendshipLevel || dialogueNodeData.FriendshipRange.y < dialogueContainer.FriendshipLevel)
         {
             return;
         }
