@@ -6,6 +6,7 @@ public class TownFromDataCreator : MonoBehaviour
     [SerializeField] private PlayerCashSO playerCashSO;
     [SerializeField] private ItemLibrarySO itemLibrary;
     [SerializeField] private BlacksmithUI blacksmithUI;
+    public int RunCount;
 #nullable enable
 
 #if UNITY_EDITOR
@@ -25,6 +26,7 @@ public class TownFromDataCreator : MonoBehaviour
 
             playerCashSO.SetCash(data.PlayerGold);
             blacksmithUI.GiveSaveData(data.DonatedWeapons);
+            RunCount = data.PlayerSaveData.RunCount;
 
             if(data.PlayerSaveData != null)
             {
