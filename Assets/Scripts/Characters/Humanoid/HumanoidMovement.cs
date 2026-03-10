@@ -6,6 +6,7 @@ public class HumanoidMovement : MonoBehaviour
 {
     public UnityEvent<moveActions> OnMoveActionChange;
     public UnityEvent OnJump;
+    public UnityEvent<float> OnLand;
     
     [SerializeField] HumanoidController controller;
     [SerializeField] CharacterController CC;
@@ -20,6 +21,9 @@ public class HumanoidMovement : MonoBehaviour
     [SerializeField] private float jumpHeight = 5;
     private Vector3 moveVector;
     private Vector3 rotatedVector;
+    private Vector3 initialAirVector;
+    private float initialMagnitude;
+    private float initialAirHeight;
     private Vector3 playerVelocity;
     
     [Header("Debug")]
@@ -73,8 +77,15 @@ public class HumanoidMovement : MonoBehaviour
 
         if (!grounded) //TODO fix air movement, maybe save initial movement and edit it while in the air?
         {
-            deltaSpeed *= airMoveMod;
-            SetMoveAction(moveActions.Airborne);
+            if (!currentAction.Equals(moveActions.Airborne))
+            {
+                SetMoveAction(moveActions.Airborne);
+            }
+            else
+            {
+                rotatedVector = initialAirVector + rotatedVector * airMoveMod;
+                if(rotatedVector.magnitude > initialMagnitude) rotatedVector = rotatedVector.normalized * initialMagnitude; 
+            }
         }
         else if (moveVector == Vector3.zero)
         {
@@ -114,6 +125,16 @@ public class HumanoidMovement : MonoBehaviour
     {
         if(newAction != currentAction)
         {
+            if (newAction == moveActions.Airborne)
+            {
+                initialAirVector = rotatedVector;
+                initialMagnitude = initialAirVector.magnitude;
+                initialAirHeight = transform.position.y;
+            }
+            else if (currentAction == moveActions.Airborne)
+            {
+                OnLand.Invoke(initialAirHeight - transform.position.y);
+            }
             if (newAction == moveActions.Sprinting)
             {
                 animator.SetFloat("RunSpeed", 2);
@@ -140,16 +161,19 @@ public class HumanoidMovement : MonoBehaviour
 
     public void Crouch(bool isCrouching)
     {
-        Vector3 heightMod = new Vector3(0, 0.5f, 0);
         if (isCrouching && grounded)
         {
             CC.height = 1.5f;
-            //bodyTransform.position -= heightMod;
+            CC.center = new Vector3(0, 2.25f, 0);
         }
-        else if (!Physics.Raycast(transform.position, Vector3.up, out RaycastHit hit, 0.1f))
+        else if (!Physics.Raycast(transform.position, Vector3.up, 0.1f, LayerMask.GetMask("Ground", "Walls", "Roof")))
         {
-            //bodyTransform.position += heightMod;
-            CC.height = 3;
+            CC.center = new Vector3(0, 1.5f, 0);
+            CC.height = 3f;
+            if (Physics.Raycast(transform.position + CC.center, Vector3.down, 1f, LayerMask.GetMask("Ground", "Walls", "Roof")))
+            {
+                CC.Move(new Vector3(0, 1, 0));
+            }
         }
     }
 }
