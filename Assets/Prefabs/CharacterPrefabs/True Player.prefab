@@ -965,7 +965,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2412
+  m_VersionIndex: 2427
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1195,7 +1195,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.65, y: 0.65, z: 0.65}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7929286171431266012}
   - {fileID: 6955565832605297247}
@@ -1870,7 +1870,19 @@ MonoBehaviour:
   playerSanitySO: {fileID: 11400000, guid: 5c9490a2940ba974e80dc37a66354202, type: 2}
   OnLoseSanity:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8992074457306076680}
+        m_TargetAssemblyTypeName: SanitySoundLogic, GameAssembly
+        m_MethodName: OnLoseSanity
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnGainSanity:
     m_PersistentCalls:
       m_Calls: []
@@ -2158,6 +2170,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d931ca1dd1838a4bb460879b3218922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8992074457306076680 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5987268280381358258, guid: d73e9fa7ae2f59747b5cb6986f5a040d, type: 3}
+  m_PrefabInstance: {fileID: 3448992968739903162}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95a05a4808bd8074c803b152ac12cb6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4561574992140784756
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2291,7 +2314,7 @@ PrefabInstance:
     - target: {fileID: 5866666021909216657, guid: 158bf6404f43d4f4992b14d60613b4b1, type: 3}
       propertyPath: m_Avatar
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 9000000, guid: 158bf6404f43d4f4992b14d60613b4b1, type: 3}
     - target: {fileID: 5866666021909216657, guid: 158bf6404f43d4f4992b14d60613b4b1, type: 3}
       propertyPath: m_Controller
       value: 
