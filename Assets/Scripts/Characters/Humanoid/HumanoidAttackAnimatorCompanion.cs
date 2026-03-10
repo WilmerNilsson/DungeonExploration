@@ -15,8 +15,6 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     [FormerlySerializedAs("onBlockStateChange")] public UnityEvent<BlockState> OnBlockStateChange;
     
     [SerializeField] private bool hasWeapon = false;
-    [SerializeField] private bool attacking = false;
-    [SerializeField] private bool blocking = false;
     [SerializeField] private GameObject weapon;
     [SerializeField] private TwoBoneIKConstraint swordArm; 
     [SerializeField] private Transform core;
@@ -330,7 +328,6 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         if (hasWeapon && !isInAnimation)
         {
             currentAnimation = StartCoroutine(ChargeBlockAnimaton());
-            blocking = true;
             weaponScript.Angle = angle;
             Vector3 anglePos = new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), -Mathf.Cos(angle * Mathf.Deg2Rad), 0);
             Vector3 offsetPos = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0);
