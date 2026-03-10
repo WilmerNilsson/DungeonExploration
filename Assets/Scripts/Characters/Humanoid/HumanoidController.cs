@@ -52,9 +52,14 @@ public class HumanoidController : MonoBehaviour
         interact.Interact();
     }
 
-    public void PrepareAttack(float angle)
+    public void PrepareAttackUpdate(float angle)
     {
+        animateAttack.HoldAttackUpdate(angle);
+    }
 
+    public void PrepareAttack(bool start)
+    {
+        animateAttack.HoldAttack(start);
     }
 
     public void Attack(float angle)
@@ -62,8 +67,18 @@ public class HumanoidController : MonoBehaviour
         animateAttack.Attack(angle);
     }
     
-    public void Block(float angle)
+    public void HoldBlock(bool start)
     {
-        animateAttack.Block(angle);
+        animateAttack.HoldBlock(start);
+    }
+
+    public void HoldBlockUpdate(float angle)
+    {
+        animateAttack.HoldBlockUpdate(angle);
+    }
+
+    public void BlockWithCharge(float angle)
+    {
+        animateAttack.BlockWithChargeup(angle);
     }
 }

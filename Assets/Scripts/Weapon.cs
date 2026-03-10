@@ -86,16 +86,16 @@ public class Weapon : MonoBehaviour
     }
 
     /// <summary>
-    /// Stay at P0 <br/>
+    /// Stay at P0 (with optional pos offset) <br/>
     /// returns true when time is more than attack time and state machine can continue
     /// </summary>
-    public bool HoldAttack(float time)
+    public bool HoldAttack(float time, float pos = 0)
     {
         SwordArm.data.targetPositionWeight = 1;
         SwordArm.data.targetRotationWeight = 1;
         
-        AttackPositionRotation(0);
-        
+        AttackPositionRotation(pos);
+
         return time >= attackHoldTime;
     }
 
@@ -167,7 +167,7 @@ public class Weapon : MonoBehaviour
     /// Stay at BlockPos <br/>
     /// returns true when time is more than block time and state machine can continue
     /// </summary>
-    public bool Block(float time)
+    public bool HoldBlock(float time)
     {
         SwordArm.data.targetPositionWeight = 1;
         SwordArm.data.targetRotationWeight = 1;
@@ -266,7 +266,7 @@ public class Weapon : MonoBehaviour
                     case "Flesh":
                         Debug.Log("Flesh");
                         OnDeflectCollision.Invoke("Flesh", transform.position);
-                        Companion.ChangeAttackState(HumanoidAttackAnimatorCompanion.AttackState.Return);
+                        Companion.OnHitFlesh();
                         break;
                 }
             }

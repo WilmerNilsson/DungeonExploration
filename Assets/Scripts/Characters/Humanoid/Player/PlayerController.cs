@@ -55,9 +55,23 @@ public class PlayerController : MonoBehaviour
             Rotate(lookInput);
         }
 
-        if(startedAttack && Vector2.Distance(mouseStart, mouseEnd) > 10)
+        if(startedAttack)
         {
-            controller.PrepareAttack(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
+            mouseEnd = Mouse.current.position.ReadValue();
+
+            if(Vector2.Distance(mouseStart, mouseEnd) > 10)
+            {
+                controller.PrepareAttackUpdate(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
+            }
+        }
+        else if(startedBlock)
+        {
+            mouseEnd = Mouse.current.position.ReadValue();
+
+            if (Vector2.Distance(mouseStart, mouseEnd) > 10)
+            {
+                controller.HoldBlockUpdate(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
+            }
         }
     }
 
@@ -139,9 +153,13 @@ public class PlayerController : MonoBehaviour
             mouseStart = Mouse.current.position.ReadValue();
             startedAttack = true;
             GameManagerSO.Instance.LockCamera(true);
+
+            controller.PrepareAttack(true);
         }
         if (context.canceled && startedAttack)
         {
+            controller.PrepareAttack(false);
+
             mouseEnd = Mouse.current.position.ReadValue();
             startedAttack = false;
             if (Vector2.Distance(mouseStart, mouseEnd) > 10)
@@ -160,14 +178,20 @@ public class PlayerController : MonoBehaviour
             mouseStart = Mouse.current.position.ReadValue();
             startedBlock = true;
             GameManagerSO.Instance.LockCamera(true);
+
+            controller.HoldBlock(true);
         }
         if (context.canceled && startedBlock)
         {
+            controller.HoldBlock(false);
+
             mouseEnd = Mouse.current.position.ReadValue();
             startedBlock = false;
             if (Vector2.Distance(mouseStart, mouseEnd) > 10)
             {
-                controller.Block(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
+                //parry here
+
+                //controller.Block(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
             }
             GameManagerSO.Instance.LockCamera(false);
         }

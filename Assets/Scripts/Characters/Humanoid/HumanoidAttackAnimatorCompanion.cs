@@ -71,6 +71,34 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         }
     }
 
+    #region AttackAnimations
+    private IEnumerator ChargeAttackAnimaton()
+    {
+        isInAnimation = true;
+        startTime = Time.time;
+
+        yield return new WaitUntil(ChargePart);
+
+        startTime = Time.time;
+
+        yield return new WaitUntil(HoldPart);
+
+        isInAnimation = false;
+
+        currentAnimation = StartCoroutine(AttackAnimation());
+
+
+        bool ChargePart()
+        {
+            return weaponScript.ChargeAttack(TimeFromStartOfAnimation);
+        }
+
+        bool HoldPart()
+        {
+            return weaponScript.HoldAttack(TimeFromStartOfAnimation);
+        }
+    }
+
     //WaitUntill is between UpdateAndLateUpdate
     private IEnumerator AttackAnimation()
     {
@@ -79,6 +107,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
         yield return new WaitUntil(SwingPart);
         float returnTime = TimeFromStartOfAnimation;
+        startTime = Time.time;
 
         yield return new WaitUntil(ReturnPart);
 
@@ -95,10 +124,27 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         }
     }
 
+    private IEnumerator ReturnAfterHitAnimation()
+    {
+        isInAnimation = true;
+        float returnTime = TimeFromStartOfAnimation;
+        startTime = Time.time;
+
+        yield return new WaitUntil(ReturnPart);
+
+        isInAnimation = false;
+
+
+        bool ReturnPart()
+        {
+            return weaponScript.ReturnAttack(TimeFromStartOfAnimation, returnTime);
+        }
+    }
+
     private IEnumerator RecoilAnimation()
     {
         isInAnimation = true;
-        float cutoffTime = TimeFromStartOfAnimation;
+        float previousAnimationTime = TimeFromStartOfAnimation;
         startTime = Time.time;
 
         yield return new WaitUntil(RecoilPart);
@@ -111,7 +157,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
         bool RecoilPart()
         {
-            return weaponScript.RecoilAttack(TimeFromStartOfAnimation, cutoffTime);
+            return weaponScript.RecoilAttack(TimeFromStartOfAnimation, previousAnimationTime);
         }
 
         bool ReturnPart()
@@ -119,23 +165,68 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
             return weaponScript.ReturnAttack(TimeFromStartOfAnimation, returnTime);
         }
     }
+    #endregion
+
+    #region BlockAnimations
+
+    private IEnumerator ChargeBlockAnimaton()
+    {
+        isInAnimation = true;
+        startTime = Time.time;
+
+        yield return new WaitUntil(ChargePart);
+
+        startTime = Time.time;
+
+        weaponScript.SetBlockActive(true);
+
+        yield return new WaitUntil(HoldPart);
+
+        weaponScript.SetBlockActive(false);
+
+        isInAnimation = false;
+
+        currentAnimation = StartCoroutine(ReturnBlockAnimation());
+
+
+        bool ChargePart()
+        {
+            return weaponScript.ChargeBlock(TimeFromStartOfAnimation);
+        }
+
+        bool HoldPart()
+        {
+            return weaponScript.HoldBlock(TimeFromStartOfAnimation);
+        }
+
+
+    }
+
+    //WaitUntill is between UpdateAndLateUpdate
+    private IEnumerator ReturnBlockAnimation()
+    {
+        isInAnimation = true;
+        startTime = Time.time;
+
+        yield return new WaitUntil(ReturnPart);
+
+        isInAnimation = false;
+
+        bool ReturnPart()
+        {
+            return weaponScript.ReturnBlock(TimeFromStartOfAnimation);
+        }
+    }
+
+    #endregion
 
     private void Update()
     {
         if (hasWeapon)
         {
-            if (attacking)
-            {
-                HandleAttack();
-            }
-            else if (blocking)
+            if (blocking)
             {
                 HandleBlock();
-            }
-            else
-            {
-                swordArm.data.targetPositionWeight = 0;
-                swordArm.data.targetRotationWeight = 0;
             }
         }
 
@@ -189,7 +280,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
                     }
                     break;
                 case BlockState.Block:
-                    if (weaponScript.Block(TimeFromStartOfAnimation))
+                    if (weaponScript.HoldBlock(TimeFromStartOfAnimation))
                     {
                         ChangeBlockState(BlockState.Return);
                     }
@@ -204,44 +295,109 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         }
     }
 
-    public void PrepareAttack(float angle)
+    #region AttackInput
+
+    //not sure what this is
+    //public void PrepareAttack(float angle)
+    //{
+    //    if (hasWeapon && !attacking && !blocking)
+    //    {
+    //        weaponScript.Angle = angle;
+    //    }
+    //}
+
+    public void HoldAttackUpdate(float angle)
     {
-        if (hasWeapon && !attacking && !blocking)
+        if (hasWeapon && !isInAnimation)
         {
             weaponScript.Angle = angle;
+
+            weaponScript.HoldAttack(0f, 0.2f);
+        }
+    }
+
+    public void HoldAttack(bool start)
+    {
+        if (hasWeapon && !isInAnimation && ! start)
+        {
+            swordArm.data.targetPositionWeight = 0;
+            swordArm.data.targetRotationWeight = 0;
         }
     }
 
     public void Attack(float angle)
     {
-        if (hasWeapon)
+        if (hasWeapon && !isInAnimation)
         {
-            if (!isInAnimation)
+            weaponScript.Angle = angle;
+            currentAnimation = StartCoroutine(AttackAnimation());
+        }
+    }
+
+    public void AttackWithChargeupp(float angle)
+    {
+        if (hasWeapon && !isInAnimation)
+        {
+            weaponScript.Angle = angle;
+            currentAnimation = StartCoroutine(ChargeAttackAnimaton());
+        }
+    }
+
+    #endregion
+
+    #region BlockInput
+
+    public void HoldBlock(bool start)
+    {
+        if (hasWeapon && !isInAnimation)
+        {
+            if(start)
             {
-                weaponScript.Angle = angle;
-                currentAnimation = StartCoroutine(AttackAnimation());
+                weaponScript.SetBlockActive(true);
+            }
+            else
+            {
+                swordArm.data.targetPositionWeight = 0;
+                swordArm.data.targetRotationWeight = 0;
+
+                weaponScript.SetBlockActive(false);
             }
         }
     }
-    
-    public void Block(float angle)
+
+    public void HoldBlockUpdate(float angle)
     {
-        if (hasWeapon)
+        if (hasWeapon && !isInAnimation)
         {
-            if (!attacking && !blocking)
+            weaponScript.Angle = angle;
+
+            weaponScript.HoldBlock(0f);
+            Vector3 anglePos = new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), -Mathf.Cos(angle * Mathf.Deg2Rad), 0);
+            Vector3 offsetPos = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0);
+            if (angle > 0)
             {
-                ChangeBlockState(BlockState.Charge);
-                blocking = true;
-                weaponScript.Angle = angle;
-                Vector3 anglePos = new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), -Mathf.Cos(angle * Mathf.Deg2Rad), 0);
-                Vector3 offsetPos = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0);
-                if (angle > 0)
-                {
-                    offsetPos = -offsetPos;
-                }
-                weaponScript.BlockPos = anglePos;
-                weaponScript.BlockOffset = offsetPos;
+                offsetPos = -offsetPos;
             }
+            weaponScript.BlockPos = anglePos;
+            weaponScript.BlockOffset = offsetPos;
+        }
+    }
+
+    public void BlockWithChargeup(float angle)
+    {
+        if (hasWeapon && !isInAnimation)
+        {
+            currentAnimation = StartCoroutine(ChargeBlockAnimaton());
+            blocking = true;
+            weaponScript.Angle = angle;
+            Vector3 anglePos = new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), -Mathf.Cos(angle * Mathf.Deg2Rad), 0);
+            Vector3 offsetPos = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0);
+            if (angle > 0)
+            {
+                offsetPos = -offsetPos;
+            }
+            weaponScript.BlockPos = anglePos;
+            weaponScript.BlockOffset = offsetPos;
         }
     }
 
@@ -255,18 +411,27 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         {
             weaponScript.SetDamageActive(false);
         }
-        
+
         attackState = newState;
         onAttackStateChange.Invoke(attackState);
         startTime = Time.time;
     }
-    
+
     private void ChangeBlockState(BlockState newState)
     {
         blockState = newState;
         weaponScript.SetBlockActive(blockState == BlockState.Block);
         onBlockStateChange.Invoke(blockState);
         startTime = Time.time;
+    }
+
+
+    #endregion
+
+    public void OnHitFlesh()
+    {
+        StopCoroutine(currentAnimation);
+        currentAnimation = StartCoroutine(ReturnAfterHitAnimation());
     }
 
     public void OnGetBlocked()
