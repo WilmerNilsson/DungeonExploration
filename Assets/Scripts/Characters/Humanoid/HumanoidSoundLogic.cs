@@ -23,14 +23,10 @@ public class HumanoidSoundLogic : MonoBehaviour
     [SerializeField] private FootstepPaths footstepPaths;
     [SerializeField] private string crouchPath;
     [SerializeField] private string jumpPath;
+    [SerializeField] private float minDistanceForLandSound;
     [SerializeField] private string landPath;
     private string _currentFootstepSound;
     [SerializeField] private string hungerPath;
-    
-    [Header("Weapons")]
-    [SerializeField] private GameObject weaponObject;
-    [SerializeField] private string swingPath;
-    [SerializeField] private string blockPath;
    
     [Header("Damage & Death")]
     [SerializeField] private string damagePath;
@@ -54,14 +50,6 @@ public class HumanoidSoundLogic : MonoBehaviour
     }
 #endif
     
-    public void HandleAttackStateChange(HumanoidAttackAnimatorCompanion.AttackState newState)
-    {
-        if (AudioManager.IsValid && newState == HumanoidAttackAnimatorCompanion.AttackState.Swing)
-        {
-            AudioManager.Instance.PlayOneShot(swingPath, null, null, weaponObject, true);
-        }
-    }
-
     //since we want to keep the footsteps between states we kinda do not need to use a coroutine
     //may change if we reset it on none/airborne
     //but like i comented above, this will prob be a script we remove later,
@@ -88,15 +76,6 @@ public class HumanoidSoundLogic : MonoBehaviour
             {
                 AudioManager.Instance.PlayOneShot(_currentFootstepSound, null, null, gameObject);
             }
-        }
-    }
-
-    public void PlayFootstepSound(string path)
-    {
-        if (path is "" or null) return;
-        if (AudioManager.IsValid)
-        {
-            AudioManager.Instance.PlayOneShot(path, null, null, gameObject);
         }
     }
 
@@ -141,14 +120,17 @@ public class HumanoidSoundLogic : MonoBehaviour
                 _currentFootstepSound = footstepPaths.walk;
                 break;
         }
-
-        if (_lastMoveAction == HumanoidMovement.moveActions.Airborne &&
-            actions != HumanoidMovement.moveActions.Airborne)
-        {
-            PlayLandSound();
-        }
         
         _lastMoveAction = actions;
+    }
+
+    public void OnLand(float fallDistance)
+    {
+        if (!AudioManager.IsValid) return;
+        if (fallDistance > minDistanceForLandSound)
+        {
+            AudioManager.Instance.PlayOneShot(landPath, null, null, gameObject);
+        }
     }
     
     public void OnHealthChange(HealthData healthData)
@@ -162,18 +144,9 @@ public class HumanoidSoundLogic : MonoBehaviour
     {
         if (!AudioManager.IsValid) return;
         AudioManager.Instance.SetGlobalParameter("Hunger", hungerRatio);
-        AudioManager.Instance.PlayOneShot(hungerPath, null, null, weaponObject);
+        AudioManager.Instance.PlayOneShot(hungerPath);
     }
-
-    public void PlayBlockSound()
-    {
-        if (blockPath is "" or null) return;
-        if (AudioManager.IsValid)
-        {
-            AudioManager.Instance.PlayOneShot(blockPath, null, null, weaponObject);
-        }
-    }
-
+    
     public void PlayCrouchSound()
     {
         if (crouchPath is "" or null) return;
@@ -190,19 +163,5 @@ public class HumanoidSoundLogic : MonoBehaviour
         {
             AudioManager.Instance.PlayOneShot(jumpPath, null, null, gameObject);
         }
-    }
-
-    public void PlayLandSound()
-    {
-        if (landPath is "" or null) return;
-        if (AudioManager.IsValid)
-        {
-            AudioManager.Instance.PlayOneShot(landPath, null, null, gameObject);
-        }
-    }
-
-    public void PlayParrySound()
-    {
-
     }
 }
