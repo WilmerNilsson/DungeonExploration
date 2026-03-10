@@ -21,8 +21,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private bool lockedMovement = false;
     [SerializeField]private bool lockedCamera = false;
     
-    [SerializeField]bool startedAttack = false;
-    [SerializeField]bool startedBlock = false;
+    private bool startedAttack = false;
+    private bool startedBlock = false;
 
     private Vector2 mouseStart;
     private Vector2 mouseEnd;
