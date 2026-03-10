@@ -965,7 +965,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2427
+  m_VersionIndex: 2454
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1064,6 +1064,7 @@ GameObject:
   - component: {fileID: 7929286171431266012}
   - component: {fileID: 2291378432833029802}
   - component: {fileID: 5497589009060417290}
+  - component: {fileID: 3273365505105759412}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -1151,6 +1152,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nonRigidbodyVelocity: 0
   attenuationObject: {fileID: 0}
+--- !u!114 &3273365505105759412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271289363439776972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dd12ee0fd2735a4a9c981f175014369, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxShakeTime: 0.5
+  decreaseFactor: 1
+  shakeMod: 200
 --- !u!1 &822202894608450755
 GameObject:
   m_ObjectHideFlags: 0
@@ -1328,13 +1344,28 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnLand:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1354050652585229241}
+        m_TargetAssemblyTypeName: Health, GameAssembly
+        m_MethodName: FallingDamage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   controller: {fileID: 460348200128992605}
   CC: {fileID: 653897519548769769}
   animator: {fileID: 1898977592610029881}
   moveSpeed: 3.5
   sprintSpeed: 6
   crouchSpeed: 2
-  airMoveMod: 1.4
+  airMoveMod: 0.75
   jumpHeight: 0.9
   doJump: 0
   grounded: 0
@@ -1433,6 +1464,8 @@ MonoBehaviour:
   playerHealth: {fileID: 11400000, guid: 8d1752d3d4465884c80e0304113f59c8, type: 2}
   _currentHealth: 0
   _maxHealth: 1
+  minimumFallDamageHeight: 3
+  fallDamageMultiplier: 1
   DurabilityDamage: 0
   OnChangeHealths:
     m_PersistentCalls:
@@ -1456,6 +1489,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
         m_MethodName: PlayDamageSound
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3273365505105759412}
+        m_TargetAssemblyTypeName: ScreenShake, GameAssembly
+        m_MethodName: ShakeScreen
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
