@@ -140,16 +140,19 @@ public class HumanoidMovement : MonoBehaviour
 
     public void Crouch(bool isCrouching)
     {
-        Vector3 heightMod = new Vector3(0, 0.5f, 0);
         if (isCrouching && grounded)
         {
             CC.height = 1.5f;
-            //bodyTransform.position -= heightMod;
+            CC.center = new Vector3(0, 2.25f, 0);
         }
-        else if (!Physics.Raycast(transform.position, Vector3.up, out RaycastHit hit, 0.1f))
+        else if (!Physics.Raycast(transform.position, Vector3.up, 0.1f, LayerMask.GetMask("Ground", "Walls", "Roof")))
         {
-            //bodyTransform.position += heightMod;
-            CC.height = 3;
+            CC.center = new Vector3(0, 1.5f, 0);
+            CC.height = 3f;
+            if (Physics.Raycast(transform.position + CC.center, Vector3.down, 1f, LayerMask.GetMask("Ground", "Walls", "Roof")))
+            {
+                CC.Move(new Vector3(0, 1, 0));
+            }
         }
     }
 }
