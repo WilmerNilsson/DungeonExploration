@@ -9,7 +9,7 @@ public class NewDialogueChoiceHandler : MonoBehaviour
     }
 
     [SerializeField] private List<DialogueSelectButton> selectButtons = new List<DialogueSelectButton>();
-    private void HandleDialogue()
+    public void HandleDialogue()
     {
         if (!NewDialogueManager.GetInstance())
         {
@@ -37,7 +37,9 @@ public class NewDialogueChoiceHandler : MonoBehaviour
 
     private void FindDialogue(DialogueContainer dialogueContainer, List<DialogueNodeData> dialogueNodeDatas, DialogueNodeData dialogueNodeData)
     {
-        if (dialogueNodeData.HasBeenRead || !dialogueNodeData.DialogueAsset || dialogueNodeData.IsGreeting)
+        int runCount = NewDialogueManager.GetInstance().RunCount;
+        if (dialogueNodeData.HasBeenRead || !dialogueNodeData.DialogueAsset || dialogueNodeData.IsGreeting || 
+            dialogueNodeData.FriendshipRange.x > dialogueContainer.FriendshipLevel || dialogueNodeData.FriendshipRange.y < dialogueContainer.FriendshipLevel)
         {
             return;
         }
@@ -46,8 +48,10 @@ public class NewDialogueChoiceHandler : MonoBehaviour
         bool parentsRead = true;
         for (int i = 0; i < links.Count && parentsRead; i++)
         {
+            DialogueNodeData parentData = dialogueContainer.DialogueNodeDatas.Find(x => x.Guid == links[i].BaseNodeGuid);
             //Check if parent is read
-            parentsRead = dialogueContainer.DialogueNodeDatas.Find(x => x.Guid == links[i].BaseNodeGuid).HasBeenRead;
+            parentsRead = parentData.HasBeenRead && parentData.ReadRun + dialogueNodeData.RunWaitAmount <= runCount;
+            //parentsRead = dialogueContainer.DialogueNodeDatas.Find(x => x.Guid == links[i].BaseNodeGuid).HasBeenRead;
         }
 
         if (parentsRead)

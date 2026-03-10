@@ -10,6 +10,10 @@ using UnityEngine.UIElements;
 
 public class DialogueGraphView : GraphView
 {
+    public enum DialogueType
+    {
+        DIALOGUE, GREETING, BUY, SELL
+    }
     public readonly Vector2 DefaultNodeSize = new Vector2(150, 200);
 
     public Blackboard Blackboard;
@@ -160,6 +164,14 @@ public class DialogueGraphView : GraphView
         });
         greetingField.SetValueWithoutNotify(dialogueNode.IsGreeting);
         dialogueNode.mainContainer.Add(greetingField);
+        
+        var enumField = new EnumField("Dialogue type", DialogueType.DIALOGUE);
+        enumField.RegisterValueChangedCallback(evt =>
+        {
+            //dialogueNode.IsGreeting = evt.newValue;
+        });
+        //enumField.SetValueWithoutNotify(dialogueNode.IsGreeting);
+        dialogueNode.mainContainer.Add(enumField);
         
         var onlyOnceField = new Toggle("Read only once");
         onlyOnceField.RegisterValueChangedCallback(evt =>
