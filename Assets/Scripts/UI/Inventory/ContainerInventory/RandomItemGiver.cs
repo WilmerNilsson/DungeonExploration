@@ -34,17 +34,13 @@ public class RandomItemGiver : MonoBehaviour
         int totalWeight = 0;
         for (int i = 0; i < currentPool.items.Count; i++)
         {
-            Debug.Log("add weight");
             totalWeight += currentPool.items[i].weight;
         }
-        Debug.Log(totalWeight);
         
         int itemAmount = Random.Range(lootAmountRange.x, lootAmountRange.y);
-        Debug.Log(itemAmount);
         for (int i = 0; i < itemAmount; i++)
         {
             int randomIndex = Random.Range(1, totalWeight + 1);
-            Debug.Log(randomIndex);
             int currentWeight = 0;
 
             for (int j = 0; currentWeight <= totalWeight; j++)
@@ -53,7 +49,6 @@ public class RandomItemGiver : MonoBehaviour
                 {
                     if (currentPool.items[j].UIPrefab != null)
                     {
-                        Debug.Log("true");
                         inventoryGrid.TryInsertItem(currentPool.items[j].UIPrefab, true);
                     }
                     break;
