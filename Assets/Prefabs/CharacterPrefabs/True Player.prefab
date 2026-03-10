@@ -1328,6 +1328,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnLand:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1354050652585229241}
+        m_TargetAssemblyTypeName: Health, GameAssembly
+        m_MethodName: FallingDamage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   controller: {fileID: 460348200128992605}
   CC: {fileID: 653897519548769769}
   animator: {fileID: 1898977592610029881}
@@ -1433,6 +1448,8 @@ MonoBehaviour:
   playerHealth: {fileID: 11400000, guid: 8d1752d3d4465884c80e0304113f59c8, type: 2}
   _currentHealth: 0
   _maxHealth: 1
+  minimumFallDamageHeight: 0
+  fallDamageMultiplier: 0
   DurabilityDamage: 0
   OnChangeHealths:
     m_PersistentCalls:
@@ -1870,7 +1887,19 @@ MonoBehaviour:
   playerSanitySO: {fileID: 11400000, guid: 5c9490a2940ba974e80dc37a66354202, type: 2}
   OnLoseSanity:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8992074457306076680}
+        m_TargetAssemblyTypeName: SanitySoundLogic, GameAssembly
+        m_MethodName: OnLoseSanity
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnGainSanity:
     m_PersistentCalls:
       m_Calls: []
@@ -2156,6 +2185,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d931ca1dd1838a4bb460879b3218922, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8992074457306076680 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5987268280381358258, guid: d73e9fa7ae2f59747b5cb6986f5a040d, type: 3}
+  m_PrefabInstance: {fileID: 3448992968739903162}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95a05a4808bd8074c803b152ac12cb6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &4561574992140784756
