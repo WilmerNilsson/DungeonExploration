@@ -163,8 +163,8 @@ public class HumanoidMovement : MonoBehaviour
     {
         if (isCrouching && grounded)
         {
-            CC.height = 1.5f;
-            CC.center = new Vector3(0, 2.25f, 0);
+            CC.height = 2f;
+            CC.center = new Vector3(0, 2f, 0);
         }
         else if (!Physics.Raycast(transform.position, Vector3.up, 0.1f, LayerMask.GetMask("Ground", "Walls", "Roof")))
         {
