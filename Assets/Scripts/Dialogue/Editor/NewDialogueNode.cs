@@ -20,8 +20,6 @@ public class NewDialogueNode : Node
 
     public bool ReadOnlyOnce;
     
-    public string Flag;
-
     public Vector2Int FriendshipRange;
 
     public int ReadRun;
