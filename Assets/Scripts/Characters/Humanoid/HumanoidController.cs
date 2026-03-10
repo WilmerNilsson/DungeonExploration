@@ -52,31 +52,57 @@ public class HumanoidController : MonoBehaviour
         interact.Interact();
     }
 
+    /// <summary>
+    /// should be used by player
+    /// </summary>
     public void PrepareAttackUpdate(float angle)
     {
         animateAttack.HoldAttackUpdate(angle);
     }
 
+    /// <summary>
+    /// should be used by player
+    /// </summary>
     public void PrepareAttack(bool start)
     {
         animateAttack.HoldAttack(start);
     }
 
+    /// <summary>
+    /// should be used by player
+    /// </summary>
     public void Attack(float angle)
     {
         animateAttack.Attack(angle);
     }
+
+    /// <summary>
+    /// should be used by enemy
+    /// </summary>
+    public void AttackWithCharge(float angle)
+    {
+        animateAttack.AttackWithChargeupp(angle);
+    }
     
+    /// <summary>
+    /// should be used by player
+    /// </summary>
     public void HoldBlock(bool start)
     {
         animateAttack.HoldBlock(start);
     }
 
+    /// <summary>
+    /// should be used by player
+    /// </summary>
     public void HoldBlockUpdate(float angle)
     {
         animateAttack.HoldBlockUpdate(angle);
     }
 
+    /// <summary>
+    /// should be used by enemy
+    /// </summary>
     public void BlockWithCharge(float angle)
     {
         animateAttack.BlockWithChargeup(angle);
