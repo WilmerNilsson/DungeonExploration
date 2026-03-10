@@ -9,10 +9,6 @@ using STOP_MODE = FMOD.Studio.STOP_MODE;
 public class AudioManager : MonoBehaviour
 {
     #region Initialization
-
-    public OcclusionChecker occlusionChecker = new();
-    
-    public WallChecker wallChecker = new();
     
     public static AudioManager Instance;
     
@@ -399,13 +395,13 @@ public class AudioManager : MonoBehaviour
         SetPause(paused);
     }
 
-    private void FixedUpdate()
-    {
-        foreach (var eventList in eventLists)
-        {
-            eventList.CheckOcclusions();
-        }
-    }
+    // private void FixedUpdate()
+    // {
+    //     foreach (var eventList in eventLists)
+    //     {
+    //         eventList.CheckOcclusions();
+    //     }
+    // }
 
     #endregion
 
