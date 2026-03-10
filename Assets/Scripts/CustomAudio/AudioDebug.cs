@@ -29,6 +29,7 @@ public class AudioDebug : MonoBehaviour
         }
     }
 
+    public bool executeInUpdate;
     public string path;
     public Procedures procedure;
     public string text;
@@ -205,6 +206,14 @@ public class AudioDebug : MonoBehaviour
                 return;
             default:
                 throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    private void Update()
+    {
+        if (executeInUpdate)
+        {
+            Execute();
         }
     }
 }
