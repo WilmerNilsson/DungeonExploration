@@ -1,4 +1,4 @@
-#define DebugAttacks //for debugging enemy attacks
+//#define DebugAttacks //for debugging enemy attacks
 
 using System;
 using UnityEngine;
