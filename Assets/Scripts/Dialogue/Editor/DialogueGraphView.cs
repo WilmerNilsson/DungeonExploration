@@ -10,6 +10,10 @@ using UnityEngine.UIElements;
 
 public class DialogueGraphView : GraphView
 {
+    public enum DialogueType
+    {
+        DIALOGUE, GREETING, BUY, SELL
+    }
     public readonly Vector2 DefaultNodeSize = new Vector2(150, 200);
 
     public Blackboard Blackboard;
@@ -86,13 +90,13 @@ public class DialogueGraphView : GraphView
         return node;
     }*/
 
-    public void CreateNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, bool isGreeting, bool onlyOnce, string flag, Vector2Int friendRange, int readDuring, int unlockWait)
+    public void CreateNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, bool isGreeting, bool onlyOnce, Vector2Int friendRange, int readDuring, int unlockWait)
     {
-        AddElement(CreateDialogueNode(nodeName, buttonText, position, textAsset,  hasBeenRead, isGreeting, onlyOnce, flag, friendRange, readDuring, unlockWait));
+        AddElement(CreateDialogueNode(nodeName, buttonText, position, textAsset,  hasBeenRead, isGreeting, onlyOnce, friendRange, readDuring, unlockWait));
     }
     
     
-    public NewDialogueNode CreateDialogueNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, bool isGreeting, bool onlyOnce, string flag, Vector2Int friendRange, int readDuring, int unlockWait)
+    public NewDialogueNode CreateDialogueNode(string nodeName, string buttonText, Vector2 position, TextAsset textAsset, bool hasBeenRead, bool isGreeting, bool onlyOnce, Vector2Int friendRange, int readDuring, int unlockWait)
     {
         var dialogueNode = new NewDialogueNode
         {
@@ -104,7 +108,6 @@ public class DialogueGraphView : GraphView
             HasBeenRead = hasBeenRead,
             IsGreeting = isGreeting,
             ReadOnlyOnce = onlyOnce,
-            Flag = flag,
             FriendshipRange = friendRange,
             ReadRun = readDuring,
             RunWaitAmount = unlockWait
@@ -161,6 +164,14 @@ public class DialogueGraphView : GraphView
         greetingField.SetValueWithoutNotify(dialogueNode.IsGreeting);
         dialogueNode.mainContainer.Add(greetingField);
         
+        var enumField = new EnumField("Dialogue type", DialogueType.DIALOGUE);
+        enumField.RegisterValueChangedCallback(evt =>
+        {
+            //dialogueNode.IsGreeting = evt.newValue;
+        });
+        //enumField.SetValueWithoutNotify(dialogueNode.IsGreeting);
+        dialogueNode.mainContainer.Add(enumField);
+        
         var onlyOnceField = new Toggle("Read only once");
         onlyOnceField.RegisterValueChangedCallback(evt =>
         {
@@ -176,14 +187,6 @@ public class DialogueGraphView : GraphView
         });
         friendField.SetValueWithoutNotify(dialogueNode.FriendshipRange);
         dialogueNode.mainContainer.Add(friendField);
-        
-        var flagField = new TextField("Flags");
-        flagField.RegisterValueChangedCallback(evt =>
-        {
-            dialogueNode.Flag = evt.newValue;
-        });
-        flagField.SetValueWithoutNotify(dialogueNode.Flag);
-        dialogueNode.mainContainer.Add(flagField);
         
         var readRunField = new IntegerField("Run this was read during");
         readRunField.RegisterValueChangedCallback(evt =>

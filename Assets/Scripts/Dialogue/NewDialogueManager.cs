@@ -343,7 +343,8 @@ public class NewDialogueManager : MonoBehaviour
     private void FindGreeting(DialogueContainer dialogueContainer, List<DialogueNodeData> dialogueNodeDatas, DialogueNodeData dialogueNodeData)
     {
         //Check if is valid greeting
-        if ((dialogueNodeData.HasBeenRead && dialogueNodeData.ReadOnlyOnce) || !dialogueNodeData.DialogueAsset || !dialogueNodeData.IsGreeting)
+        if ((dialogueNodeData.HasBeenRead && dialogueNodeData.ReadOnlyOnce) || !dialogueNodeData.DialogueAsset || !dialogueNodeData.IsGreeting ||
+            dialogueNodeData.FriendshipRange.x > dialogueContainer.FriendshipLevel || dialogueNodeData.FriendshipRange.y < dialogueContainer.FriendshipLevel)
         {
             return;
         }

@@ -10,6 +10,8 @@ public class Health : MonoBehaviour
     private PlayerHealthSO playerHealth;
     [SerializeField] private int _currentHealth;
     [SerializeField, Min(1)] private int _maxHealth = 1;
+    [SerializeField, Min(1)] private float minimumFallDamageHeight;
+    [SerializeField, Min(1), Tooltip("how much to multiply the fall distance with")] private float fallDamageMultiplier;
     [SerializeField, Min(0)] public int DurabilityDamage;
     private bool selfInitialize = true;
     public static Health PlayerHealthInstance { get; private set;  }
@@ -174,6 +176,13 @@ public class Health : MonoBehaviour
         ChangeHealth(-amount);
 
         return true;
+    }
+
+    public void FallingDamage(float amount)
+    {
+        if (amount <= minimumFallDamageHeight) return;
+        
+        TakeDamage(Mathf.RoundToInt((amount - minimumFallDamageHeight) * fallDamageMultiplier));
     }
     private void Die()
     {

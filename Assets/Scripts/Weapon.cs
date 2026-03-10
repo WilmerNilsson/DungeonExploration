@@ -256,6 +256,7 @@ public class Weapon : MonoBehaviour
                             else
                             {
                                 onParry.Invoke();
+                                Companion.OnGetBlocked();
                             }
                             break;
                         }
