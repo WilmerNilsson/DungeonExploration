@@ -27,7 +27,6 @@ public class HumanoidSoundLogic : MonoBehaviour
     [SerializeField] private float minDistanceForLandSound;
     [SerializeField] private string landPath;
     private string _currentFootstepSound;
-    [SerializeField] private string hungerPath;
    
     [Header("Damage & Death")]
     [SerializeField] private string damagePath;
@@ -144,13 +143,6 @@ public class HumanoidSoundLogic : MonoBehaviour
         if (!AudioManager.IsValid) return;
         AudioManager.Instance.SetGlobalParameter("HP", healthData.CurrentHealth);
         AudioManager.Instance.SetGlobalParameter("hpRatio", (float)healthData.CurrentHealth / healthData.MaxHealth);
-    }
-
-    public void OnHungerChange(float hungerRatio)
-    {
-        if (!AudioManager.IsValid) return;
-        AudioManager.Instance.SetGlobalParameter("Hunger", hungerRatio);
-        AudioManager.Instance.PlayOneShot(hungerPath);
     }
     
     public void PlayCrouchSound()
