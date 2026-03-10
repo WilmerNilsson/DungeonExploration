@@ -16,6 +16,14 @@ public class NewDialogueNode : Node
     
     public bool HasBeenRead;
 
+    public bool IsGreeting;
+
+    public bool ReadOnlyOnce;
+    
+    public string Flag;
+
+    public Vector2Int FriendshipRange;
+
     public int ReadRun;
 
     public int RunWaitAmount;

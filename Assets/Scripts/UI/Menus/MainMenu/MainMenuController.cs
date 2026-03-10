@@ -5,26 +5,15 @@ using UnityEngine;
 
 public class MainMenuController : MonoBehaviour, IUIController
 {
-    [SerializeField] GameObject warningWindowForChangingScreen;
-    GameObject nonTitleScreen;
-    GameObject currentScreen;
+    [SerializeField] private GameObject warningWindowForChangingScreen;
+    [SerializeField] private GameObject nonTitleScreen;
+#nullable enable
+    private GameObject? currentScreen;
 
-    bool useWarningScreen = false;
-    GameObject heldWarningScreen;
+    private bool useWarningScreen = false;
+    private GameObject? heldWarningScreen;
 
-    GameManagerSO gameManager;
-
-    public event Action OnChangeScreenAction;
-
-    private void Awake()
-    {
-        nonTitleScreen = transform.GetChild(2).gameObject;
-    }
-
-    private void Start()
-    {
-        gameManager = GameManagerSO.Instance;
-    }
+    public event Action? OnChangeScreenAction;
 
     public void WarningWindowAnswer(bool answer)
     {
@@ -32,8 +21,8 @@ public class MainMenuController : MonoBehaviour, IUIController
 
         if(answer)
         {
-            currentScreen.SetActive(false);
-            heldWarningScreen.SetActive(true);
+            currentScreen?.SetActive(false);
+            heldWarningScreen?.SetActive(true);
 
             currentScreen = heldWarningScreen;
             if(OnChangeScreenAction != null)
@@ -45,13 +34,13 @@ public class MainMenuController : MonoBehaviour, IUIController
 
     public void ExitToDesktop()
     {
-        gameManager.SavefileManager.SaveSettings();
+        GameManagerSO.Instance.SavefileManager.SaveSettings();
         Application.Quit();
     }
 
     public void ToggleNonTitleScreen()
     {
-        gameManager.SavefileManager.SaveSettings();
+        GameManagerSO.Instance.SavefileManager.SaveSettings();
         nonTitleScreen.SetActive(!nonTitleScreen.activeSelf);
     }
 

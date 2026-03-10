@@ -8,6 +8,8 @@ public class SaveFileHelperPlayer : MonoBehaviour
     [SerializeField] private ItemLibrarySO itemLibrary;
     [SerializeField] private Hunger hunger;
     [SerializeField] private Sanity sanity;
+    [SerializeField] private int runCount;
+    [SerializeField] private string startingWeaponID;
 
 #if DEBUG && UNITY_EDITOR
     private void OnValidate()
@@ -18,8 +20,32 @@ public class SaveFileHelperPlayer : MonoBehaviour
         if (movement == null) Debug.LogWarning("movement is null", this);
         if (hunger == null) Debug.LogWarning("hunger is null", this);
         if (sanity == null) Debug.Log("sanity is null", this);
+
+        if(startingWeaponID == null && startingWeaponID == string.Empty)
+        {
+            Debug.LogWarning("starting weapon ID is null", this);
+        }
+        else if (itemLibrary != null)
+        {
+            if(!itemLibrary.TryGetItemPairByName(startingWeaponID, out _))
+            {
+                Debug.LogWarning($"no item by name {startingWeaponID} found", this);
+            }
+        }
     }
 #endif
+
+    public void InitializeNew()
+    {
+        if(itemLibrary.TryGetItemPairByName(startingWeaponID, out ItemPairing pair))
+        {
+            InvMasterBase.Instance.EquipmentGrid.TryInsertItem(pair.UIPrefab.GetComponent<SimpleItem>(), true);
+        }
+        else
+        {
+            Debug.LogWarning("could not find starting weapon id", this);
+        }
+    }
 
     public void Initialize(PlayerSaveData data)
     {
@@ -45,6 +71,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
 
             hunger.Initialize(data.Hunger);
             sanity.Initialize(data.Sanity);
+            runCount = data.RunCount;
 
             SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Inventory, InvMasterBase.Instance.PlayerInventory);
             SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Equipment, InvMasterBase.Instance.EquipmentGrid);
@@ -55,6 +82,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
             //health starts at max
             //hunger starts at max
             //sanity starts at max
+            runCount = data.RunCount;
 
             SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Inventory, InvMasterBase.Instance.PlayerInventory);
             SaveFileHelperContainer.PopulateInventory(itemLibrary, data.Equipment, InvMasterBase.Instance.EquipmentGrid);
@@ -71,7 +99,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
         int hungerInt = hunger.GetHungerValue();
         int sanityInt = sanity.GetSanityValue();
 
-        PlayerSaveData data = new(inventory, equipment, pos, rot, currentHP, sanityInt, hungerInt);
+        PlayerSaveData data = new(inventory, equipment, pos, rot, currentHP, sanityInt, hungerInt, runCount);
         return data;
     }
 }

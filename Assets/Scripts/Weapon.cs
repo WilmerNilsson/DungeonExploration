@@ -181,9 +181,9 @@ public class Weapon : MonoBehaviour
                 dealDamage = false;
                 if (other.TryGetComponent(out Health health))
                 {
-                    OnDamage?.Invoke();
                     health.TakeDamage(damage);
                     LoseDurability(health.DurabilityDamage);
+                    OnDamage?.Invoke();
                     Debug.Log($"The target {other.gameObject.name} health is " + health.CurrentHealth);
                 }
                 else if (other.gameObject.CompareTag("Flesh")) // Potential fix for ragdoll 
@@ -191,9 +191,9 @@ public class Weapon : MonoBehaviour
                     health = other.gameObject.GetComponentInParent<Health>();
                     if (health != null)
                     {
-                        OnDamage?.Invoke();
                         health.TakeDamage(damage);
                         LoseDurability(health.DurabilityDamage);
+                        OnDamage?.Invoke();
                         Debug.Log($"The target {other.gameObject.name} health is " + health.CurrentHealth);
                     }
                     else
@@ -224,6 +224,7 @@ public class Weapon : MonoBehaviour
                             else
                             {
                                 onParry.Invoke();
+                                Companion.OnGetBlocked();
                             }
                             break;
                         }

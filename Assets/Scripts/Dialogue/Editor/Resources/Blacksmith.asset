@@ -12,16 +12,334 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c601d1eb34776d14bab4ae1bd173ef8c, type: 3}
   m_Name: Blacksmith
   m_EditorClassIdentifier: 
+  FriendshipLevel: 0
   NodeLinks:
-  - BaseNodeGuid: 0df652d2-6490-4e14-aca4-d21e074c5fc3
-    PortName: Next
-    TargetNodeGuid: 59a05d74-ec35-4f48-867b-cb791554f935
-  DialogueNodeData:
-  - Guid: 59a05d74-ec35-4f48-867b-cb791554f935
-    ButtonText: Dialogue Node
-    DialogueAsset: {fileID: 0}
+  - BaseNodeGuid: 05c672dc-307a-48e6-9881-81284ff18f01
+    PortName: Choice 2
+    TargetNodeGuid: d6005942-0f8b-4985-b034-34011d8e56bc
+  - BaseNodeGuid: 05c672dc-307a-48e6-9881-81284ff18f01
+    PortName: Choice 3
+    TargetNodeGuid: 8ef84164-089e-4577-b67a-9856a84ce662
+  - BaseNodeGuid: 05c672dc-307a-48e6-9881-81284ff18f01
+    PortName: Choice 4
+    TargetNodeGuid: 2471c5d6-cc60-4d0a-a7fb-44b304fc3148
+  - BaseNodeGuid: 4f6b8b83-0488-465c-9c99-f82f3476c84a
+    PortName: Choice 3
+    TargetNodeGuid: da1970f1-b5be-4934-9f47-6be852a57a9d
+  - BaseNodeGuid: 4f6b8b83-0488-465c-9c99-f82f3476c84a
+    PortName: Choice 1
+    TargetNodeGuid: 8afa0a39-9b2d-4ba4-a83b-21f17f074fc8
+  - BaseNodeGuid: 4f6b8b83-0488-465c-9c99-f82f3476c84a
+    PortName: Choice 2
+    TargetNodeGuid: 483f46ab-ff74-4e27-a502-9d423c39f429
+  - BaseNodeGuid: 4f6b8b83-0488-465c-9c99-f82f3476c84a
+    PortName: Choice 4
+    TargetNodeGuid: 42442c3b-0f5a-41a5-b974-af013362f955
+  - BaseNodeGuid: 4f6b8b83-0488-465c-9c99-f82f3476c84a
+    PortName: Choice 5
+    TargetNodeGuid: b02ba94a-fbee-40fe-aac7-424549521f4e
+  - BaseNodeGuid: 4f6b8b83-0488-465c-9c99-f82f3476c84a
+    PortName: Choice 6
+    TargetNodeGuid: d2a1d1d7-5563-43d1-bafd-9a3a1ba207e1
+  - BaseNodeGuid: 4f6b8b83-0488-465c-9c99-f82f3476c84a
+    PortName: Choice 7
+    TargetNodeGuid: 0a3d2a99-65b9-494f-9435-b8b9ef72ce58
+  - BaseNodeGuid: 42442c3b-0f5a-41a5-b974-af013362f955
+    PortName: Choice 1
+    TargetNodeGuid: b48f2797-71e1-44d2-ac3c-b2b489717907
+  - BaseNodeGuid: b48f2797-71e1-44d2-ac3c-b2b489717907
+    PortName: Choice 1
+    TargetNodeGuid: f757ef7d-2535-43ea-893e-d28bdfb8358c
+  - BaseNodeGuid: 44ea662b-a3df-45f1-bc7f-0a840890628e
+    PortName: Choice 1
+    TargetNodeGuid: 3b8db61c-fa76-4380-ace2-d0d3edf1f16b
+  - BaseNodeGuid: 3b8db61c-fa76-4380-ace2-d0d3edf1f16b
+    PortName: Choice 1
+    TargetNodeGuid: 92705605-f552-4ee2-9722-709da45e29ab
+  - BaseNodeGuid: e933cbf7-a737-4112-90e7-a4505c1efc39
+    PortName: Choice 1
+    TargetNodeGuid: bbf33a12-303c-4f81-81f4-e48f533a6b56
+  - BaseNodeGuid: 957b578b-b65c-43ac-b5ce-b35e76327793
+    PortName: Choice 1
+    TargetNodeGuid: 44ea662b-a3df-45f1-bc7f-0a840890628e
+  - BaseNodeGuid: a166f7be-2e7b-43f5-86be-edc85c7b9b9b
+    PortName: Choice 1
+    TargetNodeGuid: 05c672dc-307a-48e6-9881-81284ff18f01
+  - BaseNodeGuid: a166f7be-2e7b-43f5-86be-edc85c7b9b9b
+    PortName: Choice 2
+    TargetNodeGuid: 4f6b8b83-0488-465c-9c99-f82f3476c84a
+  - BaseNodeGuid: 483f46ab-ff74-4e27-a502-9d423c39f429
+    PortName: Choice 1
+    TargetNodeGuid: de7590e7-69da-4e7c-874a-a9d8cc148f7d
+  - BaseNodeGuid: 483f46ab-ff74-4e27-a502-9d423c39f429
+    PortName: Choice 2
+    TargetNodeGuid: e933cbf7-a737-4112-90e7-a4505c1efc39
+  - BaseNodeGuid: 483f46ab-ff74-4e27-a502-9d423c39f429
+    PortName: Choice 3
+    TargetNodeGuid: 957b578b-b65c-43ac-b5ce-b35e76327793
+  DialogueNodeDatas:
+  - Guid: 05c672dc-307a-48e6-9881-81284ff18f01
+    Title: SmithDialogue2
+    ButtonText: Button text
+    DialogueAsset: {fileID: 4900000, guid: c493da65ab834e74da5820de4a16bec3, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 1
+    ReadOnlyOnce: 1
+    Flag: 
+    FriendshipRange: {x: 0, y: 0}
+    Position: {x: 1043, y: 201}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: 8afa0a39-9b2d-4ba4-a83b-21f17f074fc8
+    Title: SmithQuestion1
+    ButtonText: What do you know about Agathol?
+    DialogueAsset: {fileID: 4900000, guid: b65740d592466ca4483e66145429e212, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 1, y: 1}
+    Position: {x: 1794, y: -400}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: d6005942-0f8b-4985-b034-34011d8e56bc
+    Title: SmithEnter1
+    ButtonText: Button text
+    DialogueAsset: {fileID: 4900000, guid: e7f9ef1bcfbab9a448937714d123eac3, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 1
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 0, y: 0}
+    Position: {x: 1396, y: 201}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: 8ef84164-089e-4577-b67a-9856a84ce662
+    Title: SmithEnter2
+    ButtonText: Button text
+    DialogueAsset: {fileID: 4900000, guid: 3e329d61ccb69a24ebcf39c7c8305150, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 1
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 0, y: 0}
+    Position: {x: 1396, y: 500}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: 2471c5d6-cc60-4d0a-a7fb-44b304fc3148
+    Title: SmithEnter3
+    ButtonText: Button text
+    DialogueAsset: {fileID: 4900000, guid: effbb953fff683e4e8f91896a0b448d3, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 1
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 0, y: 0}
+    Position: {x: 1396, y: 798}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: f757ef7d-2535-43ea-893e-d28bdfb8358c
+    Title: SmithDialogue6
+    ButtonText: Something troubling you?
+    DialogueAsset: {fileID: 4900000, guid: 566246c21d5a60c4c80b5cbe0327b428, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 1, y: 1}
+    Position: {x: 2450, y: 501}
+    ReadRun: 0
+    RunWaitAmount: 1
+  - Guid: 92705605-f552-4ee2-9722-709da45e29ab
+    Title: SmithDialogue7
+    ButtonText: Button text
+    DialogueAsset: {fileID: 4900000, guid: 756bda9c6213f404fa00308eb6f4335d, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 1, y: 1}
+    Position: {x: 3138, y: 200}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: b02ba94a-fbee-40fe-aac7-424549521f4e
+    Title: SmithEnter4
+    ButtonText: Button text
+    DialogueAsset: {fileID: 4900000, guid: 6bdabcd63c228394080863965d814069, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 1
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 1, y: 1}
+    Position: {x: 1794, y: 798}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: d2a1d1d7-5563-43d1-bafd-9a3a1ba207e1
+    Title: SmithEnter5
+    ButtonText: Button text
+    DialogueAsset: {fileID: 4900000, guid: e5949309a8fc51743bb3980b35aebd41, type: 3}
     HasBeenRead: 1
-    Position: {x: 306, y: 200}
+    IsGreeting: 1
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 1, y: 1}
+    Position: {x: 1794, y: 1059}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: 4f6b8b83-0488-465c-9c99-f82f3476c84a
+    Title: SmithDialogue3
+    ButtonText: 'i''ve got something for you '
+    DialogueAsset: {fileID: 4900000, guid: 76efca5fc6db25246be26a1de1ced2bf, type: 3}
+    HasBeenRead: 1
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 1, y: 1}
+    Position: {x: 1396, y: -205}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: da1970f1-b5be-4934-9f47-6be852a57a9d
+    Title: SmithQuestion3
+    ButtonText: How does you smithing work?
+    DialogueAsset: {fileID: 4900000, guid: d16848ebeaa8e9840a9f0388f16964ca, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 1, y: 1}
+    Position: {x: 1794, y: 218}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: 42442c3b-0f5a-41a5-b974-af013362f955
+    Title: SmithDialogue4
+    ButtonText: i'm back
+    DialogueAsset: {fileID: 4900000, guid: 74663f55889c96a48b7f3dcc98c56f07, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 1, y: 1}
+    Position: {x: 1794, y: 500}
+    ReadRun: 0
+    RunWaitAmount: 1
+  - Guid: 0a3d2a99-65b9-494f-9435-b8b9ef72ce58
+    Title: SmithEnter6
+    ButtonText: Button text
+    DialogueAsset: {fileID: 4900000, guid: 2c1030a9a04e7b341bc61515b3a1d246, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 1
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 1, y: 1}
+    Position: {x: 1794, y: 1321}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: b48f2797-71e1-44d2-ac3c-b2b489717907
+    Title: SmithDialogue5
+    ButtonText: Hello again
+    DialogueAsset: {fileID: 4900000, guid: 19470178c19adcc45a2d0503ae2eb488, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 1, y: 1}
+    Position: {x: 2121, y: 500}
+    ReadRun: 0
+    RunWaitAmount: 1
+  - Guid: 44ea662b-a3df-45f1-bc7f-0a840890628e
+    Title: SmithNote2
+    ButtonText: Button text
+    DialogueAsset: {fileID: 4900000, guid: e46e589fd51edef498b990a8d58f9101, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 1, y: 1}
+    Position: {x: 2515, y: 200}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: 3b8db61c-fa76-4380-ace2-d0d3edf1f16b
+    Title: ScorchedSword
+    ButtonText: Button text
+    DialogueAsset: {fileID: 0}
+    HasBeenRead: 0
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 0, y: 0}
+    Position: {x: 2802, y: 200}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: e933cbf7-a737-4112-90e7-a4505c1efc39
+    Title: Adrien Note
+    ButtonText: Button text
+    DialogueAsset: {fileID: 0}
+    HasBeenRead: 0
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 0, y: 0}
+    Position: {x: 2186, y: -101}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: bbf33a12-303c-4f81-81f4-e48f533a6b56
+    Title: SmithNote1
+    ButtonText: You might wanna look at this
+    DialogueAsset: {fileID: 4900000, guid: 66b14fd46df240744950f7d15b13297a, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 1, y: 1}
+    Position: {x: 2515, y: -102}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: de7590e7-69da-4e7c-874a-a9d8cc148f7d
+    Title: SmithQuestion4
+    ButtonText: How is your sister?
+    DialogueAsset: {fileID: 4900000, guid: 9db3a15978a5c544dbf5ff617c1d1f95, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 1, y: 1}
+    Position: {x: 2196, y: -400}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: 957b578b-b65c-43ac-b5ce-b35e76327793
+    Title: William Note
+    ButtonText: Button text
+    DialogueAsset: {fileID: 0}
+    HasBeenRead: 0
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 0, y: 0}
+    Position: {x: 2196, y: 201}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: a166f7be-2e7b-43f5-86be-edc85c7b9b9b
+    Title: SmithDialogue1
+    ButtonText: Button text
+    DialogueAsset: {fileID: 4900000, guid: cb44f1ec196ece048ab3aa9abfe5943b, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 1
+    ReadOnlyOnce: 1
+    Flag: 
+    FriendshipRange: {x: 0, y: 0}
+    Position: {x: 675, y: 144}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: 483f46ab-ff74-4e27-a502-9d423c39f429
+    Title: SmithQuestion2
+    ButtonText: Do you have any family around?
+    DialogueAsset: {fileID: 4900000, guid: e9cde9d0514da7443b260cc8dceeb8fe, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    Flag: 
+    FriendshipRange: {x: 1, y: 1}
+    Position: {x: 1794, y: -101}
     ReadRun: 0
     RunWaitAmount: 0
   ExposedProperties: []
