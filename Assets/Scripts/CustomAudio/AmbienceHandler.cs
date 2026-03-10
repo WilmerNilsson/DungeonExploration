@@ -8,8 +8,8 @@ public class AmbienceHandler : MonoBehaviour
    private void Start()
    {
       if (!AudioManager.IsValid) return;
-      AudioManager.Instance.CreateInstance(ambiencePath, gameObject);
-      AudioManager.Instance.StartEvent(ambiencePath, gameObject);
+      AudioManager.Instance.CreateInstance(ambiencePath);
+      AudioManager.Instance.StartEvent(ambiencePath);
       AudioManager.Instance.CreateInstance(slapbackPath, gameObject);
       AudioManager.Instance.StartEvent(slapbackPath, gameObject);
    }
@@ -188,8 +188,8 @@ public class AmbienceHandler : MonoBehaviour
    private void OnDestroy()
    {
       if (!AudioManager.IsValid) return;
-      AudioManager.Instance.StopEvent(ambiencePath, STOP_MODE.ALLOWFADEOUT, gameObject);
-      AudioManager.Instance.ReleaseInstance(ambiencePath, gameObject);
+      AudioManager.Instance.StopEvent(ambiencePath, STOP_MODE.ALLOWFADEOUT);
+      AudioManager.Instance.ReleaseInstance(ambiencePath);
       AudioManager.Instance.StopEvent(slapbackPath, STOP_MODE.ALLOWFADEOUT, gameObject);
       AudioManager.Instance.ReleaseInstance(slapbackPath, gameObject);
    }
