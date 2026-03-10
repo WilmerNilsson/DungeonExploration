@@ -26,7 +26,11 @@ public class TownFromDataCreator : MonoBehaviour
 
             playerCashSO.SetCash(data.PlayerGold);
             blacksmithUI.GiveSaveData(data.DonatedWeapons);
-            RunCount = data.PlayerSaveData.RunCount;
+            if (data.PlayerSaveData != null)
+            {
+                RunCount = data.PlayerSaveData.RunCount;
+            }
+            else RunCount = 0;
 
             if(data.PlayerSaveData != null)
             {

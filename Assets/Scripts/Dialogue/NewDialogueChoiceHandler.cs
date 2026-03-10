@@ -1,22 +1,18 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class NewDialogueChoiceHandler : MonoBehaviour
 {
+    [SerializeField] private List<DialogueSelectButton> selectButtons = new List<DialogueSelectButton>();
+    [SerializeField] private NewDialogueManager dialogueManager;
     private void Awake()
     {
         HandleDialogue();
     }
-
-    [SerializeField] private List<DialogueSelectButton> selectButtons = new List<DialogueSelectButton>();
     public void HandleDialogue()
     {
-        if (!NewDialogueManager.GetInstance())
-        {
-            Debug.LogWarning("DialogueManager not found", this);
-            return;
-        }
-        DialogueContainer dialogueTree = NewDialogueManager.GetInstance().dialogueTree;
+        DialogueContainer dialogueTree = dialogueManager.dialogueTree;
         for (int i = 0; i < selectButtons.Count; i++)
         {
             selectButtons[i].gameObject.SetActive(false);
@@ -37,7 +33,7 @@ public class NewDialogueChoiceHandler : MonoBehaviour
 
     private void FindDialogue(DialogueContainer dialogueContainer, List<DialogueNodeData> dialogueNodeDatas, DialogueNodeData dialogueNodeData)
     {
-        int runCount = NewDialogueManager.GetInstance().RunCount;
+        int runCount = dialogueManager.RunCount;
         if (dialogueNodeData.HasBeenRead || !dialogueNodeData.DialogueAsset || dialogueNodeData.IsGreeting || 
             dialogueNodeData.FriendshipRange.x > dialogueContainer.FriendshipLevel || dialogueNodeData.FriendshipRange.y < dialogueContainer.FriendshipLevel)
         {

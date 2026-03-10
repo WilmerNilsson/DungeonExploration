@@ -146,13 +146,13 @@ public class SaveFileManager
             data.PlayerGold = townData.Cash;
             data.PlayerSaveData.Inventory = townData.Inventory;
             data.PlayerSaveData.Equipment = townData.Equipment;
-            data.PlayerSaveData.RunCount++;
         }
 
         data.DonatedWeapons = townData.DonatedWeapons;
 
         if (newScene != null)
         {
+            data.PlayerSaveData.RunCount++;
             data.SceneName = newScene;
             SaveSavefile(data, backup);
             PlaySavefile(CurrentSavefileNr);
