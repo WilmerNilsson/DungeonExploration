@@ -13,17 +13,6 @@ public class HumanoidController : MonoBehaviour
 
     public bool isSprinting;
     public bool isCrouching;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     
     public void Move(Vector3 direction)
     {
@@ -79,7 +68,7 @@ public class HumanoidController : MonoBehaviour
     /// <summary>
     /// should be used by enemy
     /// </summary>
-    public void AttackWithCharge(float angle)
+    public void AttackWithChargeup(float angle)
     {
         animateAttack.AttackWithChargeupp(angle);
     }

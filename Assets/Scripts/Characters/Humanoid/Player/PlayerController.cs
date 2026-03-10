@@ -172,7 +172,7 @@ public class PlayerController : MonoBehaviour
             if (Vector2.Distance(mouseStart, mouseEnd) > 10)
             {
 #if DebugAttacks
-                controller.AttackWithCharge(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
+                controller.AttackWithChargeup(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
 #else
                 controller.Attack(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
 #endif

@@ -4,17 +4,15 @@ using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 {
     [Header("Events")]
-    public UnityEvent onDealDamage;
-    public UnityEvent onGetBlocked;
-    public UnityEvent<AttackState> onAttackStateChange;
-    public UnityEvent<BlockState> onBlockStateChange;
-    
-    [SerializeField] protected AttackState attackState = AttackState.Charge;
-    [SerializeField] protected BlockState blockState = BlockState.Charge;
+    [FormerlySerializedAs("onDealDamage")] public UnityEvent OnDealDamageEvent;
+    [FormerlySerializedAs("onGetBlocked")] public UnityEvent OnGetBlockedEvent;
+    [FormerlySerializedAs("onAttackStateChange")] public UnityEvent<AttackState> OnAttackStateChange;
+    [FormerlySerializedAs("onBlockStateChange")] public UnityEvent<BlockState> OnBlockStateChange;
     
     [SerializeField] private bool hasWeapon = false;
     [SerializeField] private bool attacking = false;
@@ -39,6 +37,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     private bool isInAnimation;
     private Coroutine? currentAnimation;
 
+    //used for signals
     public enum AttackState
     {
         Charge,
@@ -48,6 +47,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         Recoil
     }
 
+    //used for signals
     public enum BlockState
     {
         Charge,
@@ -76,10 +76,12 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     {
         isInAnimation = true;
         startTime = Time.time;
+        OnAttackStateChange?.Invoke(AttackState.Charge);
 
         yield return new WaitUntil(ChargePart);
 
         startTime = Time.time;
+        OnAttackStateChange?.Invoke(AttackState.Hold);
 
         yield return new WaitUntil(HoldPart);
 
@@ -105,9 +107,13 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         isInAnimation = true;
         startTime = Time.time;
 
+        OnAttackStateChange?.Invoke(AttackState.Swing);
+
         yield return new WaitUntil(SwingPart);
         float returnTime = TimeFromStartOfAnimation;
         startTime = Time.time;
+
+        OnAttackStateChange?.Invoke(AttackState.Return);
 
         yield return new WaitUntil(ReturnPart);
 
@@ -130,6 +136,8 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         float returnTime = TimeFromStartOfAnimation;
         startTime = Time.time;
 
+        OnAttackStateChange?.Invoke(AttackState.Return);
+
         yield return new WaitUntil(ReturnPart);
 
         isInAnimation = false;
@@ -147,9 +155,13 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         float previousAnimationTime = TimeFromStartOfAnimation;
         startTime = Time.time;
 
+        OnAttackStateChange?.Invoke(AttackState.Recoil);
+
         yield return new WaitUntil(RecoilPart);
 
         float returnTime = TimeFromStartOfAnimation;
+
+        OnAttackStateChange?.Invoke(AttackState.Return);
 
         yield return new WaitUntil(ReturnPart);
 
@@ -174,11 +186,14 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         isInAnimation = true;
         startTime = Time.time;
 
+        OnBlockStateChange?.Invoke(BlockState.Charge);
+
         yield return new WaitUntil(ChargePart);
 
         startTime = Time.time;
-
         weaponScript.SetBlockActive(true);
+
+        OnBlockStateChange?.Invoke(BlockState.Block);
 
         yield return new WaitUntil(HoldPart);
 
@@ -208,6 +223,8 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         isInAnimation = true;
         startTime = Time.time;
 
+        OnBlockStateChange?.Invoke(BlockState.Return);
+
         yield return new WaitUntil(ReturnPart);
 
         isInAnimation = false;
@@ -219,81 +236,6 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     }
 
     #endregion
-
-    private void Update()
-    {
-        if (hasWeapon)
-        {
-            if (blocking)
-            {
-                HandleBlock();
-            }
-        }
-
-        void HandleAttack()
-        {
-            switch (attackState)
-            {
-                case AttackState.Charge:
-                    if (weaponScript.ChargeAttack(TimeFromStartOfAnimation))
-                    {
-                        ChangeAttackState(AttackState.Hold);
-                    }
-                    break;
-                case AttackState.Hold:
-                    if (weaponScript.HoldAttack(TimeFromStartOfAnimation))
-                    {
-                        ChangeAttackState(AttackState.Swing);
-                        weaponScript.onSwing.Invoke();
-                    }
-                    break;
-                case AttackState.Swing:
-                    if (weaponScript.Swing(TimeFromStartOfAnimation))
-                    {
-                        ChangeAttackState(AttackState.Return);
-                    }
-                    break;
-                case AttackState.Recoil:
-                    if (weaponScript.RecoilAttack(TimeFromStartOfAnimation, cutoffTime))
-                    {
-                        ChangeAttackState(AttackState.Return);
-                    }
-                    break;
-                case AttackState.Return:
-                    if (weaponScript.ReturnAttack(TimeFromStartOfAnimation, returnTime))
-                    {
-                        attacking = false;
-                    }
-                    break;
-
-            }
-        }
-
-        void HandleBlock()
-        {
-            switch (blockState)
-            {
-                case BlockState.Charge:
-                    if (weaponScript.ChargeBlock(TimeFromStartOfAnimation))
-                    {
-                        ChangeBlockState(BlockState.Block);
-                    }
-                    break;
-                case BlockState.Block:
-                    if (weaponScript.HoldBlock(TimeFromStartOfAnimation))
-                    {
-                        ChangeBlockState(BlockState.Return);
-                    }
-                    break;
-                case BlockState.Return:
-                    if (weaponScript.ReturnBlock(TimeFromStartOfAnimation))
-                    {
-                        blocking = false;
-                    }
-                    break;
-            }
-        }
-    }
 
     #region AttackInput
 
@@ -401,31 +343,6 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         }
     }
 
-    private void ChangeAttackState(AttackState newState)
-    {
-        if (attackState == AttackState.Swing || attackState == AttackState.Recoil)
-        {
-            returnTime = TimeFromStartOfAnimation;
-        }
-        else
-        {
-            weaponScript.SetDamageActive(false);
-        }
-
-        attackState = newState;
-        onAttackStateChange.Invoke(attackState);
-        startTime = Time.time;
-    }
-
-    private void ChangeBlockState(BlockState newState)
-    {
-        blockState = newState;
-        weaponScript.SetBlockActive(blockState == BlockState.Block);
-        onBlockStateChange.Invoke(blockState);
-        startTime = Time.time;
-    }
-
-
     #endregion
 
     public void OnHitFlesh()
@@ -436,7 +353,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     public void OnGetBlocked()
     {
-        onGetBlocked.Invoke();
+        OnGetBlockedEvent?.Invoke();
         StopCoroutine(currentAnimation);
         currentAnimation = StartCoroutine(RecoilAnimation());
     }
