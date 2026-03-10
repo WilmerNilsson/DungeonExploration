@@ -1328,6 +1328,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnLand:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1354050652585229241}
+        m_TargetAssemblyTypeName: Health, GameAssembly
+        m_MethodName: FallingDamage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   controller: {fileID: 460348200128992605}
   CC: {fileID: 653897519548769769}
   animator: {fileID: 1898977592610029881}
@@ -1433,6 +1448,8 @@ MonoBehaviour:
   playerHealth: {fileID: 11400000, guid: 8d1752d3d4465884c80e0304113f59c8, type: 2}
   _currentHealth: 0
   _maxHealth: 1
+  minimumFallDamageHeight: 0
+  fallDamageMultiplier: 0
   DurabilityDamage: 0
   OnChangeHealths:
     m_PersistentCalls:
