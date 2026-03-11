@@ -6,11 +6,13 @@ using TMPro;
 
 public class SavesMaster : MonoBehaviour
 {
-    [SerializeField] Button playButton;
+    [SerializeField] private string defaultSceneName;
+
+    [SerializeField] private Button playButton;
     private TMP_Text playButtonText;
-    [SerializeField] Button deleteButton;
+    [SerializeField] private Button deleteButton;
     private TMP_Text deleteButtonText;
-    [SerializeField] GameObject warningWindow;
+    [SerializeField] private GameObject warningWindow;
 
     private int selectedSaveFileInt = 0;
     private TMP_Text selectedSaveFileButtonText;
@@ -49,7 +51,7 @@ public class SavesMaster : MonoBehaviour
 
     public void PlaySelectedSaveFile()
     {
-        gameManager.SavefileManager.PlaySavefile(selectedSaveFileInt);
+        gameManager.SavefileManager.PlaySavefile(selectedSaveFileInt, defaultSceneName);
     }
 
     public void ShowDeleteWarningWindow()

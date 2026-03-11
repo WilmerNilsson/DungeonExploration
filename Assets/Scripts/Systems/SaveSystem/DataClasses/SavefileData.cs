@@ -7,6 +7,8 @@ using UnityEngine;
 [Serializable]
 public class SavefileData
 {
+    public const string UnInitializedSceneName = "UNINITIALIZED";
+
     public string SceneName; //where player is
     public SavefileSettings Settings;
 
@@ -24,7 +26,7 @@ public class SavefileData
 
     public SavefileData(SavefileSettings settings)
     {
-        SceneName = "JSaveFileTest";
+        SceneName = UnInitializedSceneName;
         DonatedWeapons = new();
         Settings = settings;
         Dungeon = null;
