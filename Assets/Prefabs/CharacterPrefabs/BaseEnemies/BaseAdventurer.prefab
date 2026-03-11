@@ -122,6 +122,8 @@ MonoBehaviour:
   playerHealth: {fileID: 0}
   _currentHealth: 0
   _maxHealth: 100
+  minimumFallDamageHeight: 0
+  fallDamageMultiplier: 0
   DurabilityDamage: 1
   OnChangeHealths:
     m_PersistentCalls:
@@ -276,9 +278,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 6193873820860091412}
-        m_TargetAssemblyTypeName: UnityEngine.Rigidbody, UnityEngine
-        m_MethodName: set_isKinematic
+      - m_Target: {fileID: 5490902462357853601}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: set_enabled
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -318,23 +320,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfaa67e8e53598c4dbd0156e40d30511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onDealDamage:
+  OnDealDamageEvent:
     m_PersistentCalls:
       m_Calls: []
-  onGetBlocked:
+  OnGetBlockedEvent:
     m_PersistentCalls:
       m_Calls: []
-  onAttackStateChange:
+  OnAttackStateChange:
     m_PersistentCalls:
       m_Calls: []
-  onBlockStateChange:
+  OnBlockStateChange:
     m_PersistentCalls:
       m_Calls: []
-  attackState: 0
-  blockState: 0
   hasWeapon: 0
-  attacking: 0
-  blocking: 0
   weapon: {fileID: 0}
   swordArm: {fileID: 0}
   core: {fileID: 1933089214414819291}
@@ -356,6 +354,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnJump:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLand:
     m_PersistentCalls:
       m_Calls: []
   controller: {fileID: 7389383127273717716}
