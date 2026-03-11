@@ -73,7 +73,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 129015
+    m_Bits: 521719
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: f8aced419c1206342847fbea52a07a1d, type: 2}
   m_TargetDisplay: 0
@@ -503,6 +503,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: PlayerSoundLogic, GameAssembly
         m_MethodName: ChangeExhaustion
         m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 20
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8039961835658388922}
+        m_TargetAssemblyTypeName: Sanity, GameAssembly
+        m_MethodName: DamageSanity
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1090,6 +1102,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   ResetOnAwake: 1
+  damageToSanityMod: 5
 --- !u!114 &1608432785845023580
 MonoBehaviour:
   m_ObjectHideFlags: 0
