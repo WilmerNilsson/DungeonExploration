@@ -76,7 +76,7 @@ public class AudioManager : MonoBehaviour
 
     private void RefreshEventListCache() //Lägger till alla eventLists i eventListCache
     {
-        eventLists = Resources.LoadAll<EventList>("EventLists/");
+        eventLists = Resources.LoadAll<EventList>("EventLists");
         
         EventListCache = new Dictionary<string, EventList>();
         if (eventLists == null)
