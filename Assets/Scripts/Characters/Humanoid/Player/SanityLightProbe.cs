@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class SanityLightProbe : MonoBehaviour
 {
+    [SerializeField] private LayerMask layerMask;
+
     private Light[] lightsInScene;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         lightsInScene = FindObjectsByType<Light>(FindObjectsSortMode.None);
     }
@@ -21,11 +23,14 @@ public class SanityLightProbe : MonoBehaviour
             {
                 float distance = Vector3.Distance(transform.position, light.transform.position);
 
-                if (distance > light.range)
+                if (distance < light.range)
                 {
-                    //check if obstucted
+                    Vector3 direction = light.transform.position - transform.position;
 
-                    returnValue += (light.range - distance) * light.intensity; // default rendering is liniar falloff, so no reverse square
+                    if (!Physics.Raycast(transform.position, direction, out RaycastHit hitInfo , distance, layerMask))
+                    {
+                        returnValue += (light.range - distance) * light.intensity; // default rendering is liniar falloff, so no reverse square
+                    }
                 }
             }
         }

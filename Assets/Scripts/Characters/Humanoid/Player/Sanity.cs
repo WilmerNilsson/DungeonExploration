@@ -16,7 +16,7 @@ public class Sanity : MonoBehaviour
     public static Sanity Instance;
     [SerializeField] private bool ResetOnAwake = true;
     [SerializeField] private int damageToSanityMod = 10;
-    private bool isInLight;
+    [SerializeField] private SanityLightProbe sanityLightProbe;
 
     Coroutine sanityTick;
 
@@ -28,6 +28,14 @@ public class Sanity : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (playerSanitySO == null) Debug.LogWarning("playerSanitySO is null", this);
+        if (sanityLightProbe == null) Debug.LogWarning("sanityLightprobe is null", this);
+    }
+#endif
+
     private void Awake()
     {
         Instance = this;
@@ -36,6 +44,14 @@ public class Sanity : MonoBehaviour
         {
             ResetSanity();
         }
+    }
+
+    /// <summary>
+    /// returns true if camera is in any light
+    /// </summary>
+    private bool IsInLightCheck()
+    {
+        return sanityLightProbe.Sample() > 0f;
     }
 
     private void ResetSanityTick()
@@ -48,7 +64,7 @@ public class Sanity : MonoBehaviour
 
         IEnumerator SanityTickCoroutine()
         {
-            yield return new WaitForSeconds(playerSanitySO.GetCurrentCooldown(isInLight));
+            yield return new WaitForSeconds(playerSanitySO.GetCurrentCooldown(IsInLightCheck()));
             LoseSanity(1);
         }
 
