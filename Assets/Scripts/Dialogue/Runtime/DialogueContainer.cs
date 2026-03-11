@@ -52,4 +52,16 @@ public class DialogueContainer : ScriptableObject
     {
         FriendshipLevel += amount;
     }
+
+    public void SetDialogueData(DialogueSaveData saveData)
+    {
+        FriendshipLevel = saveData.FriendshipLevel;
+        
+        for (int i = 0; i < saveData.Guid.Count; i++)
+        {
+            DialogueNodeData currentNode = DialogueNodeDatas.Find(x => x.Guid  == saveData.Guid[i]);
+            currentNode.HasBeenRead = saveData.HasBeenRead[i];
+            currentNode.ReadRun = saveData.ReadRun [i];
+        }
+    }
 }

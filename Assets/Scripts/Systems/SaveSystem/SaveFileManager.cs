@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -73,11 +74,21 @@ public class SaveFileManager
 
     public void PlaySavefile(int saveFileNr) //should also be a private one that takes savefile data
     {
+        PlaySavefile(saveFileNr, "JSaveFileTest");
+    }
+
+    public void PlaySavefile(int saveFileNr, string defaultScene)
+    {
         CurrentSavefileNr = saveFileNr;
 
         GlobalSettings.LastSaveFileNr = CurrentSavefileNr;
 
         SavefileData data = ReadSavefile(CurrentSavefileNr);
+
+        if(data.SceneName == SavefileData.UnInitializedSceneName)
+        {
+            data.SceneName = defaultScene;
+        }
 
         GameManagerSO.Instance.LoadSavefileScene(data);
     }
@@ -149,6 +160,8 @@ public class SaveFileManager
         }
 
         data.DonatedWeapons = townData.DonatedWeapons;
+
+        data.DialogueSaves = townData.DialogueSaveDatas;
 
         if (newScene != null)
         {
