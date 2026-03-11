@@ -14,6 +14,8 @@ public class SavefileData
     public List<string> DonatedWeapons;
 
     public DungeonSaveData? Dungeon;
+    
+    public List<DialogueSaveData> DialogueSaves;
     /// <summary>
     /// gets set to true in world data creator
     /// </summary>
@@ -26,9 +28,10 @@ public class SavefileData
         DonatedWeapons = new();
         Settings = settings;
         Dungeon = null;
+        DialogueSaves = new();
     }
 
-    public SavefileData(string sceneName, int playerGold, List<string> donatedWeapons, SavefileSettings settings, DungeonSaveData? dungeon, PlayerSaveData? playerSaveData)
+    public SavefileData(string sceneName, int playerGold, List<string> donatedWeapons, SavefileSettings settings, DungeonSaveData? dungeon, PlayerSaveData? playerSaveData, List<DialogueSaveData> dialogueSaves)
     {
         SceneName = sceneName;
         DonatedWeapons = donatedWeapons;
@@ -36,10 +39,11 @@ public class SavefileData
         Settings = settings;
         Dungeon = dungeon;
         PlayerSaveData = playerSaveData;
+        DialogueSaves = dialogueSaves;
     }
 
     public SavefileData Clone()
     {
-        return new SavefileData(SceneName, PlayerGold, DonatedWeapons, Settings.Clone(), Dungeon?.Clone(), PlayerSaveData?.Clone());
+        return new SavefileData(SceneName, PlayerGold, DonatedWeapons, Settings.Clone(), Dungeon?.Clone(), PlayerSaveData?.Clone(), DialogueSaves);
     }
 }
