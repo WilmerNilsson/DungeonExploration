@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2291378432833029802}
   - component: {fileID: 5497589009060417290}
   - component: {fileID: 3273365505105759412}
+  - component: {fileID: 7592676639121055526}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -115,6 +116,21 @@ MonoBehaviour:
   decreaseFactor: 1
   shakeMod: 200
   head: {fileID: 1933794854811879872}
+--- !u!114 &7592676639121055526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 271289363439776972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 102c711bd23cf6f4a9d40487d36907b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 17664
 --- !u!1 &822202894608450755
 GameObject:
   m_ObjectHideFlags: 0
@@ -1103,6 +1119,7 @@ MonoBehaviour:
       m_Calls: []
   ResetOnAwake: 1
   damageToSanityMod: 5
+  sanityLightProbe: {fileID: 7592676639121055526}
 --- !u!114 &1608432785845023580
 MonoBehaviour:
   m_ObjectHideFlags: 0
