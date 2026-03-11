@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 176783711439125946}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -75.49268, z: 0}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 7627061576712550295}
   - component: {fileID: 3612840960867317309}
   - component: {fileID: 8767876181034157955}
+  - component: {fileID: 8752703113907202988}
   m_Layer: 5
   m_Name: TestChest
   m_TagString: Untagged
@@ -190,6 +191,21 @@ MonoBehaviour:
   drawCenter: 0
   drawGrid: 0
   drawOccupied: 1
+--- !u!114 &8752703113907202988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 755646860445830087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c35877c8d8cb8b438f3a4734af7ad9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lootPool: {fileID: 11400000, guid: 77268e70a1126f64aac4244a379e9556, type: 2}
+  lootPoolName: Standard
+  lootAmountRange: {x: 2, y: 4}
 --- !u!1 &1007070657314993592
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,6 +351,7 @@ GameObject:
   - component: {fileID: 8991584332346246409}
   - component: {fileID: 1967298002544897165}
   - component: {fileID: 3636718573379246793}
+  - component: {fileID: 1256031610126703906}
   m_Layer: 0
   m_Name: WorldObject
   m_TagString: Untagged
@@ -351,7 +368,7 @@ Transform:
   m_GameObject: {fileID: 3258008309558353209}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.155}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -404,6 +421,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &1256031610126703906
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3258008309558353209}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &4584505422868212685
 GameObject:
   m_ObjectHideFlags: 0

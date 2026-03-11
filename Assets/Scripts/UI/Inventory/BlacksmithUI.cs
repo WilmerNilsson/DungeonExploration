@@ -1,12 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BlacksmithUI : MerchantInventory
 {
     [SerializeField] private GameObject deliverWeaponPanel;
+    [SerializeField] private string weaponAlreadyDonatedText = "Already have those.";
+    [SerializeField] private string couldDonateText = "Interesting, i will keep this stocked.";
+    [SerializeField] private string couldRepairWeaponText = "CLANK CLANK CLANK CLANK GET FIXED GET FIXED GET FIXED";
+    [SerializeField] private string weaponTypeCantBeDonatedText = "That knife too cool for my school bro.";
+    [SerializeField] private string weaponAlreadyFullDurabilityText = "Looks fine to me.";
+    [SerializeField] private string weaponCostsToMuchToRepairText = "Sorry, Ingrid. I can't give credit. Come back when you're a little... mmmmm... richer!";
 #nullable enable
 
     private UIWeapon? weaponInDonateGrid;
+    private SimpleItem? weaponInDonateGridSI;
+
+    public UnityEvent OnDonateEvent = new();
+    public UnityEvent OnRepairEvent = new();
 
     private List<string> donatedWeapons = new();
 
@@ -18,15 +29,53 @@ public class BlacksmithUI : MerchantInventory
     }
 #endif
 
+    public List<string> GetSaveData()
+    {
+        return donatedWeapons; 
+    }
+
+    public void GiveSaveData(List<string> donatedWeapons)
+    {
+
+        this.donatedWeapons = donatedWeapons;
+        foreach(string weapon in donatedWeapons)
+        {
+            if (weapon != null)
+            {
+                if(itemLibrary.TryGetItemPairByName(weapon, out var pair))
+                {
+                    if (!buyGrid.TryInsertItem(pair.UIPrefab.GetComponent<SimpleItem>(), true))
+                    {
+                        Debug.LogWarning("failed to instanciate item in buy grid", this);
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("invalid weapon id given in save data to BlacksmithUI, id: " + weapon, this);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("null weapon given in save data to BlacksmithUI", this);
+            }
+        }
+    }
+
     public override void ChangeHover(SimpleItem simpleItem, bool startHover)
     {
-        if(buyIsActiveGrid)
+        if (buyIsActiveGrid)
         {
             base.ChangeHover(simpleItem, startHover);
         }
+        else if (startHover && simpleItem.TryGetComponent(out UIWeapon uIWeapon))
+        {
+            SetDescriptionText(simpleItem.GetDescription());
+            int repairCost = (uIWeapon.BlacksmithHelper.MaxDurability - uIWeapon.Durability) * uIWeapon.BlacksmithHelper.CostPerDurability;
+            SetGoldValueText($"Repair cost is {repairCost} crowns.");
+        }
         else
         {
-            SetDescriptionText("repair cost is OwO and 3 fiddy");
+            base.ChangeHover(simpleItem, startHover);
         }
     }
 
@@ -35,6 +84,7 @@ public class BlacksmithUI : MerchantInventory
         if(item.TryGetComponent(out UIWeapon weapon))
         {
             weaponInDonateGrid = weapon;
+            weaponInDonateGridSI = item;
         }
         else
         {
@@ -49,6 +99,7 @@ public class BlacksmithUI : MerchantInventory
             if(weaponInDonateGrid == weapon)
             {
                 weaponInDonateGrid = null;
+                weaponInDonateGridSI = null;
             }
             else
             {
@@ -122,12 +173,39 @@ public class BlacksmithUI : MerchantInventory
         {
             Debug.LogWarning("active grid is buy, but on donate invoked", this);
         }
-        else
+        else if (weaponInDonateGridSI != null && weaponInDonateGrid != null)
         {
-            
-        }
+            if(!weaponInDonateGrid.BlacksmithHelper.CanBeDonated)
+            {
+                SetDescriptionText(weaponTypeCantBeDonatedText);
+                return;
+            }
 
-        SetDescriptionText("yoink");
+            if(donatedWeapons.Contains(weaponInDonateGridSI.PrefabID))
+            {
+                SetDescriptionText(weaponAlreadyDonatedText);
+            }
+            else
+            {
+                SetDescriptionText(couldDonateText);
+                donatedWeapons.Add(weaponInDonateGridSI.PrefabID);
+
+                if (itemLibrary.TryGetItemPairByName(weaponInDonateGridSI.PrefabID, out var pair))
+                {
+                    if(!buyGrid.TryInsertItem(pair.UIPrefab.GetComponent<SimpleItem>(), true))
+                    {
+                        Debug.LogWarning("failed to instanciate item in buy grid", this);
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning("invalid weapon id donated to blacksmit, id: " + weaponInDonateGridSI.PrefabID, this);
+                }
+
+                OnDonateEvent.Invoke();
+                InvMasterBase.Instance.DestroyItem(weaponInDonateGridSI);
+            }
+        }
     }
 
     public void OnRepair()
@@ -136,11 +214,24 @@ public class BlacksmithUI : MerchantInventory
         {
             Debug.LogWarning("active grid is buy, but on repair invoked", this);
         }
-        else
+        else if (weaponInDonateGrid != null)
         {
+            int repairCost = (weaponInDonateGrid.BlacksmithHelper.MaxDurability - weaponInDonateGrid.Durability) * weaponInDonateGrid.BlacksmithHelper.CostPerDurability;
 
+            if(weaponInDonateGrid.Durability == weaponInDonateGrid.BlacksmithHelper.MaxDurability)
+            {
+                SetDescriptionText(weaponAlreadyFullDurabilityText);
+            }
+            else if(playerCashSO.TryBuy(repairCost))
+            {
+                SetDescriptionText(couldRepairWeaponText);
+                weaponInDonateGrid.Durability = weaponInDonateGrid.BlacksmithHelper.MaxDurability;
+                OnRepairEvent.Invoke();
+            }
+            else
+            {
+                SetDescriptionText(weaponCostsToMuchToRepairText);
+            }
         }
-
-        SetDescriptionText("looks fine to me");
     }
 }

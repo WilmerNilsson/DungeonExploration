@@ -1431,6 +1431,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1584754746207474282}
+        m_TargetAssemblyTypeName: NewDialogueChoiceHandler, GameAssembly
+        m_MethodName: HandleDialogue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &942045959382513405
 GameObject:
   m_ObjectHideFlags: 0
@@ -2955,6 +2967,19 @@ MonoBehaviour:
   itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
   playerCashSO: {fileID: 11400000, guid: ffae8245bc035e74c8db57a6b9da2ca3, type: 2}
   deliverWeaponPanel: {fileID: 1884521984008488567}
+  weaponAlreadyDonatedText: Already have those.
+  couldDonateText: Interesting, i will keep this stocked.
+  couldRepairWeaponText: CLANK CLANK CLANK CLANK GET FIXED GET FIXED GET FIXED
+  weaponTypeCantBeDonatedText: That knife too cool for my school bro.
+  weaponAlreadyFullDurabilityText: Looks fine to me.
+  weaponCostsToMuchToRepairText: Sorry, Ingrid. I can't give credit. Come back when
+    you're a little... mmmmm... richer!
+  OnDonateEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnRepairEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2495740166984162305
 GameObject:
   m_ObjectHideFlags: 0
@@ -8037,6 +8062,7 @@ MonoBehaviour:
   - {fileID: 6703565432760527113}
   - {fileID: 8142247848523542940}
   - {fileID: 1893179604607690120}
+  dialogueManager: {fileID: 687747272995744736}
 --- !u!1 &6056710851343874082
 GameObject:
   m_ObjectHideFlags: 0
@@ -8316,7 +8342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1758356bda21aa40bde799a2149cad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SceneName: JSaveFileTest
+  SceneName: BuildingScene
 --- !u!1 &6322491617812726062
 GameObject:
   m_ObjectHideFlags: 0
@@ -9700,6 +9726,7 @@ MonoBehaviour:
   dialogueName: {fileID: 6486441060312357466}
   continueButton: {fileID: 640448948170146050}
   portraitAnimator: {fileID: 2840735580665067292}
+  RunCount: 0
   onDialogueEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -9711,7 +9738,19 @@ MonoBehaviour:
       m_Calls: []
   onDialogueExit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3397467498683635322}
+        m_TargetAssemblyTypeName: NewDialogueChoiceHandler, GameAssembly
+        m_MethodName: HandleDialogue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   storyEvents: []
 --- !u!1 &7796620134886370778
 GameObject:
@@ -10729,6 +10768,7 @@ MonoBehaviour:
   dialogueName: {fileID: 8135852833376931271}
   continueButton: {fileID: 5094875904446286907}
   portraitAnimator: {fileID: 2840735580665067292}
+  RunCount: 0
   onDialogueEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -10740,7 +10780,19 @@ MonoBehaviour:
       m_Calls: []
   onDialogueExit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1584754746207474282}
+        m_TargetAssemblyTypeName: NewDialogueChoiceHandler, GameAssembly
+        m_MethodName: HandleDialogue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   storyEvents: []
 --- !u!1 &8527101245082747120
 GameObject:
@@ -10903,6 +10955,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3397467498683635322}
+        m_TargetAssemblyTypeName: NewDialogueChoiceHandler, GameAssembly
+        m_MethodName: HandleDialogue
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -12087,6 +12151,10 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 8841029092997747172, guid: 45ac0dbe1ab7a66489e1e7f6fd5e54f3, type: 3}
+      propertyPath: dialogueManager
+      value: 
+      objectReference: {fileID: 1738946163345943999}
     - target: {fileID: 9060564495694687649, guid: 45ac0dbe1ab7a66489e1e7f6fd5e54f3, type: 3}
       propertyPath: m_SizeDelta.x
       value: -23
@@ -12110,3 +12178,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7076339026390234441, guid: 45ac0dbe1ab7a66489e1e7f6fd5e54f3, type: 3}
   m_PrefabInstance: {fileID: 8020782387418481550}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1584754746207474282 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8841029092997747172, guid: 45ac0dbe1ab7a66489e1e7f6fd5e54f3, type: 3}
+  m_PrefabInstance: {fileID: 8020782387418481550}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67453859565418309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bb7de5628cbeba45a09d9806d05787b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TownFromDataCreator : MonoBehaviour
 {
     [SerializeField] private PlayerCashSO playerCashSO;
     [SerializeField] private ItemLibrarySO itemLibrary;
+    [SerializeField] private BlacksmithUI blacksmithUI;
+    public int RunCount;
 #nullable enable
 
 #if UNITY_EDITOR
@@ -11,6 +14,7 @@ public class TownFromDataCreator : MonoBehaviour
     {
         if (playerCashSO == null) Debug.LogError("player cash is null", this);
         if (itemLibrary == null) Debug.Log("item library is null", this);
+        if (blacksmithUI == null) Debug.Log("BlacksmitUI is null", this);
     }
 #endif
 
@@ -21,6 +25,12 @@ public class TownFromDataCreator : MonoBehaviour
             //if world is null let it throw error
 
             playerCashSO.SetCash(data.PlayerGold);
+            blacksmithUI.GiveSaveData(data.DonatedWeapons);
+            if (data.PlayerSaveData != null)
+            {
+                RunCount = data.PlayerSaveData.RunCount;
+            }
+            else RunCount = 0;
 
             if(data.PlayerSaveData != null)
             {
@@ -36,6 +46,11 @@ public class TownFromDataCreator : MonoBehaviour
         {
             Debug.LogWarning("could not consume save file", this);
         }
+    }
+
+    public List<string> GetDonatedWeapons()
+    {
+        return blacksmithUI.GetSaveData();
     }
 
     public int GetCash()

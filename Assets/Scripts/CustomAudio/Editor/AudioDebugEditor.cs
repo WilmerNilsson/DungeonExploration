@@ -12,6 +12,7 @@ public class AudioDebugEditor : Editor
     private SerializedProperty pathProperty;
     private SerializedProperty textProperty;
     private SerializedProperty linesProperty;
+    private SerializedProperty executeInUpdateProperty;
     private AudioDebug audioDebug;
     
     public void OnEnable()
@@ -20,6 +21,7 @@ public class AudioDebugEditor : Editor
         pathProperty = serializedObject.FindProperty("path");
         textProperty = serializedObject.FindProperty("text");
         linesProperty = serializedObject.FindProperty("lines");
+        executeInUpdateProperty = serializedObject.FindProperty("executeInUpdate");
         audioDebug = (AudioDebug)target;
     }
     
@@ -35,18 +37,23 @@ public class AudioDebugEditor : Editor
             {
                 EditorGUILayout.PropertyField(pathProperty);
             }
+            EditorGUILayout.PropertyField(executeInUpdateProperty);
 
-            if (proceduresProperty.enumValueIndex != 5)
+            if (!executeInUpdateProperty.boolValue)
             {
-                if (GUILayout.Button("Execute"))
+                if (proceduresProperty.enumValueIndex != 5)
+                {
+                    if (GUILayout.Button("Execute"))
+                    {
+                        audioDebug.Execute();
+                    }
+                }
+                else
                 {
                     audioDebug.Execute();
                 }
             }
-            else
-            {
-                audioDebug.Execute();
-            }
+            
             
             EditorGUILayout.SelectableLabel(textProperty.stringValue, EditorStyles.textField, GUILayout.Height(
                 (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing) * linesProperty.intValue));

@@ -8,6 +8,7 @@ public class UIWeapon : MonoBehaviour
     [SerializeField] private TextMeshProUGUI durabilityText;
     [SerializeField] public BlacksmithHelper BlacksmithHelper;
 
+
 #nullable enable
     public int Durability
     {

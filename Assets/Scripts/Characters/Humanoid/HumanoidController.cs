@@ -13,17 +13,6 @@ public class HumanoidController : MonoBehaviour
 
     public bool isSprinting;
     public bool isCrouching;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     
     public void Move(Vector3 direction)
     {
@@ -52,13 +41,59 @@ public class HumanoidController : MonoBehaviour
         interact.Interact();
     }
 
+    /// <summary>
+    /// should be used by player
+    /// </summary>
+    public void PrepareAttackUpdate(float angle)
+    {
+        animateAttack.HoldAttackUpdate(angle);
+    }
+
+    /// <summary>
+    /// should be used by player
+    /// </summary>
+    public void PrepareAttack(bool start)
+    {
+        animateAttack.HoldAttack(start);
+    }
+
+    /// <summary>
+    /// should be used by player
+    /// </summary>
     public void Attack(float angle)
     {
         animateAttack.Attack(angle);
     }
-    
-    public void Block(float angle)
+
+    /// <summary>
+    /// should be used by enemy
+    /// </summary>
+    public void AttackWithChargeup(float angle)
     {
-        animateAttack.Block(angle);
+        animateAttack.AttackWithChargeupp(angle);
+    }
+    
+    /// <summary>
+    /// should be used by player
+    /// </summary>
+    public void HoldBlock(bool start)
+    {
+        animateAttack.HoldBlock(start);
+    }
+
+    /// <summary>
+    /// should be used by player
+    /// </summary>
+    public void HoldBlockUpdate(float angle)
+    {
+        animateAttack.HoldBlockUpdate(angle);
+    }
+
+    /// <summary>
+    /// should be used by enemy
+    /// </summary>
+    public void BlockWithCharge(float angle)
+    {
+        animateAttack.BlockWithChargeup(angle);
     }
 }
