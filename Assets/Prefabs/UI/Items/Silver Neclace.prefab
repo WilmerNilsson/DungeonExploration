@@ -14,6 +14,9 @@ GameObject:
   - component: {fileID: 6101294717193550440}
   - component: {fileID: 1261072922002475423}
   - component: {fileID: -7226131160820244975}
+  - component: {fileID: -108007395388942139}
+  - component: {fileID: 1703436477494792341}
+  - component: {fileID: -2234644275047633133}
   m_Layer: 5
   m_Name: Silver Neclace
   m_TagString: Untagged
@@ -144,3 +147,54 @@ MonoBehaviour:
     gameObject: {fileID: 0}
     followObject: 0
     parametersToSet: []
+--- !u!95 &-108007395388942139
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659243512019290888}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 86371ff051eb84344aa01a786d38c513, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1703436477494792341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659243512019290888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7704e0e9fcdd38459ccc708b9e6744b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationNameClick: UIItemJiggleAnimation
+  animationNameRelease: UIItemJiggleAnimation
+--- !u!114 &-2234644275047633133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659243512019290888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 758bebe94122d1c43bf7c54d1ac813de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetGraphic: {fileID: 1474761305827880754}
+  highlightCollor: {r: 0, g: 1, b: 1, a: 1}
+  supressFind: 0
