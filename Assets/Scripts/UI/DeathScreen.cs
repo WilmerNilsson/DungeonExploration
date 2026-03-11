@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class DeathScreen : MonoBehaviour
@@ -12,7 +13,6 @@ public class DeathScreen : MonoBehaviour
 
     private void EnableDeathScreen()
     {
-        GameManagerSO.Instance.FreezeTime(true);
         GameManagerSO.Instance.LockMouse(true);
 
         if(InvMasterBase.Instance is InvMaster master)
@@ -20,7 +20,18 @@ public class DeathScreen : MonoBehaviour
             master.ClosePlayerInventory();
         }
 
-        toggleObject.SetActive(true);
+        StartCoroutine(FadeToDeath());
+        
+        return;
+
+        IEnumerator FadeToDeath()
+        {
+            yield return new WaitForSeconds(3f);
+            SceneTransition.GetInstance().PlayFade(9999);
+            yield return new WaitForSeconds(2f);
+            toggleObject.SetActive(true);
+            GameManagerSO.Instance.FreezeTime(true);
+        }
     }
 
     public void GoToMainMenu()
