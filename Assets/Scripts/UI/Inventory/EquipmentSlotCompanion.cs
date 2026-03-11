@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class EquipmentSlotCompanion : MonoBehaviour
@@ -36,6 +37,11 @@ public class EquipmentSlotCompanion : MonoBehaviour
         if(item.TryGetComponent(out UIWeapon uIWeapon))
         {
             GameObject prefab = uIWeapon.GetEquipPrefab();
+            
+            if (humanoidAttackCompanion == null)
+            {
+                PlayerTrackerSingleton.Instance.player.TryGetComponent(out humanoidAttackCompanion);
+            }
 
             if (humanoidAttackCompanion.TryEquip(prefab, out Weapon? weaponScript))
             {

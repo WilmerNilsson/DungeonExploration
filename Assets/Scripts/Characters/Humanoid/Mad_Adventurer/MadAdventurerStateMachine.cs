@@ -55,7 +55,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
             {
                 PlayerTransform = PlayerTrackerSingleton.Instance.player.transform;
             }
-            catch (Exception e)
+            catch
             {
                 Console.WriteLine("Could not find player transform");
                 throw;
