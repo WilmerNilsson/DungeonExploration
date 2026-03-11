@@ -81,14 +81,14 @@ MonoBehaviour:
     maxDistance: 20
     debug: 1
     parameters:
-    - paramName: Walls
-      isGlobal: 0
-      data1: 3996502556
-      data2: 1746408966
     - paramName: Occluded
       isGlobal: 0
       data1: 2996130905
       data2: 1527690840
+    - paramName: Walls
+      isGlobal: 0
+      data1: 3996502556
+      data2: 1746408966
   - eventName: VO
     eventReference:
       Guid:
@@ -102,10 +102,22 @@ MonoBehaviour:
     isOneShot: 0
     is3D: 1
     isOcclusion: 1
-    minDistance: 1
-    maxDistance: 50
+    minDistance: 0.3
+    maxDistance: 20
     debug: 1
     parameters:
+    - paramName: EnemyVO
+      isGlobal: 0
+      data1: 3794586967
+      data2: 3494831560
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
+    - paramName: Walls
+      isGlobal: 0
+      data1: 3996502556
+      data2: 1746408966
     - paramName: Attack
       isGlobal: 0
       data1: 3459236084
@@ -118,18 +130,6 @@ MonoBehaviour:
       isGlobal: 0
       data1: 4289239710
       data2: 2671564414
-    - paramName: Walls
-      isGlobal: 0
-      data1: 3996502556
-      data2: 1746408966
-    - paramName: EnemyVO
-      isGlobal: 0
-      data1: 3794586967
-      data2: 3494831560
-    - paramName: Occluded
-      isGlobal: 0
-      data1: 2996130905
-      data2: 1527690840
     - paramName: Stun
       isGlobal: 0
       data1: 254331227
