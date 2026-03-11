@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -149,6 +150,8 @@ public class SaveFileManager
         }
 
         data.DonatedWeapons = townData.DonatedWeapons;
+
+        data.DialogueSaves = townData.DialogueSaveDatas;
 
         if (newScene != null)
         {

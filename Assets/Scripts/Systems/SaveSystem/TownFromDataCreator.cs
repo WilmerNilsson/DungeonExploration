@@ -6,6 +6,7 @@ public class TownFromDataCreator : MonoBehaviour
     [SerializeField] private PlayerCashSO playerCashSO;
     [SerializeField] private ItemLibrarySO itemLibrary;
     [SerializeField] private BlacksmithUI blacksmithUI;
+    [SerializeField] private List<DialogueContainer> dialogueContainers;
     public int RunCount;
 #nullable enable
 
@@ -15,6 +16,7 @@ public class TownFromDataCreator : MonoBehaviour
         if (playerCashSO == null) Debug.LogError("player cash is null", this);
         if (itemLibrary == null) Debug.Log("item library is null", this);
         if (blacksmithUI == null) Debug.Log("BlacksmitUI is null", this);
+        if (dialogueContainers.Count == 0) Debug.Log("DialogueContainers is null", this);
     }
 #endif
 
@@ -26,6 +28,13 @@ public class TownFromDataCreator : MonoBehaviour
 
             playerCashSO.SetCash(data.PlayerGold);
             blacksmithUI.GiveSaveData(data.DonatedWeapons);
+            if (data.DialogueSaves != null)
+            {
+                for (int i = 0; i < data.DialogueSaves.Count; i++)
+                {
+                    dialogueContainers.Find(x => x.name == data.DialogueSaves[i].TreeName).SetDialogueData(data.DialogueSaves[i]);
+                }
+            }
             if (data.PlayerSaveData != null)
             {
                 RunCount = data.PlayerSaveData.RunCount;
@@ -64,5 +73,15 @@ public class TownFromDataCreator : MonoBehaviour
     public InventorySaveData GetPlayerEquipment()
     {
         return new(InvMasterBase.Instance.EquipmentGrid.GetInventoryData());
+    }
+
+    public List<DialogueSaveData> GetDialogueSaveDatas()
+    {
+        List<DialogueSaveData> dialogueSaveDatas = new();
+        for (int i = 0; i < dialogueContainers.Count; i++)
+        {
+            dialogueSaveDatas.Add(new DialogueSaveData(dialogueContainers[i]));
+        }
+        return dialogueSaveDatas;
     }
 }
