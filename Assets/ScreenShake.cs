@@ -7,8 +7,11 @@ public class ScreenShake : MonoBehaviour
     [SerializeField, Min(0)] private float maxShakeTime;
     [SerializeField, Min(0)] private float decreaseFactor;
     [SerializeField, Min(1)] private float shakeMod = 200f;
+    [SerializeField] private Transform head;
     private float shakeTime;
     private float shakeIntensity;
+
+    private bool isDead;
 
     private Vector3 defaultPosition;
     private void Start()
@@ -26,6 +29,12 @@ public class ScreenShake : MonoBehaviour
             shakeTime = 0.0f;
             transform.localPosition = defaultPosition;
         }
+
+        if (isDead)
+        {
+            transform.position = head.position;
+            transform.rotation = head.rotation;
+        }
     }
 
     public void ShakeScreen(int intensity)
@@ -34,5 +43,10 @@ public class ScreenShake : MonoBehaviour
         Debug.Log(amount);
         shakeTime = maxShakeTime;
         shakeIntensity = amount;
+    }
+
+    public void SetDead(bool value)
+    {
+        isDead = value;
     }
 }

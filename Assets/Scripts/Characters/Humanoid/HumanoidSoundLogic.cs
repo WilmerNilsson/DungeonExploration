@@ -23,10 +23,10 @@ public class HumanoidSoundLogic : MonoBehaviour
     [SerializeField] private FootstepPaths footstepPaths;
     [SerializeField] private string crouchPath;
     [SerializeField] private string jumpPath;
+    private bool _hasJumped;
     [SerializeField] private float minDistanceForLandSound;
     [SerializeField] private string landPath;
     private string _currentFootstepSound;
-    [SerializeField] private string hungerPath;
    
     [Header("Damage & Death")]
     [SerializeField] private string damagePath;
@@ -120,6 +120,10 @@ public class HumanoidSoundLogic : MonoBehaviour
                 _currentFootstepSound = footstepPaths.walk;
                 break;
         }
+        if (_lastMoveAction == HumanoidMovement.moveActions.Airborne && actions != HumanoidMovement.moveActions.Airborne)
+        {
+            _hasJumped = false;
+        }
         
         _lastMoveAction = actions;
     }
@@ -127,9 +131,10 @@ public class HumanoidSoundLogic : MonoBehaviour
     public void OnLand(float fallDistance)
     {
         if (!AudioManager.IsValid) return;
-        if (fallDistance > minDistanceForLandSound)
+        if (fallDistance > minDistanceForLandSound || _hasJumped)
         {
             AudioManager.Instance.PlayOneShot(landPath, null, null, gameObject);
+            _hasJumped = false;
         }
     }
     
@@ -138,13 +143,6 @@ public class HumanoidSoundLogic : MonoBehaviour
         if (!AudioManager.IsValid) return;
         AudioManager.Instance.SetGlobalParameter("HP", healthData.CurrentHealth);
         AudioManager.Instance.SetGlobalParameter("hpRatio", (float)healthData.CurrentHealth / healthData.MaxHealth);
-    }
-
-    public void OnHungerChange(float hungerRatio)
-    {
-        if (!AudioManager.IsValid) return;
-        AudioManager.Instance.SetGlobalParameter("Hunger", hungerRatio);
-        AudioManager.Instance.PlayOneShot(hungerPath);
     }
     
     public void PlayCrouchSound()
@@ -158,6 +156,7 @@ public class HumanoidSoundLogic : MonoBehaviour
 
     public void PlayJumpSound()
     {
+        _hasJumped = true;
         if (jumpPath is "" or null) return;
         if (AudioManager.IsValid)
         {
