@@ -3427,6 +3427,7 @@ GameObject:
   - component: {fileID: 438037752}
   - component: {fileID: 438037751}
   - component: {fileID: 438037750}
+  - component: {fileID: 438037753}
   - component: {fileID: 438037749}
   m_Layer: 0
   m_Name: GameObject (1)
@@ -3517,6 +3518,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &438037753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438037748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5d30a9c5c8a2444c9a762f68638f5ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onPlay:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 438037749}
+        m_TargetAssemblyTypeName: TrapSoundLogic, GameAssembly
+        m_MethodName: StopAndRelease
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &483811988
 GameObject:
   m_ObjectHideFlags: 0
@@ -10598,6 +10626,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 61649496702353971, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
+      propertyPath: path
+      value: Traps/SpearTrap
+      objectReference: {fileID: 0}
+    - target: {fileID: 61649496702353971, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
+      propertyPath: procedure
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 808863321973245351, guid: 3e48f95704a16314682581b8245b96ba, type: 3}
       propertyPath: wallChecker.drawDebug
       value: 1
