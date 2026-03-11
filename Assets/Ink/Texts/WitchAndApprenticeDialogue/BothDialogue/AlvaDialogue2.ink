@@ -7,7 +7,7 @@ No? Didn't know you had one.
 #name:Alva
 Well here he is, this is Syn.
 #name:Syn
-<i>He raises his hand in a greeting not even looking at you.<i>
+<i>*He raises his hand in a greeting, not even looking at you.<i>
 #name:Alva
 SPEAK UP! Say hello.
 #name:Syn

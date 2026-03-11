@@ -15,6 +15,7 @@ public class Sanity : MonoBehaviour
 
     public static Sanity Instance;
     [SerializeField] private bool ResetOnAwake = true;
+    [SerializeField] private int damageToSanityMod = 10;
     private bool isInLight;
 
     Coroutine sanityTick;
@@ -75,6 +76,14 @@ public class Sanity : MonoBehaviour
     public void LoseSanity(int amount)
     {
         playerSanitySO.ChangeSanity(-amount);
+        OnLoseSanity?.Invoke((float)playerSanitySO.CurrentSanity / playerSanitySO.MaxSanity);
+
+        ResetSanityTick();
+    }
+
+    public void DamageSanity(int amount)
+    {
+        playerSanitySO.ChangeSanity(-amount/damageToSanityMod);
         OnLoseSanity?.Invoke((float)playerSanitySO.CurrentSanity / playerSanitySO.MaxSanity);
 
         ResetSanityTick();

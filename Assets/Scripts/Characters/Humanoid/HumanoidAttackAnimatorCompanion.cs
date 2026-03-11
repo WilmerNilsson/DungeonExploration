@@ -105,6 +105,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         isInAnimation = true;
         startTime = Time.time;
 
+        weaponScript.onSwing.Invoke();
         OnAttackStateChange?.Invoke(AttackState.Swing);
 
         yield return new WaitUntil(SwingPart);

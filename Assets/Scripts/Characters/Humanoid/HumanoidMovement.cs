@@ -86,6 +86,7 @@ public class HumanoidMovement : MonoBehaviour
                 rotatedVector = initialAirVector + rotatedVector * airMoveMod;
                 if(rotatedVector.magnitude > initialMagnitude) rotatedVector = rotatedVector.normalized * initialMagnitude; 
             }
+            deltaSpeed = (controller.isSprinting && Vector3.Dot(transform.forward, rotatedVector) >= 0) ? sprintSpeed : moveSpeed;
         }
         else if (moveVector == Vector3.zero)
         {

@@ -20,6 +20,7 @@ public class Weapon : MonoBehaviour
         get;
         set;
     } = 1;
+    
     [SerializeField] private bool dealDamage = false;
     [SerializeField] private bool isBlocking = false;
     [SerializeField] private bool unbreakable;
