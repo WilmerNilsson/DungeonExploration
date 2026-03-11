@@ -4,12 +4,15 @@ public class WeaponSoundLogic : MonoBehaviour
 {
     [SerializeField] private string swingPath;
     [SerializeField] private string parryPath;
-    [SerializeField] private string metalHitPath;
-    [SerializeField] private string woodHitPath;
-    [SerializeField] private string stoneHitPath;
-    [SerializeField] private string fleshHitPath;
+    [SerializeField] private string collisionPath;
+    [SerializeField] private string materialParameter;
+    private string[] _materialParameters;
+    private float[] _materialIndexes = new float[1];
 
-    private string _currentPath;
+    private void Start()
+    {
+        _materialParameters = new string[1] { materialParameter };
+    }
 
     public void PlaySwingSound()
     {
@@ -29,22 +32,21 @@ public class WeaponSoundLogic : MonoBehaviour
         switch (collisionTag)
         {
             case "Wood":
-                _currentPath = woodHitPath;
+                _materialIndexes[0] = 0;
                 break;
             case "Stone":
-                _currentPath = stoneHitPath;
+                _materialIndexes[0] = 1;
                 break;
             case "Metal":
-                _currentPath = metalHitPath;
+                _materialIndexes[0] = 2;
                 break;
             case "Flesh":
-                _currentPath = fleshHitPath;
+                _materialIndexes[0] = 3;
                 break;
+            default:
+                return;
         }
-        AudioManager.Instance.PlayOneShot(_currentPath, null, null, gameObject);
+        AudioManager.Instance.PlayOneShot(collisionPath, _materialParameters, _materialIndexes, gameObject);
     }
     
-    
-    
-    //TODO: swing sounds here?
 }
