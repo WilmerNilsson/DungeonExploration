@@ -25,7 +25,7 @@ MonoBehaviour:
     banks:
     - SFX
     isOneShot: 1
-    is3D: 1
+    is3D: 0
     isOcclusion: 0
     minDistance: 1
     maxDistance: 20
@@ -63,7 +63,7 @@ MonoBehaviour:
     banks:
     - SFX
     isOneShot: 1
-    is3D: 1
+    is3D: 0
     isOcclusion: 0
     minDistance: 1
     maxDistance: 20
@@ -122,7 +122,7 @@ MonoBehaviour:
     banks:
     - SFX
     isOneShot: 1
-    is3D: 1
+    is3D: 0
     isOcclusion: 0
     minDistance: 1
     maxDistance: 2.2
@@ -143,7 +143,7 @@ MonoBehaviour:
     banks:
     - SFX
     isOneShot: 1
-    is3D: 1
+    is3D: 0
     isOcclusion: 0
     minDistance: 1
     maxDistance: 20
@@ -182,142 +182,6 @@ MonoBehaviour:
         Data3: -1563407949
         Data4: 1996458937
       Path: event:/Sound/Player/VoiceOver/Death
-    banks:
-    - SFX
-    isOneShot: 1
-    is3D: 1
-    isOcclusion: 0
-    minDistance: 1
-    maxDistance: 20
-    debug: 0
-    parameters: []
-  - eventName: MaceDraw
-    eventReference:
-      Guid:
-        Data1: 117038431
-        Data2: 1316967584
-        Data3: 953966527
-        Data4: 93756998
-      Path: event:/Sound/Player/Weapons/Mace/MaceDraw
-    banks:
-    - SFX
-    isOneShot: 1
-    is3D: 1
-    isOcclusion: 0
-    minDistance: 1
-    maxDistance: 20
-    debug: 0
-    parameters: []
-  - eventName: MaceSwing
-    eventReference:
-      Guid:
-        Data1: 670634877
-        Data2: 1181582949
-        Data3: 1433416865
-        Data4: -1187100018
-      Path: event:/Sound/Player/Weapons/Mace/MaceSwing
-    banks:
-    - SFX
-    isOneShot: 1
-    is3D: 1
-    isOcclusion: 0
-    minDistance: 1
-    maxDistance: 20
-    debug: 0
-    parameters: []
-  - eventName: SpearDraw
-    eventReference:
-      Guid:
-        Data1: -368424739
-        Data2: 1078631819
-        Data3: -2057157759
-        Data4: 901269589
-      Path: event:/Sound/Player/Weapons/Spear/SpearDraw
-    banks:
-    - SFX
-    isOneShot: 1
-    is3D: 1
-    isOcclusion: 0
-    minDistance: 1
-    maxDistance: 20
-    debug: 0
-    parameters: []
-  - eventName: SpearSwing
-    eventReference:
-      Guid:
-        Data1: 1245330088
-        Data2: 1259604517
-        Data3: -1634906436
-        Data4: -575427368
-      Path: event:/Sound/Player/Weapons/Spear/SpearSwing
-    banks:
-    - SFX
-    isOneShot: 1
-    is3D: 1
-    isOcclusion: 0
-    minDistance: 1
-    maxDistance: 20
-    debug: 0
-    parameters: []
-  - eventName: SwordDraw
-    eventReference:
-      Guid:
-        Data1: 1826768141
-        Data2: 1195450235
-        Data3: 665233564
-        Data4: 1390284585
-      Path: event:/Sound/Player/Weapons/Sword/SwordDraw
-    banks:
-    - SFX
-    isOneShot: 1
-    is3D: 1
-    isOcclusion: 0
-    minDistance: 1
-    maxDistance: 20
-    debug: 0
-    parameters: []
-  - eventName: SwordParry
-    eventReference:
-      Guid:
-        Data1: 1736530211
-        Data2: 1131489808
-        Data3: -516748105
-        Data4: 615583645
-      Path: event:/Sound/Player/Weapons/Sword/SwordParry
-    banks:
-    - SFX
-    isOneShot: 1
-    is3D: 1
-    isOcclusion: 0
-    minDistance: 1
-    maxDistance: 20
-    debug: 0
-    parameters: []
-  - eventName: SwordSwing
-    eventReference:
-      Guid:
-        Data1: 2099678300
-        Data2: 1108240502
-        Data3: -1972189767
-        Data4: -1576565586
-      Path: event:/Sound/Player/Weapons/Sword/SwordSwing
-    banks:
-    - SFX
-    isOneShot: 1
-    is3D: 1
-    isOcclusion: 0
-    minDistance: 1
-    maxDistance: 20
-    debug: 0
-    parameters: []
-  - eventName: SwordBlock
-    eventReference:
-      Guid:
-        Data1: -611396921
-        Data2: 1269773903
-        Data3: -551713146
-        Data4: -1597503729
-      Path: event:/Sound/Player/Weapons/Sword/SwordBlock
     banks:
     - SFX
     isOneShot: 1
@@ -399,4 +263,25 @@ MonoBehaviour:
     maxDistance: 20
     debug: 0
     parameters: []
+  - eventName: Exertion
+    eventReference:
+      Guid:
+        Data1: 387946183
+        Data2: 1160455514
+        Data3: 2103994030
+        Data4: 414259444
+      Path: event:/Sound/Player/VoiceOver/Exertion
+    banks:
+    - SFX
+    isOneShot: 0
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters:
+    - paramName: Exertion
+      isGlobal: 1
+      data1: 4188893602
+      data2: 57757614
   debug: 0
