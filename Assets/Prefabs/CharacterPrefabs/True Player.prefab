@@ -1235,8 +1235,6 @@ MonoBehaviour:
   stickSensitivity: 5
   lockedMovement: 0
   lockedCamera: 0
-  startedAttack: 0
-  startedBlock: 0
 --- !u!114 &2570910179104288855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1280,23 +1278,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfaa67e8e53598c4dbd0156e40d30511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onDealDamage:
+  OnDealDamageEvent:
     m_PersistentCalls:
       m_Calls: []
-  onGetBlocked:
+  OnGetBlockedEvent:
     m_PersistentCalls:
       m_Calls: []
-  onAttackStateChange:
+  OnAttackStateChange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8992074457306076680}
+        m_TargetAssemblyTypeName: PlayerSoundLogic, GameAssembly
+        m_MethodName: OnAttackStateChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnBlockStateChange:
     m_PersistentCalls:
       m_Calls: []
-  onBlockStateChange:
-    m_PersistentCalls:
-      m_Calls: []
-  attackState: 0
-  blockState: 0
   hasWeapon: 0
-  attacking: 0
-  blocking: 0
   weapon: {fileID: 727830195562405632}
   swordArm: {fileID: 4533973860125210449}
   core: {fileID: 5528919353053895491}
@@ -1329,6 +1335,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8992074457306076680}
+        m_TargetAssemblyTypeName: PlayerSoundLogic, GameAssembly
+        m_MethodName: OnMoveStateChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnJump:
     m_PersistentCalls:
       m_Calls:
@@ -1344,12 +1362,36 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8992074457306076680}
+        m_TargetAssemblyTypeName: PlayerSoundLogic, GameAssembly
+        m_MethodName: ChangeExhaustion
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 10
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnLand:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1354050652585229241}
         m_TargetAssemblyTypeName: Health, GameAssembly
         m_MethodName: FallingDamage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8893892476905510790}
+        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
+        m_MethodName: OnLand
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1509,6 +1551,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8992074457306076680}
+        m_TargetAssemblyTypeName: PlayerSoundLogic, GameAssembly
+        m_MethodName: ChangeExhaustion
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 20
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnDeath:
     m_PersistentCalls:
       m_Calls:
@@ -1553,7 +1607,7 @@ MonoBehaviour:
   OnHunger:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8893892476905510790}
+      - m_Target: {fileID: 8992074457306076680}
         m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
         m_MethodName: OnHungerChange
         m_Mode: 0
