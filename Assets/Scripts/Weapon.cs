@@ -20,6 +20,7 @@ public class Weapon : MonoBehaviour
         get;
         set;
     } = 1;
+    
     [SerializeField] private bool dealDamage = false;
     [SerializeField] private bool isBlocking = false;
     [SerializeField] private bool unbreakable;
@@ -70,28 +71,40 @@ public class Weapon : MonoBehaviour
     private Vector3 P3 => Quaternion.AngleAxis(Angle, Vector3.forward) * Vector3.down + Vector3.forward;
 
     #region Attack
-    
-    public bool ChargeAttack(float time) // Go from neutral to P0
+
+    /// <summary>
+    ///  Go from neutral to P0 <br/>
+    /// returns true when time is more than attack time and state machine can continue
+    /// </summary>
+    public bool ChargeAttack(float time)
     {
         SwordArm.data.targetPositionWeight = time / attackChargeTime;
         SwordArm.data.targetRotationWeight = time / attackChargeTime;
         
         AttackPositionRotation(0);
         
-        return time / attackChargeTime >= 1;
+        return time >= attackChargeTime;
     }
-    
-    public bool HoldAttack(float time) // Stay at P0
+
+    /// <summary>
+    /// Stay at P0 (with optional pos offset) <br/>
+    /// returns true when time is more than attack time and state machine can continue
+    /// </summary>
+    public bool HoldAttack(float time, float pos = 0)
     {
         SwordArm.data.targetPositionWeight = 1;
         SwordArm.data.targetRotationWeight = 1;
         
-        AttackPositionRotation(0);
-        
-        return time / attackHoldTime >= 1;
+        AttackPositionRotation(pos);
+
+        return time >= attackHoldTime;
     }
-    
-    public bool Swing(float time) // Swing along bezier curve
+
+    /// <summary>
+    /// Swing along bezier curve <br/>
+    /// returns true when time is more than attack time and state machine can continue
+    /// </summary>
+    public bool Swing(float time)
     {
         SwordArm.data.targetPositionWeight = 1;
         SwordArm.data.targetRotationWeight = 1;
@@ -100,20 +113,28 @@ public class Weapon : MonoBehaviour
         
         SetDamageActive(time / attackSwingTime > .1 && time / attackSwingTime < .9);
         
-        return time / attackSwingTime >= 1;
+        return time >= attackSwingTime;
     }
-    
-    public bool ReturnAttack(float time, float returnTime) // Go back to Neutral from P3
+
+    /// <summary>
+    /// Go back to Neutral from P3 <br/>
+    /// returns true when time is more than attack time and state machine can continue
+    /// </summary>
+    public bool ReturnAttack(float time, float returnTime)
     {
         SwordArm.data.targetPositionWeight = 1 - time/attackResetTime;
         SwordArm.data.targetRotationWeight = 1 - time/attackResetTime;
         
         AttackPositionRotation(returnTime / attackSwingTime);
         
-        return time / attackResetTime >= 1;
+        return time >= attackResetTime;
     }
-    
-    public bool RecoilAttack(float time, float cutoffTime) // Bounce back along curve to P0
+
+    /// <summary>
+    /// Bounce back along curve to P0 <br/>
+    /// returns true when time is more than attack time and state machine can continue
+    /// </summary>
+    public bool RecoilAttack(float time, float cutoffTime)
     {
         float localTime = (cutoffTime - time) / attackSwingTime;
         
@@ -124,39 +145,51 @@ public class Weapon : MonoBehaviour
         
         return localTime <= 0;
     }
-    
+
     #endregion
-    
+
     #region Block
-    
-    public bool ChargeBlock(float time) // Go from neutral to BlockPos
+
+    /// <summary>
+    /// Go from neutral to BlockPos <br/>
+    /// returns true when time is more than block time and state machine can continue
+    /// </summary>
+    public bool ChargeBlock(float time)
     {
         SwordArm.data.targetPositionWeight = time / blockChargeTime;
         SwordArm.data.targetRotationWeight = time / blockChargeTime;
         
         BlockPositionRotation(1);
         
-        return time / blockChargeTime > 1;
+        return time >= blockChargeTime;
     }
-    
-    public bool Block(float time) // Stay at BlockPos
+
+    /// <summary>
+    /// Stay at BlockPos <br/>
+    /// returns true when time is more than block time and state machine can continue
+    /// </summary>
+    public bool HoldBlock(float time)
     {
         SwordArm.data.targetPositionWeight = 1;
         SwordArm.data.targetRotationWeight = 1;
         
         BlockPositionRotation(1);
         
-        return time / blockHoldTime > 1;
+        return time >= blockHoldTime;
     }
-    
-    public bool ReturnBlock(float time) // Go back to Neutral from BlockPos
+    /// <summary>
+    /// Go back to Neutral from BlockPos <br/>
+    /// returns true when time is more than block time and state machine can continue
+    /// </summary>
+
+    public bool ReturnBlock(float time)
     {
         SwordArm.data.targetPositionWeight = 1 - time / blockReturnTime;
         SwordArm.data.targetRotationWeight = 1 - time / blockReturnTime;
         
         BlockPositionRotation(1);
         
-        return time / blockReturnTime > 1;
+        return time >= blockReturnTime;
     }
     
     #endregion
@@ -235,7 +268,7 @@ public class Weapon : MonoBehaviour
                     case "Flesh":
                         Debug.Log("Flesh");
                         OnDeflectCollision.Invoke("Flesh", transform.position);
-                        Companion.ChangeAttackState(HumanoidAttackAnimatorCompanion.AttackState.Return);
+                        Companion.OnHitFlesh();
                         break;
                 }
             }
