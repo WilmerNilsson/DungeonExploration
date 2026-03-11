@@ -139,6 +139,17 @@ public class AudioManager : MonoBehaviour
         return false;
     }
 
+    public bool TryGetEventInstance(string path, GameObject obj, out EventInstance eventInstance)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.TryGetEventInstance(path, out eventInstance, obj);
+            return true;
+        }
+        eventInstance = new EventInstance();
+        return false;
+    }
+
     #endregion
 
     #region Global Parameters
@@ -416,6 +427,7 @@ public class AudioManager : MonoBehaviour
         GetListener();
         CombatChecker.ResetCombatList();
         OnPauseEvent(false);
+        ResetGlobalParameters();
     }
 
     private void OnSceneUnloaded(Scene scene)
@@ -431,6 +443,14 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    private void ResetGlobalParameters()
+    {
+        SetGlobalParameter("Sanity", 1);
+        SetGlobalParameter("Hunger", 1);
+        SetGlobalParameter("hpRatio", 1);
+        SetGlobalParameter("Exertion", 0);
+    }
+    
     public static GameObject Listener;
 
     private static void GetListener()
