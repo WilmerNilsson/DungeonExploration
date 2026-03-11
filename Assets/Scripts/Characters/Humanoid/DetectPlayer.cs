@@ -6,6 +6,7 @@ public class DetectPlayer : MonoBehaviour
     [SerializeField, Tooltip("Automatically detects player on Start")] Transform player;
     [SerializeField, Tooltip("Where to look/hear from")] Transform head;
     private HumanoidController playerController;
+    private bool initialized = false;
 
     [Header("Vision")] 
     [SerializeField, Tooltip("full sight cone")] private float sightAngle;
@@ -18,17 +19,14 @@ public class DetectPlayer : MonoBehaviour
     [SerializeField, Tooltip("percent modifier applied to sound when player crouches, 1 is full sound 0 is no sound"), Range(0,1)] private float crouchSoundModifier;
     [SerializeField] private OcclusionChecker occlusionChecker = new OcclusionChecker();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        if (player == null)
-        {
-            player = GameObject.FindGameObjectWithTag("Player").transform;
 
-            if (player == null)
-            {
-                Debug.LogWarning("Cant find Player", this);
-                return;
-            }
+    public bool Detect(float sightThreshold, float soundThreshold, float soundRange, float maxSightDistance)
+    {
+        if (!initialized)
+        {
+            initialized = true;
+            player = PlayerTrackerSingleton.Instance.player.transform;
+            
             if (player.TryGetComponent(out HumanoidController controller))
             {
                 playerController = controller;
@@ -47,10 +45,6 @@ public class DetectPlayer : MonoBehaviour
                 Debug.LogWarning("Cant find Vision Data on Player", this);
             }
         }
-    }
-
-    public bool Detect(float sightThreshold, float soundThreshold, float soundRange, float maxSightDistance)
-    {
         return (SightDetection(maxSightDistance) > sightThreshold || SoundDetection(soundRange) > soundThreshold);
     }
 

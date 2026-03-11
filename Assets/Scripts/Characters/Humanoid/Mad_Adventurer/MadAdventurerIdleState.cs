@@ -39,7 +39,7 @@ public class MadAdventurerIdleState : MadAventurerBaseState
             MyMadAdventurerStateMachine.Transit(MyMadAdventurerStateMachine.ChasingState);
         }
         
-        if (NavMeshPath.status == NavMeshPathStatus.PathInvalid || Vector2.Distance(position, new Vector2(NavMeshPath.corners[^1].x, NavMeshPath.corners[^1].z)) < minDistanceToCorner)
+        if (NavMeshPath.status == NavMeshPathStatus.PathInvalid || NavMeshPath.corners.Length < 1 || Vector2.Distance(position, new Vector2(NavMeshPath.corners[^1].x, NavMeshPath.corners[^1].z)) < minDistanceToCorner)
         {
             FindPath(GetRandomPosition());
         }
