@@ -147,6 +147,7 @@ public class SaveFileManager
             data.PlayerSaveData.Inventory = townData.Inventory;
             data.PlayerSaveData.Equipment = townData.Equipment;
             data.PlayerSaveData.RunCount++;
+            data.DialogueContainers = townData.DialogueContainers;
         }
 
         data.DonatedWeapons = townData.DonatedWeapons;

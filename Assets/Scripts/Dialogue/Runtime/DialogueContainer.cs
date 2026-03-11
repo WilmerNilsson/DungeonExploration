@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PlasticPipe.PlasticProtocol.Messages;
 using UnityEngine;
 
 [Serializable]
@@ -51,5 +52,28 @@ public class DialogueContainer : ScriptableObject
     public void IncreaseFriendshipLevel(int amount)
     {
         FriendshipLevel += amount;
+    }
+
+    public void SetDialogueData(DialogueContainer dialogueContainer)
+    {
+        FriendshipLevel = dialogueContainer.FriendshipLevel;
+        
+        NodeLinks.Clear();
+        foreach (var nodeLink in dialogueContainer.NodeLinks)
+        {
+            NodeLinks.Add(nodeLink);
+        }
+        
+        DialogueNodeDatas.Clear();
+        foreach (var dialogueNodeData in dialogueContainer.DialogueNodeDatas)
+        {
+            DialogueNodeDatas.Add(dialogueNodeData);
+        }
+        
+        ExposedProperties.Clear();
+        foreach (var exposedProperty in dialogueContainer.ExposedProperties)
+        {
+            ExposedProperties.Add(exposedProperty);
+        }
     }
 }

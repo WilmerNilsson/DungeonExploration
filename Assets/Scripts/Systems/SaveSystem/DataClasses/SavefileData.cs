@@ -19,6 +19,7 @@ public class SavefileData
     /// </summary>
     public bool DungeonIsInitialized = false;
     public PlayerSaveData? PlayerSaveData;
+    public List<DialogueContainer> DialogueContainers;
 
     public SavefileData(SavefileSettings settings)
     {
@@ -28,7 +29,7 @@ public class SavefileData
         Dungeon = null;
     }
 
-    public SavefileData(string sceneName, int playerGold, List<string> donatedWeapons, SavefileSettings settings, DungeonSaveData? dungeon, PlayerSaveData? playerSaveData)
+    public SavefileData(string sceneName, int playerGold, List<string> donatedWeapons, SavefileSettings settings, DungeonSaveData? dungeon, PlayerSaveData? playerSaveData, List<DialogueContainer> dialogueContainers)
     {
         SceneName = sceneName;
         DonatedWeapons = donatedWeapons;
@@ -36,10 +37,11 @@ public class SavefileData
         Settings = settings;
         Dungeon = dungeon;
         PlayerSaveData = playerSaveData;
+        DialogueContainers = dialogueContainers;
     }
 
     public SavefileData Clone()
     {
-        return new SavefileData(SceneName, PlayerGold, DonatedWeapons, Settings.Clone(), Dungeon?.Clone(), PlayerSaveData?.Clone());
+        return new SavefileData(SceneName, PlayerGold, DonatedWeapons, Settings.Clone(), Dungeon?.Clone(), PlayerSaveData?.Clone(), DialogueContainers);
     }
 }
