@@ -54,26 +54,15 @@ public class DialogueContainer : ScriptableObject
         FriendshipLevel += amount;
     }
 
-    public void SetDialogueData(DialogueContainer dialogueContainer)
+    public void SetDialogueData(DialogueSaveData saveData)
     {
-        FriendshipLevel = dialogueContainer.FriendshipLevel;
+        FriendshipLevel = saveData.FriendshipLevel;
         
-        NodeLinks.Clear();
-        foreach (var nodeLink in dialogueContainer.NodeLinks)
+        for (int i = 0; i < saveData.Guid.Count; i++)
         {
-            NodeLinks.Add(nodeLink);
-        }
-        
-        DialogueNodeDatas.Clear();
-        foreach (var dialogueNodeData in dialogueContainer.DialogueNodeDatas)
-        {
-            DialogueNodeDatas.Add(dialogueNodeData);
-        }
-        
-        ExposedProperties.Clear();
-        foreach (var exposedProperty in dialogueContainer.ExposedProperties)
-        {
-            ExposedProperties.Add(exposedProperty);
+            DialogueNodeData currentNode = DialogueNodeDatas.Find(x => x.Guid  == saveData.Guid[i]);
+            currentNode.HasBeenRead = saveData.HasBeenRead[i];
+            currentNode.ReadRun = saveData.ReadRun [i];
         }
     }
 }

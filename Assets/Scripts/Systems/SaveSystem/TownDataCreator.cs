@@ -9,7 +9,7 @@ public static class TownDataCreator
         public InventorySaveData Inventory;
         public InventorySaveData Equipment;
         public List<string> DonatedWeapons;
-        public List<DialogueContainer>  DialogueContainers;
+        public List<DialogueSaveData> DialogueSaveDatas;
     }
 
     public static TownData GetTownData()
@@ -24,7 +24,7 @@ public static class TownDataCreator
         data.Inventory = helper.GetPlayerInventory();
         data.Equipment = helper.GetPlayerEquipment();
         data.DonatedWeapons = helper.GetDonatedWeapons();
-        data.DialogueContainers = helper.GetDialogueContainers();
+        data.DialogueSaveDatas = helper.GetDialogueSaveDatas();
 
         return data;
     }
