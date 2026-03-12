@@ -20,6 +20,7 @@ public class ShopCameraRotation : MonoBehaviour
    public GameObject DungeonButton;
    public GameObject MerchantButton;
    public GameObject SmithButton;
+   public GameObject exitGameButton;
 
    private bool canRotate = true;
    
@@ -67,10 +68,12 @@ public class ShopCameraRotation : MonoBehaviour
         if (CurrentIndex == 3)
         {
             ExitGameTxt.SetActive(true);
+            exitGameButton.SetActive(true);
         }
         else
         {
             ExitGameTxt.SetActive(false);
+            exitGameButton.SetActive(false);
         }
         
         
