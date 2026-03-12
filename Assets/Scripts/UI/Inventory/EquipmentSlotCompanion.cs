@@ -57,5 +57,11 @@ public class EquipmentSlotCompanion : MonoBehaviour
         {
             weapon.Unequip();
         }
+        if (humanoidAttackCompanion == null)
+        {
+            PlayerTrackerSingleton.Instance.player.TryGetComponent(out humanoidAttackCompanion);
+        }
+        
+        humanoidAttackCompanion.Unequip();
     }
 }
