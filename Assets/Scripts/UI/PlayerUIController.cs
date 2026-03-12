@@ -13,7 +13,7 @@ public class PlayerUIController : MonoBehaviour
 
     public void OnMinimap(InputAction.CallbackContext context)
     {
-        if (context.canceled) MinimapMaster.Instance.ToggleMinimap();
+        //if (context.canceled) MinimapMaster.Instance.ToggleMinimap();
     }
 
     public void OnPause(InputAction.CallbackContext context)
