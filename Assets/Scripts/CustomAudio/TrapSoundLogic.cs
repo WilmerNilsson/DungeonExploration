@@ -15,12 +15,13 @@ public class TrapSoundLogic : MonoBehaviour
       {
          emitterObject = gameObject;
       }
+      if (!AudioManager.IsValid) return;
+      AudioManager.Instance.CreateInstance(trapPath, emitterObject);
    }
 
    public void ActivateTrap()
    {
       if (!AudioManager.IsValid) return;
-      AudioManager.Instance.CreateInstance(trapPath, emitterObject);
       AudioManager.Instance.StartEvent(trapPath, emitterObject);
    }
 
@@ -33,6 +34,11 @@ public class TrapSoundLogic : MonoBehaviour
    public void StopAndRelease()
    {
       AudioManager.Instance.StopEvent(trapPath, STOP_MODE.ALLOWFADEOUT,emitterObject);
+   }
+
+   private void OnDestroy()
+   {
+      if (!AudioManager.IsValid) return;
       AudioManager.Instance.ReleaseInstance(trapPath, emitterObject);
    }
 }
