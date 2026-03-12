@@ -28,6 +28,11 @@ public class WorldFromDataCreator : MonoBehaviour
         {
             newWorldObjects.Add(container.gameObject);
         }
+
+        foreach (var item in GameObject.FindObjectsByType<ItemPickup>(FindObjectsSortMode.None))
+        {
+            newWorldObjects.Add(item.gameObject);
+        }
         if (GameManagerSO.Instance.TryConsumeSavefileData(out SavefileData? data))
         {
             if(data.Dungeon != null && data.Dungeon.Initialized)
