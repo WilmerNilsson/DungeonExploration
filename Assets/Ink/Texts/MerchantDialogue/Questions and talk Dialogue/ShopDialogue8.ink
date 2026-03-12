@@ -1,7 +1,7 @@
 #speed:0.025
 #animation:AidenPlaceholder
 #name:Aiden
-<i>ugghhhhhhh…. What the hell is wrong with me? </i>
+<i>Ugghhhhhhh…. What the hell is wrong with me? </i>
 Oh good evening madam.. I was just doing some.. Soul searching
 
 #name:Ingrid
