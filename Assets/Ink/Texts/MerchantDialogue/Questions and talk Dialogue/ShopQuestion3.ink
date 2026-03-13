@@ -4,7 +4,7 @@
 You’re from a noble house right? 
 
 #name:Aiden
-Huh? Yes why?
+Huh? Yes, why?
 
 #name:Ingrid
 Hmm, haven’t heard much about you Miraults though, what's your guy’s deal?
@@ -14,6 +14,6 @@ Hmm, haven’t heard much about you Miraults though, what's your guy’s deal?
 Well since you asked so politely. I am the only one of them currently here. The rest have business ventures elsewhere. 
 <i>The bastards…</i>
 Ehem, I assure you they are doing just fine. 
-<i>Although they could burn though for all I care.</i>
+<i>Although they could burn for all I care.</i>
 
     -> END

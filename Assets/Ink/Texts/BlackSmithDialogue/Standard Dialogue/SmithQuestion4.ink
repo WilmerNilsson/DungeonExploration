@@ -2,7 +2,7 @@
 #animation:SagaPlaceholder
 #name:Saga 
 
-Oh her? She’s doing fine. Helps out at a local inn last I heard
+Oh her? She’s doing fine. Helps out at a local inn last I heard.
 
 #name:Ingrid
 So you don't know?
