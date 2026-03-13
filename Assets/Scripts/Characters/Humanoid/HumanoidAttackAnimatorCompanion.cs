@@ -13,7 +13,8 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     [FormerlySerializedAs("onGetBlocked")] public UnityEvent OnGetBlockedEvent;
     [FormerlySerializedAs("onAttackStateChange")] public UnityEvent<AttackState> OnAttackStateChange;
     [FormerlySerializedAs("onBlockStateChange")] public UnityEvent<BlockState> OnBlockStateChange;
-    
+
+    [SerializeField, Tooltip("the min angle between the attack and straight up/down")] private float angleLimit;
     [SerializeField] private bool hasWeapon = false;
     [SerializeField] private GameObject weapon;
     [SerializeField] private TwoBoneIKConstraint swordArm; 
@@ -251,6 +252,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     {
         if (hasWeapon && !isInAnimation)
         {
+            angle = FixAngle(angle);
             weaponScript.Angle = angle;
 
             weaponScript.HoldAttack(0f, 0.2f);
@@ -270,6 +272,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     {
         if (hasWeapon && !isInAnimation)
         {
+            angle = FixAngle(angle);
             weaponScript.Angle = angle;
             currentAnimation = StartCoroutine(AttackAnimation());
         }
@@ -279,6 +282,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     {
         if (hasWeapon && !isInAnimation)
         {
+            angle = FixAngle(angle);
             weaponScript.Angle = angle;
             currentAnimation = StartCoroutine(ChargeAttackAnimaton());
         }
@@ -310,6 +314,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     {
         if (hasWeapon && !isInAnimation)
         {
+            angle = FixAngle(angle);
             weaponScript.Angle = angle;
 
             weaponScript.HoldBlock(0f);
@@ -328,6 +333,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     {
         if (hasWeapon && !isInAnimation)
         {
+            angle = FixAngle(angle);
             currentAnimation = StartCoroutine(ChargeBlockAnimaton());
             weaponScript.Angle = angle;
             Vector3 anglePos = new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), -Mathf.Cos(angle * Mathf.Deg2Rad), 0);
@@ -381,6 +387,15 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         Destroy(weapon);
         weaponScript = null;
         hasWeapon = false;
+    }
+
+    private float FixAngle(float angle)
+    {
+        if (Mathf.Abs(angle) > angleLimit)
+        {
+            angle = Mathf.Clamp(angle, -angleLimit, angleLimit);
+        }
+        return angle;
     }
 
     public void Activate()

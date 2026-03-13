@@ -293,7 +293,7 @@ public class Weapon : MonoBehaviour
 
     private void AttackPositionRotation(float time)
     {
-        HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(time));
+        HandIK.position = Head.position + RelativeRotation(GetCurvePosition(time));
         
         up = Quaternion.AngleAxis(Angle+90, Head.forward) * Head.up; // Doesnt account for head tilt
         forward = RotateVecAroundPoint(GetCurveTangent(time), Quaternion.AngleAxis(Core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
