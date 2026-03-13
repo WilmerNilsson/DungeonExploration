@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WorldFromDataCreator : MonoBehaviour
@@ -5,7 +6,7 @@ public class WorldFromDataCreator : MonoBehaviour
     [SerializeField] private ItemLibrarySO itemLibrary;
     [SerializeField] private ContainerLibrarySO containerLibrary;
     [SerializeField] private EnemyLibrarySO enemyLibrary;
-    [SerializeField] private GameObject[] newWorldObjects;
+    [SerializeField] private List<GameObject> newWorldObjects;
 #nullable enable
 
 #if DEBUG && UNITY_EDITOR
@@ -19,6 +20,19 @@ public class WorldFromDataCreator : MonoBehaviour
 
     private void Start()
     {
+        foreach (var enemy in GameObject.FindObjectsByType<SaveFileHelperEnemy>(FindObjectsSortMode.None))
+        {
+            newWorldObjects.Add(enemy.gameObject);
+        }
+        foreach (var container in GameObject.FindObjectsByType<SaveFileHelperContainer>(FindObjectsSortMode.None))
+        {
+            newWorldObjects.Add(container.gameObject);
+        }
+
+        foreach (var item in GameObject.FindObjectsByType<ItemPickup>(FindObjectsSortMode.None))
+        {
+            newWorldObjects.Add(item.gameObject);
+        }
         if (GameManagerSO.Instance.TryConsumeSavefileData(out SavefileData? data))
         {
             if(data.Dungeon != null && data.Dungeon.Initialized)

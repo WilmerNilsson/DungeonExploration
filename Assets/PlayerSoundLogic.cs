@@ -52,11 +52,13 @@ public class PlayerSoundLogic : MonoBehaviour
         {
             _exhaustion = Mathf.MoveTowards(_exhaustion, 0f, exhaustionSpeed.y * Time.fixedDeltaTime);
         }
+        AudioManager.Instance.SetGlobalParameter(exhaustionParameter, _exhaustion);
     }
 
     public void OnMoveStateChange(HumanoidMovement.moveActions moveAction)
     {
         _currentMoveAction = moveAction;
+        Debug.Log(_currentMoveAction);
     }
 
     public void OnAttackStateChange(HumanoidAttackAnimatorCompanion.AttackState state)

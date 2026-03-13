@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7493b6246a18ce4ca3407bc85a819a4, type: 3}
+  m_Name: Traps
+  m_EditorClassIdentifier: 
+  category: Traps
+  events:
+  - eventName: SpearTrap
+    eventReference:
+      Guid:
+        Data1: 1913256704
+        Data2: 1137451524
+        Data3: 994068362
+        Data4: -522122436
+      Path: event:/Sound/Ambiance/Traps/Trap
+    banks:
+    - SFX
+    isOneShot: 0
+    is3D: 1
+    isOcclusion: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters:
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
+    - paramName: Walls
+      isGlobal: 0
+      data1: 3996502556
+      data2: 1746408966
+  - eventName: SpikeWall
+    eventReference:
+      Guid:
+        Data1: 1578945364
+        Data2: 1157428439
+        Data3: 2140875451
+        Data4: -1151245455
+      Path: event:/Sound/Ambiance/Traps/SpikeWall
+    banks:
+    - SFX
+    isOneShot: 0
+    is3D: 1
+    isOcclusion: 1
+    minDistance: 1
+    maxDistance: 40
+    debug: 0
+    parameters:
+    - paramName: Walls
+      isGlobal: 0
+      data1: 3996502556
+      data2: 1746408966
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
+  - eventName: IndianaJones
+    eventReference:
+      Guid:
+        Data1: 622684027
+        Data2: 1275094152
+        Data3: -1229900116
+        Data4: -480463036
+      Path: event:/Sound/Ambiance/Traps/IndianaJones
+    banks:
+    - SFX
+    isOneShot: 0
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  debug: 0

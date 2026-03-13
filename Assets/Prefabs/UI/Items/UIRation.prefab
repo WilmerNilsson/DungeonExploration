@@ -15,6 +15,9 @@ GameObject:
   - component: {fileID: 1904539619708584076}
   - component: {fileID: 8115980146239928323}
   - component: {fileID: 4360357359780583894}
+  - component: {fileID: 9033557813987322497}
+  - component: {fileID: 4780411995402171134}
+  - component: {fileID: 2434318098988793871}
   m_Layer: 5
   m_Name: UIRation
   m_TagString: Untagged
@@ -194,3 +197,54 @@ MonoBehaviour:
     gameObject: {fileID: 0}
     followObject: 0
     parametersToSet: []
+--- !u!95 &9033557813987322497
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 49819369380350566}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 86371ff051eb84344aa01a786d38c513, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4780411995402171134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 49819369380350566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7704e0e9fcdd38459ccc708b9e6744b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationNameClick: UIItemJiggleAnimation
+  animationNameRelease: UIItemJiggleAnimation
+--- !u!114 &2434318098988793871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 49819369380350566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 758bebe94122d1c43bf7c54d1ac813de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetGraphic: {fileID: 3731366425002889705}
+  highlightCollor: {r: 0, g: 1, b: 1, a: 1}
+  supressFind: 0

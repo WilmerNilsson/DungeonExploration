@@ -33,6 +33,24 @@ public class EventList : ScriptableObject
             AudioDebug.Print("Added " + eventData.eventName + " to eventCache");
         }
     }
+
+    public bool TryGetEventInstance(string eventName, out EventInstance eventInstance, GameObject gameObject = null)
+    {
+        if (gameObject)
+        {
+            InstanceList.TryGetValue(gameObject, out eventInstance);
+            return true;
+        }
+
+        if (TryGetEvent(eventName, out var eventData))
+        {
+            eventInstance = eventData.EventInstance;
+            return true;
+        }
+
+        eventInstance = new EventInstance();
+        return false;
+    }
     
     #if UNITY_EDITOR
     [ContextMenu("Fill eventData")]

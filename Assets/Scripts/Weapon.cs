@@ -20,6 +20,7 @@ public class Weapon : MonoBehaviour
         get;
         set;
     } = 1;
+    
     [SerializeField] private bool dealDamage = false;
     [SerializeField] private bool isBlocking = false;
     [SerializeField] private bool unbreakable;
@@ -221,7 +222,8 @@ public class Weapon : MonoBehaviour
                 else if (other.gameObject.CompareTag("Flesh")) // Potential fix for ragdoll 
                 {
                     health = other.gameObject.GetComponentInParent<Health>();
-                    if (health != null)
+                    Debug.Log($"health object is {health.gameObject.name}, companion object is {Companion.gameObject.name}");
+                    if (health != null && health.gameObject != Companion.gameObject)
                     {
                         health.TakeDamage(damage);
                         LoseDurability(health.DurabilityDamage);
@@ -230,7 +232,7 @@ public class Weapon : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log($"The target {other.gameObject.name} health is NULL");
+                        Debug.Log($"The target {other.gameObject.name} health is NULL, or it was self harm");
                     }
                 }
                 switch (other.tag) // Handle Audio Visual Feedback
