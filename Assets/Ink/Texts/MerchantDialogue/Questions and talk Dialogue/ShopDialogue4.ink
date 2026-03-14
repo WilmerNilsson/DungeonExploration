@@ -16,7 +16,7 @@ Makes me real happy knowing my family was wrong about this business after all.
 Pardon?
 
 #name:Aiden
-Ehem, forget I said that. Anyways i must humbly thank you.
+Ehem, forget I said that. Anyways I must humbly thank you.
 <i>But good gods please do get a change of clothes sometime.</i>
 
     -> END

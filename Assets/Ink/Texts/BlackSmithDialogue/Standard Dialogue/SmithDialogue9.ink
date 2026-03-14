@@ -22,7 +22,7 @@ It's my son, I found him down there. He.. was dead..
 ... I'm sorry I- I didn’t know. 
 
 #name:Ingrd
-Yeah well, now I guess we have something in common
+Yeah well, now I guess we have something in common.
 
 #name:Saga
 But.. You’re still gonna go down? Is there really any more down there for you to find?

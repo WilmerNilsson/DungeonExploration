@@ -19,6 +19,6 @@ It's my- its-
 I have my reasons
 
 #name:Saga
-<i>Sigh…</i> Is that so? Well grams, whatever it is , just be careful all right? My blades will only get you so far you know?
+<i>Sigh…</i> Is that so? Well grams, whatever it is , just be careful all right? My work will only get you so far you know?
 
     -> END

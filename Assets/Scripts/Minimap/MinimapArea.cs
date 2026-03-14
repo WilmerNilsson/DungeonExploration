@@ -30,7 +30,7 @@ public class MinimapArea : MonoBehaviour
     public void DrawArea()
     {
         ReturnDecendantOfParent(gameObject, children);
-        MinimapMaster.Instance.AddToSO(children);
+        //MinimapMaster.Instance.AddToSO(children);
     }
     
     private void OnTriggerEnter(Collider other)
