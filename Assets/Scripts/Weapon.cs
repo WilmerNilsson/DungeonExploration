@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using UnityEngine.Splines;
 
 public class Weapon : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class Weapon : MonoBehaviour
     [SerializeField] private bool isBlocking = false;
     [SerializeField] private bool unbreakable;
     [SerializeField] private Collider body;
+    public Spline startSpline;
+    private float splinePosition;
     
     [Header("Attack")]
     [SerializeField, FormerlySerializedAs("angle")] public float Angle;
@@ -65,7 +68,7 @@ public class Weapon : MonoBehaviour
     private Transform HandIK => SwordArm.data.target;
     private Transform Shoulder => SwordArm.data.root;
     
-    private Vector3 P0 => Quaternion.AngleAxis(Angle, Vector3.forward) * Vector3.up;
+    private Vector3 P0 => startSpline.EvaluatePosition(splinePosition);
     private Vector3 P1 => Vector3.Lerp(P0,P3,startBend/2) + Vector3.forward * curveHeight;
     private Vector3 P2 => Vector3.Lerp(P0,P3,1-endBend/2) + Vector3.forward * curveHeight;
     private Vector3 P3 => Quaternion.AngleAxis(Angle, Vector3.forward) * Vector3.down + Vector3.forward;
@@ -90,14 +93,15 @@ public class Weapon : MonoBehaviour
     /// Stay at P0 (with optional pos offset) <br/>
     /// returns true when time is more than attack time and state machine can continue
     /// </summary>
-    public bool HoldAttack(float time, float pos = 0)
+    public void HoldAttack(float percentage)
     {
         SwordArm.data.targetPositionWeight = 1;
         SwordArm.data.targetRotationWeight = 1;
         
-        AttackPositionRotation(pos);
-
-        return time >= attackHoldTime;
+        splinePosition = percentage;
+        
+        AttackPositionRotation(0);
+        HandIK.position = Companion.transform.position + RelativeRotation(P0);
     }
 
     /// <summary>
@@ -211,7 +215,6 @@ public class Weapon : MonoBehaviour
             Debug.Log($"OnTriggerEnter name {other.gameObject.name} tag {other.gameObject.tag}");
             if (!transform.IsChildOf(other.transform))
             {
-                dealDamage = false;
                 if (other.TryGetComponent(out Health health))
                 {
                     health.TakeDamage(damage);
@@ -223,7 +226,8 @@ public class Weapon : MonoBehaviour
                 {
                     health = other.gameObject.GetComponentInParent<Health>();
                     Debug.Log($"health object is {health.gameObject.name}, companion object is {Companion.gameObject.name}");
-                    if (health != null && health.gameObject != Companion.gameObject)
+                    if (health.gameObject == Companion.gameObject) return;
+                    if (health != null)
                     {
                         health.TakeDamage(damage);
                         LoseDurability(health.DurabilityDamage);
@@ -273,6 +277,7 @@ public class Weapon : MonoBehaviour
                         break;
                 }
             }
+            dealDamage = false;
         }
     }
     
@@ -342,11 +347,8 @@ public class Weapon : MonoBehaviour
     private void OnDrawGizmos()
     {
         if (Head == null) return;
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(Head.position + RelativeRotation(blockAnglePos), 0.1f);
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(Head.position + RelativeRotation(blockOffsetPos), 0.1f);
+        
+        Gizmos.DrawSphere(Head.transform.position + Vector3.ClampMagnitude(RelativeRotation(P0), P0.magnitude), .2f);
     }
 #endif
 

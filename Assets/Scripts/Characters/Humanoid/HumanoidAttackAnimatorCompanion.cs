@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using UnityEngine.Splines;
 
 public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 {
@@ -21,12 +22,12 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     [SerializeField] private Transform core;
     [SerializeField] private Transform head;
     [SerializeField] private Transform hand;
+
+    [SerializeField] private SplineContainer swordSplineContainer;
     
     private float startTime;
-    private float TimeFromStartOfAnimation
-    {
-        get { return Time.time - startTime; }
-    }
+    private float TimeFromStartOfAnimation => Time.time - startTime;
+    
     private float cutoffTime; // to track how far into attack it has to reverse
     private float returnTime; // What time of the previous swing to return from
     private Weapon weaponScript;
@@ -54,6 +55,11 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         Return
     }
 
+    private Vector3 GetPosition(float percentage)
+    {
+        return swordSplineContainer.EvaluatePosition(0, percentage);
+    }
+
     private void Start()
     {
         if (weapon == null)
@@ -67,38 +73,11 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
             weaponScript.SwordArm = swordArm;
             weaponScript.Head = head;
             weaponScript.Core = core;
+            weaponScript.startSpline = swordSplineContainer[0];
         }
     }
 
     #region AttackAnimations
-    private IEnumerator ChargeAttackAnimaton()
-    {
-        isInAnimation = true;
-        startTime = Time.time;
-        OnAttackStateChange?.Invoke(AttackState.Charge);
-
-        yield return new WaitUntil(ChargePart);
-
-        startTime = Time.time;
-        OnAttackStateChange?.Invoke(AttackState.Hold);
-
-        yield return new WaitUntil(HoldPart);
-
-        isInAnimation = false;
-
-        currentAnimation = StartCoroutine(AttackAnimation());
-
-
-        bool ChargePart()
-        {
-            return weaponScript.ChargeAttack(TimeFromStartOfAnimation);
-        }
-
-        bool HoldPart()
-        {
-            return weaponScript.HoldAttack(TimeFromStartOfAnimation);
-        }
-    }
 
     //WaitUntill is between UpdateAndLateUpdate
     private IEnumerator AttackAnimation()
@@ -239,15 +218,6 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     #region AttackInput
 
-    //not sure what this is
-    //public void PrepareAttack(float angle)
-    //{
-    //    if (hasWeapon && !attacking && !blocking)
-    //    {
-    //        weaponScript.Angle = angle;
-    //    }
-    //}
-
     public void HoldAttackUpdate(float angle)
     {
         if (hasWeapon && !isInAnimation)
@@ -255,13 +225,15 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
             angle = FixAngle(angle);
             weaponScript.Angle = angle;
 
-            weaponScript.HoldAttack(0f, 0.2f);
+            float percentage = angle / (360 - (angleLimit * 2f));
+            
+            weaponScript.HoldAttack(percentage);
         }
     }
 
     public void HoldAttack(bool start)
     {
-        if (hasWeapon && !isInAnimation && ! start)
+        if (hasWeapon && !isInAnimation && !start)
         {
             swordArm.data.targetPositionWeight = 0;
             swordArm.data.targetRotationWeight = 0;
@@ -275,16 +247,6 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
             angle = FixAngle(angle);
             weaponScript.Angle = angle;
             currentAnimation = StartCoroutine(AttackAnimation());
-        }
-    }
-
-    public void AttackWithChargeupp(float angle)
-    {
-        if (hasWeapon && !isInAnimation)
-        {
-            angle = FixAngle(angle);
-            weaponScript.Angle = angle;
-            currentAnimation = StartCoroutine(ChargeAttackAnimaton());
         }
     }
 
@@ -379,6 +341,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         weaponScript.SwordArm = swordArm;
         weaponScript.Head = head;
         weaponScript.Core = core;
+        weaponScript.startSpline = swordSplineContainer[0];
         return true;
     }
 
@@ -391,10 +354,8 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     private float FixAngle(float angle)
     {
-        if (Mathf.Abs(angle) > angleLimit)
-        {
-            angle = Mathf.Clamp(angle, -angleLimit, angleLimit);
-        }
+        angle = Mathf.Clamp(angle, angleLimit, 360 - angleLimit);
+        
         return angle;
     }
 
