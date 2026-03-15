@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6102444295299989820}
   - component: {fileID: 3180358397132943757}
   - component: {fileID: 5987268280381358258}
+  - component: {fileID: 4641573673276006305}
   m_Layer: 12
   m_Name: PlayerSoundLogic
   m_TagString: Untagged
@@ -127,3 +128,26 @@ MonoBehaviour:
   exhaustionMax: 100
   exhaustionSpeed: {x: 4, y: 5}
   swingExhaustionDelta: 5
+--- !u!114 &4641573673276006305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6648800717029763194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36d28082ad1e01a448456a9396ba33e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tickLength: 0
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 17664
+  spread: 4
+  bounceValue: 0.25
+  maxBounces: 5
+  linesOnEitherSide: 2
+  objectsToCheck: 4
+  drawDebug: 1
+  debugMsg: 1
