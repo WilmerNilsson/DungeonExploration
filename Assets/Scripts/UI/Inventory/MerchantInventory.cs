@@ -133,7 +133,7 @@ public class MerchantInventory : MonoBehaviour
         }
         else if(ActiveGrid.TryPlaceItem(item))
         {
-            playerCashSO.AddCash(item.CashValue);
+            playerCashSO.AddCash(item.CashValueSell);
             return true;
         }
         else return false;
@@ -145,14 +145,31 @@ public class MerchantInventory : MonoBehaviour
     }
     public virtual bool CanAfford(SimpleItem item)
     {
-        return playerCashSO.CanAfford(item.CashValue);
+        if(buyIsActiveGrid)
+        {
+            return playerCashSO.CanAfford(item.CashValueBuy);
+        }
+        else
+        {
+            return playerCashSO.CanAfford(item.CashValueSell);
+        }
     }
 
     public virtual void BuyItem(SimpleItem item)
     {
-        if(!playerCashSO.TryBuy(item.CashValue))
+        if (buyIsActiveGrid)
         {
-            Debug.LogError("failed to buy item", this);
+            if (!playerCashSO.TryBuy(item.CashValueBuy))
+            {
+                Debug.LogError("failed to buy item", this);
+            }
+        }
+        else
+        {
+            if (!playerCashSO.TryBuy(item.CashValueSell))
+            {
+                Debug.LogError("failed to buy already sold item", this);
+            }
         }
     }
 
@@ -160,7 +177,15 @@ public class MerchantInventory : MonoBehaviour
     {
         if (startHover)
         {
-            SetGoldValueText(simpleItem.CashValue.ToString());
+            if(buyIsActiveGrid && simpleItem.GridIsCurrent(ActiveGrid))
+            {
+                SetGoldValueText(simpleItem.CashValueBuy.ToString());
+            }
+            else
+            {
+                SetGoldValueText(simpleItem.CashValueSell.ToString());
+            }
+            
             SetDescriptionText(simpleItem.GetDescription());
         }
         else
