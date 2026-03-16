@@ -31,8 +31,8 @@ public class MinimapMaster : MonoBehaviour
 
     private void Start()
     {
-        Instance = this;
         minimap.SetActive(false);
+        SpawnMinimap();
     }
 
     // Update is called once per frame
@@ -43,13 +43,17 @@ public class MinimapMaster : MonoBehaviour
 
     private void Awake()
     {
-        SpawnMinimap();
+        Instance = this;
     }
 
     public void AddToSO(List<MinimapPart> children)
     {
         foreach (MinimapPart child in children)
         {
+            if (child.prefab == null)
+            {
+                continue;
+            }
             minimapSoTest.AddToLists(child.prefab, child.transform, child.GetRotatedBounds());
         }
     }
@@ -61,9 +65,9 @@ public class MinimapMaster : MonoBehaviour
             Destroy(spawnedObjects[i]);
         }
         spawnedObjects.Clear();
-        for (int i = 0; i < minimapSoTest.minimapObjects.Count; i++)
+        for (int i = 0; i < minimapSoTest.prefabNames.Count; i++)
         {
-            GameObject currentMinimap = Instantiate(minimapSoTest.minimapObjects[i], transform);
+            GameObject currentMinimap = Instantiate(minimapSoTest.GetPrefabByName(minimapSoTest.prefabNames[i]), transform);
             currentMinimap.transform.position = minimapSoTest.minimapPositions[i];
             currentMinimap.transform.eulerAngles = minimapSoTest.minimapRotations[i];
             currentMinimap.transform.localScale = minimapSoTest.minimapScales[i];
@@ -97,5 +101,15 @@ public class MinimapMaster : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         GameManagerSO.Instance.LockMouse(false);
+    }
+
+    public void UnlockFullMinimap()
+    {
+        Debug.Log("Unlocking full minimap");
+        foreach (var area in FindObjectsByType<MinimapArea>(FindObjectsSortMode.None))
+        {
+            area.DrawArea();
+        }
+        SpawnMinimap();
     }
 }
