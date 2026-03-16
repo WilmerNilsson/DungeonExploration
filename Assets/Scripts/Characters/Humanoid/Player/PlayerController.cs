@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour
 
             if(Vector2.Distance(mouseStart, mouseEnd) > 10)
             {
+                Debug.Log($"up {Vector2.SignedAngle(Vector2.up, (mouseEnd - mouseStart))}, down {Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart))}");
                 controller.PrepareAttackUpdate(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)) + 180);
             }
         }
@@ -71,7 +72,7 @@ public class PlayerController : MonoBehaviour
 
             if (Vector2.Distance(mouseStart, mouseEnd) > 10)
             {
-                controller.HoldBlockUpdate(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
+                controller.HoldBlockUpdate(Vector2.SignedAngle(Vector2.up, (mouseEnd - mouseStart)) + 180);
             }
         }
     }
@@ -177,25 +178,17 @@ public class PlayerController : MonoBehaviour
             mouseStart = Mouse.current.position.ReadValue();
             startedBlock = true;
             GameManagerSO.Instance.LockCamera(true);
-#if !DebugAttacks
             controller.HoldBlock(true);
-#endif
         }
         if (context.canceled && startedBlock)
         {
-#if !DebugAttacks
             controller.HoldBlock(false);
-#endif
 
             mouseEnd = Mouse.current.position.ReadValue();
             startedBlock = false;
             if (Vector2.Distance(mouseStart, mouseEnd) > 10)
             {
-#if DebugAttacks
-                controller.BlockWithCharge(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
-#else
                 //parry here
-#endif
             }
             GameManagerSO.Instance.LockCamera(false);
         }

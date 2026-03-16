@@ -71,7 +71,6 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
             weaponScript.startSpline = swordSplineContainer[0];
         }
         CalculateAngleLimit();
-        Debug.Log(angleLimit);
     }
 
     #region AttackAnimations
@@ -157,41 +156,39 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     #region BlockAnimations
 
-    private IEnumerator ChargeBlockAnimaton()
-    {
-        isInAnimation = true;
-        startTime = Time.time;
-
-        OnBlockStateChange?.Invoke(BlockState.Charge);
-
-        yield return new WaitUntil(ChargePart);
-
-        startTime = Time.time;
-        weaponScript.SetBlockActive(true);
-
-        OnBlockStateChange?.Invoke(BlockState.Block);
-
-        yield return new WaitUntil(HoldPart);
-
-        weaponScript.SetBlockActive(false);
-
-        isInAnimation = false;
-
-        currentAnimation = StartCoroutine(ReturnBlockAnimation());
-
-
-        bool ChargePart()
-        {
-            return weaponScript.ChargeBlock(TimeFromStartOfAnimation);
-        }
-
-        bool HoldPart()
-        {
-            return weaponScript.HoldBlock(TimeFromStartOfAnimation);
-        }
-
-
-    }
+    // private IEnumerator ChargeBlockAnimation()
+    // {
+    //     isInAnimation = true;
+    //     startTime = Time.time;
+    //
+    //     OnBlockStateChange?.Invoke(BlockState.Charge);
+    //
+    //     yield return new WaitUntil(ChargePart);
+    //
+    //     startTime = Time.time;
+    //     weaponScript.SetBlockActive(true);
+    //
+    //     OnBlockStateChange?.Invoke(BlockState.Block);
+    //
+    //     yield return new WaitUntil(HoldPart);
+    //
+    //     weaponScript.SetBlockActive(false);
+    //
+    //     isInAnimation = false;
+    //
+    //     currentAnimation = StartCoroutine(ReturnBlockAnimation());
+    //
+    //
+    //     bool ChargePart()
+    //     {
+    //         return weaponScript.ChargeBlock(TimeFromStartOfAnimation);
+    //     }
+    //
+    //     bool HoldPart()
+    //     {
+    //         return weaponScript.HoldBlock(TimeFromStartOfAnimation);
+    //     }
+    // }
 
     //WaitUntill is between UpdateAndLateUpdate
     private IEnumerator ReturnBlockAnimation()
@@ -274,34 +271,18 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         {
             angle = FixAngle(angle);
             weaponScript.Angle = angle;
-
-            weaponScript.HoldBlock(0f);
-            Vector3 anglePos = new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), -Mathf.Cos(angle * Mathf.Deg2Rad), 0);
-            Vector3 offsetPos = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0);
-            if (angle > 0)
-            {
-                offsetPos = -offsetPos;
-            }
-            weaponScript.BlockPos = anglePos;
-            weaponScript.BlockOffset = offsetPos;
-        }
-    }
-
-    public void BlockWithChargeup(float angle)
-    {
-        if (hasWeapon && !isInAnimation)
-        {
-            angle = FixAngle(angle);
-            currentAnimation = StartCoroutine(ChargeBlockAnimaton());
-            weaponScript.Angle = angle;
-            Vector3 anglePos = new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), -Mathf.Cos(angle * Mathf.Deg2Rad), 0);
-            Vector3 offsetPos = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0);
-            if (angle > 0)
-            {
-                offsetPos = -offsetPos;
-            }
-            weaponScript.BlockPos = anglePos;
-            weaponScript.BlockOffset = offsetPos;
+            
+            float percentage = (angle-angleLimit) / (360f-angleLimit*2f);
+            
+            weaponScript.HoldBlock(percentage);
+            // Vector3 anglePos = new Vector3(Mathf.Sin(angle * Mathf.Deg2Rad), -Mathf.Cos(angle * Mathf.Deg2Rad), 0);
+            // Vector3 offsetPos = new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad), 0);
+            // if (angle > 0)
+            // {
+            //     offsetPos = -offsetPos;
+            // }
+            // weaponScript.BlockPos = anglePos;
+            // weaponScript.BlockOffset = offsetPos;
         }
     }
 

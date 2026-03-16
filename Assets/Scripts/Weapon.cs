@@ -161,7 +161,7 @@ public class Weapon : MonoBehaviour
         SwordArm.data.targetPositionWeight = time / blockChargeTime;
         SwordArm.data.targetRotationWeight = time / blockChargeTime;
         
-        BlockPositionRotation(1);
+        BlockPositionRotation();
         
         return time >= blockChargeTime;
     }
@@ -170,14 +170,14 @@ public class Weapon : MonoBehaviour
     /// Stay at BlockPos <br/>
     /// returns true when time is more than block time and state machine can continue
     /// </summary>
-    public bool HoldBlock(float time)
+    public void HoldBlock(float percentage)
     {
         SwordArm.data.targetPositionWeight = 1;
         SwordArm.data.targetRotationWeight = 1;
         
-        BlockPositionRotation(1);
+        splinePosition = percentage;
         
-        return time >= blockHoldTime;
+        BlockPositionRotation();
     }
     /// <summary>
     /// Go back to Neutral from BlockPos <br/>
@@ -189,13 +189,14 @@ public class Weapon : MonoBehaviour
         SwordArm.data.targetPositionWeight = 1 - time / blockReturnTime;
         SwordArm.data.targetRotationWeight = 1 - time / blockReturnTime;
         
-        BlockPositionRotation(1);
+        BlockPositionRotation();
         
         return time >= blockReturnTime;
     }
     
     #endregion
 
+    #region Collision
     public void SetDamageActive(bool value)
     {
         dealDamage = value;
@@ -292,24 +293,37 @@ public class Weapon : MonoBehaviour
         }
     }
     
+    #endregion
+    
     #region Support Functions
 
     private void AttackPositionRotation(float time)
     {
         HandIK.position = Head.position + RelativeRotation(GetCurvePosition(time));
         
-        up = Quaternion.AngleAxis(Angle-90, Head.forward) * Head.up;
-        Debug.DrawRay(HandIK.position, up, Color.green);
-        forward = RotateVecAroundPoint(GetCurveTangent(time), Quaternion.AngleAxis(Core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
-        Debug.DrawRay(HandIK.position, forward, Color.blue); 
-        HandIK.rotation = Quaternion.LookRotation(up, forward);
+        //The direction the sword points
+        forward = Quaternion.AngleAxis(Angle-90, Head.forward) * Head.up; 
+        // the direction of the knuckles
+        up = RotateVecAroundPoint(GetCurveTangent(time), Quaternion.AngleAxis(Core.transform.eulerAngles.y, Vector3.up), Vector3.zero);
+        
+        HandIK.rotation = Quaternion.LookRotation(forward, up);
     }
 
-    private void BlockPositionRotation(float time)
+    private void BlockPositionRotation()
     {
-        HandIK.position = Head.position + RelativeRotation((blockAnglePos + blockOffsetPos).normalized * blockDistance + Vector3.forward * 0.5f);
+        Vector3 position = Head.transform.TransformPoint(P0);
+        HandIK.position = Head.position + position;
         
-        HandIK.rotation = Quaternion.LookRotation(RelativeRotation((Vector3.forward * Angle).normalized), RelativeRotation(blockAnglePos + blockOffsetPos * 0.5f));
+        //HandIK.rotation = Quaternion.LookRotation(RelativeRotation((Vector3.forward * Angle).normalized), RelativeRotation(blockAnglePos + blockOffsetPos * 0.5f));
+        
+        up = new (position.x, position.y, P0.z + .5f);
+        forward = Head.forward * -(Angle - 180);
+        Debug.DrawRay(HandIK.position, HandIK.up, Color.green);
+        Debug.DrawRay(HandIK.position, HandIK.forward, Color.blue);
+        Debug.DrawRay(HandIK.position, HandIK.right, Color.red);
+        Debug.Log($"up {up}, forward {forward}");
+        
+        HandIK.rotation = Quaternion.LookRotation(forward, up);
     }
     private Vector3 RelativeRotation(Vector3 rotation)
     {
@@ -345,19 +359,20 @@ public class Weapon : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        if (startSpline != null)
-        {
-            Gizmos.color = Color.blue;
-            for (float i = 0; i < 1; i+=.01f)
-            {
-                Vector3 position = Head.transform.TransformPoint(GetCurvePosition(i));
-                Gizmos.DrawSphere(position, .01f);
-            }
-        }
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(P0,.1f);
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(P3,.1f);
+        // if (startSpline != null)
+        // {
+        //     Gizmos.color = Color.blue;
+        //     for (float i = 0; i < 1; i+=.01f)
+        //     {
+        //         Vector3 position = Head.transform.TransformPoint(startSpline.EvaluatePosition(i));
+        //         Vector3 direction = startSpline.EvaluateTangent(i);
+        //         Gizmos.DrawRay(position, direction.normalized * 0.1f);
+        //     }
+        // }
+        // Gizmos.color = Color.green;
+        // Gizmos.DrawSphere(P0,.1f);
+        // Gizmos.color = Color.red;
+        // Gizmos.DrawSphere(P3,.1f);
     }
 #endif
 
