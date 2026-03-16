@@ -36,7 +36,6 @@ public class WorldFromDataCreator : MonoBehaviour
         }
         if (GameManagerSO.Instance.SavefileManager.TryConsumeSavefileData(out SavefileData? data))
         {
-            
             if (data.DialogueSaves.Count > 0)
             {
                 for (int i = 0; i < data.DialogueSaves.Count; i++)
@@ -97,10 +96,24 @@ public class WorldFromDataCreator : MonoBehaviour
             InitializeContainers(dungeonSaveData);
             InitializeEnemies(dungeonSaveData);
             InitializeDroppedItems(dungeonSaveData);
+            InitializeEnabledObjects(dungeonSaveData);
         }
 
 
         InitializePlayer(playerSaveData);
+
+        void InitializeEnabledObjects(DungeonSaveData data)
+        {
+            EnabledHelperCompanion[] enabledHelpers = GameObject.FindObjectsByType<EnabledHelperCompanion>(FindObjectsSortMode.InstanceID);
+
+            for (int i = 0; i < enabledHelpers.Length; i++)
+            {
+                if (data.EnabledObjects[i]) //we prob want a range check here
+                {
+                    enabledHelpers[i].EnableFromSave();
+                }
+            }
+        }
 
         void InitializePlayer(PlayerSaveData? playerSaveData)
         {

@@ -32,10 +32,7 @@ public class Rope : MonoBehaviour
     {
         if (InvMasterBase.Instance.PlayerInventory.HasItemID("Rep", out SimpleItem item))
         {
-            Top.gameObject.SetActive(true);
-            Bottom.gameObject.SetActive(true);
-            piton.gameObject.SetActive(true);
-            crack.enabled = false;
+            EnableRopeNoInvoke();
             InvMasterBase.Instance.DestroyItem(item);
             onTryActivateRope.Invoke(true);
         }
@@ -43,6 +40,14 @@ public class Rope : MonoBehaviour
         {
             onTryActivateRope.Invoke(false);
         }
+    }
+
+    private void EnableRopeNoInvoke()
+    {
+        Top.gameObject.SetActive(true);
+        Bottom.gameObject.SetActive(true);
+        piton.gameObject.SetActive(true);
+        crack.enabled = false;
     }
 
     public void Climb()
