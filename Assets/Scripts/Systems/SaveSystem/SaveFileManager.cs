@@ -133,7 +133,7 @@ public class SaveFileManager
         SavefileData data = ReadSavefile(CurrentSavefileNr); //we prob want to keep track of journals in real time aswell
         Debug.Log("reading save to get full data, need to split it up better");
 
-        SaveDataCreator.CreateWorldData(out data.Dungeon, out data.PlayerSaveData);
+        SaveDataCreator.CreateWorldData(out data.Dungeon, out data.PlayerSaveData, out data.DialogueSaves);
         if (newScene != null)
         {
             data.SceneName = newScene;
