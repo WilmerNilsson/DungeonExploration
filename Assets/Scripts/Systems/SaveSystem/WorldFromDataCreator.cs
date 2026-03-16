@@ -33,7 +33,7 @@ public class WorldFromDataCreator : MonoBehaviour
         {
             newWorldObjects.Add(item.gameObject);
         }
-        if (GameManagerSO.Instance.TryConsumeSavefileData(out SavefileData? data))
+        if (GameManagerSO.Instance.SavefileManager.TryConsumeSavefileData(out SavefileData? data))
         {
             if(data.Dungeon != null && data.Dungeon.Initialized)
             {

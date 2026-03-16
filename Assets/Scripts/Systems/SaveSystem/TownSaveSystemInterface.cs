@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TownFromDataCreator : MonoBehaviour
+public class TownSaveSystemInterface : MonoBehaviour
 {
     [SerializeField] private PlayerCashSO playerCashSO;
     [SerializeField] private ItemLibrarySO itemLibrary;
@@ -22,7 +22,7 @@ public class TownFromDataCreator : MonoBehaviour
 
     private void Start()
     {
-        if(GameManagerSO.Instance.TryConsumeSavefileData(out SavefileData? data))
+        if(GameManagerSO.Instance.SavefileManager.TryConsumeSavefileData(out SavefileData? data))
         {
             //if world is null let it throw error
 
