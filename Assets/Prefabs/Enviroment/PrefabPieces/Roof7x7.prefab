@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2866252970153076021}
   - component: {fileID: 5434131464542399579}
   - component: {fileID: 4845131097124459476}
-  - component: {fileID: 2058231814407816266}
+  - component: {fileID: -5231706888082363132}
   m_Layer: 14
   m_Name: Roof7x7
   m_TagString: Stone
@@ -330,8 +330,8 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 514675710666790907}
   m_Mesh: {fileID: 0}
---- !u!65 &2058231814407816266
-BoxCollider:
+--- !u!64 &-5231706888082363132
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -348,6 +348,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 7, y: 1, z: 7}
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
