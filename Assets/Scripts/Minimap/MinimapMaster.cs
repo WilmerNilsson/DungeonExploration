@@ -31,8 +31,8 @@ public class MinimapMaster : MonoBehaviour
 
     private void Start()
     {
-        Instance = this;
         minimap.SetActive(false);
+        SpawnMinimap();
     }
 
     // Update is called once per frame
@@ -43,7 +43,7 @@ public class MinimapMaster : MonoBehaviour
 
     private void Awake()
     {
-        SpawnMinimap();
+        Instance = this;
     }
 
     public void AddToSO(List<MinimapPart> children)
@@ -63,6 +63,7 @@ public class MinimapMaster : MonoBehaviour
         spawnedObjects.Clear();
         for (int i = 0; i < minimapSoTest.minimapObjects.Count; i++)
         {
+            Debug.Log(transform.position);
             GameObject currentMinimap = Instantiate(minimapSoTest.minimapObjects[i], transform);
             currentMinimap.transform.position = minimapSoTest.minimapPositions[i];
             currentMinimap.transform.eulerAngles = minimapSoTest.minimapRotations[i];
