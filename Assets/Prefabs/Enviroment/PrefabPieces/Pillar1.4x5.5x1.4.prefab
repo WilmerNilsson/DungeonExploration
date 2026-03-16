@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 5729919641225207745}
   - component: {fileID: 7939355636685280075}
   - component: {fileID: 2086989424357721542}
-  - component: {fileID: 537020175857990323}
   - component: {fileID: 1448715221913129936}
   - component: {fileID: 7968467405513003129}
+  - component: {fileID: 5156238278496101504}
   m_Layer: 10
   m_Name: Pillar1.4x5.5x1.4
   m_TagString: Stone
@@ -332,28 +332,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3518942949318008455}
   m_Mesh: {fileID: 0}
---- !u!64 &537020175857990323
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3518942949318008455}
-  m_Material: {fileID: 13400000, guid: 32564baed6a89b442ac5ed38abe23a96, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!208 &1448715221913129936
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -382,4 +360,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fe38f654fc77314b9c8a03e822a8aaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 3518942949318008455, guid: c09dbab89a8cb8e4fbd34683eb41acdb, type: 3}
+  prefab: {fileID: 8518117129214651083, guid: c09dbab89a8cb8e4fbd34683eb41acdb, type: 3}
+--- !u!65 &5156238278496101504
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3518942949318008455}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.4, y: 5.5, z: 1.4}
+  m_Center: {x: 0, y: 0, z: 0}
