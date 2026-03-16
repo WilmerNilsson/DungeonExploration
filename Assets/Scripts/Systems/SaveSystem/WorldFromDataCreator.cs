@@ -7,6 +7,7 @@ public class WorldFromDataCreator : MonoBehaviour
     [SerializeField] private ContainerLibrarySO containerLibrary;
     [SerializeField] private EnemyLibrarySO enemyLibrary;
     [SerializeField] private List<GameObject> newWorldObjects;
+    [SerializeField] public List<DialogueContainer> dialogueContainers;
 #nullable enable
 
 #if DEBUG && UNITY_EDITOR
@@ -35,6 +36,14 @@ public class WorldFromDataCreator : MonoBehaviour
         }
         if (GameManagerSO.Instance.SavefileManager.TryConsumeSavefileData(out SavefileData? data))
         {
+            
+            if (data.DialogueSaves.Count > 0)
+            {
+                for (int i = 0; i < data.DialogueSaves.Count; i++)
+                {
+                    dialogueContainers.Find(x => x.name == data.DialogueSaves[i].TreeName).SetDialogueData(data.DialogueSaves[i]);
+                }
+            }
             if(data.Dungeon != null && data.Dungeon.Initialized)
             {
                 DestoryNewWorld();
