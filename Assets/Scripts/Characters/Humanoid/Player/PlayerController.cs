@@ -163,7 +163,7 @@ public class PlayerController : MonoBehaviour
             startedAttack = false;
             if (Vector2.Distance(mouseStart, mouseEnd) > 10)
             {
-                controller.Attack(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
+                controller.Attack(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)) + 180);
             }
             GameManagerSO.Instance.LockCamera(false);
         }

@@ -219,10 +219,9 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     {
         if (hasWeapon && !isInAnimation)
         {
-            float percentage = (angle) / (360f);
             angle = FixAngle(angle);
             weaponScript.Angle = angle;
-
+            float percentage = (angle-angleLimit) / (360f-angleLimit*2f);
             
             weaponScript.HoldAttack(percentage);
         }

@@ -298,7 +298,7 @@ public class Weapon : MonoBehaviour
     {
         HandIK.position = Head.position + RelativeRotation(GetCurvePosition(time));
         
-        up = Quaternion.AngleAxis(Angle+90, Head.forward) * Head.up;
+        up = Quaternion.AngleAxis(Angle-90, Head.forward) * Head.up;
         Debug.DrawRay(HandIK.position, up, Color.green);
         forward = RotateVecAroundPoint(GetCurveTangent(time), Quaternion.AngleAxis(Core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
         Debug.DrawRay(HandIK.position, forward, Color.blue); 
