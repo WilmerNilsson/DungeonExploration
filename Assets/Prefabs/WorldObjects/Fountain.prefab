@@ -141,6 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f58a3f488e2be34d94a421e17b6a95f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canInteract: 1
   OnInteract:
     m_PersistentCalls:
       m_Calls:
@@ -156,10 +157,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 6190631081220298327}
-        m_TargetAssemblyTypeName: Sanity, GameAssembly
-        m_MethodName: 
-        m_Mode: 3
+      - m_Target: {fileID: 718146616544761044}
+        m_TargetAssemblyTypeName: Interactable, GameAssembly
+        m_MethodName: SetInteractability
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
