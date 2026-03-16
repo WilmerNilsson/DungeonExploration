@@ -19,7 +19,7 @@ But even still… I constantly got told about my predecessors and their accompli
 But I guess Adrien here was never worth talking about. Poor guy…
 
 #name:Ingrid
-Well, I'm at least happy you didn't have to share their fate 
+Well, I'm at least happy you didn't have to share their fate. 
 
 #name:Saga
 Yeah.. I guess.
