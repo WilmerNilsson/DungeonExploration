@@ -12,13 +12,17 @@ public static class SaveDataCreator
         public List<DialogueSaveData> DialogueSaveDatas;
     }
 
-    public static void CreateWorldData(out DungeonSaveData dungeonSaveData, out PlayerSaveData playerSaveData)
+    public static void CreateWorldData(out DungeonSaveData dungeonSaveData, out PlayerSaveData playerSaveData, out List<DialogueSaveData> dialogueSaveDatas)
     {
         dungeonSaveData = new();
 
         AddContainerData(dungeonSaveData);
         AddDroppedItemData(dungeonSaveData);
         AddEnemyData(dungeonSaveData);
+        
+        dialogueSaveDatas = new();
+        AddDialogueData(dialogueSaveDatas);
+        
 
         playerSaveData = GameObject.FindAnyObjectByType<SaveFileHelperPlayer>(FindObjectsInactive.Exclude).GetData();
         dungeonSaveData.Initialized = true;
@@ -63,6 +67,21 @@ public static class SaveDataCreator
             foreach (SaveFileHelperContainer helper in saveFileHelperContainers)
             {
                 dungeonSaveData.Containers.Add(helper.GetData());
+            }
+        }
+
+        static void AddDialogueData(List<DialogueSaveData> dialogueSaveData)
+        {
+            WorldFromDataCreator worldFromDataCreator = GameObject.FindAnyObjectByType<WorldFromDataCreator>();
+            if (worldFromDataCreator == null)
+            {
+                Debug.Log("No worldFromDataCreator found");
+                return;
+            }
+
+            for (int i = 0; i < worldFromDataCreator.dialogueContainers.Count; i++)
+            {
+                dialogueSaveData.Add(new DialogueSaveData(worldFromDataCreator.dialogueContainers[i]));
             }
         }
     }
