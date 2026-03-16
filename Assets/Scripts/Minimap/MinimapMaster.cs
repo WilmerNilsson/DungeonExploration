@@ -50,6 +50,10 @@ public class MinimapMaster : MonoBehaviour
     {
         foreach (MinimapPart child in children)
         {
+            if (child.prefab == null)
+            {
+                continue;
+            }
             minimapSoTest.AddToLists(child.prefab, child.transform, child.GetRotatedBounds());
         }
     }
@@ -97,5 +101,15 @@ public class MinimapMaster : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         GameManagerSO.Instance.LockMouse(false);
+    }
+
+    public void UnlockFullMinimap()
+    {
+        Debug.Log("Unlocking full minimap");
+        foreach (var area in FindObjectsByType<MinimapArea>(FindObjectsSortMode.None))
+        {
+            area.DrawArea();
+        }
+        SpawnMinimap();
     }
 }
