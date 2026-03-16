@@ -1,10 +1,17 @@
 using UnityEngine;
+using System.Collections.Generic;
 
-public static class WorldDataCreator
+public static class SaveDataCreator
 {
-    /// <summary>
-    /// without settings
-    /// </summary>
+    public class TownData
+    {
+        public int Cash;
+        public InventorySaveData Inventory;
+        public InventorySaveData Equipment;
+        public List<string> DonatedWeapons;
+        public List<DialogueSaveData> DialogueSaveDatas;
+    }
+
     public static void CreateWorldData(out DungeonSaveData dungeonSaveData, out PlayerSaveData playerSaveData)
     {
         dungeonSaveData = new();
@@ -27,7 +34,7 @@ public static class WorldDataCreator
                 DungeonSaveData.Enemy? data = enemy.GetData();
                 if (data != null) //it is null when enemy is dead;
                 {
-                    dungeonSaveData.Enemies.Add((DungeonSaveData.Enemy) data);
+                    dungeonSaveData.Enemies.Add((DungeonSaveData.Enemy)data);
                 }
             }
         }
@@ -58,5 +65,22 @@ public static class WorldDataCreator
                 dungeonSaveData.Containers.Add(helper.GetData());
             }
         }
+    }
+
+    public static TownData GetTownData()
+    {
+        TownData data = new();
+
+        //will not null check since we want it to throw errors if needed
+
+        TownSaveSystemInterface helper = GameObject.FindAnyObjectByType<TownSaveSystemInterface>();
+
+        data.Cash = helper.GetCash();
+        data.Inventory = helper.GetPlayerInventory();
+        data.Equipment = helper.GetPlayerEquipment();
+        data.DonatedWeapons = helper.GetDonatedWeapons();
+        data.DialogueSaveDatas = helper.GetDialogueSaveDatas();
+
+        return data;
     }
 }
