@@ -61,10 +61,9 @@ public class MinimapMaster : MonoBehaviour
             Destroy(spawnedObjects[i]);
         }
         spawnedObjects.Clear();
-        for (int i = 0; i < minimapSoTest.minimapObjects.Count; i++)
+        for (int i = 0; i < minimapSoTest.prefabNames.Count; i++)
         {
-            Debug.Log(transform.position);
-            GameObject currentMinimap = Instantiate(minimapSoTest.minimapObjects[i], transform);
+            GameObject currentMinimap = Instantiate(minimapSoTest.GetPrefabByName(minimapSoTest.prefabNames[i]), transform);
             currentMinimap.transform.position = minimapSoTest.minimapPositions[i];
             currentMinimap.transform.eulerAngles = minimapSoTest.minimapRotations[i];
             currentMinimap.transform.localScale = minimapSoTest.minimapScales[i];
