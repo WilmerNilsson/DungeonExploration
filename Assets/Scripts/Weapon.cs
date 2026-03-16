@@ -71,7 +71,7 @@ public class Weapon : MonoBehaviour
     private Vector3 P0 => startSpline.EvaluatePosition(splinePosition);
     private Vector3 P1 => Vector3.Lerp(P0,P3,startBend/2) + Vector3.forward * curveHeight;
     private Vector3 P2 => Vector3.Lerp(P0,P3,1-endBend/2) + Vector3.forward * curveHeight;
-    private Vector3 P3 => Quaternion.AngleAxis(Angle, Vector3.forward) * Vector3.down + Vector3.forward;
+    private Vector3 P3 => new (-P0.x, -P0.y, P0.z);
 
     #region Attack
 
@@ -90,8 +90,7 @@ public class Weapon : MonoBehaviour
     }
 
     /// <summary>
-    /// Stay at P0 (with optional pos offset) <br/>
-    /// returns true when time is more than attack time and state machine can continue
+    /// Stay at P0 <br/>
     /// </summary>
     public void HoldAttack(float percentage)
     {
@@ -101,7 +100,6 @@ public class Weapon : MonoBehaviour
         splinePosition = percentage;
         
         AttackPositionRotation(0);
-        HandIK.position = Companion.transform.position + RelativeRotation(P0);
     }
 
     /// <summary>
@@ -300,9 +298,10 @@ public class Weapon : MonoBehaviour
     {
         HandIK.position = Head.position + RelativeRotation(GetCurvePosition(time));
         
-        up = Quaternion.AngleAxis(Angle+90, Head.forward) * Head.up; // Doesnt account for head tilt
+        up = Quaternion.AngleAxis(Angle+90, Head.forward) * Head.up;
+        Debug.DrawRay(HandIK.position, up, Color.green);
         forward = RotateVecAroundPoint(GetCurveTangent(time), Quaternion.AngleAxis(Core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
-            
+        Debug.DrawRay(HandIK.position, forward, Color.blue); 
         HandIK.rotation = Quaternion.LookRotation(up, forward);
     }
 
@@ -346,9 +345,19 @@ public class Weapon : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        if (Head == null) return;
-        
-        Gizmos.DrawSphere(Head.transform.position + Vector3.ClampMagnitude(RelativeRotation(P0), P0.magnitude), .2f);
+        if (startSpline != null)
+        {
+            Gizmos.color = Color.blue;
+            for (float i = 0; i < 1; i+=.01f)
+            {
+                Vector3 position = Head.transform.TransformPoint(GetCurvePosition(i));
+                Gizmos.DrawSphere(position, .01f);
+            }
+        }
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(P0,.1f);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(P3,.1f);
     }
 #endif
 

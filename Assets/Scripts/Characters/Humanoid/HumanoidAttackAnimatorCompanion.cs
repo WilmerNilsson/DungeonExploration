@@ -14,8 +14,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     [FormerlySerializedAs("onGetBlocked")] public UnityEvent OnGetBlockedEvent;
     [FormerlySerializedAs("onAttackStateChange")] public UnityEvent<AttackState> OnAttackStateChange;
     [FormerlySerializedAs("onBlockStateChange")] public UnityEvent<BlockState> OnBlockStateChange;
-
-    [SerializeField, Tooltip("the min angle between the attack and straight up/down")] private float angleLimit;
+    
     [SerializeField] private bool hasWeapon = false;
     [SerializeField] private GameObject weapon;
     [SerializeField] private TwoBoneIKConstraint swordArm; 
@@ -24,6 +23,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     [SerializeField] private Transform hand;
 
     [SerializeField] private SplineContainer swordSplineContainer;
+    private float angleLimit; 
     
     private float startTime;
     private float TimeFromStartOfAnimation => Time.time - startTime;
@@ -55,11 +55,6 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         Return
     }
 
-    private Vector3 GetPosition(float percentage)
-    {
-        return swordSplineContainer.EvaluatePosition(0, percentage);
-    }
-
     private void Start()
     {
         if (weapon == null)
@@ -75,6 +70,8 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
             weaponScript.Core = core;
             weaponScript.startSpline = swordSplineContainer[0];
         }
+        CalculateAngleLimit();
+        Debug.Log(angleLimit);
     }
 
     #region AttackAnimations
@@ -222,10 +219,10 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     {
         if (hasWeapon && !isInAnimation)
         {
+            float percentage = (angle) / (360f);
             angle = FixAngle(angle);
             weaponScript.Angle = angle;
 
-            float percentage = angle / (360 - (angleLimit * 2f));
             
             weaponScript.HoldAttack(percentage);
         }
@@ -351,12 +348,22 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         weaponScript = null;
         hasWeapon = false;
     }
-
+/// <summary>
+/// clamps the angle between the angle limit
+/// </summary>
     private float FixAngle(float angle)
     {
         angle = Mathf.Clamp(angle, angleLimit, 360 - angleLimit);
         
         return angle;
+    }
+
+/// <summary>
+/// calculates and sets the angle limit based on the spline
+/// </summary>
+    private void CalculateAngleLimit()
+    {
+        angleLimit = Vector3.Angle(swordSplineContainer[0].EvaluatePosition(0), new Vector3(0, -1, .5f));
     }
 
     public void Activate()
