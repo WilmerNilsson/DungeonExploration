@@ -61,6 +61,7 @@ MonoBehaviour:
   landPath: Player/Land
   damagePath: Player/Take_Damage
   deathPath: Player/Death
+  isPlayer: 1
 --- !u!114 &3180358397132943757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,14 +141,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36d28082ad1e01a448456a9396ba33e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tickLength: 0
+  tickLength: 1
+  maxTicks: 5
   layerMask:
     serializedVersion: 2
     m_Bits: 17664
-  spread: 4
+  spread: 1
   bounceValue: 0.25
-  maxBounces: 5
-  linesOnEitherSide: 2
-  objectsToCheck: 4
+  linesOnEitherSide: 3
+  objectsToCheck: 12
+  wallLayers:
+    serializedVersion: 2
+    m_Bits: 1024
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 16640
+  wallMinHitDistance: 3
   drawDebug: 1
-  debugMsg: 1
+  debugMsg: 0
+  currentTick: 0

@@ -282,7 +282,7 @@ public class EventList : ScriptableObject
             return;
         }
         
-        if (gameObject != null) //Om gameObject skickas med så skapa ny instans och lägg till den i InstanceList tillsammans med gameObject
+        if (gameObject) //Om gameObject skickas med så skapa ny instans och lägg till den i InstanceList tillsammans med gameObject
         {
             if (InstanceList.ContainsKey(gameObject))
             {
@@ -572,57 +572,36 @@ public class EventList : ScriptableObject
         instanceList = _tempObjectList;
     }
 
-    public void SetOcclusionOnObject(GameObject gameObject, float occlusion) //Om listan har instans på objekt 
+    private float _tempOcclusion;
+    private float _tempWalls;
+    
+    public void SetOcclusionOnObjects(GameObject[] objects) //Om listan har instans på objekt 
     {
-        if (!InstanceList.TryGetValue(gameObject, out var instance)) return;
-        if (!InstanceToEventData.TryGetValue(instance, out var eventData)) return;
-        if (eventData.ParameterCache.TryGetValue("Occluded", out var parameterData))
+        foreach (var gameObject in objects)
         {
-            instance.setParameterByID(parameterData.ID(), occlusion);
+            if (!InstanceList.TryGetValue(gameObject, out var instance)) continue;
+            if (!InstanceToEventData.TryGetValue(instance, out var eventData)) continue;
+            if (!OcclusionHandler.TryGetOcclusionData(gameObject, out _tempOcclusion, out _tempWalls)) continue;
+            if (eventData.ParameterCache.TryGetValue("Occluded", out var parameterData))
+            {
+                instance.setParameterByID(parameterData.ID(), _tempOcclusion);
+            }
+
+            if (eventData.ParameterCache.TryGetValue("Walls", out parameterData))
+            {
+                instance.setParameterByID(parameterData.ID(), _tempWalls);
+            }
         }
+    }
+
+    public bool TryGetOcclusion(GameObject gameObject, out float occlusion, out float walls)
+    {
+        return !OcclusionHandler.TryGetOcclusionData(gameObject, out occlusion, out walls);
     }
     
     #endregion
 
     #region SFX
-
-    private EVENT_CALLBACK _instanceStopCallback;
-
-    [AOT.MonoPInvokeCallback(typeof(EVENT_CALLBACK))]
-    private static FMOD.RESULT StopInstance(EVENT_CALLBACK_TYPE type, IntPtr instancePtr, IntPtr parameterPtr)
-    {
-        var instance = new EventInstance(instancePtr);
-        switch (type)
-        {
-            case EVENT_CALLBACK_TYPE.CREATED:
-            case EVENT_CALLBACK_TYPE.DESTROYED:
-            case EVENT_CALLBACK_TYPE.STARTING:
-            case EVENT_CALLBACK_TYPE.STARTED:
-            case EVENT_CALLBACK_TYPE.RESTARTED:
-                break;
-            case EVENT_CALLBACK_TYPE.STOPPED:
-                instance.release();
-                break;
-            case EVENT_CALLBACK_TYPE.START_FAILED:
-            case EVENT_CALLBACK_TYPE.CREATE_PROGRAMMER_SOUND:
-            case EVENT_CALLBACK_TYPE.DESTROY_PROGRAMMER_SOUND:
-            case EVENT_CALLBACK_TYPE.PLUGIN_CREATED:
-            case EVENT_CALLBACK_TYPE.PLUGIN_DESTROYED:
-            case EVENT_CALLBACK_TYPE.TIMELINE_MARKER:
-            case EVENT_CALLBACK_TYPE.TIMELINE_BEAT:
-            case EVENT_CALLBACK_TYPE.SOUND_PLAYED:
-            case EVENT_CALLBACK_TYPE.SOUND_STOPPED:
-            case EVENT_CALLBACK_TYPE.REAL_TO_VIRTUAL:
-            case EVENT_CALLBACK_TYPE.VIRTUAL_TO_REAL:
-            case EVENT_CALLBACK_TYPE.START_EVENT_COMMAND:
-            case EVENT_CALLBACK_TYPE.NESTED_TIMELINE_BEAT:
-            case EVENT_CALLBACK_TYPE.ALL:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(type), type, null);
-        }
-        return FMOD.RESULT.OK;
-    }
     
     public void PlayOneShot(string eventName, string[] paramNames = null, float[] paramValues = null,GameObject gameObject = null, bool followObject = true)
     {
@@ -641,8 +620,6 @@ public class EventList : ScriptableObject
                 AudioDebug.Print("Didn't play OneShot for " + eventName + " Since it is a 3D event and needs a gameObject to attach to", true);
                 return;
             }
-
-            _instanceStopCallback = StopInstance;
             
             var instance = RuntimeManager.CreateInstance(eventData.eventReference);
             
@@ -661,25 +638,26 @@ public class EventList : ScriptableObject
                 }
                 else instance.set3DAttributes(gameObject.transform.To3DAttributes());
 
-                /*if (eventData.isOcclusion)
+                if (eventData.isOcclusion)
                 {
                     if (Vector3.Distance(gameObject.transform.position, AudioManager.Listener.transform.position) <
                         eventData.maxDistance + 0.2f)
                     {
-                        AudioManager.Instance.occlusionChecker.CheckOcclusion(gameObject,AudioManager.Listener, out var occlusion);
-                        AudioManager.Instance.wallChecker.CheckWalls(gameObject,AudioManager.Listener, out var walls);
-                        if (eventData.ParameterCache.TryGetValue("Occlusion", out var parameterData))
+                        if (TryGetOcclusion(gameObject, out _tempOcclusion, out _tempWalls))
                         {
-                            instance.setParameterByID(parameterData.ID(), occlusion);
-                            AudioDebug.Print("Successfully set occlusion for " + eventName);
-                        }
-                        if (eventData.ParameterCache.TryGetValue("Walls", out parameterData))
-                        {
-                            instance.setParameterByID(parameterData.ID(), walls);
-                            AudioDebug.Print("Successfully set walls for " + eventName);
+                            if (eventData.ParameterCache.TryGetValue("Occlusion", out var parameterData))
+                            {
+                                instance.setParameterByID(parameterData.ID(), _tempOcclusion);
+                                AudioDebug.Print("Successfully set occlusion for " + eventName);
+                            }
+                            if (eventData.ParameterCache.TryGetValue("Walls", out parameterData))
+                            {
+                                instance.setParameterByID(parameterData.ID(), _tempWalls);
+                                AudioDebug.Print("Successfully set walls for " + eventName);
+                            }
                         }
                     }
-                }*/
+                }
             }
             
             if (paramNames != null && paramValues != null)
@@ -699,8 +677,6 @@ public class EventList : ScriptableObject
                     }
                 }
             }
-
-            instance.setCallback(_instanceStopCallback, EVENT_CALLBACK_TYPE.STOPPED);
             
             instance.start();
             

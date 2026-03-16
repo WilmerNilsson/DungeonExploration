@@ -252,6 +252,14 @@ public class AudioManager : MonoBehaviour
             eventList.KeyOff(eventName, gameObj);
         }
     }
+
+    public void SetOcclusions(GameObject[] occlusionObjects)
+    {
+        foreach (var eventList in eventLists)
+        {
+            eventList.SetOcclusionOnObjects(occlusionObjects);
+        }
+    }
     
     #endregion
     

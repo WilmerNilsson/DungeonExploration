@@ -8,7 +8,7 @@ public class RopeSoundLogic : MonoBehaviour
 
     private void Start()
     {
-        AudioOcclusionHandler.AddToOcclusionList(gameObject);
+        OcclusionHandler.AddToOcclusionList(gameObject);
     }
 
     public void PlaceRope(bool success) //TODO ändra parameter eller nåt för place
@@ -31,6 +31,6 @@ public class RopeSoundLogic : MonoBehaviour
 
     private void OnDestroy()
     {
-        AudioOcclusionHandler.RemoveFromOcclusionList(gameObject);
+        OcclusionHandler.RemoveFromOcclusionList(gameObject);
     }
 }

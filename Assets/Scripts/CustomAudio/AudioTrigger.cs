@@ -32,7 +32,7 @@ public class AudioTrigger : MonoBehaviour
         //Om någon av instruktionerna rör eventinstanser på gameobjekt bör de objektet kollas för occlusion
         foreach (Instruction instruction in instructions)
         {
-            if (instruction.gameObj) AudioOcclusionHandler.AddToOcclusionList(gameObject);
+            if (instruction.gameObj) OcclusionHandler.AddToOcclusionList(gameObject);
         }
         
         if (activatedBy == ActivatedBy.Start)
@@ -68,7 +68,7 @@ public class AudioTrigger : MonoBehaviour
             Activate();
             AudioDebug.Print("AudioTrigger activated on destroy");
         }
-        AudioOcclusionHandler.RemoveFromOcclusionList(gameObject);
+        OcclusionHandler.RemoveFromOcclusionList(gameObject);
     }
 
     #endregion

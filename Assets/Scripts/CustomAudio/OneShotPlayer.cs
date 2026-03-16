@@ -20,7 +20,7 @@ public class OneShotPlayer : MonoBehaviour
     {
         foreach (OneShotInstruction instruction in instructions)
         {
-            if (instruction.gameObject || emitterIsThisObject) AudioOcclusionHandler.AddToOcclusionList(gameObject);
+            if (instruction.gameObject || emitterIsThisObject) OcclusionHandler.AddToOcclusionList(gameObject);
         }
     }
 
@@ -52,6 +52,6 @@ public class OneShotPlayer : MonoBehaviour
 
     private void OnDestroy()
     {
-        AudioOcclusionHandler.RemoveFromOcclusionList(gameObject);
+        OcclusionHandler.RemoveFromOcclusionList(gameObject);
     }
 }

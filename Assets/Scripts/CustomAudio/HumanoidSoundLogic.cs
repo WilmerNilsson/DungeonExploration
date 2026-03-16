@@ -40,6 +40,8 @@ public class HumanoidSoundLogic : MonoBehaviour
     
     private HumanoidMovement.moveActions _lastMoveAction;
 
+    [SerializeField] private bool isPlayer;
+
 #if DEBUG
     private void OnValidate()
     {
@@ -57,7 +59,7 @@ public class HumanoidSoundLogic : MonoBehaviour
 
     private void Start()
     {
-        //AudioOcclusionHandler.AddToOcclusionList(gameObject);
+        if (!isPlayer) OcclusionHandler.AddToOcclusionList(gameObject);
     }
 
     private void Update()
@@ -172,6 +174,6 @@ public class HumanoidSoundLogic : MonoBehaviour
 
     private void OnDestroy()
     {
-        //AudioOcclusionHandler.RemoveFromOcclusionList(gameObject);
+        if (!isPlayer) OcclusionHandler.RemoveFromOcclusionList(gameObject);
     }
 }
