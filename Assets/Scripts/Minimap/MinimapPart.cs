@@ -16,6 +16,11 @@ public class MinimapPart : MonoBehaviour
 
     public Vector3 GetRotatedBounds()
     {
+        if (!Renderer)
+        {
+            Debug.LogWarning("No renderer", this);
+            return Vector3.zero;
+        }
         float Y = transform.eulerAngles.y;
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0, transform.eulerAngles.z);
         Vector3 bounds = Renderer.bounds.extents * 2;

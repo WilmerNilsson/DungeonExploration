@@ -1,17 +1,28 @@
 using UnityEngine;
+using System.Collections.Generic;
 
-public static class WorldDataCreator
+public static class SaveDataCreator
 {
-    /// <summary>
-    /// without settings
-    /// </summary>
-    public static void CreateWorldData(out DungeonSaveData dungeonSaveData, out PlayerSaveData playerSaveData)
+    public class TownData
+    {
+        public int Cash;
+        public InventorySaveData Inventory;
+        public InventorySaveData Equipment;
+        public List<string> DonatedWeapons;
+        public List<DialogueSaveData> DialogueSaveDatas;
+    }
+
+    public static void CreateWorldData(out DungeonSaveData dungeonSaveData, out PlayerSaveData playerSaveData, out List<DialogueSaveData> dialogueSaveDatas)
     {
         dungeonSaveData = new();
 
         AddContainerData(dungeonSaveData);
         AddDroppedItemData(dungeonSaveData);
         AddEnemyData(dungeonSaveData);
+        
+        dialogueSaveDatas = new();
+        AddDialogueData(dialogueSaveDatas);
+        
 
         playerSaveData = GameObject.FindAnyObjectByType<SaveFileHelperPlayer>(FindObjectsInactive.Exclude).GetData();
         dungeonSaveData.Initialized = true;
@@ -27,7 +38,7 @@ public static class WorldDataCreator
                 DungeonSaveData.Enemy? data = enemy.GetData();
                 if (data != null) //it is null when enemy is dead;
                 {
-                    dungeonSaveData.Enemies.Add((DungeonSaveData.Enemy) data);
+                    dungeonSaveData.Enemies.Add((DungeonSaveData.Enemy)data);
                 }
             }
         }
@@ -58,5 +69,37 @@ public static class WorldDataCreator
                 dungeonSaveData.Containers.Add(helper.GetData());
             }
         }
+
+        static void AddDialogueData(List<DialogueSaveData> dialogueSaveData)
+        {
+            WorldFromDataCreator worldFromDataCreator = GameObject.FindAnyObjectByType<WorldFromDataCreator>();
+            if (worldFromDataCreator == null)
+            {
+                Debug.Log("No worldFromDataCreator found");
+                return;
+            }
+
+            for (int i = 0; i < worldFromDataCreator.dialogueContainers.Count; i++)
+            {
+                dialogueSaveData.Add(new DialogueSaveData(worldFromDataCreator.dialogueContainers[i]));
+            }
+        }
+    }
+
+    public static TownData GetTownData()
+    {
+        TownData data = new();
+
+        //will not null check since we want it to throw errors if needed
+
+        TownSaveSystemInterface helper = GameObject.FindAnyObjectByType<TownSaveSystemInterface>();
+
+        data.Cash = helper.GetCash();
+        data.Inventory = helper.GetPlayerInventory();
+        data.Equipment = helper.GetPlayerEquipment();
+        data.DonatedWeapons = helper.GetDonatedWeapons();
+        data.DialogueSaveDatas = helper.GetDialogueSaveDatas();
+
+        return data;
     }
 }

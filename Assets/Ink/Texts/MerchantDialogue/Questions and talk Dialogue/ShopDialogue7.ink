@@ -1,7 +1,7 @@
 #speed:0.025
 #animation:AidenPlaceholder
 #name:Aiden
-<i>ugghhhh… maybe dad was right, even with her help i can barely scrape by anymore. Fuck all of this… </i>
+<i>ugghhhh… maybe dad was right, even with her help I can barely scrape by anymore. Fuck all of this… </i>
 Oh ehem.. Welcome again madam. 
 
 #name:Ingrid
@@ -9,7 +9,7 @@ You know Aiden, I always hear you mumbling to yourself. Are you actually.. doing
 
 #name:Aiden
 Huh, me? Oh please I'm doing perfectly fine madam I… 
-Oh who am I even kidding anymore. This place has been a shithole for ages! No one ever comes here anymore except you! Im poor and cant leave and my family thinks im a nutjob! So no.. I. Am. Not. FINE. URGH.
+Oh who am I even kidding anymore. This place has been a shithole for ages! No one ever comes here anymore except you! I'm poor and cant leave and my family thinks im a nutjob! So no.. I. Am. Not. FINE. URGH.
 
 #name:Ingrid
 <i>*Sigh*</i>… You want a hug?
