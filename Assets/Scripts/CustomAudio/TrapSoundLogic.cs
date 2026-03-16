@@ -16,7 +16,7 @@ public class TrapSoundLogic : MonoBehaviour
          emitterObject = gameObject;
       }
       if (!AudioManager.IsValid) return;
-      OcclusionHandler.AddToOcclusionList(gameObject);
+      OcclusionHandler.AddToOcclusionList(emitterObject);
       AudioManager.Instance.CreateInstance(trapPath, emitterObject);
    }
 

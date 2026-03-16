@@ -596,7 +596,7 @@ public class EventList : ScriptableObject
 
     public bool TryGetOcclusion(GameObject gameObject, out float occlusion, out float walls)
     {
-        return !OcclusionHandler.TryGetOcclusionData(gameObject, out occlusion, out walls);
+        return OcclusionHandler.TryGetOcclusionData(gameObject, out occlusion, out walls);
     }
     
     #endregion
@@ -645,7 +645,7 @@ public class EventList : ScriptableObject
                     {
                         if (TryGetOcclusion(gameObject, out _tempOcclusion, out _tempWalls))
                         {
-                            if (eventData.ParameterCache.TryGetValue("Occlusion", out var parameterData))
+                            if (eventData.ParameterCache.TryGetValue("Occluded", out var parameterData))
                             {
                                 instance.setParameterByID(parameterData.ID(), _tempOcclusion);
                                 AudioDebug.Print("Successfully set occlusion for " + eventName);
@@ -655,6 +655,10 @@ public class EventList : ScriptableObject
                                 instance.setParameterByID(parameterData.ID(), _tempWalls);
                                 AudioDebug.Print("Successfully set walls for " + eventName);
                             }
+                        }
+                        else
+                        {
+                            Debug.LogWarning("COULDNT GET OCCLUSION");
                         }
                     }
                 }
