@@ -1,0 +1,13 @@
+#speed:0.2
+#animation:AgainstWall
+#name:Ingrid
+Wait, this... this is-. Ari... I...
+#name:Ingrid
+Let's get you home, okay?...You don't belong down here...
+#animation:Grave
+#name:Ingrid
+Ari… I- I don’t even know what I was expecting.. I always knew you were long gone… I guess I just couldn’t accept it. Or maybe I could I- I don't even know.. I probably just wanted closure… Yet I barely feel anything… 
+#animation:Rage
+#name:Ingrid
+No more… I'm tired of all this suffering. Agathol…  Something is down there, something alive… I will kill it. Yngvarr, I’ll make it pay for what it did to our boy. I’ll make it pay for everything. I’ll make sure of it...
+    -> END
