@@ -63,7 +63,7 @@ public class NewDialogueManager : MonoBehaviour
         }
         instance = this;
         continueButton.SetActive(false);
-        RunCount = FindAnyObjectByType<TownFromDataCreator>().RunCount;
+        RunCount = FindAnyObjectByType<TownSaveSystemInterface>().RunCount;
     }
 
     private void Start()

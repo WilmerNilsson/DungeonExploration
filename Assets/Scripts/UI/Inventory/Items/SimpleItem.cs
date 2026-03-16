@@ -4,6 +4,7 @@ using UnityEditor.Events;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(RectTransform))]
 public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
@@ -23,7 +24,8 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     [SerializeField] private bool descriptionTextIsLibraryName;
     [SerializeField] private TextLibrarySO textLibrary;
     [SerializeField] private string prefabID;
-    [field: SerializeField] public int CashValue { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("CashValue")] public int CashValueBuy { get; private set; }
+    [field: SerializeField] public int CashValueSell { get; private set; }
 
 #nullable enable
 
@@ -108,6 +110,15 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         if (isDragging)
         { 
             RectTransform.position = Input.mousePosition;
+        }
+    }
+
+    public bool GridIsCurrent(InventoryGrid inventoryGrid)
+    {
+        if(currentInventory == null) return false;
+        else
+        {
+            return inventoryGrid == currentInventory;
         }
     }
 

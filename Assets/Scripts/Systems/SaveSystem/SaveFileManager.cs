@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,6 +20,7 @@ public class SaveFileManager
     // Save file settings are stuff like accesability options and cheats
     public SavefileSettings? SavefileSettings;
     public int CurrentSavefileNr = 1;
+    private SavefileData? tempSavefile;
 
     public SaveFileManager()
     {
@@ -90,7 +92,25 @@ public class SaveFileManager
             data.SceneName = defaultScene;
         }
 
-        GameManagerSO.Instance.LoadSavefileScene(data);
+        LoadSavefileScene(data);
+    }
+
+    public bool TryConsumeSavefileData([NotNullWhen(true)] out SavefileData? data)
+    {
+        data = tempSavefile;
+        tempSavefile = null;
+        return data != null;
+    }
+
+    public void LoadSavefileScene(SavefileData data)
+    {
+        tempSavefile = data;
+        GameManagerSO.Instance.MoveToScene(data.SceneName);
+    }
+
+    public void LoadTempSaveFile(SavefileData data)
+    {
+        tempSavefile = data;
     }
 
     #region GlobalSettings
@@ -113,7 +133,7 @@ public class SaveFileManager
         SavefileData data = ReadSavefile(CurrentSavefileNr); //we prob want to keep track of journals in real time aswell
         Debug.Log("reading save to get full data, need to split it up better");
 
-        WorldDataCreator.CreateWorldData(out data.Dungeon, out data.PlayerSaveData);
+        SaveDataCreator.CreateWorldData(out data.Dungeon, out data.PlayerSaveData);
         if (newScene != null)
         {
             data.SceneName = newScene;
@@ -144,7 +164,7 @@ public class SaveFileManager
             return;
         }
 #endif
-        TownDataCreator.TownData townData = TownDataCreator.GetTownData();
+        SaveDataCreator.TownData townData = SaveDataCreator.GetTownData();
 
         if(data.PlayerSaveData == null)
         {
@@ -184,7 +204,6 @@ public class SaveFileManager
             Directory.CreateDirectory(Application.dataPath + SaveFileFolderName);
         }
     }
-
 
     /// <summary>
     /// writes data to storage
