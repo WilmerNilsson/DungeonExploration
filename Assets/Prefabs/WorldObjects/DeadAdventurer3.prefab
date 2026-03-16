@@ -55,11 +55,8 @@ MonoBehaviour:
     sprint: CrazedHumanoid/Walk
   crouchPath: 
   jumpPath: 
+  minDistanceForLandSound: 0
   landPath: 
-  hungerPath: 
-  weaponObject: {fileID: 0}
-  swingPath: CrazedHumanoid/Basic_Attack
-  blockPath: 
   damagePath: CrazedHumanoid/Take_Damage
   deathPath: CrazedHumanoid/Die
 --- !u!114 &1241299020729930831
@@ -725,7 +722,7 @@ PrefabInstance:
     - target: {fileID: -2229440589510841950, guid: 158bf6404f43d4f4992b14d60613b4b1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: cfbfd897a23ee724bb94e5666095c55a, type: 2}
+      objectReference: {fileID: 1833810152192036645, guid: f2c7ee6af61f1ca468187429cc2ac330, type: 3}
     - target: {fileID: -2072040086291044643, guid: 158bf6404f43d4f4992b14d60613b4b1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.0000004172325
@@ -1556,6 +1553,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 158bf6404f43d4f4992b14d60613b4b1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2785769629367800422}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 158bf6404f43d4f4992b14d60613b4b1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5328825011873690596}
   m_SourcePrefab: {fileID: 100100000, guid: 158bf6404f43d4f4992b14d60613b4b1, type: 3}
 --- !u!1 &2407489618374906948 stripped
 GameObject:
@@ -1578,6 +1578,28 @@ MonoBehaviour:
   - m_Rig: {fileID: 0}
     m_Active: 1
   m_Effectors: []
+--- !u!95 &5328825011873690596
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2407489618374906948}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &2935393390659647866 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 366175167995203695, guid: 158bf6404f43d4f4992b14d60613b4b1, type: 3}
