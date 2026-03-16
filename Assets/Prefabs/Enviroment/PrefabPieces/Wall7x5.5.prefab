@@ -12,10 +12,9 @@ GameObject:
   - component: {fileID: 5601116623375559572}
   - component: {fileID: 1359708299834396345}
   - component: {fileID: 1563940239439713166}
-  - component: {fileID: 5958173386041850161}
   - component: {fileID: 7381111497180301787}
   - component: {fileID: -6095749746855713253}
-  - component: {fileID: 5102854690601292802}
+  - component: {fileID: 4158084044539403421}
   m_Layer: 10
   m_Name: Wall7x5.5
   m_TagString: Stone
@@ -324,14 +323,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &5958173386041850161
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5953202023887071910}
-  m_Mesh: {fileID: 0}
 --- !u!208 &7381111497180301787
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -360,9 +351,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fe38f654fc77314b9c8a03e822a8aaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 5639876101109728048, guid: 639b2a835ef23164cbccfc1780404ee1, type: 3}
---- !u!65 &5102854690601292802
-BoxCollider:
+  prefab: {fileID: 5953202023887071910, guid: 639b2a835ef23164cbccfc1780404ee1, type: 3}
+--- !u!64 &4158084044539403421
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -379,6 +370,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 7, y: 5.5, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
