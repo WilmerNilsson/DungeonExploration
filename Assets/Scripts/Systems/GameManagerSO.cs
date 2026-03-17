@@ -29,6 +29,7 @@ public class GameManagerSO : ScriptableObject
     }
     private int thingsLockingMouse = 0;
     private int thingsLockingCamera = 0;
+    public static bool DevConsoleActive = false; 
 
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public event Action<bool>? OnFreezeGameChangeSelfReset;

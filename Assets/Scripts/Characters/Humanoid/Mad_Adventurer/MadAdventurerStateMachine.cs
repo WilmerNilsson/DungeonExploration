@@ -108,7 +108,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
     public void Attack()
     {
         float angle = Random.Range(-160f, 160f);
-        Controller.AttackWithChargeup(angle);
+        Controller.PrepareAttack(true);
     }
 
     public void Die()
