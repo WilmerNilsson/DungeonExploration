@@ -17,6 +17,15 @@ public class DialogueContainer : ScriptableObject
         ExposedProperties.Clear();
     }
 
+    public void Reset()
+    {
+        foreach (DialogueNodeData nodeData in DialogueNodeDatas)
+        {
+            nodeData.HasBeenRead = false;
+            nodeData.ReadRun = 0;
+        }
+    }
+
     public void MarkNodeAsRead(string nodeName)
     {
         DialogueNodeData dialogueNodeData = DialogueNodeDatas.Find(x => x.Title == nodeName);

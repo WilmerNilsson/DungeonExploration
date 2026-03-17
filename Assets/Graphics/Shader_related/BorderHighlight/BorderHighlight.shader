@@ -3,7 +3,6 @@ Shader "Custom/BorderHighlight"
     Properties
     {
         _BorderColor ("Border Color", Color) = (1, 1, 1, 0.5)
-        _BorderWidth ("Border Width", float) = 0.05
         _BorderWidthPixels ("Border Width Pixels", int) = 5
         _MainTex ("Main Texture", 2D) = "white" {}
     }
@@ -27,7 +26,6 @@ Shader "Custom/BorderHighlight"
             UNITY_DECLARE_TEX2D(_MainTex);
 
             float4 _BorderColor;
-            float _BorderWidth;
             int _BorderWidthPixels;
 
             float4 _MainTex_TexelSize;

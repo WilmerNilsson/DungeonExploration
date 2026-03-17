@@ -4,7 +4,7 @@ using UnityEngine;
 public class DeathScreen : MonoBehaviour
 {
     [SerializeField] private GameObject toggleObject;
-    [SerializeField] private string mainMenuSceneName;
+    [SerializeField] private string SceneName;
 
     void Start()
     {
@@ -36,6 +36,6 @@ public class DeathScreen : MonoBehaviour
 
     public void GoToMainMenu()
     {
-        GameManagerSO.Instance.MoveToScene(mainMenuSceneName);
+        GameManagerSO.Instance.SavefileManager.SaveInWorld(false, SceneName);
     }
 }
