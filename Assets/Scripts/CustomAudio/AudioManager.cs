@@ -27,6 +27,8 @@ public class AudioManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
         
+        MoveToRoot();
+        
         if (GameManagerSO.Instance != null)
         {
             GameManagerSO.Instance.OnFreezeGameChange += OnPauseEvent;
@@ -48,6 +50,11 @@ public class AudioManager : MonoBehaviour
         CombatChecker.ResetCombatList();
 
         AudioDebug.Print("AudioManager Initialized");
+    }
+
+    private void MoveToRoot()
+    {
+        gameObject.transform.parent = null;
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
