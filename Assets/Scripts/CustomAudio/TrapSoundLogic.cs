@@ -7,41 +7,57 @@ using Debug = UnityEngine.Debug;
 public class TrapSoundLogic : MonoBehaviour
 {
    [SerializeField] private string trapPath;
-   [SerializeField] private GameObject emitterObject;
+   [SerializeField] private GameObject[] emitterObjects;
 
    private void Start()
    {
-      if (!emitterObject)
+      if (emitterObjects.Length == 0)
       {
-         emitterObject = gameObject;
+         emitterObjects = new GameObject[1]{gameObject};
       }
       if (!AudioManager.IsValid) return;
-      OcclusionHandler.AddToOcclusionList(emitterObject);
-      AudioManager.Instance.CreateInstance(trapPath, emitterObject);
+      foreach (GameObject emitter in emitterObjects)
+      {
+         OcclusionHandler.AddToOcclusionList(emitter);
+         AudioManager.Instance.CreateInstance(trapPath, emitter);
+      }
    }
 
    public void ActivateTrap()
    {
       if (!AudioManager.IsValid) return;
-      AudioManager.Instance.StartEvent(trapPath, emitterObject);
+      foreach (var emitter in emitterObjects)
+      {
+         AudioManager.Instance.StartEvent(trapPath, emitter);
+      }
    }
 
    public void NextStep()
    {
       if (!AudioManager.IsValid) return;
-      AudioManager.Instance.KeyOff(trapPath, emitterObject);
+      foreach (var emitter in emitterObjects)
+      {
+         AudioManager.Instance.KeyOff(trapPath, emitter);
+      }
    }
    
    public void StopAndRelease()
    {
-      AudioManager.Instance.StopEvent(trapPath, STOP_MODE.ALLOWFADEOUT,emitterObject);
+      if (!AudioManager.IsValid) return;
+      foreach (var emitter in emitterObjects)
+      {
+         AudioManager.Instance.StopEvent(trapPath, STOP_MODE.ALLOWFADEOUT, emitter);
+      }
    }
 
    private void OnDestroy()
    {
       if (!AudioManager.IsValid) return;
-      AudioManager.Instance.ReleaseInstance(trapPath, emitterObject);
-      OcclusionHandler.RemoveFromOcclusionList(gameObject);
+      foreach (var emitter in emitterObjects)
+      {
+         AudioManager.Instance.ReleaseInstance(trapPath, emitter);
+         OcclusionHandler.RemoveFromOcclusionList(emitter);
+      }
    }
 }
 
