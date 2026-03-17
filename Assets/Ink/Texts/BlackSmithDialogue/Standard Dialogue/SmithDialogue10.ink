@@ -19,7 +19,10 @@ The deepest part of Agathol.
 I don't have much of a choice heh.. <i>*sigh*,</i> I just wanted to come here to say.. Thanks.. For everything..
 
 #name:Saga
-Awww grams, no need to get so emotional on me. I'm just doing my job. And well, you’ve helped me too. I was in a real slump before you came along after all. So, thank you too.
+Awww grams, no need to get so emotional on me. I'm just doing my job. And well, you’ve helped me too. 
+
+I was in a real slump before you came along after all. So, thank you too.
+
 Oh but don't think I’ll charge you less just because you're my favorite all right?
 
 #name:Ingrid
