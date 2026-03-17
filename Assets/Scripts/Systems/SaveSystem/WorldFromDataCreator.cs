@@ -7,6 +7,7 @@ public class WorldFromDataCreator : MonoBehaviour
     [SerializeField] private ContainerLibrarySO containerLibrary;
     [SerializeField] private EnemyLibrarySO enemyLibrary;
     [SerializeField] private List<GameObject> newWorldObjects;
+    [SerializeField] public List<DialogueContainer> dialogueContainers;
 #nullable enable
 
 #if DEBUG && UNITY_EDITOR
@@ -33,8 +34,15 @@ public class WorldFromDataCreator : MonoBehaviour
         {
             newWorldObjects.Add(item.gameObject);
         }
-        if (GameManagerSO.Instance.TryConsumeSavefileData(out SavefileData? data))
+        if (GameManagerSO.Instance.SavefileManager.TryConsumeSavefileData(out SavefileData? data))
         {
+            if (data.DialogueSaves.Count > 0)
+            {
+                for (int i = 0; i < data.DialogueSaves.Count; i++)
+                {
+                    dialogueContainers.Find(x => x.name == data.DialogueSaves[i].TreeName).SetDialogueData(data.DialogueSaves[i]);
+                }
+            }
             if(data.Dungeon != null && data.Dungeon.Initialized)
             {
                 DestoryNewWorld();
@@ -88,10 +96,24 @@ public class WorldFromDataCreator : MonoBehaviour
             InitializeContainers(dungeonSaveData);
             InitializeEnemies(dungeonSaveData);
             InitializeDroppedItems(dungeonSaveData);
+            InitializeEnabledObjects(dungeonSaveData);
         }
 
 
         InitializePlayer(playerSaveData);
+
+        void InitializeEnabledObjects(DungeonSaveData data)
+        {
+            EnabledHelperCompanion[] enabledHelpers = GameObject.FindObjectsByType<EnabledHelperCompanion>(FindObjectsSortMode.None);
+
+            foreach (EnabledHelperCompanion helper in enabledHelpers)
+            {
+                if (data.EnabledObjects.Contains(helper.UniqueID))
+                {
+                    helper.EnableFromSave();
+                }
+            }
+        }
 
         void InitializePlayer(PlayerSaveData? playerSaveData)
         {

@@ -18,7 +18,6 @@ public class GameManagerSO : ScriptableObject
     [SerializeField] private string mainMenuSceneName = "MainMenu";
 
     public SaveFileManager SavefileManager { get; private set; } = new();
-    private SavefileData? tempSavefile;
 
     private static GameManagerSO? instance;
     private bool hasLoadedSettings = false;
@@ -30,6 +29,7 @@ public class GameManagerSO : ScriptableObject
     }
     private int thingsLockingMouse = 0;
     private int thingsLockingCamera = 0;
+    public static bool DevConsoleActive = false; 
 
 #pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
     public event Action<bool>? OnFreezeGameChangeSelfReset;
@@ -307,30 +307,6 @@ public class GameManagerSO : ScriptableObject
     #endregion
 
     #region  SavefilesStuff
-
-    public bool TryConsumeSavefileData([NotNullWhen(true)] out SavefileData? data)
-    {
-        data = tempSavefile;
-        tempSavefile = null;
-        return data != null;
-    }
-
-    /// <summary>
-    /// should only be called from SaveFileManager
-    /// </summary>
-    public void LoadSavefileScene(SavefileData data)
-    {
-        tempSavefile = data;
-        MoveToScene(data.SceneName);
-    }
-
-    /// <summary>
-    /// should only be called from SaveFileManager
-    /// </summary>
-    public void LoadTempSaveFile(SavefileData data)
-    {
-        tempSavefile = data;
-    }
 
     public bool GetConflictingControllsNeutralizes()
     {

@@ -30,6 +30,7 @@ public class HumanoidInteract : MonoBehaviour
             {
                 if(debug)Debug.DrawRay(head.position, head.forward * hit.distance, Color.green);
                 //Debug.Log("Did Hit");
+                
                 if (interactable != newInteractable)
                 {
                     if (interactable)
@@ -38,7 +39,11 @@ public class HumanoidInteract : MonoBehaviour
                     }
                     interactable = newInteractable;
                     interactable.OnView(true);
-                    OnSee?.Invoke();
+                    if (interactable.canInteract) OnSee?.Invoke();
+                }
+                else if (!interactable.canInteract)
+                {
+                    OnUnSee.Invoke();
                 }
                 //UIText.SetActive(true);
             }
