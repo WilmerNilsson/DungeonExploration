@@ -139,6 +139,24 @@ public class MerchantInventory : MonoBehaviour
         else return false;
     }
 
+    public virtual bool TryInsertItemInMerchantGrid(SimpleItem item)
+    {
+        if (buyIsActiveGrid)
+        {
+            return false;
+        }
+        else if (HasItem(item)) //we don't want the player re-arrenging merchant inventory
+        {
+            return false;
+        }
+        else if (ActiveGrid.TryInsertItem(item))
+        {
+            playerCashSO.AddCash(item.CashValueSell);
+            return true;
+        }
+        else return false;
+    }
+
     public bool HasItem(SimpleItem item)
     {
         return ActiveGrid.HasItem(item);
