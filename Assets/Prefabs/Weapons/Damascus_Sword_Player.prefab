@@ -95,7 +95,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b83a9ae3a18ae774f941f4becbdda48b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.8
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b83a9ae3a18ae774f941f4becbdda48b, type: 3}
       propertyPath: m_LocalPosition.y
@@ -107,23 +107,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b83a9ae3a18ae774f941f4becbdda48b, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b83a9ae3a18ae774f941f4becbdda48b, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b83a9ae3a18ae774f941f4becbdda48b, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b83a9ae3a18ae774f941f4becbdda48b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.5
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b83a9ae3a18ae774f941f4becbdda48b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b83a9ae3a18ae774f941f4becbdda48b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -131,7 +131,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b83a9ae3a18ae774f941f4becbdda48b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 90
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b83a9ae3a18ae774f941f4becbdda48b, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -246,6 +246,19 @@ MonoBehaviour:
   isBlocking: 0
   unbreakable: 0
   body: {fileID: 2201368844933366746}
+  startSpline:
+    m_EditModeType: 1
+    m_Knots: []
+    m_MetaData: []
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
   Angle: 0
   curveHeight: 1.5
   startBend: 0
@@ -258,6 +271,7 @@ MonoBehaviour:
   blockChargeTime: 0.4
   blockHoldTime: 1
   blockReturnTime: 0.4
+  blockHandOffset: 1
   Companion: {fileID: 0}
   SwordArm: {fileID: 0}
   Head: {fileID: 0}

@@ -5,7 +5,7 @@ public class PlayerTrackerSingleton : MonoBehaviour
 {
     public static PlayerTrackerSingleton Instance;
 
-    public GameObject player;
+    [Tooltip("Sets by itself")] public GameObject player;
 
     private void Awake()
     {

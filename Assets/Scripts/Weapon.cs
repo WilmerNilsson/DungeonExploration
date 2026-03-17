@@ -295,10 +295,10 @@ public class Weapon : MonoBehaviour
     {
         HandIK.position = Head.position + RelativeRotation(GetCurvePosition(time));
         
-        //The direction the sword points
-        forward = Quaternion.AngleAxis(Angle-90, Head.forward) * Head.up; 
-        // the direction of the knuckles
-        up = RotateVecAroundPoint(GetCurveTangent(time), Quaternion.AngleAxis(Core.transform.eulerAngles.y, Vector3.up), Vector3.zero);
+        //The direction of the pinky
+        forward = Head.transform.TransformDirection(GetCurveTangent(time));
+        // the direction of the palm
+        up = Quaternion.AngleAxis(Angle-90, Head.forward) * Head.up; 
         
         HandIK.rotation = Quaternion.LookRotation(forward, up);
     }
@@ -308,11 +308,11 @@ public class Weapon : MonoBehaviour
         Vector3 position = Head.transform.TransformDirection(P0);
         
         up = position;
-        forward = Head.forward * -(Angle - 180);
+        forward = Head.forward * (Angle - 180);
         
         HandIK.rotation = Quaternion.LookRotation(forward, up);
         
-        HandIK.position = Head.position + Vector3.ClampMagnitude(position + HandIK.right * blockHandOffset, P0.magnitude);
+        HandIK.position = Head.position + Vector3.ClampMagnitude(position - HandIK.right * blockHandOffset, P0.magnitude);
     }
     private Vector3 RelativeRotation(Vector3 rotation)
     {
