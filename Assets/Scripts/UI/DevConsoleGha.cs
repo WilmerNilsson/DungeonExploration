@@ -76,7 +76,8 @@ public class DevConsoleGha : MonoBehaviour
             new DebugCommand("kill_player", "deals 1000 damage to player", "kill_player", KillPlayerCommand),
             new DebugCommand("debug_navmesh", "prints a lot of usefull nav mesh data", "debug_navmesh", DebugNavmeshCommand),
             new DebugCommand("set_sanity", "sets players sanity to value", "set_sanity int", SetSanity),
-            new DebugCommand("give_item", "tries to insert a item into player inventory", "give_item itemID", GiveItemCommand)
+            new DebugCommand("give_item", "tries to insert a item into player inventory", "give_item itemID", GiveItemCommand),
+            new DebugCommand("teleport_to", "tries to teleport player to object by name", "teleport_to name", TeleportToCommand),
         };
     }
 
@@ -116,6 +117,7 @@ public class DevConsoleGha : MonoBehaviour
         GameManagerSO.Instance.FreezeTime(!toggleObject.activeSelf);
         GameManagerSO.Instance.LockMouse(!toggleObject.activeSelf);
         toggleObject.SetActive(!toggleObject.activeSelf);
+        GameManagerSO.DevConsoleActive = toggleObject.activeSelf;
     }
 
     public static DevConsoleGha GetInstance()
@@ -133,9 +135,32 @@ public class DevConsoleGha : MonoBehaviour
 
 #nullable enable
 
+    private void TeleportToCommand(string input)
+    {
+        if (input == null || input == string.Empty)
+        {
+            AddLine("That command requires paramiters");
+            return;
+        }
+
+        GameObject obj = GameObject.Find(input);
+
+        if (obj == null)
+        {
+            AddLine("no object found by name: " + input);
+            return;
+        }
+
+        GameObject.FindGameObjectWithTag("Player").transform.position = obj.transform.position;
+        if (GameObject.FindGameObjectWithTag("Player").TryGetComponent<HumanoidMovement>(out HumanoidMovement humanoidMovement))
+        {
+            humanoidMovement.SupressMoveFrame();
+        }
+    }
+
     private void GiveItemCommand(string input)
     {
-        if (input == null)
+        if (input == null || input == string.Empty)
         {
             AddLine("That command requires paramiters");
             return;
