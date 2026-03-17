@@ -52,6 +52,7 @@ public class PlayerSoundLogic : MonoBehaviour
         {
             exhaustion = Mathf.MoveTowards(exhaustion, 0f, exhaustionSpeed.y * Time.fixedDeltaTime);
         }
+        exhaustion = Mathf.Clamp(exhaustion, 0f, exhaustionMax);
         AudioManager.Instance.SetGlobalParameter(exhaustionParameter, exhaustion);
     }
 
