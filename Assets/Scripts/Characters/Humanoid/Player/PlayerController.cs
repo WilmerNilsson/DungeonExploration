@@ -55,27 +55,24 @@ public class PlayerController : MonoBehaviour
         {
             Rotate(lookInput);
         }
-
-        if (!lockedMovement)
+        
+        if(startedAttack)
         {
-            if(startedAttack)
-            {
-                mouseEnd = Mouse.current.position.ReadValue();
+            mouseEnd = Mouse.current.position.ReadValue();
 
-                if(Vector2.Distance(mouseStart, mouseEnd) > 10)
-                {
-                    Debug.Log($"up {Vector2.SignedAngle(Vector2.up, (mouseEnd - mouseStart))}, down {Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart))}");
-                    controller.PrepareAttackUpdate(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)) + 180);
-                }
+            if(Vector2.Distance(mouseStart, mouseEnd) > 10)
+            {
+                Debug.Log($"up {Vector2.SignedAngle(Vector2.up, (mouseEnd - mouseStart))}, down {Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart))}");
+                controller.PrepareAttackUpdate(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)) + 180);
             }
-            else if(startedBlock)
-            {
-                mouseEnd = Mouse.current.position.ReadValue();
+        }
+        else if(startedBlock)
+        {
+            mouseEnd = Mouse.current.position.ReadValue();
 
-                if (Vector2.Distance(mouseStart, mouseEnd) > 10)
-                {
-                    controller.HoldBlockUpdate(Vector2.SignedAngle(Vector2.up, (mouseEnd - mouseStart)) + 180);
-                }
+            if (Vector2.Distance(mouseStart, mouseEnd) > 10)
+            {
+                controller.HoldBlockUpdate(Vector2.SignedAngle(Vector2.up, (mouseEnd - mouseStart)) + 180);
             }
         }
     }
