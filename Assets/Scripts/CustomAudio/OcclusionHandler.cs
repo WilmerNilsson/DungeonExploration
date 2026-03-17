@@ -15,6 +15,7 @@ public class OcclusionHandler : MonoBehaviour
     [Range(0, 1)]  public float bounceValue = 0.25f;
     [SerializeField] private int linesOnEitherSide;
     [SerializeField] private int objectsToOcclusionCheck;
+    [SerializeField] private float minDistanceForRaycast;
     
     
     
@@ -34,11 +35,6 @@ public class OcclusionHandler : MonoBehaviour
     
     private int _lineCount;
     private int _posModifier;
-    private Vector3 _direction;
-    private float _distance;
-    private float _totalDistance;
-    private Vector3 _sourcePos;
-    private Vector3 _targetPos;
 
     private bool _newTick;
     
@@ -168,7 +164,9 @@ public class OcclusionHandler : MonoBehaviour
         _objectsAndDistances.Clear();
         foreach (var kvp in OcclusionObjects)
         {
-            _objectsAndDistances.Add(new ObjectAndDistance { Obj = kvp.Key, Distance = Vector3.Distance(kvp.Key.transform.position, AudioManager.Listener.transform.position) });
+            _tempDistance = Vector3.Distance(kvp.Key.transform.position, AudioManager.Listener.transform.position);
+            if (!(_tempDistance > minDistanceForRaycast)) continue;
+            _objectsAndDistances.Add(new ObjectAndDistance { Obj = kvp.Key, Distance = _tempDistance });
             if (debugMsg) Debug.Log("Adding " + kvp.Key.name + " to Distance List");
         }
         Profiler.EndSample();
@@ -320,9 +318,9 @@ public class OcclusionHandler : MonoBehaviour
         //Har clampat objectstocheck här ifall det finns färre objekt än de som ska checkas för att undvika indexoutofrange
         for (int i = 0; i < Mathf.Clamp(objectsToOcclusionCheck, 0 ,_objectsAndDistances.Count); i++)
         {
-            _posModifier = -linesOnEitherSide - 1;
             if (OcclusionObjects.TryGetValue(_objectsAndDistances[i].Obj, out _tempData))
             {
+                _posModifier = -linesOnEitherSide - 1;
                 _tempData.Distance = Vector3.Distance(_tempData.SourcePos, Listener.transform.position);
                 //Gör raycast för alla linjer på ett objekt
                 for (int j = 0; j < _lineCount; j++)
