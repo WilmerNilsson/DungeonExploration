@@ -106,16 +106,21 @@ public class SaveFileHelperPlayer : MonoBehaviour
 
     public void SpawnDeathChest()
     {
-        GameObject deathChest  = Instantiate(deathChestPrefab);
-        deathChest.transform.position = spawnTransform.position;
-        ContainerController container = deathChest.GetComponentInChildren<ContainerController>();
-        container.transform.position = spawnTransform.position;
+        if (InvMasterBase.Instance.PlayerInventory.GetInventoryData().Count <= 0)
+        {
+            return;
+        }
+        //GameObject deathChest = Instantiate(deathChestPrefab);
+        //deathChest.transform.position = spawnTransform.position;
+        //ContainerController container = deathChest.GetComponentInChildren<ContainerController>();
+        //container.transform.position = spawnTransform.position;
         InventorySaveData inventory = new(InvMasterBase.Instance.PlayerInventory.GetInventoryData());
-        container.spawnItems = new GameObject[inventory.Items.Count];
+        //container.spawnItems = new GameObject[inventory.Items.Count];
         for (int i = 0; i < inventory.Items.Count; i++)
         {
             itemLibrary.TryGetItemPairByName(inventory.Items[i].PrefabID, out ItemPairing pair);
-            container.spawnItems[i] = pair.UIPrefab;
+            //container.spawnItems[i] = pair.UIPrefab;
+            Instantiate(pair.WorldPrefab, spawnTransform.position, spawnTransform.rotation);
         }
 
         InvMasterBase.Instance.PlayerInventory.EmptyInventory();
