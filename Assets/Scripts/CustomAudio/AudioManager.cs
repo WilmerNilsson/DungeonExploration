@@ -44,6 +44,7 @@ public class AudioManager : MonoBehaviour
         RefreshAllEventCaches();
         RefreshGlobalParameterCache();
         GetListener();
+        LoadVolume();
         CombatChecker.ResetCombatList();
 
         AudioDebug.Print("AudioManager Initialized");
@@ -361,6 +362,13 @@ public class AudioManager : MonoBehaviour
         AudioDebug.Print("Failed to get volume for vca: " + vcaName, true);
         
         return 0;
+    }
+
+    private void LoadVolume()
+    {
+        SetVolume("SFX", GameManagerSO.Instance.GetEffectsVolume() * 0.01f);
+        SetVolume("Music", GameManagerSO.Instance.GetMusicVolume() * 0.01f);
+        SetVolume("Master", GameManagerSO.Instance.GetMasterVolume() * 0.01f);
     }
 
     #endregion
