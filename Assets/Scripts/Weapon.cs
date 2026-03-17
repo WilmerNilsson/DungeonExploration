@@ -311,19 +311,17 @@ public class Weapon : MonoBehaviour
 
     private void BlockPositionRotation()
     {
-        Vector3 position = Head.transform.TransformPoint(P0);
-        HandIK.position = Head.position + position;
+        Vector3 position = Head.transform.TransformDirection(P0);
         
-        //HandIK.rotation = Quaternion.LookRotation(RelativeRotation((Vector3.forward * Angle).normalized), RelativeRotation(blockAnglePos + blockOffsetPos * 0.5f));
-        
-        up = new (position.x, position.y, P0.z + .5f);
+        up = position;
         forward = Head.forward * -(Angle - 180);
         Debug.DrawRay(HandIK.position, HandIK.up, Color.green);
         Debug.DrawRay(HandIK.position, HandIK.forward, Color.blue);
         Debug.DrawRay(HandIK.position, HandIK.right, Color.red);
-        Debug.Log($"up {up}, forward {forward}");
         
         HandIK.rotation = Quaternion.LookRotation(forward, up);
+        
+        HandIK.position = Head.position + Vector3.ClampMagnitude(position + HandIK.right, P0.magnitude);
     }
     private Vector3 RelativeRotation(Vector3 rotation)
     {
