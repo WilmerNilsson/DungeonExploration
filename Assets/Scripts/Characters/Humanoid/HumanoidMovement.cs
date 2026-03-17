@@ -75,18 +75,18 @@ public class HumanoidMovement : MonoBehaviour
 
         float deltaSpeed = moveSpeed;
 
-        if (!grounded) //TODO fix air movement, maybe save initial movement and edit it while in the air?
+        if (!grounded)
         {
+            deltaSpeed = (controller.isSprinting && Vector3.Dot(transform.forward, rotatedVector) >= 0) ? sprintSpeed : moveSpeed;
             if (!currentAction.Equals(moveActions.Airborne))
             {
                 SetMoveAction(moveActions.Airborne);
             }
             else
             {
-                rotatedVector = initialAirVector + rotatedVector * airMoveMod;
-                if(rotatedVector.magnitude > initialMagnitude) rotatedVector = rotatedVector.normalized * initialMagnitude; 
+                rotatedVector = Vector3.ClampMagnitude(initialAirVector + rotatedVector * airMoveMod, deltaSpeed) ;
             }
-            deltaSpeed = (controller.isSprinting && Vector3.Dot(transform.forward, rotatedVector) >= 0) ? sprintSpeed : moveSpeed;
+            
         }
         else if (moveVector == Vector3.zero)
         {

@@ -50,7 +50,7 @@ public class HumanoidController : MonoBehaviour
     }
 
     /// <summary>
-    /// should be used by player
+    /// Prepares the attack animation by moving to the start position
     /// </summary>
     public void PrepareAttack(bool start)
     {
@@ -58,19 +58,11 @@ public class HumanoidController : MonoBehaviour
     }
 
     /// <summary>
-    /// should be used by player
+    /// Starts the Attack
     /// </summary>
     public void Attack(float angle)
     {
         animateAttack.Attack(angle);
-    }
-
-    /// <summary>
-    /// should be used by enemy
-    /// </summary>
-    public void AttackWithChargeup(float angle)
-    {
-        animateAttack.AttackWithChargeupp(angle);
     }
     
     /// <summary>
@@ -87,13 +79,5 @@ public class HumanoidController : MonoBehaviour
     public void HoldBlockUpdate(float angle)
     {
         animateAttack.HoldBlockUpdate(angle);
-    }
-
-    /// <summary>
-    /// should be used by enemy
-    /// </summary>
-    public void BlockWithCharge(float angle)
-    {
-        animateAttack.BlockWithChargeup(angle);
     }
 }

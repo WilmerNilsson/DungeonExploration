@@ -19,8 +19,9 @@ public class SaveFileManager
     public GlobalSettings GlobalSettings { get; private set; }
     // Save file settings are stuff like accesability options and cheats
     public SavefileSettings? SavefileSettings;
-    public int CurrentSavefileNr = 1;
+    public int CurrentSavefileNr = testSaveFileNr;
     private SavefileData? tempSavefile;
+    private const int testSaveFileNr = 1337;
 
     public SaveFileManager()
     {
@@ -97,6 +98,11 @@ public class SaveFileManager
 
     public bool TryConsumeSavefileData([NotNullWhen(true)] out SavefileData? data)
     {
+        if(tempSavefile == null && CurrentSavefileNr == testSaveFileNr)
+        {
+            tempSavefile = ReadSavefile(CurrentSavefileNr);
+        }
+
         data = tempSavefile;
         tempSavefile = null;
         return data != null;
