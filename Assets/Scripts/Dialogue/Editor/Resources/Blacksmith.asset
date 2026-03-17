@@ -14,15 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FriendshipLevel: 0
   NodeLinks:
-  - BaseNodeGuid: 05c672dc-307a-48e6-9881-81284ff18f01
-    PortName: Choice 2
-    TargetNodeGuid: d6005942-0f8b-4985-b034-34011d8e56bc
-  - BaseNodeGuid: 05c672dc-307a-48e6-9881-81284ff18f01
-    PortName: Choice 3
-    TargetNodeGuid: 8ef84164-089e-4577-b67a-9856a84ce662
-  - BaseNodeGuid: 05c672dc-307a-48e6-9881-81284ff18f01
-    PortName: Choice 4
-    TargetNodeGuid: 2471c5d6-cc60-4d0a-a7fb-44b304fc3148
   - BaseNodeGuid: 42442c3b-0f5a-41a5-b974-af013362f955
     PortName: Choice 1
     TargetNodeGuid: b48f2797-71e1-44d2-ac3c-b2b489717907
@@ -77,6 +68,15 @@ MonoBehaviour:
   - BaseNodeGuid: 4f6b8b83-0488-465c-9c99-f82f3476c84a
     PortName: Choice 7
     TargetNodeGuid: 0a3d2a99-65b9-494f-9435-b8b9ef72ce58
+  - BaseNodeGuid: 05c672dc-307a-48e6-9881-81284ff18f01
+    PortName: Choice 2
+    TargetNodeGuid: d6005942-0f8b-4985-b034-34011d8e56bc
+  - BaseNodeGuid: 05c672dc-307a-48e6-9881-81284ff18f01
+    PortName: Choice 3
+    TargetNodeGuid: 8ef84164-089e-4577-b67a-9856a84ce662
+  - BaseNodeGuid: 05c672dc-307a-48e6-9881-81284ff18f01
+    PortName: Choice 4
+    TargetNodeGuid: 2471c5d6-cc60-4d0a-a7fb-44b304fc3148
   DialogueNodeDatas:
   - Guid: 8afa0a39-9b2d-4ba4-a83b-21f17f074fc8
     Title: SmithQuestion1
@@ -148,12 +148,12 @@ MonoBehaviour:
     Title: SmithEnter4
     ButtonText: Button text
     DialogueAsset: {fileID: 4900000, guid: 6bdabcd63c228394080863965d814069, type: 3}
-    HasBeenRead: 0
+    HasBeenRead: 1
     IsGreeting: 1
     ReadOnlyOnce: 0
     FriendshipRange: {x: 1, y: 1}
     Position: {x: 1794, y: 798}
-    ReadRun: 0
+    ReadRun: 1
     RunWaitAmount: 0
   - Guid: d2a1d1d7-5563-43d1-bafd-9a3a1ba207e1
     Title: SmithEnter5
@@ -313,7 +313,7 @@ MonoBehaviour:
     Title: SmithDialogue2
     ButtonText: Button text
     DialogueAsset: {fileID: 4900000, guid: c493da65ab834e74da5820de4a16bec3, type: 3}
-    HasBeenRead: 1
+    HasBeenRead: 0
     IsGreeting: 1
     ReadOnlyOnce: 1
     FriendshipRange: {x: 0, y: 0}

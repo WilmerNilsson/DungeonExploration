@@ -40,6 +40,8 @@ public class HumanoidSoundLogic : MonoBehaviour
     
     private HumanoidMovement.moveActions _lastMoveAction;
 
+    [SerializeField] private bool isPlayer;
+
 #if DEBUG
     private void OnValidate()
     {
@@ -54,6 +56,12 @@ public class HumanoidSoundLogic : MonoBehaviour
     //may change if we reset it on none/airborne
     //but like i comented above, this will prob be a script we remove later,
     //so no need to think about optimizing it to that degree
+
+    private void Start()
+    {
+        if (!isPlayer) OcclusionHandler.AddToOcclusionList(gameObject);
+    }
+
     private void Update()
     {
         if (currentDelay == 0f || footstepsActivatedBy == FootstepsActivatedBy.Animation) return;
@@ -162,5 +170,10 @@ public class HumanoidSoundLogic : MonoBehaviour
         {
             AudioManager.Instance.PlayOneShot(jumpPath, null, null, gameObject);
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (!isPlayer) OcclusionHandler.RemoveFromOcclusionList(gameObject);
     }
 }

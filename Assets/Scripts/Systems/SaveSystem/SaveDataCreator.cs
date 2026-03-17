@@ -12,22 +12,36 @@ public static class SaveDataCreator
         public List<DialogueSaveData> DialogueSaveDatas;
     }
 
-    public static void CreateWorldData(out DungeonSaveData dungeonSaveData, out PlayerSaveData playerSaveData, out List<DialogueSaveData> dialogueSaveDatas)
+    public static void CreateWorldData(out DungeonSaveData dungeonSaveData,
+        out PlayerSaveData playerSaveData, out List<DialogueSaveData> dialogueSaveDatas)
     {
         dungeonSaveData = new();
 
         AddContainerData(dungeonSaveData);
         AddDroppedItemData(dungeonSaveData);
         AddEnemyData(dungeonSaveData);
-        
+        AddEnabledData(dungeonSaveData);
+
         dialogueSaveDatas = new();
         AddDialogueData(dialogueSaveDatas);
-        
 
         playerSaveData = GameObject.FindAnyObjectByType<SaveFileHelperPlayer>(FindObjectsInactive.Exclude).GetData();
         dungeonSaveData.Initialized = true;
 
         return;
+
+        static void AddEnabledData(DungeonSaveData dungeonSaveData)
+        {
+            EnabledHelperCompanion[] enabledHelpers = GameObject.FindObjectsByType<EnabledHelperCompanion>(FindObjectsSortMode.None);
+
+            foreach(EnabledHelperCompanion helper in enabledHelpers)
+            {
+                if(helper.IsEnabledForSave())
+                {
+                    dungeonSaveData.EnabledObjects.Add(helper.UniqueID);
+                }
+            }
+        }
 
         static void AddEnemyData(DungeonSaveData dungeonSaveData)
         {

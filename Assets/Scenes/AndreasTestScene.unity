@@ -347,6 +347,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: CrazedAdventurer Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 6280913510540149649, guid: 3c100d158cd677644a18e7767e1733f9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502633917926070553, guid: 3c100d158cd677644a18e7767e1733f9, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[15].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502633917926070553, guid: 3c100d158cd677644a18e7767e1733f9, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[15].m_Target
+      value: 
+      objectReference: {fileID: 619323301}
+    - target: {fileID: 6502633917926070553, guid: 3c100d158cd677644a18e7767e1733f9, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[15].m_MethodName
+      value: Unequip
+      objectReference: {fileID: 0}
+    - target: {fileID: 6502633917926070553, guid: 3c100d158cd677644a18e7767e1733f9, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[15].m_TargetAssemblyTypeName
+      value: HumanoidAttackAnimatorCompanion, GameAssembly
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -404,7 +424,7 @@ GameObject:
   - component: {fileID: 503035843}
   m_Layer: 10
   m_Name: Cube (3)
-  m_TagString: Stone
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -529,7 +549,7 @@ GameObject:
   - component: {fileID: 535876021}
   m_Layer: 10
   m_Name: Cube
-  m_TagString: Stone
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -768,6 +788,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b16a74c5371cc9243a737d9e3195294e, type: 3}
+--- !u!114 &619323301 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7538638936785016937, guid: 3c100d158cd677644a18e7767e1733f9, type: 3}
+  m_PrefabInstance: {fileID: 387966248}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfaa67e8e53598c4dbd0156e40d30511, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &667923092
 GameObject:
   m_ObjectHideFlags: 0
@@ -1613,7 +1644,7 @@ GameObject:
   - component: {fileID: 1392829337}
   m_Layer: 10
   m_Name: Cube (2)
-  m_TagString: Stone
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1903,7 +1934,7 @@ GameObject:
   - component: {fileID: 1782774015}
   m_Layer: 10
   m_Name: Cube (1)
-  m_TagString: Stone
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2411,7 +2442,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1879338547510664418, guid: bd6d753639a52a1479239516af94f776, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1879338547510664418, guid: bd6d753639a52a1479239516af94f776, type: 3}
       propertyPath: m_LocalRotation.x
@@ -2419,7 +2450,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1879338547510664418, guid: bd6d753639a52a1479239516af94f776, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1879338547510664418, guid: bd6d753639a52a1479239516af94f776, type: 3}
       propertyPath: m_LocalRotation.z
@@ -2431,7 +2462,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1879338547510664418, guid: bd6d753639a52a1479239516af94f776, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1879338547510664418, guid: bd6d753639a52a1479239516af94f776, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z

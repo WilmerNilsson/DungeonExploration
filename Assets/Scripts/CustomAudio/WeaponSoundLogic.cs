@@ -12,6 +12,7 @@ public class WeaponSoundLogic : MonoBehaviour
     private void Start()
     {
         _materialParameters = new string[1] { materialParameter };
+        OcclusionHandler.AddToOcclusionList(gameObject);
     }
 
     public void PlaySwingSound()
@@ -48,5 +49,9 @@ public class WeaponSoundLogic : MonoBehaviour
         }
         AudioManager.Instance.PlayOneShot(collisionPath, _materialParameters, _materialIndexes, gameObject);
     }
-    
+
+    private void OnDestroy()
+    {
+        OcclusionHandler.RemoveFromOcclusionList(gameObject);
+    }
 }
