@@ -34,31 +34,21 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float curveHeight = 1.5f;
     [SerializeField, Tooltip("distance from middle toward start"), Range(0,1)] private float startBend;
     [SerializeField, Tooltip("distance from middle toward end"), Range(0,1)] private float endBend;
-    [SerializeField] private float attackChargeTime = 0.5f;
-    [SerializeField] private float attackHoldTime = 2f;
-    [SerializeField] private float attackSwingTime = 1f;
-    [SerializeField] private float attackResetTime = 1f;
+    [SerializeField, Min(0)] private float attackChargeTime = 0.5f;
+    [SerializeField, Min(0)] private float attackHoldTime = 2f;
+    [SerializeField, Min(0)] private float attackSwingTime = 1f;
+    [SerializeField, Min(0)] private float attackResetTime = 1f;
     
     [Header("Block")]
-    [SerializeField] private float blockDistance = 0.5f;
-    [SerializeField] private float blockChargeTime = 0.5f;
-    [SerializeField] private float blockHoldTime = 1f;
-    [SerializeField] private float blockReturnTime = 0.5f;
+    [SerializeField, Min(0)] private float blockDistance = 0.5f;
+    [SerializeField, Min(0)] private float blockChargeTime = 0.5f;
+    [SerializeField, Min(0)] private float blockHoldTime = 1f;
+    [SerializeField, Min(0)] private float blockReturnTime = 0.5f;
+    [SerializeField, Range(0,2)] private float blockHandOffset = 0.5f;
     
     private Vector3 up;
     private Vector3 forward;
     private Vector3 right;
-    
-    private Vector3 blockAnglePos;
-    private Vector3 blockOffsetPos;
-    public Vector3 BlockPos 
-    {
-        set => blockAnglePos = value;
-    }
-    public Vector3 BlockOffset 
-    {
-        set => blockOffsetPos = value;
-    }
     
     [Header("References")]
     [FormerlySerializedAs("companion")] public HumanoidAttackAnimatorCompanion Companion;
@@ -156,10 +146,12 @@ public class Weapon : MonoBehaviour
     /// Go from neutral to BlockPos <br/>
     /// returns true when time is more than block time and state machine can continue
     /// </summary>
-    public bool ChargeBlock(float time)
+    public bool ChargeBlock(float time, float percentage)
     {
         SwordArm.data.targetPositionWeight = time / blockChargeTime;
         SwordArm.data.targetRotationWeight = time / blockChargeTime;
+        
+        splinePosition = percentage;
         
         BlockPositionRotation();
         
@@ -175,7 +167,7 @@ public class Weapon : MonoBehaviour
         SwordArm.data.targetPositionWeight = 1;
         SwordArm.data.targetRotationWeight = 1;
         
-        splinePosition = percentage;
+        splinePosition = Mathf.Lerp(splinePosition, percentage, 0.02f);
         
         BlockPositionRotation();
     }
@@ -184,10 +176,12 @@ public class Weapon : MonoBehaviour
     /// returns true when time is more than block time and state machine can continue
     /// </summary>
 
-    public bool ReturnBlock(float time)
+    public bool ReturnBlock(float time, float percentage)
     {
         SwordArm.data.targetPositionWeight = 1 - time / blockReturnTime;
         SwordArm.data.targetRotationWeight = 1 - time / blockReturnTime;
+        
+        splinePosition = percentage;
         
         BlockPositionRotation();
         
@@ -315,13 +309,10 @@ public class Weapon : MonoBehaviour
         
         up = position;
         forward = Head.forward * -(Angle - 180);
-        Debug.DrawRay(HandIK.position, HandIK.up, Color.green);
-        Debug.DrawRay(HandIK.position, HandIK.forward, Color.blue);
-        Debug.DrawRay(HandIK.position, HandIK.right, Color.red);
         
         HandIK.rotation = Quaternion.LookRotation(forward, up);
         
-        HandIK.position = Head.position + Vector3.ClampMagnitude(position + HandIK.right, P0.magnitude);
+        HandIK.position = Head.position + Vector3.ClampMagnitude(position + HandIK.right * blockHandOffset, P0.magnitude);
     }
     private Vector3 RelativeRotation(Vector3 rotation)
     {
