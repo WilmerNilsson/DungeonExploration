@@ -62,61 +62,100 @@ public class AmbienceHandler : MonoBehaviour
    
    [Range(0, 3f)]
    [SerializeField] private float heightMultiplier;
+
+   private int currentTick;
+   private bool hasLoopedOnce;
+
+   private int minIndex;
+   private int maxIndex;
+
+   private float totalDistances;
    
    private void FixedUpdate()
    {
       if (!AudioManager.Listener) return;
-      for (var i = 0; i < 8; i++)
+      
+      //Öka tick
+      currentTick++;
+      if (currentTick >= 8)
       {
-         _flatForward = new Vector3(AudioManager.Listener.transform.forward.x, 0, AudioManager.Listener.transform.forward.z);
-         _direction = Quaternion.AngleAxis(45 * i, transform.up) * _flatForward;
-         directions[i] = _direction * 45; //För att visualisera directions
-         Physics.Raycast(AudioManager.Listener.transform.position, _direction, out _hits[i], Mathf.Infinity, layerMask);
+         currentTick = 0;
+         hasLoopedOnce = true;
       }
 
-      
-      //OnSort(_hits);
-      for (var i = 0; i < 8; i++)
+      //Om vi raycastat ett varv minst en gång börja göra calculations för parametrar första ticket varje loop
+      if (hasLoopedOnce && currentTick < 1)
       {
-         distances[i] = _hits[i].distance;
+         totalDistances = 0;
+         foreach (var distance in distances)
+         {
+            totalDistances += distance;
+         }
+         meanDistance = totalDistances * 0.125f;
+         GetMinMax(_hits, out minIndex, out maxIndex);
+         shortestDistance = _hits[minIndex].distance;
+         longestDistance = _hits[maxIndex].distance;
+      
+         maxDistanceAngle += Mathf.DeltaAngle(maxDistanceAngle + 180, (maxIndex * 45) - 180) * seekSpeed * 0.5f;
+         if (maxDistanceAngle < -180) maxDistanceAngle += 360f;
+         else if (maxDistanceAngle > 180) maxDistanceAngle -= 360f;
+      
+         minDistanceAngle += Mathf.DeltaAngle(minDistanceAngle + 180, (minIndex * 45) - 180) * seekSpeed * 0.5f;
+         if (minDistanceAngle < -180) minDistanceAngle += 360f;
+         else if (minDistanceAngle > 180) minDistanceAngle -= 360f;
+      
+         if (useHeightAsMultiplier)
+         {
+            Physics.Raycast(AudioManager.Listener.transform.position, Vector3.up, out _heightHits[0], layerMask);
+            Physics.Raycast(AudioManager.Listener.transform.position, Vector3.down, out _heightHits[1], layerMask);
+            _height = Vector3.Distance(_heightHits[0].point, _heightHits[1].point);
+            if (heightMultiplier > 0) _height *= heightMultiplier;
+            else _height = 0f;
+         }
+         else
+         {
+            _height = 1;
+         }
+         
+         SetParameters();
       }
       
-      medianDistance = (_hits[3].distance + _hits[4].distance) * 0.5f;
-      float totalDistances = 0;
-      for (var i = 0; i < 8; i++)
+      DoRaycast();
+      if (debug) DrawRays();
+   }
+
+   private void DrawRays()
+   {
+      for (int i = 0; i < 8; i++)
       {
-         totalDistances += distances[i];
+         if (i == currentTick)
+         {
+            Debug.DrawLine(AudioManager.Listener.transform.position, _hits[i].point, Color.blue,0);
+         }
+         else
+         {
+            Debug.DrawLine(AudioManager.Listener.transform.position, _hits[i].point, Color.white, 0);
+         }
       }
-      meanDistance = totalDistances * 0.125f;
-      GetMinMax(_hits, out var min, out var max);
-      shortestDistance = _hits[min].distance;
-      longestDistance = _hits[max].distance;
+   }
+   
+   private void DoRaycast()
+   {
+      //Gör raycast fram
+      _flatForward = new Vector3(AudioManager.Listener.transform.forward.x, 0, AudioManager.Listener.transform.forward.z);
+      _direction = Quaternion.AngleAxis(45 * currentTick, transform.up) * _flatForward;
       
-      //Debug.DrawLine(AudioManager.Listener.transform.position, _hits[max].point, Color.red);
+      Physics.Raycast(AudioManager.Listener.transform.position, _direction, out _hits[currentTick], Mathf.Infinity, layerMask);
       
-      maxDistanceAngle += Mathf.DeltaAngle(maxDistanceAngle + 180, (max * 45) - 180) * seekSpeed * 0.5f;
-      if (maxDistanceAngle < -180) maxDistanceAngle += 360f;
-      else if (maxDistanceAngle > 180) maxDistanceAngle -= 360f;
-      
-      minDistanceAngle += Mathf.DeltaAngle(minDistanceAngle + 180, (min * 45) - 180) * seekSpeed * 0.5f;
-      if (minDistanceAngle < -180) minDistanceAngle += 360f;
-      else if (minDistanceAngle > 180) minDistanceAngle -= 360f;
-      
-      if (useHeightAsMultiplier)
-      {
-         Physics.Raycast(AudioManager.Listener.transform.position, Vector3.up, out _heightHits[0], layerMask);
-         Physics.Raycast(AudioManager.Listener.transform.position, Vector3.down, out _heightHits[1], layerMask);
-         _height = Vector3.Distance(_heightHits[0].point, _heightHits[1].point);
-         if (heightMultiplier > 0) _height *= heightMultiplier;
-         else _height = 0f;
-      }
-      else
-      {
-         _height = 1;
-      }
-      
+      //Lägg till nuvarande tick i distance list
+      distances[currentTick] = _hits[currentTick].distance;
+      directions[currentTick] = _direction * 45; //För att visualisera directions
+   }
+
+   private void SetParameters()
+   {
       if (!AudioManager.IsValid) return;
-      //AudioManager.Instance.SetGlobalParameter("AmbiencePan", maxDistanceAngle, false);
+      
       if (useMean)
       {
          AudioManager.Instance.SetGlobalParameter("RoomSize", meanDistance * roomSizeMultiplier * _height, false);
@@ -127,20 +166,10 @@ public class AmbienceHandler : MonoBehaviour
       }
       
       AudioManager.Instance.SetGlobalParameter("ReverbPanner", maxDistanceAngle, false);
-      AudioManager.Instance.SetGlobalParameter("ClosestWallDistance", _hits[min].distance, false);
+      AudioManager.Instance.SetGlobalParameter("ClosestWallDistance", _hits[minIndex].distance, false);
       AudioManager.Instance.SetGlobalParameter("DelayPanner", minDistanceAngle, false);
 
-      currentRoomSize = meanDistance * roomSizeMultiplier * _height;
-   }
-
-   private void OnDrawGizmos()
-   {
-      if (!Application.isPlaying || !debug) return;
-      if (!AudioManager.Listener) return;
-      foreach (var hit in _hits)
-      {
-         Gizmos.DrawLine(AudioManager.Listener.transform.position, hit.point);
-      }
+      currentRoomSize = meanDistance * roomSizeMultiplier * _height; //För att visualisera i inspektorn
    }
 
    private void GetMinMax(RaycastHit[] hits, out int minIndex, out int maxIndex)
@@ -164,25 +193,6 @@ public class AmbienceHandler : MonoBehaviour
       }
       minIndex = currentMinIndex;
       maxIndex = currentMaxIndex;
-   }
-
-   private void OnSort(RaycastHit[] hits)
-   {
-      for (int i = 0; i < hits.Length - 1; i++)
-      {
-         RaycastHit temp = _hits[i];
-         int min = i;
-         for (int j = i + 1; j < hits.Length; j++)
-         {
-            if (hits[j].distance < temp.distance)
-            {
-               temp = hits[j];
-               min = j;
-            }
-         }
-         hits[min] = hits[i];
-         hits[i] = temp;
-      }
    }
 
    private void OnDestroy()
