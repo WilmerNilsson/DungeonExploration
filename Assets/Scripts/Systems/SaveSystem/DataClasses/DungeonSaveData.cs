@@ -9,7 +9,7 @@ public class DungeonSaveData
     public List<DroppedItem> DroppedItems = new();
     public List<Enemy> Enemies = new();
     public List<Container> Containers = new();
-    public List<bool> EnabledObjects = new();
+    public List<int> EnabledObjects = new();
     public bool Initialized = false;
 
     internal DungeonSaveData Clone()

@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Rope : MonoBehaviour
+public class Rope : MonoBehaviour, IEnabledHelper
 {
     [SerializeField, Tooltip("The Top and Bottom Teleport points")] private Transform Top, Bottom;
     [SerializeField, Tooltip("The Piton, for enable/disable")] private GameObject piton;
@@ -15,7 +15,8 @@ public class Rope : MonoBehaviour
     private Vector3 PlayerPosition => PlayerTrackerSingleton.Instance.player.transform.position;
     private CharacterController PlayerController => PlayerTrackerSingleton.Instance.player.gameObject.GetComponent<CharacterController>();
     private bool foundPlayer;
-    
+    private bool isEnabled = false;
+
     private float TopDistance => Vector3.Distance(PlayerPosition, Top.position);
     private float BottomDistance => Vector3.Distance(PlayerPosition, Bottom.position);
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -44,6 +45,7 @@ public class Rope : MonoBehaviour
 
     private void EnableRopeNoInvoke()
     {
+        isEnabled = true;
         Top.gameObject.SetActive(true);
         Bottom.gameObject.SetActive(true);
         piton.gameObject.SetActive(true);
@@ -72,5 +74,15 @@ public class Rope : MonoBehaviour
         {
             Debug.Log("no player");
         }
+    }
+
+    public void EnableFromSave()
+    {
+        EnableRopeNoInvoke();
+    }
+
+    public bool IsEnabledForSave()
+    {
+        return isEnabled;
     }
 }

@@ -104,13 +104,13 @@ public class WorldFromDataCreator : MonoBehaviour
 
         void InitializeEnabledObjects(DungeonSaveData data)
         {
-            EnabledHelperCompanion[] enabledHelpers = GameObject.FindObjectsByType<EnabledHelperCompanion>(FindObjectsSortMode.InstanceID);
+            EnabledHelperCompanion[] enabledHelpers = GameObject.FindObjectsByType<EnabledHelperCompanion>(FindObjectsSortMode.None);
 
-            for (int i = 0; i < enabledHelpers.Length; i++)
+            foreach (EnabledHelperCompanion helper in enabledHelpers)
             {
-                if (data.EnabledObjects[i]) //we prob want a range check here
+                if (data.EnabledObjects.Contains(helper.UniqueID))
                 {
-                    enabledHelpers[i].EnableFromSave();
+                    helper.EnableFromSave();
                 }
             }
         }

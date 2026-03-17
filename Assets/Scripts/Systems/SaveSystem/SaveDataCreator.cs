@@ -32,11 +32,14 @@ public static class SaveDataCreator
 
         static void AddEnabledData(DungeonSaveData dungeonSaveData)
         {
-            EnabledHelperCompanion[] enabledHelpers = GameObject.FindObjectsByType<EnabledHelperCompanion>(FindObjectsSortMode.InstanceID);
+            EnabledHelperCompanion[] enabledHelpers = GameObject.FindObjectsByType<EnabledHelperCompanion>(FindObjectsSortMode.None);
 
             foreach(EnabledHelperCompanion helper in enabledHelpers)
             {
-                dungeonSaveData.EnabledObjects.Add(helper.IsEnabledForSave());
+                if(helper.IsEnabledForSave())
+                {
+                    dungeonSaveData.EnabledObjects.Add(helper.UniqueID);
+                }
             }
         }
 
