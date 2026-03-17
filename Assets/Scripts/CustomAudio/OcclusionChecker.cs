@@ -46,6 +46,7 @@ public class OcclusionChecker
     public void CheckOcclusion(GameObject sourceGo, GameObject targetGo, out float occlusion, float maxDistance = -1)
     {
         _lineCount = linesOnEitherSide * 2 + 1;
+        hitDatas = new HitData[_lineCount];
         for (var i = 0; i < _lineCount; i++)
         {
             hitDatas[i] = new HitData()
