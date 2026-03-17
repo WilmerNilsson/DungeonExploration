@@ -1,4 +1,4 @@
-#speed:0.2
+#speed:0.2f
 #animation:AgainstWall
 #name:Ingrid
 Wait, this... this is-. Ari... I...
