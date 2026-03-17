@@ -26,6 +26,7 @@ public class OneShotPlayer : MonoBehaviour
 
     public void Play(int index)
     {
+        // Debug.Log("Playing one shot with index " + index);
         if (!AudioManager.IsValid)
         {
             Debug.LogWarning("There is no AudioManager in the scene, please add one");

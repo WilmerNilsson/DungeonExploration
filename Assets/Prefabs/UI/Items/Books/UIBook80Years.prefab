@@ -118,7 +118,8 @@ MonoBehaviour:
   descriptionTextIsLibraryName: 1
   textLibrary: {fileID: 11400000, guid: 1b1f8771b2a7c1940b19f8003b6ca232, type: 2}
   prefabID: 80Years
-  <CashValue>k__BackingField: 0
+  <CashValueBuy>k__BackingField: 0
+  <CashValueSell>k__BackingField: 0
   OnStopDrag:
     m_PersistentCalls:
       m_Calls:
@@ -176,7 +177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc293c0446b8972448fbee1677af522d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emitterIsThisObject: 0
+  emitterIsThisObject: 1
   instructions:
   - path: Inventory/Place
     gameObject: {fileID: 0}
@@ -196,6 +197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetGraphic: {fileID: 2895719447209793109}
   highlightCollor: {r: 0, g: 1, b: 1, a: 1}
+  supressFind: 0
 --- !u!114 &-7237993728347044564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,7 +210,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7704e0e9fcdd38459ccc708b9e6744b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 8515389814546743758}
   animationNameClick: UIItemJiggleAnimation
   animationNameRelease: UIItemJiggleAnimation
 --- !u!95 &8515389814546743758
