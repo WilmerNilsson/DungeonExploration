@@ -1,6 +1,4 @@
-using System;
 using FMOD.Studio;
-using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 
 public class CutsceneSoundLogic : MonoBehaviour

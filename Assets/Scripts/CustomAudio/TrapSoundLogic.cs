@@ -1,8 +1,5 @@
-using System;
-using FMOD;
 using FMOD.Studio;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 public class TrapSoundLogic : MonoBehaviour
 {
