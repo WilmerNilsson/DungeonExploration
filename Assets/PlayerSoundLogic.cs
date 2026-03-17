@@ -14,7 +14,7 @@ public class PlayerSoundLogic : MonoBehaviour
     [SerializeField] private Vector2 exhaustionSpeed;
     [SerializeField] private float swingExhaustionDelta;
     
-    private float _exhaustion;
+    public float exhaustion;
     private HumanoidMovement.moveActions _currentMoveAction;
     
 
@@ -36,9 +36,9 @@ public class PlayerSoundLogic : MonoBehaviour
 
     public void ChangeExhaustion(float delta)
     {
-        _exhaustion += delta;
+        exhaustion += delta;
         if (!AudioManager.IsValid) return;
-        AudioManager.Instance.SetGlobalParameter(exhaustionParameter, _exhaustion);
+        AudioManager.Instance.SetGlobalParameter(exhaustionParameter, exhaustion);
     }
 
     private void FixedUpdate()
@@ -46,13 +46,13 @@ public class PlayerSoundLogic : MonoBehaviour
         if (!AudioManager.IsValid) return;
         if (_currentMoveAction == HumanoidMovement.moveActions.Sprinting)
         {
-            _exhaustion = Mathf.MoveTowards(_exhaustion, exhaustionMax, exhaustionSpeed.x * Time.fixedDeltaTime);
+            exhaustion = Mathf.MoveTowards(exhaustion, exhaustionMax, exhaustionSpeed.x * Time.fixedDeltaTime);
         }
         else
         {
-            _exhaustion = Mathf.MoveTowards(_exhaustion, 0f, exhaustionSpeed.y * Time.fixedDeltaTime);
+            exhaustion = Mathf.MoveTowards(exhaustion, 0f, exhaustionSpeed.y * Time.fixedDeltaTime);
         }
-        AudioManager.Instance.SetGlobalParameter(exhaustionParameter, _exhaustion);
+        AudioManager.Instance.SetGlobalParameter(exhaustionParameter, exhaustion);
     }
 
     public void OnMoveStateChange(HumanoidMovement.moveActions moveAction)

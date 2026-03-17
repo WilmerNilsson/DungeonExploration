@@ -75,18 +75,30 @@ public class HumanoidMovement : MonoBehaviour
 
         float deltaSpeed = moveSpeed;
 
+        Vector3 finalMove = Vector3.zero;
         if (!grounded)
         {
             deltaSpeed = (controller.isSprinting && Vector3.Dot(transform.forward, rotatedVector) >= 0) ? sprintSpeed : moveSpeed;
+            
+            float speedX = playerVelocity.x + rotatedVector.x * airMoveMod * Time.fixedDeltaTime;
+            float speedZ = playerVelocity.z + rotatedVector.z * airMoveMod * Time.fixedDeltaTime;
+            Vector3 newVelocity = new Vector3(speedX, 0, speedZ);
+
             if (!currentAction.Equals(moveActions.Airborne))
             {
                 SetMoveAction(moveActions.Airborne);
             }
             else
             {
-                rotatedVector = Vector3.ClampMagnitude(initialAirVector + rotatedVector * airMoveMod, deltaSpeed) ;
+                rotatedVector = Vector3.ClampMagnitude(newVelocity, deltaSpeed) ;
             }
-            
+            playerVelocity = new Vector3(0, playerVelocity.y + (Physics.gravity.y * Time.fixedDeltaTime), 0);
+            //playerVelocity.y += Physics.gravity.y * Time.fixedDeltaTime;
+    
+            finalMove = rotatedVector + playerVelocity;
+            playerVelocity = finalMove;
+            CC.Move(finalMove * Time.fixedDeltaTime);
+            return;
         }
         else if (moveVector == Vector3.zero)
         {
@@ -107,10 +119,13 @@ public class HumanoidMovement : MonoBehaviour
             deltaSpeed = moveSpeed;
             SetMoveAction(moveActions.Walking);
         }
-        
-        playerVelocity.y += Physics.gravity.y * Time.fixedDeltaTime;
-        
-        Vector3 finalMove = rotatedVector * deltaSpeed + playerVelocity;
+
+        playerVelocity = new Vector3(0, playerVelocity.y + (Physics.gravity.y * Time.fixedDeltaTime), 0);
+        //playerVelocity.y += Physics.gravity.y * Time.fixedDeltaTime;
+    
+        finalMove = rotatedVector * deltaSpeed + playerVelocity;
+        playerVelocity = finalMove;
+
         CC.Move(finalMove * Time.fixedDeltaTime);
     }
 
