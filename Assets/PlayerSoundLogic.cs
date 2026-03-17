@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class PlayerSoundLogic : MonoBehaviour
 {
+
+    private float lastHealth;
     [SerializeField] private string sanityPath;
-    
     [SerializeField] private string hungerPath;
-    
+
     [SerializeField] private string exhaustionPath;
     [SerializeField] private string exhaustionParameter;
     [SerializeField] private float exhaustionMax;
@@ -80,13 +81,21 @@ public class PlayerSoundLogic : MonoBehaviour
     {
         AudioManager.Instance.StopEvent(sanityPath, STOP_MODE.ALLOWFADEOUT, gameObject);
         AudioManager.Instance.ReleaseInstance(sanityPath, gameObject);
-        
+
         AudioManager.Instance.StopEvent(exhaustionPath, STOP_MODE.ALLOWFADEOUT, gameObject);
         AudioManager.Instance.ReleaseInstance(exhaustionPath, gameObject);
+    }
+
+    public void OnHealthChange(HealthData healthData)
+    {
+        if (!AudioManager.IsValid) return;
+        AudioManager.Instance.SetGlobalParameter("HP", healthData.CurrentHealth);
+        AudioManager.Instance.SetGlobalParameter("hpRatio", (float)healthData.CurrentHealth / healthData.MaxHealth);
     }
 
     private void OnDestroy()
     {
         OnDeath();
     }
+
 }
