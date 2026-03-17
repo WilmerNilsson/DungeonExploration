@@ -11,11 +11,11 @@ public class OcclusionChecker
     }
     
     private static float _occlusionScore;
-    [SerializeField] private LayerMask layerMask;
-    [Range(0, 60)][SerializeField] private float spread = 4;
-    [Range(0, 1)] [SerializeField] private float bounceValue = 0.25f;
-    [Range(0, 8)] [SerializeField] private int maxBounces;
-    [Range(0,4)][SerializeField] private int linesOnEitherSide;
+    [SerializeField] public LayerMask layerMask;
+    [Range(0, 60)] public float spread = 4;
+    [Range(0, 1)]  public float bounceValue = 0.25f;
+    [Range(0, 8)]  public int maxBounces;
+    [Range(0,4)]   public int linesOnEitherSide;
 
     private const float Offset = 0.02f;
     
@@ -27,11 +27,9 @@ public class OcclusionChecker
     private Vector3 _sourcePos;
     private Vector3 _targetPos;
     
-    
-    [SerializeField] private FirstDistance firstDistance;
-    [SerializeField] private bool allowBounce;
-    [SerializeField] private bool checkIfFirstMiss;
-    [SerializeField] private bool drawDebug;
+    public FirstDistance firstDistance;
+    public bool checkIfFirstMiss;
+    public bool drawDebug;
 
     [Serializable]
     public struct HitData
@@ -48,7 +46,6 @@ public class OcclusionChecker
     public void CheckOcclusion(GameObject sourceGo, GameObject targetGo, out float occlusion, float maxDistance = -1)
     {
         _lineCount = linesOnEitherSide * 2 + 1;
-        hitDatas = new HitData[_lineCount];
         for (var i = 0; i < _lineCount; i++)
         {
             hitDatas[i] = new HitData()
@@ -86,12 +83,6 @@ public class OcclusionChecker
             if (Physics.Raycast(_sourcePos, _direction, out hitDatas[i].Hits[0], _distance, layerMask))
             {
                 if (drawDebug) Debug.DrawLine(_sourcePos, hitDatas[i].Hits[0].point, Color.red);
-
-                if (!allowBounce)
-                {
-                    hitDatas[i].score = 1;
-                    continue;
-                }
                 
                 for (var j = 1; j < hitDatas[i].Hits.Length; j++)
                 {
@@ -179,4 +170,6 @@ public class OcclusionChecker
         }
         occlusion += _occlusionScore / _lineCount;
     }
+    
+    
 }

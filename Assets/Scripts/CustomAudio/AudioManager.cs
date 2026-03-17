@@ -9,10 +9,6 @@ using STOP_MODE = FMOD.Studio.STOP_MODE;
 public class AudioManager : MonoBehaviour
 {
     #region Initialization
-
-    public OcclusionChecker occlusionChecker = new();
-    
-    public WallChecker wallChecker = new();
     
     public static AudioManager Instance;
     
@@ -48,6 +44,7 @@ public class AudioManager : MonoBehaviour
         RefreshAllEventCaches();
         RefreshGlobalParameterCache();
         GetListener();
+        LoadVolume();
         CombatChecker.ResetCombatList();
 
         AudioDebug.Print("AudioManager Initialized");
@@ -256,6 +253,14 @@ public class AudioManager : MonoBehaviour
             eventList.KeyOff(eventName, gameObj);
         }
     }
+
+    public void SetOcclusions(GameObject[] occlusionObjects)
+    {
+        foreach (var eventList in eventLists)
+        {
+            eventList.SetOcclusionOnObjects(occlusionObjects);
+        }
+    }
     
     #endregion
     
@@ -359,6 +364,13 @@ public class AudioManager : MonoBehaviour
         return 0;
     }
 
+    private void LoadVolume()
+    {
+        SetVolume("SFX", GameManagerSO.Instance.GetEffectsVolume() * 0.01f);
+        SetVolume("Music", GameManagerSO.Instance.GetMusicVolume() * 0.01f);
+        SetVolume("Master", GameManagerSO.Instance.GetMasterVolume() * 0.01f);
+    }
+
     #endregion
 
     #region Banks
@@ -410,13 +422,13 @@ public class AudioManager : MonoBehaviour
         SetPause(paused);
     }
 
-    private void FixedUpdate()
-    {
-        foreach (var eventList in eventLists)
-        {
-            eventList.CheckOcclusions();
-        }
-    }
+    // private void FixedUpdate()
+    // {
+    //     foreach (var eventList in eventLists)
+    //     {
+    //         eventList.CheckOcclusions();
+    //     }
+    // }
 
     #endregion
 

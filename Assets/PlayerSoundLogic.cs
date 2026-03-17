@@ -58,7 +58,6 @@ public class PlayerSoundLogic : MonoBehaviour
     public void OnMoveStateChange(HumanoidMovement.moveActions moveAction)
     {
         _currentMoveAction = moveAction;
-        Debug.Log(_currentMoveAction);
     }
 
     public void OnAttackStateChange(HumanoidAttackAnimatorCompanion.AttackState state)

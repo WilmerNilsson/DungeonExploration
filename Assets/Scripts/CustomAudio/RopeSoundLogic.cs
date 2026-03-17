@@ -1,9 +1,15 @@
+using System;
 using UnityEngine;
 
 public class RopeSoundLogic : MonoBehaviour
 {
     [SerializeField] private string placePath;
     [SerializeField] private string climbPath;
+
+    private void Start()
+    {
+        OcclusionHandler.AddToOcclusionList(gameObject);
+    }
 
     public void PlaceRope(bool success) //TODO ändra parameter eller nåt för place
     {
@@ -21,5 +27,10 @@ public class RopeSoundLogic : MonoBehaviour
     {
         if (!AudioManager.IsValid) return;
         AudioManager.Instance.PlayOneShot(climbPath, null, null, gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        OcclusionHandler.RemoveFromOcclusionList(gameObject);
     }
 }

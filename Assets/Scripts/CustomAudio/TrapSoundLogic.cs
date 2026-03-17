@@ -16,6 +16,7 @@ public class TrapSoundLogic : MonoBehaviour
          emitterObject = gameObject;
       }
       if (!AudioManager.IsValid) return;
+      OcclusionHandler.AddToOcclusionList(emitterObject);
       AudioManager.Instance.CreateInstance(trapPath, emitterObject);
    }
 
@@ -40,6 +41,7 @@ public class TrapSoundLogic : MonoBehaviour
    {
       if (!AudioManager.IsValid) return;
       AudioManager.Instance.ReleaseInstance(trapPath, emitterObject);
+      OcclusionHandler.RemoveFromOcclusionList(gameObject);
    }
 }
 
