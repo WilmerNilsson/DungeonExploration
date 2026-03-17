@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using FMOD.Studio;
 using FMODUnity;
-using Debug = UnityEngine.Debug;
 
 [Serializable]
 public class EventData

@@ -10,7 +10,6 @@ public class SaveFileHelperPlayer : MonoBehaviour
     [SerializeField] private Sanity sanity;
     [SerializeField] private int runCount;
     [SerializeField] private string startingWeaponID;
-    [SerializeField] private GameObject deathChestPrefab;
 
 #if DEBUG && UNITY_EDITOR
     private void OnValidate()
@@ -110,16 +109,10 @@ public class SaveFileHelperPlayer : MonoBehaviour
         {
             return;
         }
-        //GameObject deathChest = Instantiate(deathChestPrefab);
-        //deathChest.transform.position = spawnTransform.position;
-        //ContainerController container = deathChest.GetComponentInChildren<ContainerController>();
-        //container.transform.position = spawnTransform.position;
         InventorySaveData inventory = new(InvMasterBase.Instance.PlayerInventory.GetInventoryData());
-        //container.spawnItems = new GameObject[inventory.Items.Count];
         for (int i = 0; i < inventory.Items.Count; i++)
         {
             itemLibrary.TryGetItemPairByName(inventory.Items[i].PrefabID, out ItemPairing pair);
-            //container.spawnItems[i] = pair.UIPrefab;
             Instantiate(pair.WorldPrefab, spawnTransform.position, spawnTransform.rotation);
         }
 
