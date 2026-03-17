@@ -4,10 +4,10 @@
 Hmm? what's up?
 
 #name:Ingrid
-I think I found the diary from someone in your family. They shared your surname at least
+I think I found the diary from someone in your family. They shared your surname at least.
 
 #name:Saga
-Huh? let me see that
+Huh? let me see that.
 
 ...
 
@@ -16,7 +16,7 @@ I didn’t think he was this obsessed with it though. Gave me a whole earful abo
 ‘Once I come back with it, you'll not be able to resist going down yourself!’ or something like that.
 And coooomee ooooon. A sword forged of pure fire? Give me a break. 
 I dont care if a fucking dragon made it. Something like that’s not possible. 
-Urghh.
+Uuuurghh.
 Sorry about that, oh and uh, thanks I guess. Don't really get to hear from my family much anymore after all.
 
     -> END

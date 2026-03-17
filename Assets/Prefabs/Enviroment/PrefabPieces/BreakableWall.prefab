@@ -8900,7 +8900,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7298464835087752457}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BreakableWall
   m_TagString: Stone
   m_Icon: {fileID: 0}
@@ -9327,6 +9327,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f58a3f488e2be34d94a421e17b6a95f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  graphicModel: {fileID: 0}
+  canInteract: 1
   OnInteract:
     m_PersistentCalls:
       m_Calls:
@@ -10546,6 +10548,8 @@ MonoBehaviour:
   playerHealth: {fileID: 0}
   _currentHealth: 1000
   _maxHealth: 1000
+  minimumFallDamageHeight: 0
+  fallDamageMultiplier: 0
   DurabilityDamage: 0
   OnChangeHealths:
     m_PersistentCalls:
