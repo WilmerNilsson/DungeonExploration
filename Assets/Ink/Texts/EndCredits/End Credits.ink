@@ -37,13 +37,18 @@ Gabriel Abrahamsson
 
 #event:5
 
+Technical audio implemantation:
+Gabriel Abrahamsson
+
+#event:6
+
 Game design lead:
 Alvin Andersson
 
 Game deskign:  
 Viktor Karlsson Grönlund
 
-#event:6
+#event:7
 
 Programmer lead:
 Jonatan Rehn
@@ -52,7 +57,7 @@ Programmers:
 Andreas Runesson
 Wilmer Nilsson
 
-#event:7
+#event:8
 
 Art lead 
 Aron Samuelsson
@@ -61,22 +66,22 @@ Artists
 Alireza Saber
 Fredrik Bergqvist
 
-#event:8
+#event:9
 
 Voice cast:
 Ingrid - Avra Empyrean
 
-#event:9
+#event:10
 
 Crazed Adventurers - Adam Lundström, Alexander Ekblom, Aron Samuelsson, Erik Persson, Walter Cramby, Thespian, Elle, Amanda Sundin, Max Wahlgren, Jonathan Lenell, Lisbeth
 
-#event:10
+#event:11
 
 Font used:
 Alkhemikal
-by Front End Dev
+by Font End Dev
 
-#event:11
+#event:12
 
 Thank you for playing!
 
