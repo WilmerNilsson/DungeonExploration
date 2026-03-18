@@ -21,8 +21,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private bool lockedMovement = false;
     [SerializeField]private bool lockedCamera = false;
     
-    private bool startedAttack = false;
-    private bool startedBlock = false;
+    [SerializeField] private bool startedAttack = false;
+    [SerializeField] private bool startedBlock = false;
 
     private Vector2 mouseStart;
     private Vector2 mouseEnd;
@@ -149,11 +149,23 @@ public class PlayerController : MonoBehaviour
     public void OnAttack(InputAction.CallbackContext context)
     {
         if (lockedMovement) return;
-        if (context.performed && !lockedCamera)
+        if (context.performed)
         {
-            startedAttack = true;
-            GameManagerSO.Instance.LockCamera(true);
-            mouseStart = Mouse.current.position.ReadValue();
+            if (lockedCamera && startedBlock) // Parry
+            {
+                if (controller.TryParry())
+                {
+                    startedBlock = false;
+                    controller.HoldBlock(false);
+                    GameManagerSO.Instance.LockCamera(false);
+                }
+            }
+            else // Attack
+            {
+                startedAttack = true;
+                GameManagerSO.Instance.LockCamera(true);
+                mouseStart = Mouse.current.position.ReadValue();
+            }
         }
         if (context.canceled && startedAttack)
         {
@@ -183,10 +195,6 @@ public class PlayerController : MonoBehaviour
 
             mouseEnd = Mouse.current.position.ReadValue();
             startedBlock = false;
-            if (Vector2.Distance(mouseStart, mouseEnd) > 10)
-            {
-                //parry here
-            }
             GameManagerSO.Instance.LockCamera(false);
         }
     }
