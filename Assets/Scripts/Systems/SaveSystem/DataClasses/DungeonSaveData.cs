@@ -10,6 +10,7 @@ public class DungeonSaveData
     public List<Enemy> Enemies = new();
     public List<Container> Containers = new();
     public List<int> EnabledObjects = new();
+    public List<MinimapComponentData> minimapComponentData = new();
     public bool Initialized = false;
 
     internal DungeonSaveData Clone()
@@ -21,6 +22,8 @@ public class DungeonSaveData
 
         cloneData.Containers = new(Containers.Count);
         cloneData.Containers.AddRange(Containers.Select(i => i.Clone()));
+        
+        cloneData.minimapComponentData = new(minimapComponentData);
 
         cloneData.Initialized = Initialized;
         return cloneData;

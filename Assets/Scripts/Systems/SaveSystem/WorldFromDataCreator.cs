@@ -43,6 +43,10 @@ public class WorldFromDataCreator : MonoBehaviour
                     dialogueContainers.Find(x => x.name == data.DialogueSaves[i].TreeName).SetDialogueData(data.DialogueSaves[i]);
                 }
             }
+
+            MinimapMaster minimapMaster = FindFirstObjectByType<MinimapMaster>();
+            Debug.Log("setting minimap master");
+            minimapMaster.GetSO().SetToData(data.Dungeon.minimapComponentData);
             if(data.Dungeon != null && data.Dungeon.Initialized)
             {
                 DestoryNewWorld();

@@ -20,6 +20,7 @@ public static class SaveDataCreator
         AddContainerData(dungeonSaveData);
         AddDroppedItemData(dungeonSaveData);
         AddEnemyData(dungeonSaveData);
+        AddMapData(dungeonSaveData);
         AddEnabledData(dungeonSaveData);
 
         dialogueSaveDatas = new();
@@ -82,6 +83,14 @@ public static class SaveDataCreator
             {
                 dungeonSaveData.Containers.Add(helper.GetData());
             }
+        }
+
+        static void AddMapData(DungeonSaveData dungeonSaveData)
+        {
+            MinimapComponentData[] mapData = GameObject.FindFirstObjectByType<MinimapMaster>().GetSO()
+                .minimapComponentData.ToArray();
+            
+            dungeonSaveData.minimapComponentData  = new(mapData);
         }
 
         static void AddDialogueData(List<DialogueSaveData> dialogueSaveData)
