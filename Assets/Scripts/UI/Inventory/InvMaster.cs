@@ -77,6 +77,11 @@ public class InvMaster : InvMasterBase
         OpenPlayerInventory();
 
         container.Grid.transform.SetParent(worldContainerParent, false);
+
+        if(quickLootInventory == null)
+        {
+            quickLootInventory = container.Grid;
+        }
     }
 
     public void RemoveWorldContainerFromSystem(ContainerController container)
@@ -84,6 +89,11 @@ public class InvMaster : InvMasterBase
         if(openContainers.Remove(container))
         {
             container.Close();
+
+            if(quickLootInventory == container.Grid)
+            {
+                quickLootInventory = null;
+            }
         }
     }
 

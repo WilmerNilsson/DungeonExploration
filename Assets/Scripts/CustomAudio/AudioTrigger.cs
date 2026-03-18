@@ -22,13 +22,19 @@ public class AudioTrigger : MonoBehaviour
     public float activationDelay;
     
     public Instruction[] instructions;
-
+    
     #region Triggering 
 
     //Metoder för att aktivera triggern baserat på activatedBy
     
     private void Start()
     {
+        //Om någon av instruktionerna rör eventinstanser på gameobjekt bör de objektet kollas för occlusion
+        foreach (Instruction instruction in instructions)
+        {
+            if (instruction.gameObj) OcclusionHandler.AddToOcclusionList(gameObject);
+        }
+        
         if (activatedBy == ActivatedBy.Start)
         {
             Activate();
@@ -62,6 +68,7 @@ public class AudioTrigger : MonoBehaviour
             Activate();
             AudioDebug.Print("AudioTrigger activated on destroy");
         }
+        OcclusionHandler.RemoveFromOcclusionList(gameObject);
     }
 
     #endregion

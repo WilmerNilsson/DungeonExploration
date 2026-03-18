@@ -12,6 +12,7 @@ public class AudioDebug : MonoBehaviour
         GetLocalParameterList,
         GetAllVcas,
         GetLoadedBanks,
+        ShowOcclusionObjects,
         SeePerformanceMetrics
     }
 
@@ -204,6 +205,14 @@ public class AudioDebug : MonoBehaviour
                         "\n Update: " + core.update;
                 lines = 10;
                 return;
+            case Procedures.ShowOcclusionObjects:
+                OcclusionHandler.GetOcclusionList(out var objects, out var occlusion, out var walls);
+                for (int i = 0; i < objects.Length; i++)
+                {
+                    text += "==" + objects[i].name + "== \n Occlusion: " + occlusion[i] + " \n Walls: " + walls[i] + "\n";
+                    lines += 3;
+                }
+                break;
             default:
                 throw new ArgumentOutOfRangeException();
         }

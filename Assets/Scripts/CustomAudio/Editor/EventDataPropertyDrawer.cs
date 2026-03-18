@@ -1,7 +1,6 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [CustomPropertyDrawer(typeof(EventData))]
 public class EventDataPropertyDrawer : PropertyDrawer
