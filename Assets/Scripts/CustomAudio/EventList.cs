@@ -696,6 +696,7 @@ public class EventList : ScriptableObject
             }
             
             instance.start();
+            instance.release();
             
             AudioDebug.Print("Playing OneShot: " + eventName);
         }
