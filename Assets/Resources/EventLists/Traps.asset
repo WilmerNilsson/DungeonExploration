@@ -81,4 +81,54 @@ MonoBehaviour:
     maxDistance: 20
     debug: 0
     parameters: []
+  - eventName: SmallSpikeWall
+    eventReference:
+      Guid:
+        Data1: -750713876
+        Data2: 1222928785
+        Data3: -1029451076
+        Data4: -1968854928
+      Path: event:/Sound/Ambiance/Traps/SmallSpikeWall
+    banks:
+    - SFX
+    isOneShot: 0
+    is3D: 1
+    isOcclusion: 1
+    minDistance: 1
+    maxDistance: 40
+    debug: 0
+    parameters:
+    - paramName: Walls
+      isGlobal: 0
+      data1: 3996502556
+      data2: 1746408966
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
+  - eventName: Tripwire
+    eventReference:
+      Guid:
+        Data1: 604306007
+        Data2: 1079166188
+        Data3: -1206582337
+        Data4: 1870345571
+      Path: event:/Sound/Ambiance/Traps/Tripwire
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters:
+    - paramName: Walls
+      isGlobal: 0
+      data1: 3996502556
+      data2: 1746408966
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
   debug: 0
