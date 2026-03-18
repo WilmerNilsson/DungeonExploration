@@ -268,6 +268,14 @@ public class AudioManager : MonoBehaviour
             eventList.SetOcclusionOnObjects(occlusionObjects);
         }
     }
+
+    public void SetInstancePosition(string path, GameObject gameObject)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.SetInstancePosition(eventName, gameObject);
+        }
+    }
     
     #endregion
     

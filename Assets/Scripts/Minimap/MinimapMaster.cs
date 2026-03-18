@@ -14,6 +14,8 @@ public class MinimapMaster : MonoBehaviour
 
     [Tooltip("The scriptable object belonging to this level")]
     [SerializeField] private MinimapSO_test minimapSoTest;
+    [Tooltip("The scriptable object named MinimapLibrarySO")]
+    [SerializeField] private MinimapLibrarySO minimapLibrary;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void OnValidate()
@@ -46,6 +48,11 @@ public class MinimapMaster : MonoBehaviour
         Instance = this;
     }
 
+    public MinimapSO_test GetSO()
+    {
+        return minimapSoTest;
+    }
+
     public void AddToSO(List<MinimapPart> children)
     {
         foreach (MinimapPart child in children)
@@ -54,7 +61,7 @@ public class MinimapMaster : MonoBehaviour
             {
                 continue;
             }
-            minimapSoTest.AddToLists(child.prefab, child.transform, child.GetRotatedBounds());
+            minimapSoTest.AddToLists(child.prefab.name, child.transform, child.GetRotatedBounds());
         }
     }
 
@@ -65,12 +72,12 @@ public class MinimapMaster : MonoBehaviour
             Destroy(spawnedObjects[i]);
         }
         spawnedObjects.Clear();
-        for (int i = 0; i < minimapSoTest.prefabNames.Count; i++)
+        for (int i = 0; i < minimapSoTest.minimapComponentData.Count; i++)
         {
-            GameObject currentMinimap = Instantiate(minimapSoTest.GetPrefabByName(minimapSoTest.prefabNames[i]), transform);
-            currentMinimap.transform.position = minimapSoTest.minimapPositions[i];
-            currentMinimap.transform.eulerAngles = minimapSoTest.minimapRotations[i];
-            currentMinimap.transform.localScale = minimapSoTest.minimapScales[i];
+            GameObject currentMinimap = Instantiate(minimapLibrary.minimapObjects.Find(x => x.name == minimapSoTest.minimapComponentData[i].name), transform);
+            currentMinimap.transform.position = minimapSoTest.minimapComponentData[i].position;
+            currentMinimap.transform.eulerAngles = minimapSoTest.minimapComponentData[i].rotation;
+            currentMinimap.transform.localScale = minimapSoTest.minimapComponentData[i].scale;
             spawnedObjects.Add(currentMinimap);
         }
     }

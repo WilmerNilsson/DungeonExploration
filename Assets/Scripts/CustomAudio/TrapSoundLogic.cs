@@ -16,7 +16,7 @@ public class TrapSoundLogic : MonoBehaviour
       foreach (GameObject emitter in emitterObjects)
       {
          OcclusionHandler.AddToOcclusionList(emitter);
-         AudioManager.Instance.CreateInstance(trapPath, emitter);
+         AudioManager.Instance.CreateInstance(trapPath, emitter, false);
       }
    }
 
@@ -29,7 +29,16 @@ public class TrapSoundLogic : MonoBehaviour
       }
    }
 
-   public void NextStep()
+    private void FixedUpdate()
+    {
+        if (!AudioManager.IsValid) return;
+        foreach (var emitter in emitterObjects) 
+        {
+            AudioManager.Instance.SetInstancePosition(trapPath, emitter);
+        }
+    }
+
+    public void NextStep()
    {
       if (!AudioManager.IsValid) return;
       foreach (var emitter in emitterObjects)
@@ -52,6 +61,7 @@ public class TrapSoundLogic : MonoBehaviour
       if (!AudioManager.IsValid) return;
       foreach (var emitter in emitterObjects)
       {
+         AudioManager.Instance.StopEvent(trapPath, STOP_MODE.ALLOWFADEOUT, gameObject);
          AudioManager.Instance.ReleaseInstance(trapPath, emitter);
          OcclusionHandler.RemoveFromOcclusionList(emitter);
       }
