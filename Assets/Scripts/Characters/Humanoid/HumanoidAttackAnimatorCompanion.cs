@@ -55,6 +55,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     {
         Charge,
         Block,
+        Parry,
         Return
     }
 
@@ -183,18 +184,10 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         startTime = Time.time;
     
         OnBlockStateChange?.Invoke(BlockState.Block);
-
-        while (isBlocking)
-        {
-            weaponScript.HoldBlock(Percentage);
-            yield return null;
-        }
         
         yield return new WaitUntil(HoldPart);
     
         weaponScript.SetBlockActive(false);
-    
-        isInAnimation = false;
     
         currentAnimation = StartCoroutine(ReturnBlockAnimation());
     
@@ -206,7 +199,46 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     
         bool HoldPart()
         {
+            weaponScript.HoldBlock(Percentage);
             return !isBlocking;
+        }
+    }
+
+    private IEnumerator ParryAnimation()
+    {
+        isInAnimation = true;
+        startTime = Time.time;
+        
+        weaponScript.SetParryActive(true);
+        
+        OnBlockStateChange?.Invoke(BlockState.Parry);
+
+        yield return new WaitUntil(ParryPart);
+        startTime = Time.time;
+        
+        weaponScript.SetParryActive(false);
+        weaponScript.SetBlockActive(false);
+        
+        yield return new WaitUntil(WaitPart);
+        startTime = Time.time;
+        
+        yield return new WaitUntil(ReturnPart);
+        
+        isInAnimation = false;
+
+        bool ParryPart()
+        {
+            return weaponScript.ParrySwing(TimeFromStartOfAnimation);
+        }
+
+        bool WaitPart()
+        {
+            return weaponScript.ParryWait(TimeFromStartOfAnimation);
+        }
+
+        bool ReturnPart()
+        {
+            return weaponScript.ParryReturn(TimeFromStartOfAnimation);
         }
     }
 
@@ -290,6 +322,17 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
             this.angle = angle;
             weaponScript.Angle = angle;
         }
+    }
+
+    public bool TryParry()
+    {
+        if (isBlocking)
+        {
+            StopCoroutine(currentAnimation);
+            currentAnimation = StartCoroutine(ParryAnimation());
+            return true;
+        }
+        return false;
     }
 
     #endregion

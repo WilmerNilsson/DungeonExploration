@@ -41,9 +41,14 @@ public class Weapon : MonoBehaviour
     [SerializeField, Min(0)] private float attackResetTime = 1f;
     
     [Header("Block")]
-    [SerializeField, Min(0)] private float blockChargeTime = 0.5f;
-    [SerializeField, Min(0)] private float blockReturnTime = 0.5f;
-    [SerializeField, Range(0,2)] private float blockHandOffset = 0.5f;
+    [SerializeField, Min(0), Tooltip("The time it takes to get to block")] private float blockChargeTime = 0.5f;
+    [SerializeField, Min(0), Tooltip("The time it takes to return from block")] private float blockReturnTime = 0.5f;
+    [SerializeField, Range(0,2), Tooltip("The offset between block position and the position of the hand")] private float blockHandOffset = 0.5f;
+    
+    [Header("Parry")]
+    [SerializeField, Min(0), Tooltip("How long the parry takes")] private float parrySwingTime = 0.5f;
+    [SerializeField, Min(0), Tooltip("How long it stays after parry")] private float parryWaitTime = 0.5f;
+    [SerializeField, Min(0), Tooltip("The time it takes to return from parry")] private float parryReturnTime = 0.5f;
     
     private Vector3 up;
     private Vector3 forward;
@@ -189,6 +194,31 @@ public class Weapon : MonoBehaviour
     
     #endregion
 
+    #region Parry
+
+    public bool ParrySwing(float time)
+    {
+        ParryPositionRotation(time/parrySwingTime);
+        
+        return time >= parrySwingTime;
+    }
+
+    public bool ParryWait(float time)
+    {
+        
+        return time >= parryWaitTime;
+    }
+
+    public bool ParryReturn(float time)
+    {
+        SwordArm.data.targetPositionWeight = 1 - time / parryReturnTime;
+        SwordArm.data.targetRotationWeight = 1 - time / parryReturnTime;
+        
+        return time >= parryReturnTime;
+    }
+
+    #endregion
+
     #region Collision
     public void SetDamageActive(bool value)
     {
@@ -196,6 +226,11 @@ public class Weapon : MonoBehaviour
     }
     
     public void SetBlockActive(bool value)
+    {
+        isBlocking = value;
+    }
+
+    public void SetParryActive(bool value)
     {
         isBlocking = value;
     }
@@ -314,6 +349,18 @@ public class Weapon : MonoBehaviour
         forward = Head.forward * -(Angle - 180);
         
         HandIK.rotation = Quaternion.LookRotation(forward, up);
+        
+        HandIK.position = Head.position + Vector3.ClampMagnitude(position + HandIK.right * blockHandOffset, P0.magnitude);
+    }
+
+    private void ParryPositionRotation(float time)
+    {
+        Vector3 position = Head.transform.TransformDirection(P0);
+        
+        up = position;
+        forward = Head.forward * -(Angle - 180);
+        
+        HandIK.rotation = Quaternion.LookRotation(forward, up) * Quaternion.AngleAxis(time * Mathf.Rad2Deg, forward);
         
         HandIK.position = Head.position + Vector3.ClampMagnitude(position + HandIK.right * blockHandOffset, P0.magnitude);
     }
