@@ -63,7 +63,7 @@ MonoBehaviour:
     - Position:
         x: 0.6
         y: -0.5
-        z: 0.75
+        z: 0.5
       TangentIn:
         x: 0
         y: 0
@@ -81,7 +81,7 @@ MonoBehaviour:
     - Position:
         x: 0.7
         y: 0.5
-        z: 0.75
+        z: 0.5
       TangentIn:
         x: 0
         y: 0
@@ -92,14 +92,14 @@ MonoBehaviour:
         z: 0.6
       Rotation:
         value:
-          x: 0.27059868
-          y: 0.6532813
-          z: 0.27059868
+          x: 0.2705987
+          y: 0.6532812
+          z: 0.2705987
           w: -0.6532811
     - Position:
         x: -0.7
         y: 0.5
-        z: 0.75
+        z: 0.5
       TangentIn:
         x: 0
         y: 0
@@ -117,7 +117,7 @@ MonoBehaviour:
     - Position:
         x: -0.6
         y: -0.5
-        z: 0.75
+        z: 0.5
       TangentIn:
         x: 0
         y: 0
@@ -237,6 +237,7 @@ MonoBehaviour:
     MyMadAdventurerStateMachine: {fileID: 0}
     minDistanceToCorner: 0.1
     target: {x: 0, y: 0, z: 0}
+    holdTime: 0
     maxMeleeRange: 2
     minMeleeRange: 0.5
   DyingState:
@@ -591,7 +592,6 @@ MonoBehaviour:
     maxBounces: 1
     linesOnEitherSide: 2
     firstDistance: 0
-    allowBounce: 1
     checkIfFirstMiss: 0
     drawDebug: 0
     hitDatas: []

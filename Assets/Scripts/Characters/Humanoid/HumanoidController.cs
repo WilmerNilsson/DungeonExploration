@@ -44,25 +44,17 @@ public class HumanoidController : MonoBehaviour
     /// <summary>
     /// should be used by player
     /// </summary>
-    public void PrepareAttackUpdate(float angle)
+    public void HoldAttackUpdate(float angle)
     {
         animateAttack.HoldAttackUpdate(angle);
     }
 
     /// <summary>
-    /// Prepares the attack animation by moving to the start position
-    /// </summary>
-    public void PrepareAttack(bool start)
-    {
-        animateAttack.HoldAttack(start);
-    }
-
-    /// <summary>
     /// Starts the Attack
     /// </summary>
-    public void Attack(float angle)
+    public bool TryAttack(float angle)
     {
-        animateAttack.Attack(angle);
+        return animateAttack.TryAttack(angle);
     }
     
     /// <summary>
