@@ -11,6 +11,7 @@ public class Weapon : MonoBehaviour
     [FormerlySerializedAs("onDamage")] public UnityEvent OnDamage;
     [FormerlySerializedAs("onDeflectCollision")] public UnityEvent<string, Vector3> OnDeflectCollision;
     public UnityEvent onParry;
+    public UnityEvent onBlock;
     public UnityEvent onSwing;
     
     [Header("Weapon Stats")]
@@ -24,6 +25,7 @@ public class Weapon : MonoBehaviour
     
     [SerializeField] private bool dealDamage = false;
     [SerializeField] private bool isBlocking = false;
+    [SerializeField] private bool isParrying = false;
     [SerializeField] private bool unbreakable;
     [SerializeField] private Collider body;
     public Spline startSpline;
@@ -244,14 +246,19 @@ public class Weapon : MonoBehaviour
                         Debug.Log("Metal");
                         if (other.TryGetComponent(out Weapon weapon))
                         {
-                            if (!weapon.isBlocking)
+                            if (weapon.isParrying)
                             {
-                                Debug.Log("Other weapon not blocking");
+                                onParry.Invoke();
+                                Companion.OnGetParried();
+                            }
+                            else if(weapon.isBlocking)
+                            {
+                                onBlock.Invoke();
+                                Companion.OnGetBlocked();
                             }
                             else
                             {
-                                onParry.Invoke();
-                                Companion.OnGetBlocked();
+                                Debug.Log("Other weapon not blocking or parrying");
                             }
                             break;
                         }
