@@ -16,6 +16,7 @@ public class OcclusionHandler : MonoBehaviour
     [SerializeField] private int linesOnEitherSide;
     [SerializeField] private int objectsToOcclusionCheck;
     [SerializeField] private float minDistanceForRaycast;
+    private int _objectsInMinDistance;
     
     
     
@@ -29,8 +30,8 @@ public class OcclusionHandler : MonoBehaviour
     
     public bool drawDebug;
     public bool debugMsg;
-    private readonly Color _lGrey = new Color(0.66f, 0.66f, 0.66f);
-    private readonly Color _dGrey = new Color(0.33f, 0.33f, 0.33f);
+    private readonly Color _lGrey = new(0.66f, 0.66f, 0.66f);
+    private readonly Color _dGrey = new(0.33f, 0.33f, 0.33f);
     private float _debugLineDuration;
     
     private int _lineCount;
@@ -61,6 +62,7 @@ public class OcclusionHandler : MonoBehaviour
         public int WallHitCount;
         public LineData[] OcclusionLines;
         public Vector3 SourcePos;
+        public bool WithinMinDistance;
         
         public static OcclusionData CreateInstance()
         {
@@ -161,11 +163,20 @@ public class OcclusionHandler : MonoBehaviour
     private void CreateDistanceList()
     {
         Profiler.BeginSample("Create Distance List");
+        _objectsInMinDistance = 0;
         _objectsAndDistances.Clear();
         foreach (var kvp in OcclusionObjects)
         {
             _tempDistance = Vector3.Distance(kvp.Key.transform.position, AudioManager.Listener.transform.position);
-            if (!(_tempDistance > minDistanceForRaycast)) continue;
+            if (!(_tempDistance > minDistanceForRaycast)) 
+            {
+                kvp.Value.WithinMinDistance = true;
+                _objectsInMinDistance++;
+            }
+            else
+            {
+                kvp.Value.WithinMinDistance = false;
+            }
             _objectsAndDistances.Add(new ObjectAndDistance { Obj = kvp.Key, Distance = _tempDistance });
             if (debugMsg) Debug.Log("Adding " + kvp.Key.name + " to Distance List");
         }
@@ -199,7 +210,7 @@ public class OcclusionHandler : MonoBehaviour
     {
         Profiler.BeginSample("Initialize Hit Datas");
         _lineCount = linesOnEitherSide * 2 + 1;
-        for (int i = 0; i < Mathf.Clamp(objectsToOcclusionCheck, 0 ,_objectsAndDistances.Count); i++)
+        for (int i = 0; i < Mathf.Clamp(objectsToOcclusionCheck + _objectsInMinDistance, 0 ,_objectsAndDistances.Count); i++)
         {
             if (OcclusionObjects.TryGetValue(_objectsAndDistances[i].Obj, out _tempData))
             {
@@ -217,7 +228,7 @@ public class OcclusionHandler : MonoBehaviour
                 }
             }
         }
-        if (debugMsg) Debug.Log("Initializing " + objectsToOcclusionCheck + " hitDatas");
+        if (debugMsg) Debug.Log("Initializing " + objectsToOcclusionCheck + _objectsInMinDistance + " hitDatas");
         Profiler.EndSample();
     }
 
@@ -225,12 +236,18 @@ public class OcclusionHandler : MonoBehaviour
     {
         Profiler.BeginSample("Do Wall Check");
         //Loopa igenom alla objekt som ska kollas
-        for (int i = 0; i < Mathf.Clamp(objectsToOcclusionCheck, 0 ,_objectsAndDistances.Count); i++)
+        for (int i = 0; i < Mathf.Clamp(objectsToOcclusionCheck + _objectsInMinDistance, 0 ,_objectsAndDistances.Count + _objectsInMinDistance); i++)
         {
             //Hämta occlusionData
             if (OcclusionObjects.TryGetValue(_objectsAndDistances[i].Obj, out _tempData))
             {
                 //Ställ in riktning och gör först en linecast för att se om vi träffar mark
+                if (_tempData.WithinMinDistance)
+                {
+                    _tempData.WallScore = 0;
+                    continue;
+                }
+
                 _tempData.WallDirection = (Listener.transform.position - _objectsAndDistances[i].Obj.transform.position).normalized;
                 if (Physics.Linecast(_tempData.SourcePos, Listener.transform.position, out _tempData.WallHits[0], groundLayers))
                 {
@@ -316,7 +333,7 @@ public class OcclusionHandler : MonoBehaviour
     {
         Profiler.BeginSample("InitialOcclusionStep");
         //Har clampat objectstocheck här ifall det finns färre objekt än de som ska checkas för att undvika indexoutofrange
-        for (int i = 0; i < Mathf.Clamp(objectsToOcclusionCheck, 0 ,_objectsAndDistances.Count); i++)
+        for (int i = 0; i < Mathf.Clamp(objectsToOcclusionCheck + _objectsInMinDistance, 0 ,_objectsAndDistances.Count + _objectsInMinDistance); i++)
         {
             if (OcclusionObjects.TryGetValue(_objectsAndDistances[i].Obj, out _tempData))
             {
@@ -361,7 +378,7 @@ public class OcclusionHandler : MonoBehaviour
     private void DoOcclusionStep()
     {
         Profiler.BeginSample("DoOcclusionStep");
-        for (int i = 0; i < Mathf.Clamp(objectsToOcclusionCheck, 0 ,_objectsAndDistances.Count); i++)
+        for (int i = 0; i < Mathf.Clamp(objectsToOcclusionCheck + _objectsInMinDistance, 0 ,_objectsAndDistances.Count + _objectsInMinDistance); i++)
         {
             if (OcclusionObjects.TryGetValue(_objectsAndDistances[i].Obj, out _tempData))
             {
@@ -439,7 +456,7 @@ public class OcclusionHandler : MonoBehaviour
 
     private void CalculateOcclusions()
     {
-        for (int i = 0; i < Mathf.Clamp(objectsToOcclusionCheck, 0, _objectsAndDistances.Count); i++)
+        for (int i = 0; i < Mathf.Clamp(objectsToOcclusionCheck + _objectsInMinDistance, 0, _objectsAndDistances.Count + _objectsInMinDistance); i++)
         {
             if (OcclusionObjects.TryGetValue(_objectsAndDistances[i].Obj, out _tempData))
             {
@@ -459,8 +476,8 @@ public class OcclusionHandler : MonoBehaviour
 
     private void SetOcclusionInstances()
     {
-        _objectsToSend = new GameObject[Mathf.Clamp(objectsToOcclusionCheck, 0 ,_objectsAndDistances.Count)];
-        for (int i = 0; i < Mathf.Clamp(objectsToOcclusionCheck, 0, _objectsAndDistances.Count); i++)
+        _objectsToSend = new GameObject[Mathf.Clamp(objectsToOcclusionCheck + _objectsInMinDistance, 0 ,_objectsAndDistances.Count + _objectsInMinDistance)];
+        for (int i = 0; i < Mathf.Clamp(objectsToOcclusionCheck + _objectsInMinDistance, 0, _objectsAndDistances.Count + _objectsInMinDistance); i++)
         {
             _objectsToSend[i] = _objectsAndDistances[i].Obj;
         }
@@ -481,8 +498,15 @@ public class OcclusionHandler : MonoBehaviour
         return false;
     }
 
-    public static void GetOcclusionList(out GameObject[] objects, out float[] occlusion, out float[] walls)
+    public static bool TryGetOcclusionList(out GameObject[] objects, out float[] occlusion, out float[] walls)
     {
+        if (_objectsToSend.Length < 1) 
+        {
+            objects = new GameObject[0];
+            occlusion = new float[0];
+            walls = new float[0];
+            return false;
+        }
         occlusion = new float[_objectsToSend.Length];
         walls = new float[_objectsToSend.Length];
         for (int i = 0; i < _objectsToSend.Length; i++)
@@ -494,5 +518,10 @@ public class OcclusionHandler : MonoBehaviour
             }
         }
         objects = _objectsToSend;
+        if (occlusion.Length > 0 && walls.Length > 0 && objects.Length > 0)
+        {
+            return true;
+        }
+        return false;
     }
 }
