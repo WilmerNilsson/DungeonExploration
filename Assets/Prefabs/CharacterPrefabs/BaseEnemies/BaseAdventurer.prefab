@@ -231,13 +231,13 @@ MonoBehaviour:
     MyMadAdventurerStateMachine: {fileID: 0}
     minDistanceToCorner: 0.1
     target: {x: 0, y: 0, z: 0}
-    minDistanceToPlayer: 1
+    minDistanceToPlayer: 1.3
     chasingDelay: 0
   AttackState:
     MyMadAdventurerStateMachine: {fileID: 0}
     minDistanceToCorner: 0.1
     target: {x: 0, y: 0, z: 0}
-    holdTime: 0
+    holdTime: 2
     maxMeleeRange: 2
     minMeleeRange: 0.5
   DyingState:
@@ -474,18 +474,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfaa67e8e53598c4dbd0156e40d30511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnDealDamageEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnGetBlockedEvent:
-    m_PersistentCalls:
-      m_Calls: []
   OnAttackStateChange:
     m_PersistentCalls:
       m_Calls: []
   OnBlockStateChange:
     m_PersistentCalls:
       m_Calls: []
+  staggerTime: 0
   hasWeapon: 0
   weapon: {fileID: 0}
   swordArm: {fileID: 0}
