@@ -305,7 +305,6 @@ MonoBehaviour:
   head: {fileID: 7929286171431266012}
   hand: {fileID: 5946369356162777952}
   isBlocking: 0
-  isAttacking: 0
   swordSplineContainer: {fileID: 7633920652159552403}
 --- !u!114 &6844093797709260482
 MonoBehaviour:
@@ -406,7 +405,7 @@ MonoBehaviour:
   moveSpeed: 3
   sprintSpeed: 4.5
   crouchSpeed: 2
-  airMoveMod: 1
+  airMoveMod: 5
   jumpHeight: 0.9
   doJump: 0
   grounded: 0
@@ -2450,7 +2449,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.23
+  m_Radius: 0.2
   m_Center: {x: 0, y: 0.11, z: 0}
 --- !u!54 &8363363185067177064
 Rigidbody:

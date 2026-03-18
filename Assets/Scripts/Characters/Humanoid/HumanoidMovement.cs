@@ -88,10 +88,9 @@ public class HumanoidMovement : MonoBehaviour
             {
                 SetMoveAction(moveActions.Airborne);
             }
-            else
-            {
-                rotatedVector = Vector3.ClampMagnitude(newVelocity, deltaSpeed) ;
-            }
+
+            rotatedVector = Vector3.ClampMagnitude(newVelocity, deltaSpeed);
+            
             playerVelocity = new Vector3(0, playerVelocity.y + (Physics.gravity.y * Time.fixedDeltaTime), 0);
             //playerVelocity.y += Physics.gravity.y * Time.fixedDeltaTime;
     
