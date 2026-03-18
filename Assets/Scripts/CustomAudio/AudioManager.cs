@@ -197,11 +197,11 @@ public class AudioManager : MonoBehaviour
     #region Looping Events 
     //Alla metoder här vidarebefodrar instruktioner in i rätt evenlist baserat på path.
     
-    public void CreateInstance(string path, GameObject gameObj = null, bool followObject = true)
+    public void CreateInstance(string path, GameObject gameObj = null)
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
-            eventList.CreateInstance(eventName, gameObj, followObject);
+            eventList.CreateInstance(eventName, gameObj);
         }
     }
 
@@ -229,11 +229,11 @@ public class AudioManager : MonoBehaviour
         }
     }
     
-    public void StartEvent(string path, GameObject gameObj = null)
+    public void StartEvent(string path, GameObject gameObj = null, bool followObject = true)
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
-            eventList.StartEvent(eventName, gameObj);
+            eventList.StartEvent(eventName, gameObj, followObject);
         }
     }
 
