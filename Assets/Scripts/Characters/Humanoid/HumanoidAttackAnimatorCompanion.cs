@@ -22,7 +22,6 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     [SerializeField] private Transform head;
     [SerializeField] private Transform hand;
     [SerializeField] private bool isBlocking = false;
-    [SerializeField] private bool isAttacking = false;
 
     [SerializeField] private SplineContainer swordSplineContainer;
     private float angleLimit;
@@ -79,7 +78,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     #region AttackAnimations
 
-    //WaitUntill is between UpdateAndLateUpdate
+    //Wait Until its between UpdateAndLateUpdate
     private IEnumerator AttackAnimation()
     {
         isInAnimation = true;
@@ -166,11 +165,11 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         startTime = Time.time;
     
         OnBlockStateChange?.Invoke(BlockState.Charge);
+        weaponScript.SetBlockActive(true);
     
         yield return new WaitUntil(ChargePart);
     
         startTime = Time.time;
-        weaponScript.SetBlockActive(true);
     
         OnBlockStateChange?.Invoke(BlockState.Block);
 
@@ -234,24 +233,18 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         }
     }
 
-    public void HoldAttack(bool start)
-    {
-        if (hasWeapon && !isInAnimation && !start)
-        {
-            swordArm.data.targetPositionWeight = 0;
-            swordArm.data.targetRotationWeight = 0;
-        }
-    }
-
-    public void Attack(float angle)
+    public bool TryAttack(float angle)
     {
         if (hasWeapon && !isInAnimation)
         {
             angle = FixAngle(angle);
             this.angle = angle;
             weaponScript.Angle = angle;
+            weaponScript.HoldAttack(Percentage);
             currentAnimation = StartCoroutine(AttackAnimation());
+            return true;
         }
+        return false;
     }
 
     #endregion
@@ -326,6 +319,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     public void Unequip()
     {
+        StopCoroutine(currentAnimation);
         Destroy(weapon);
         weaponScript = null;
         hasWeapon = false;
