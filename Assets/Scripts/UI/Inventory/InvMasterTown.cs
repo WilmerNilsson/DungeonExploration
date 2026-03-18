@@ -7,6 +7,21 @@ public class InvMasterTown : InvMasterBase
 #nullable enable
 
     private MerchantInventory? merchantInventory;
+    private InventoryGrid? QuickLootInventory
+    {
+        get
+        {
+            if(merchantInventory == null)
+            {
+                return null;
+            }
+            else
+            {
+                return merchantInventory.ActiveGrid;
+            }
+        }
+    }
+
 
     protected override void Start()
     {
@@ -40,6 +55,41 @@ public class InvMasterTown : InvMasterBase
         base.ChangeHover(simpleItem, startHover);
         merchantInventory?.ChangeHover(simpleItem, startHover);
     }
+
+    public override bool TryQuickLootItem(SimpleItem item)
+    {
+        if (!DoQuickLoot || merchantInventory == null) return false;
+
+        if (item.GridIsCurrent(PlayerInventory) || item.GridIsCurrent(EquipmentGrid))
+        {
+            return merchantInventory.TryInsertItemInMerchantGrid(item);
+        }
+        else if(item.GridIsCurrent(merchantInventory.ActiveGrid) && merchantInventory.CanAfford(item))
+        {
+            if (item.QuickLootToEquip)
+            {
+                if (EquipmentGrid.TryInsertItem(item))
+                {
+                    merchantInventory.BuyItem(item);
+                    return true;
+                }
+                else if(PlayerInventory.TryInsertItem(item))
+                {
+                    merchantInventory.BuyItem(item);
+                    return true;
+                }
+            }
+            else if (PlayerInventory.TryInsertItem(item))
+            {
+                merchantInventory.BuyItem(item);
+                return true;
+            }
+
+            return false;
+        }
+        return false;
+    }
+
 
     public override bool TryPlaceItem(SimpleItem item, [NotNullWhen(true)] out InventoryGrid? inventoryGrid)
     {
