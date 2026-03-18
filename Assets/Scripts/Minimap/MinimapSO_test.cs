@@ -12,7 +12,6 @@ public class MinimapSO_test : ScriptableObject
         MinimapComponentData newData = new MinimapComponentData(nameToAdd, transform.position, scale, transform.eulerAngles);
         if (minimapComponentData.Find(x => x.position  == newData.position) == null)
         {
-            Debug.Log("adding minimap component " + nameToAdd);
             minimapComponentData.Add(newData);
         }
     }
