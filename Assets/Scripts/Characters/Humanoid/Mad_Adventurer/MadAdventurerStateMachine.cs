@@ -34,6 +34,13 @@ public class MadAdventurerStateMachine : MonoBehaviour
     [HideInInspector] public Transform PlayerTransform;
     [HideInInspector] public Transform TargetTransform;
 
+    private float lastAngle;
+    
+    internal bool isAttacking;
+    private float startTime;
+    
+    internal Coroutine currentAttack;
+
 #if DEBUG
     private void OnValidate()
     {
@@ -104,16 +111,38 @@ public class MadAdventurerStateMachine : MonoBehaviour
     {
         return Vision.Detect(sightThreshold, soundThreshold, maxSoundRange, maxSightRange);
     }
+    
+    private IEnumerator AttackRoutine()
+    {
+        isAttacking = true;
+        startTime = Time.time;
+        
+        float angle = Random.Range(0, 180);
+        if (lastAngle < 180) angle += 180f;
+
+        yield return new WaitUntil(HoldPart);
+        
+        if(Controller.TryAttack(angle)) lastAngle = angle;
+        isAttacking = false;
+
+        bool HoldPart()
+        {
+            Controller.HoldAttackUpdate(angle);
+            return Time.time - startTime > AttackState.holdTime;
+        }
+    }
 
     public void Attack()
     {
-        float angle = Random.Range(-160f, 160f);
-        Controller.PrepareAttack(true);
-        Controller.Attack(angle);
+        if (!isAttacking)
+        {
+            currentAttack = StartCoroutine(AttackRoutine());
+        }
     }
 
     public void Die()
     {
+        StopCoroutine(currentAttack);
         Transit(DyingState);
     }
 
