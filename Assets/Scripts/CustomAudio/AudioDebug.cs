@@ -79,6 +79,7 @@ public class AudioDebug : MonoBehaviour
                         text = eventName + " has " + instanceList.Length + " instance(s) \n";
                         lines = 1;
                         var objectList = new List<GameObject>();
+                        var attributeList = new List<FMOD.ATTRIBUTES_3D>();   
                         foreach (var instance in instanceList)
                         {
                             foreach (var kvp in eventList.InstanceList)
@@ -86,6 +87,8 @@ public class AudioDebug : MonoBehaviour
                                 if (instance.Equals(kvp.Value))
                                 {
                                     objectList.Add(kvp.Key);
+                                    kvp.Value.get3DAttributes(out var attributes);
+                                    attributeList.Add(attributes);
                                 }
                             }
                         }
@@ -93,16 +96,16 @@ public class AudioDebug : MonoBehaviour
                         {
                             lines++;
                             text += objectList.Count + " of which are on these objects:\n";
-                            foreach (var obj in objectList)
+                            for (int i = 0; i < objectList.Count; i++)
                             {
                                 lines++;
-                                if (obj == null)
+                                if (objectList[i])
                                 {
-                                    text += "NULL\n";
+                                    text += objectList[i].name + " at: " + attributeList[i].position.x + " " + attributeList[i].position.y + " " + attributeList[i].position.z + "\n";
                                 }
                                 else
                                 {
-                                    text += obj.name + "\n";
+                                    text += "NULL\n";
                                 }
                             }
                         }
@@ -206,11 +209,13 @@ public class AudioDebug : MonoBehaviour
                 lines = 10;
                 return;
             case Procedures.ShowOcclusionObjects:
-                OcclusionHandler.GetOcclusionList(out var objects, out var occlusion, out var walls);
-                for (int i = 0; i < objects.Length; i++)
+                if (OcclusionHandler.TryGetOcclusionList(out var objects, out var occlusion, out var walls))
                 {
-                    text += "==" + objects[i].name + "== \n Occlusion: " + occlusion[i] + " \n Walls: " + walls[i] + "\n";
-                    lines += 3;
+                    for (int i = 0; i < objects.Length; i++)
+                    {
+                        text += "==" + objects[i].name + "== \n Occlusion: " + occlusion[i] + " \n Walls: " + walls[i] + "\n";
+                        lines += 3;
+                    }
                 }
                 break;
             default:

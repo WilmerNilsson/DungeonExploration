@@ -28,7 +28,7 @@ public class CutsceneSoundLogic : MonoBehaviour
     {
         if (AudioManager.IsValid)
         {
-            AudioManager.Instance.SetParameter(vaPath, "LineIndex", lineIndex);
+            AudioManager.Instance.SetParameter(vaPath, "IntroVO", lineIndex);
             AudioManager.Instance.StartEvent(vaPath);
         }
     }

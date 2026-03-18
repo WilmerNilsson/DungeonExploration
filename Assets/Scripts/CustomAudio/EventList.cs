@@ -510,6 +510,17 @@ public class EventList : ScriptableObject
             AudioDebug.Print("KeyOff in event " + eventName);
         }
     }
+
+    public void SetInstancePosition(string eventName, GameObject gameObject)
+    {
+        if (!TryGetEvent(eventName, out var eventData)) return;
+        if (!eventData.is3D) return;
+        if (InstanceList.TryGetValue(gameObject, out var instance))
+        {
+            instance.set3DAttributes(gameObject.transform.To3DAttributes());
+            AudioDebug.Print("Set 3D attributes of " + eventName + " to those of " + gameObject.name);
+        }
+    }
     
     public void StopAndReleaseAllInstances()
     {

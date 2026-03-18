@@ -31,14 +31,14 @@ MonoBehaviour:
     maxDistance: 20
     debug: 0
     parameters: []
-  - eventName: Destructable_Box
+  - eventName: Destructable_Wall
     eventReference:
       Guid:
         Data1: -378290160
         Data2: 1117138219
         Data3: 1551044241
         Data4: -713776227
-      Path: event:/Sound/Interactables/Destructable_Box
+      Path: event:/Sound/Interactables/Destructable Wall
     banks:
     - SFX
     isOneShot: 1
@@ -82,23 +82,6 @@ MonoBehaviour:
     maxDistance: 20
     debug: 0
     parameters: []
-  - eventName: Pickup
-    eventReference:
-      Guid:
-        Data1: -1623886334
-        Data2: 1194083237
-        Data3: 1666430850
-        Data4: -1147784321
-      Path: event:/Sound/Interactables/Pickup
-    banks:
-    - SFX
-    isOneShot: 1
-    is3D: 1
-    isOcclusion: 0
-    minDistance: 1
-    maxDistance: 20
-    debug: 0
-    parameters: []
   - eventName: Pressure_Pad
     eventReference:
       Guid:
@@ -111,6 +94,91 @@ MonoBehaviour:
     - SFX
     isOneShot: 1
     is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Book_Pickup
+    eventReference:
+      Guid:
+        Data1: 384793434
+        Data2: 1203154589
+        Data3: -2068074619
+        Data4: -534111282
+      Path: event:/Sound/Interactables/Pickup/BookPickup
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Healthpot_Pickup
+    eventReference:
+      Guid:
+        Data1: -857668458
+        Data2: 1187277239
+        Data3: -499278420
+        Data4: 520770341
+      Path: event:/Sound/Interactables/Pickup/HealthpotPickup
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Item_Pickup
+    eventReference:
+      Guid:
+        Data1: 1913303711
+        Data2: 1304876133
+        Data3: -770273363
+        Data4: -1025865559
+      Path: event:/Sound/Interactables/Pickup/ItemPickup
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Sword_Pickup
+    eventReference:
+      Guid:
+        Data1: -989069519
+        Data2: 1221278761
+        Data3: 2128108419
+        Data4: -1778052500
+      Path: event:/Sound/Interactables/Pickup/SwordPickup
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: DrinkPotion
+    eventReference:
+      Guid:
+        Data1: -672763496
+        Data2: 1277044255
+        Data3: 2052469936
+        Data4: -1997551928
+      Path: event:/Sound/Interactables/DrinkPotion
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 0
     isOcclusion: 0
     minDistance: 1
     maxDistance: 20
