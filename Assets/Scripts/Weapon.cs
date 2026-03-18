@@ -11,6 +11,7 @@ public class Weapon : MonoBehaviour
     [FormerlySerializedAs("onDamage")] public UnityEvent OnDamage;
     [FormerlySerializedAs("onDeflectCollision")] public UnityEvent<string, Vector3> OnDeflectCollision;
     public UnityEvent onParry;
+    public UnityEvent onBlock;
     public UnityEvent onSwing;
     
     [Header("Weapon Stats")]
@@ -24,6 +25,7 @@ public class Weapon : MonoBehaviour
     
     [SerializeField] private bool dealDamage = false;
     [SerializeField] private bool isBlocking = false;
+    [SerializeField] private bool isParrying = false;
     [SerializeField] private bool unbreakable;
     [SerializeField] private Collider body;
     public Spline startSpline;
@@ -39,9 +41,16 @@ public class Weapon : MonoBehaviour
     [SerializeField, Min(0)] private float attackResetTime = 1f;
     
     [Header("Block")]
-    [SerializeField, Min(0)] private float blockChargeTime = 0.5f;
-    [SerializeField, Min(0)] private float blockReturnTime = 0.5f;
-    [SerializeField, Range(0,2)] private float blockHandOffset = 0.5f;
+    [SerializeField, Min(0), Tooltip("The time it takes to get to block")] private float blockChargeTime = 0.5f;
+    [SerializeField, Min(0), Tooltip("The time it takes to return from block")] private float blockReturnTime = 0.5f;
+    [SerializeField, Range(0,2), Tooltip("The offset between block position and the position of the hand")] private float blockHandOffset = 0.5f;
+    [SerializeField, Tooltip("How fast the block moves")] private float blockMoveSpeed = 1;
+    
+    [Header("Parry")]
+    [SerializeField, Min(0), Tooltip("How long the parry takes")] private float parrySwingTime = 0.5f;
+    [SerializeField, Min(0), Tooltip("How long it stays after parry")] private float parryWaitTime = 0.5f;
+    [SerializeField, Min(0), Tooltip("The time it takes to return from parry")] private float parryReturnTime = 0.5f;
+    [SerializeField, Min(0), Tooltip("The angle of the Parry Animation")] private float parryAngle = 45;
     
     private Vector3 up;
     private Vector3 forward;
@@ -164,7 +173,7 @@ public class Weapon : MonoBehaviour
         SwordArm.data.targetPositionWeight = 1;
         SwordArm.data.targetRotationWeight = 1;
         
-        splinePosition = Mathf.Lerp(splinePosition, percentage, 0.02f);
+        splinePosition = Mathf.Lerp(splinePosition, percentage, blockMoveSpeed * Time.deltaTime);
         
         BlockPositionRotation();
     }
@@ -187,6 +196,31 @@ public class Weapon : MonoBehaviour
     
     #endregion
 
+    #region Parry
+
+    public bool ParrySwing(float time)
+    {
+        ParryPositionRotation(time/parrySwingTime);
+        
+        return time >= parrySwingTime;
+    }
+
+    public bool ParryWait(float time)
+    {
+        
+        return time >= parryWaitTime;
+    }
+
+    public bool ParryReturn(float time)
+    {
+        SwordArm.data.targetPositionWeight = 1 - time / parryReturnTime;
+        SwordArm.data.targetRotationWeight = 1 - time / parryReturnTime;
+        
+        return time >= parryReturnTime;
+    }
+
+    #endregion
+
     #region Collision
     public void SetDamageActive(bool value)
     {
@@ -196,6 +230,11 @@ public class Weapon : MonoBehaviour
     public void SetBlockActive(bool value)
     {
         isBlocking = value;
+    }
+
+    public void SetParryActive(bool value)
+    {
+        isParrying = value;
     }
     
     private void OnTriggerEnter(Collider other)
@@ -244,14 +283,19 @@ public class Weapon : MonoBehaviour
                         Debug.Log("Metal");
                         if (other.TryGetComponent(out Weapon weapon))
                         {
-                            if (!weapon.isBlocking)
+                            if (weapon.isParrying)
                             {
-                                Debug.Log("Other weapon not blocking");
+                                onParry.Invoke();
+                                Companion.OnGetParried();
+                            }
+                            else if(weapon.isBlocking)
+                            {
+                                onBlock.Invoke();
+                                Companion.OnGetBlocked();
                             }
                             else
                             {
-                                onParry.Invoke();
-                                Companion.OnGetBlocked();
+                                Debug.Log("Other weapon not blocking or parrying");
                             }
                             break;
                         }
@@ -307,6 +351,18 @@ public class Weapon : MonoBehaviour
         forward = Head.forward * -(Angle - 180);
         
         HandIK.rotation = Quaternion.LookRotation(forward, up);
+        
+        HandIK.position = Head.position + Vector3.ClampMagnitude(position + HandIK.right * blockHandOffset, P0.magnitude);
+    }
+
+    private void ParryPositionRotation(float time)
+    {
+        Vector3 position = Head.transform.TransformDirection(P0);
+        
+        up = position;
+        forward = Head.forward * -(Angle - 180);
+        
+        HandIK.rotation = Quaternion.LookRotation(forward, up) * Quaternion.AngleAxis(time * parryAngle, Vector3.back);
         
         HandIK.position = Head.position + Vector3.ClampMagnitude(position + HandIK.right * blockHandOffset, P0.magnitude);
     }

@@ -10,10 +10,10 @@ using UnityEngine.Splines;
 public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 {
     [Header("Events")]
-    [FormerlySerializedAs("onDealDamage")] public UnityEvent OnDealDamageEvent;
-    [FormerlySerializedAs("onGetBlocked")] public UnityEvent OnGetBlockedEvent;
     [FormerlySerializedAs("onAttackStateChange")] public UnityEvent<AttackState> OnAttackStateChange;
     [FormerlySerializedAs("onBlockStateChange")] public UnityEvent<BlockState> OnBlockStateChange;
+
+    [SerializeField] private float staggerTime;
     
     [SerializeField] private bool hasWeapon = false;
     [SerializeField] private GameObject weapon;
@@ -55,6 +55,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     {
         Charge,
         Block,
+        Parry,
         Return
     }
 
@@ -127,7 +128,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         }
     }
 
-    private IEnumerator RecoilAnimation()
+    private IEnumerator RecoilAnimation(bool parried)
     {
         isInAnimation = true;
         float previousAnimationTime = TimeFromStartOfAnimation;
@@ -136,6 +137,12 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         OnAttackStateChange?.Invoke(AttackState.Recoil);
 
         yield return new WaitUntil(RecoilPart);
+        
+        if (parried)
+        {
+            startTime = Time.time;
+            yield return new WaitUntil(StunPart);
+        }
 
         float returnTime = TimeFromStartOfAnimation;
 
@@ -148,6 +155,11 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         bool RecoilPart()
         {
             return weaponScript.RecoilAttack(TimeFromStartOfAnimation, previousAnimationTime);
+        }
+
+        bool StunPart()
+        {
+            return Time.time - startTime > staggerTime;
         }
 
         bool ReturnPart()
@@ -172,18 +184,10 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         startTime = Time.time;
     
         OnBlockStateChange?.Invoke(BlockState.Block);
-
-        while (isBlocking)
-        {
-            weaponScript.HoldBlock(Percentage);
-            yield return null;
-        }
         
         yield return new WaitUntil(HoldPart);
     
         weaponScript.SetBlockActive(false);
-    
-        isInAnimation = false;
     
         currentAnimation = StartCoroutine(ReturnBlockAnimation());
     
@@ -195,7 +199,46 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     
         bool HoldPart()
         {
+            weaponScript.HoldBlock(Percentage);
             return !isBlocking;
+        }
+    }
+
+    private IEnumerator ParryAnimation()
+    {
+        isInAnimation = true;
+        startTime = Time.time;
+        
+        weaponScript.SetParryActive(true);
+        
+        OnBlockStateChange?.Invoke(BlockState.Parry);
+
+        yield return new WaitUntil(ParryPart);
+        startTime = Time.time;
+        
+        weaponScript.SetParryActive(false);
+        weaponScript.SetBlockActive(false);
+        
+        yield return new WaitUntil(WaitPart);
+        startTime = Time.time;
+        
+        yield return new WaitUntil(ReturnPart);
+        
+        isInAnimation = false;
+
+        bool ParryPart()
+        {
+            return weaponScript.ParrySwing(TimeFromStartOfAnimation);
+        }
+
+        bool WaitPart()
+        {
+            return weaponScript.ParryWait(TimeFromStartOfAnimation);
+        }
+
+        bool ReturnPart()
+        {
+            return weaponScript.ParryReturn(TimeFromStartOfAnimation);
         }
     }
 
@@ -281,6 +324,17 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         }
     }
 
+    public bool TryParry()
+    {
+        if (isBlocking)
+        {
+            StopCoroutine(currentAnimation);
+            currentAnimation = StartCoroutine(ParryAnimation());
+            return true;
+        }
+        return false;
+    }
+
     #endregion
 
     public void OnHitFlesh()
@@ -289,11 +343,22 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         currentAnimation = StartCoroutine(ReturnAfterHitAnimation());
     }
 
+    /// <summary>
+    /// Interrupts Attack and starts Recoil Animation
+    /// </summary>
     public void OnGetBlocked()
     {
-        OnGetBlockedEvent?.Invoke();
         StopCoroutine(currentAnimation);
-        currentAnimation = StartCoroutine(RecoilAnimation());
+        currentAnimation = StartCoroutine(RecoilAnimation(false));
+    }
+    
+    /// <summary>
+    /// Interrupts Attack and starts Recoil Animation with parry delay
+    /// </summary>
+    public void OnGetParried()
+    {
+        StopCoroutine(currentAnimation);
+        currentAnimation = StartCoroutine(RecoilAnimation(true));
     }
 
     public bool TryEquip(GameObject newWeaponPrefab, [NotNullWhen(true)] out Weapon? weaponScripta)
