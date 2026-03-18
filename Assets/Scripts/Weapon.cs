@@ -44,11 +44,13 @@ public class Weapon : MonoBehaviour
     [SerializeField, Min(0), Tooltip("The time it takes to get to block")] private float blockChargeTime = 0.5f;
     [SerializeField, Min(0), Tooltip("The time it takes to return from block")] private float blockReturnTime = 0.5f;
     [SerializeField, Range(0,2), Tooltip("The offset between block position and the position of the hand")] private float blockHandOffset = 0.5f;
+    [SerializeField, Tooltip("How fast the block moves")] private float blockMoveSpeed = 1;
     
     [Header("Parry")]
     [SerializeField, Min(0), Tooltip("How long the parry takes")] private float parrySwingTime = 0.5f;
     [SerializeField, Min(0), Tooltip("How long it stays after parry")] private float parryWaitTime = 0.5f;
     [SerializeField, Min(0), Tooltip("The time it takes to return from parry")] private float parryReturnTime = 0.5f;
+    [SerializeField, Min(0), Tooltip("The angle of the Parry Animation")] private float parryAngle = 45;
     
     private Vector3 up;
     private Vector3 forward;
@@ -171,7 +173,7 @@ public class Weapon : MonoBehaviour
         SwordArm.data.targetPositionWeight = 1;
         SwordArm.data.targetRotationWeight = 1;
         
-        splinePosition = Mathf.Lerp(splinePosition, percentage, 0.02f);
+        splinePosition = Mathf.Lerp(splinePosition, percentage, blockMoveSpeed * Time.deltaTime);
         
         BlockPositionRotation();
     }
@@ -232,7 +234,7 @@ public class Weapon : MonoBehaviour
 
     public void SetParryActive(bool value)
     {
-        isBlocking = value;
+        isParrying = value;
     }
     
     private void OnTriggerEnter(Collider other)
@@ -360,7 +362,7 @@ public class Weapon : MonoBehaviour
         up = position;
         forward = Head.forward * -(Angle - 180);
         
-        HandIK.rotation = Quaternion.LookRotation(forward, up) * Quaternion.AngleAxis(time * Mathf.Rad2Deg, forward);
+        HandIK.rotation = Quaternion.LookRotation(forward, up) * Quaternion.AngleAxis(time * parryAngle, Vector3.back);
         
         HandIK.position = Head.position + Vector3.ClampMagnitude(position + HandIK.right * blockHandOffset, P0.magnitude);
     }
