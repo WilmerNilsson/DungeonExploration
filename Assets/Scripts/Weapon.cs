@@ -23,6 +23,9 @@ public class Weapon : MonoBehaviour
         get;
         set;
     } = 1;
+
+    [Min(1)]
+    public int MaxDurability;
     
     [SerializeField] private bool dealDamage = false;
     [SerializeField] private bool isBlocking = false;
