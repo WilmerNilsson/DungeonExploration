@@ -6164,6 +6164,7 @@ GameObject:
   - component: {fileID: 1161274683594635525}
   - component: {fileID: 96379873017117149}
   - component: {fileID: 7155471161383576378}
+  - component: {fileID: 1005692370641798383}
   m_Layer: 10
   m_Name: WallMesh
   m_TagString: Untagged
@@ -6264,6 +6265,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 7, y: 5.5, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1005692370641798383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6247792272386329983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 843ad4bbe51d7d140b5d1fc6dabb4741, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trapPath: Traps/SpikeWall
+  emitterObjects:
+  - {fileID: 0}
 --- !u!1 &6469047669006082208
 GameObject:
   m_ObjectHideFlags: 0
@@ -6338,7 +6354,31 @@ MonoBehaviour:
   disableOnEnableFromSave: {fileID: 360224029622605178}
   OnPhase2:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1005692370641798383}
+        m_TargetAssemblyTypeName: TrapSoundLogic, GameAssembly
+        m_MethodName: ActivateTrap
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1632364418029306300}
+        m_TargetAssemblyTypeName: OneShotPlayer, GameAssembly
+        m_MethodName: Play
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1123557741255667475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6819,6 +6859,7 @@ GameObject:
   - component: {fileID: 6164036132378282711}
   - component: {fileID: 7208925052247730345}
   - component: {fileID: 8850878147215220088}
+  - component: {fileID: 1632364418029306300}
   m_Layer: 0
   m_Name: PickAxe
   m_TagString: Untagged
@@ -7621,6 +7662,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8335332170389150205}
   m_Mesh: {fileID: 0}
+--- !u!114 &1632364418029306300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8335332170389150205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc293c0446b8972448fbee1677af522d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emitterIsThisObject: 1
+  instructions:
+  - path: Interactables/Destructable_Wall
+    gameObject: {fileID: 0}
+    followObject: 0
+    parametersToSet: []
 --- !u!1001 &954306010289277305
 PrefabInstance:
   m_ObjectHideFlags: 0
