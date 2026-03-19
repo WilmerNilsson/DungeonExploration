@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 710923332417848550}
   - component: {fileID: 3731366425002889705}
   - component: {fileID: 1552641771045510037}
-  - component: {fileID: 1904539619708584076}
   - component: {fileID: 8115980146239928323}
   - component: {fileID: 4360357359780583894}
   - component: {fileID: 9033557813987322497}
@@ -98,22 +97,6 @@ MonoBehaviour:
   itemGridSize: 01010100010101000000000000000000
   debugQuickConnectDropItem: 0
   uses:
-  - text: Eat
-    OnUse:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1904539619708584076}
-          m_TargetAssemblyTypeName: FoodItem, GameAssembly
-          m_MethodName: Eat
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 4
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
   - text: Drop
     OnUse:
       m_PersistentCalls:
@@ -134,7 +117,9 @@ MonoBehaviour:
   descriptionTextIsLibraryName: 1
   textLibrary: {fileID: 11400000, guid: 1b1f8771b2a7c1940b19f8003b6ca232, type: 2}
   prefabID: Ration
-  <CashValue>k__BackingField: 30
+  <CashValueBuy>k__BackingField: 0
+  <CashValueSell>k__BackingField: 0
+  <QuickLootToEquip>k__BackingField: 0
   OnStopDrag:
     m_PersistentCalls:
       m_Calls:
@@ -150,20 +135,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1904539619708584076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 49819369380350566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbcfa20c44fa80348939163a7703c2c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  amount: 75
-  myItem: {fileID: 1552641771045510037}
 --- !u!114 &8115980146239928323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,6 +204,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animationNameClick: UIItemJiggleAnimation
   animationNameRelease: UIItemJiggleAnimation
+  mySimpleItem: {fileID: 1552641771045510037}
+  blockAutoConnect: 0
 --- !u!114 &2434318098988793871
 MonoBehaviour:
   m_ObjectHideFlags: 0
