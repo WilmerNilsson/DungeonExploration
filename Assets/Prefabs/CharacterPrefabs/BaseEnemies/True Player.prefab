@@ -184,7 +184,6 @@ GameObject:
   - component: {fileID: 5285168676342198423}
   - component: {fileID: 646823766397640639}
   - component: {fileID: 1354050652585229241}
-  - component: {fileID: 3689962434181300810}
   - component: {fileID: 2616489918536357648}
   - component: {fileID: 653897519548769769}
   - component: {fileID: -1075263557498986769}
@@ -405,7 +404,6 @@ MonoBehaviour:
   airMoveMod: 5
   jumpHeight: 0.9
   lastGroundedPosition: {x: 0, y: 0, z: 0}
-  LastGroundedTransform: {fileID: 0}
   doJump: 0
   grounded: 0
 --- !u!114 &4104227061447592378
@@ -767,39 +765,6 @@ MonoBehaviour:
           m_StringArgument: Die
           m_BoolArgument: 1
         m_CallState: 2
---- !u!114 &3689962434181300810
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 822202894608450755}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7927d7b62ed874549b70ca71e6ac3fae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerHungerSO: {fileID: 11400000, guid: daa365354eb550f4b8ba0bdd35400db2, type: 2}
-  health: {fileID: 1354050652585229241}
-  OnHunger:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8992074457306076680}
-        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
-        m_MethodName: OnHungerChange
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnEat:
-    m_PersistentCalls:
-      m_Calls: []
-  resetOnAwake: 1
 --- !u!114 &2616489918536357648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1151,7 +1116,7 @@ MonoBehaviour:
   movement: {fileID: 6844093797709260482}
   health: {fileID: 1354050652585229241}
   itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
-  hunger: {fileID: 3689962434181300810}
+  hunger: {fileID: 0}
   sanity: {fileID: 8039961835658388922}
   runCount: 0
   startingWeaponID: BasicSword
