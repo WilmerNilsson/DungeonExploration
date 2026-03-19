@@ -232,6 +232,8 @@ MonoBehaviour:
   stickSensitivity: 5
   lockedMovement: 0
   lockedCamera: 0
+  startedAttack: 0
+  startedBlock: 0
 --- !u!114 &2570910179104288855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,12 +276,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfaa67e8e53598c4dbd0156e40d30511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnDealDamageEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  OnGetBlockedEvent:
-    m_PersistentCalls:
-      m_Calls: []
   OnAttackStateChange:
     m_PersistentCalls:
       m_Calls:
@@ -298,6 +294,7 @@ MonoBehaviour:
   OnBlockStateChange:
     m_PersistentCalls:
       m_Calls: []
+  staggerTime: 0
   hasWeapon: 0
   weapon: {fileID: 0}
   swordArm: {fileID: 4533973860125210449}
@@ -510,8 +507,8 @@ MonoBehaviour:
   OnChangeHealths:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8893892476905510790}
-        m_TargetAssemblyTypeName: HumanoidSoundLogic, GameAssembly
+      - m_Target: {fileID: 8992074457306076680}
+        m_TargetAssemblyTypeName: PlayerSoundLogic, GameAssembly
         m_MethodName: OnHealthChange
         m_Mode: 0
         m_Arguments:
