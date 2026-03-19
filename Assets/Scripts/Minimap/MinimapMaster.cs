@@ -107,21 +107,18 @@ public class MinimapMaster : MonoBehaviour
         }
         minimap.SetActive(true);
         Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined; //we need to controll curson with a pause menu once implimented
         GameManagerSO.Instance.LockMouse(true);
     }
 
-    public bool CloseMinimap()
+    public void CloseMinimap()
     {
         if (!minimap.activeSelf)
         {
-            return false;
+            return;
         }
         minimap.SetActive(false);
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
         GameManagerSO.Instance.LockMouse(false);
-        return true;
     }
 
     public void UnlockFullMinimap()
@@ -132,5 +129,10 @@ public class MinimapMaster : MonoBehaviour
             area.DrawArea();
         }
         SpawnMinimap();
+    }
+
+    public bool GetIsActive()
+    {
+        return minimap.activeSelf;
     }
 }
