@@ -1,10 +1,13 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BreakableWall : MonoBehaviour, IEnabledHelper
 {
     [SerializeField] private string phase2TriggerName;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject disableOnEnableFromSave;
+
+    public UnityEvent OnPhase2;
 
     private bool phase2triggerd;
 
@@ -21,6 +24,8 @@ public class BreakableWall : MonoBehaviour, IEnabledHelper
     public void Phase2Anim()
     {
         phase2triggerd = true;
+
+        OnPhase2?.Invoke();
 
         animator.SetTrigger(phase2TriggerName);
     }
