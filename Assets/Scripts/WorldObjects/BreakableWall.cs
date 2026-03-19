@@ -33,6 +33,7 @@ public class BreakableWall : MonoBehaviour, IEnabledHelper
     public void EnableFromSave()
     {
         disableOnEnableFromSave.SetActive(false);
+        phase2triggerd = true;
     }
 
     public bool IsEnabledForSave()
