@@ -3,7 +3,9 @@ using UnityEngine;
 public class WeaponSoundLogic : MonoBehaviour
 {
     [SerializeField] private string swingPath;
+    [SerializeField] private string blockPath;
     [SerializeField] private string parryPath;
+    [SerializeField] private string breakPath;
     [SerializeField] private string collisionPath;
     [SerializeField] private string materialParameter;
     private string[] _materialParameters;
@@ -21,10 +23,22 @@ public class WeaponSoundLogic : MonoBehaviour
         AudioManager.Instance.PlayOneShot(swingPath, null, null, gameObject);
     }
 
+    public void PlayBlockSound()
+    {
+        if(!AudioManager.IsValid) return;
+        AudioManager.Instance.PlayOneShot(blockPath, null, null, gameObject);
+    }
+
     public void PlayParrySound()
     {
         if(!AudioManager.IsValid) return;
         AudioManager.Instance.PlayOneShot(parryPath, null, null, gameObject);
+    }
+
+    public void PlayBreakSound()
+    {
+        if (!AudioManager.IsValid) return;
+        AudioManager.Instance.PlayOneShot(breakPath, null, null, gameObject);
     }
     
     public void OnCollision(string collisionTag, Vector3 weaponLocation)
