@@ -73,7 +73,15 @@ public class InGameUIController : MonoBehaviour, IUIController
     {
         if(canUnpause)
         {
-            if(gameIsPaused)
+            if (InvMasterBase.Instance is InvMaster invMaster && invMaster.GetIsActive())
+            {
+                invMaster.ClosePlayerInventory();
+            }
+            else if (MinimapMaster.Instance && MinimapMaster.Instance.GetIsActive())
+            {
+                MinimapMaster.Instance.CloseMinimap();
+            }
+            else if(gameIsPaused)
             {
                 Resume();
                 gameManager.SavefileManager.SaveSettings();
@@ -87,21 +95,6 @@ public class InGameUIController : MonoBehaviour, IUIController
 
         void Pause()
         {
-            if (InvMasterBase.Instance is InvMaster invMaster)
-            {
-                if (invMaster.ClosePlayerInventory())
-                {
-                    return;
-                }
-            }
-
-            if (MinimapMaster.Instance)
-            {
-                if (MinimapMaster.Instance.CloseMinimap())
-                {
-                    return;
-                }
-            }
             inGameUI.SetActive(false);
             pauseMenu.SetActive(true);
             gameManager.FreezeTime(true);

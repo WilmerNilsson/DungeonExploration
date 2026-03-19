@@ -20,7 +20,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     [SerializeField] private TwoBoneIKConstraint swordArm; 
     [SerializeField] private Transform core;
     [SerializeField] private Transform head;
-    [SerializeField] private Transform hand;
+    private Transform Hand => swordArm.data.tip;
     [SerializeField] private bool isBlocking = false;
 
     [SerializeField] private SplineContainer swordSplineContainer;
@@ -364,7 +364,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     public bool TryEquip(GameObject newWeaponPrefab, [NotNullWhen(true)] out Weapon? weaponScripta)
     {
         Destroy(weapon);
-        weapon = Instantiate(newWeaponPrefab, hand);
+        weapon = Instantiate(newWeaponPrefab, Hand);
         if (!weapon.TryGetComponent(out weaponScript))
         {
             Debug.LogError("No weapon script found on " + weapon);
