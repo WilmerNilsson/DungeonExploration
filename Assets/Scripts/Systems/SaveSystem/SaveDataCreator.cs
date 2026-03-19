@@ -33,7 +33,7 @@ public static class SaveDataCreator
 
         static void AddEnabledData(DungeonSaveData dungeonSaveData)
         {
-            EnabledHelperCompanion[] enabledHelpers = GameObject.FindObjectsByType<EnabledHelperCompanion>(FindObjectsSortMode.None);
+            EnabledHelperCompanion[] enabledHelpers = GameObject.FindObjectsByType<EnabledHelperCompanion>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
             foreach(EnabledHelperCompanion helper in enabledHelpers)
             {

@@ -29,7 +29,7 @@ MonoBehaviour:
     isOcclusion: 0
     minDistance: 1
     maxDistance: 20
-    debug: 1
+    debug: 0
     parameters: []
   - eventName: Block
     eventReference:
@@ -46,7 +46,7 @@ MonoBehaviour:
     isOcclusion: 0
     minDistance: 1
     maxDistance: 20
-    debug: 1
+    debug: 0
     parameters: []
   - eventName: Parry
     eventReference:
@@ -63,7 +63,7 @@ MonoBehaviour:
     isOcclusion: 0
     minDistance: 1
     maxDistance: 20
-    debug: 1
+    debug: 0
     parameters: []
   - eventName: Draw
     eventReference:
@@ -80,7 +80,7 @@ MonoBehaviour:
     isOcclusion: 0
     minDistance: 1
     maxDistance: 20
-    debug: 1
+    debug: 0
     parameters: []
   - eventName: Collision
     eventReference:
@@ -97,7 +97,7 @@ MonoBehaviour:
     isOcclusion: 1
     minDistance: 1
     maxDistance: 20
-    debug: 1
+    debug: 0
     parameters:
     - paramName: SurfaceTypes
       isGlobal: 0
@@ -111,4 +111,21 @@ MonoBehaviour:
       isGlobal: 0
       data1: 3996502556
       data2: 1746408966
-  debug: 1
+  - eventName: Break
+    eventReference:
+      Guid:
+        Data1: -255586069
+        Data2: 1239300663
+        Data3: -1970824809
+        Data4: 1554925985
+      Path: event:/Sound/Player/Weapons/Sword/SwordBreak
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  debug: 0

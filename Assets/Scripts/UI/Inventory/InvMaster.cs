@@ -113,6 +113,11 @@ public class InvMaster : InvMasterBase
     public void OpenPlayerInventory()
     {
         if (playerInventory.activeSelf) return;
+        
+        if (MinimapMaster.Instance)
+        {
+            MinimapMaster.Instance.CloseMinimap();
+        }
 
         contextMenu.Deselect();
         playerInventory.SetActive(true);
@@ -120,9 +125,9 @@ public class InvMaster : InvMasterBase
         GameManagerSO.Instance.LockMouse(true);
     }
 
-    public void ClosePlayerInventory()
+    public bool ClosePlayerInventory()
     {
-        if (!playerInventory.activeSelf) return;
+        if (!playerInventory.activeSelf) return false;
 
         contextMenu.Deselect();
         CloseText();
@@ -136,6 +141,7 @@ public class InvMaster : InvMasterBase
         }
 
         openContainers.Clear();
+        return true;
     }
 
     public override void ParentTransformOntop(Transform transform)

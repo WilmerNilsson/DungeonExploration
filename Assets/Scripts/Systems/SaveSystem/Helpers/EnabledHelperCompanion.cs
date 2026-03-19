@@ -1,25 +1,33 @@
 using System;
+using UnityEditor.SearchService;
 using UnityEngine;
 
 [RequireComponent(typeof(IEnabledHelper))]
 public class EnabledHelperCompanion : MonoBehaviour
 {
-    [SerializeField] private UniqueIDHandlerSO uniqueIDHandlerSO;
     [field: SerializeField] public int UniqueID { get; private set; } = -1;
 
 #if UNITY_EDITOR
     [SerializeField] private bool fetchIDButton;
     private void OnValidate()
     {
-        if(uniqueIDHandlerSO == null)
+        if (fetchIDButton && UniqueID < 0)
         {
-            Debug.LogWarning("unique id handler is null");
-        }
-        else if (fetchIDButton && UniqueID < 0)
-        {
+            EnabledHelperCompanion[] enabledHelperCompanions =
+                FindObjectsByType<EnabledHelperCompanion>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+
             fetchIDButton = false;
 
-            UniqueID = uniqueIDHandlerSO.GetIDandItterate();
+            int highestNumber = 0;
+            foreach(var e in enabledHelperCompanions)
+            {
+                if(e.UniqueID > highestNumber)
+                {
+                    highestNumber = e.UniqueID;
+                }
+            }
+
+            UniqueID = highestNumber+1;
         }
     }
 #endif

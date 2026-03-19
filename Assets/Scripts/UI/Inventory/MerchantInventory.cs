@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.Contracts;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MerchantInventory : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class MerchantInventory : MonoBehaviour
     [SerializeField] private string[] SpawnItems;
     [SerializeField] protected ItemLibrarySO itemLibrary;
     [SerializeField] protected PlayerCashSO playerCashSO;
+
+    public UnityEvent OnBuyEvent;
+    public UnityEvent OnSellEvent;
 
 #nullable enable
 
@@ -134,6 +138,7 @@ public class MerchantInventory : MonoBehaviour
         else if(ActiveGrid.TryPlaceItem(item))
         {
             playerCashSO.AddCash(item.CashValueSell);
+            OnSellEvent?.Invoke();
             return true;
         }
         else return false;
@@ -152,6 +157,7 @@ public class MerchantInventory : MonoBehaviour
         else if (ActiveGrid.TryInsertItem(item))
         {
             playerCashSO.AddCash(item.CashValueSell);
+            OnSellEvent?.Invoke();
             return true;
         }
         else return false;
@@ -181,12 +187,20 @@ public class MerchantInventory : MonoBehaviour
             {
                 Debug.LogError("failed to buy item", this);
             }
+            else
+            {
+                OnBuyEvent?.Invoke();
+            }
         }
         else
         {
             if (!playerCashSO.TryBuy(item.CashValueSell))
             {
                 Debug.LogError("failed to buy already sold item", this);
+            }
+            else
+            {
+                OnBuyEvent?.Invoke();
             }
         }
     }

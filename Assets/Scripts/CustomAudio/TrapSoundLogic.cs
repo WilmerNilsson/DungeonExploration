@@ -5,6 +5,7 @@ public class TrapSoundLogic : MonoBehaviour
 {
    [SerializeField] private string trapPath;
    [SerializeField] private GameObject[] emitterObjects;
+   private bool addedSelfToList;
 
    private void Start()
    {
@@ -12,29 +13,33 @@ public class TrapSoundLogic : MonoBehaviour
       {
          emitterObjects = new GameObject[1]{gameObject};
       }
-      if (!AudioManager.IsValid) return;
-      foreach (GameObject emitter in emitterObjects)
+      for (int i = 0; i < emitterObjects.Length; i++)
       {
-         OcclusionHandler.AddToOcclusionList(emitter);
-         AudioManager.Instance.CreateInstance(trapPath, emitter, false);
+         if (!emitterObjects[i])
+         {
+            if (!addedSelfToList)
+                {
+                    emitterObjects[i] = gameObject;
+                    AudioManager.Instance.CreateInstance(trapPath, emitterObjects[i]);
+                    addedSelfToList = true;
+                }
+            
+
+         }
+            else
+            {
+                AudioManager.Instance.CreateInstance(trapPath, emitterObjects[i]);
+            }
       }
    }
-
    public void ActivateTrap()
    {
       if (!AudioManager.IsValid) return;
-      foreach (var emitter in emitterObjects)
-      {
-         AudioManager.Instance.StartEvent(trapPath, emitter);
-      }
-   }
 
-    private void FixedUpdate()
-    {
-        if (!AudioManager.IsValid) return;
-        foreach (var emitter in emitterObjects) 
+      foreach (GameObject emitter in emitterObjects)
         {
-            AudioManager.Instance.SetInstancePosition(trapPath, emitter);
+         OcclusionHandler.AddToOcclusionList(emitter);
+         AudioManager.Instance.StartEvent(trapPath, emitter);
         }
     }
 

@@ -210,12 +210,42 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnBreak:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4444515568697464405}
+        m_TargetAssemblyTypeName: WeaponSoundLogic, GameAssembly
+        m_MethodName: PlayBreakSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onParry:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4444515568697464405}
         m_TargetAssemblyTypeName: WeaponSoundLogic, GameAssembly
         m_MethodName: PlayParrySound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onBlock:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4444515568697464405}
+        m_TargetAssemblyTypeName: WeaponSoundLogic, GameAssembly
+        m_MethodName: PlayBlockSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -244,20 +274,37 @@ MonoBehaviour:
   <Durability>k__BackingField: 10
   dealDamage: 0
   isBlocking: 0
+  isParrying: 0
   unbreakable: 0
   body: {fileID: 2201368844933366746}
+  startSpline:
+    m_EditModeType: 1
+    m_Knots: []
+    m_MetaData: []
+    m_Closed: 0
+    m_IntData:
+      m_Data: []
+    m_FloatData:
+      m_Data: []
+    m_Float4Data:
+      m_Data: []
+    m_ObjectData:
+      m_Data: []
   Angle: 0
   curveHeight: 1.5
   startBend: 0
   endBend: 0
   attackChargeTime: 0.5
-  attackHoldTime: 1
   attackSwingTime: 0.5
   attackResetTime: 0.5
-  blockDistance: 0.5
   blockChargeTime: 0.5
-  blockHoldTime: 1
   blockReturnTime: 0.5
+  blockHandOffset: 0.5
+  blockMoveSpeed: 1
+  parrySwingTime: 0.5
+  parryWaitTime: 0.5
+  parryReturnTime: 0.5
+  parryAngle: 45
   Companion: {fileID: 0}
   SwordArm: {fileID: 0}
   Head: {fileID: 0}

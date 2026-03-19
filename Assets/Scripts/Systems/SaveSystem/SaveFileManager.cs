@@ -174,7 +174,7 @@ public class SaveFileManager
 
         if(data.PlayerSaveData == null)
         {
-            data.PlayerSaveData = new(townData.Inventory, townData.Equipment, true, 1, 1, 1, 0);
+            data.PlayerSaveData = new(townData.Inventory, townData.Equipment, true, 1, 1, 0);
             data.PlayerGold = townData.Cash;
         }
         else
