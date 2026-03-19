@@ -6,7 +6,6 @@ public class SaveFileHelperPlayer : MonoBehaviour
     [SerializeField] private HumanoidMovement movement;
     [SerializeField] private Health health;
     [SerializeField] private ItemLibrarySO itemLibrary;
-    [SerializeField] private Hunger hunger;
     [SerializeField] private Sanity sanity;
     [SerializeField] private int runCount;
     [SerializeField] private string startingWeaponID;
@@ -18,7 +17,6 @@ public class SaveFileHelperPlayer : MonoBehaviour
         if (health == null) Debug.LogWarning("health is null", this);
         if (itemLibrary == null) Debug.LogWarning("item library is null", this);
         if (movement == null) Debug.LogWarning("movement is null", this);
-        if (hunger == null) Debug.LogWarning("hunger is null", this);
         if (sanity == null) Debug.Log("sanity is null", this);
 
         if(startingWeaponID == null && startingWeaponID == string.Empty)
@@ -67,7 +65,6 @@ public class SaveFileHelperPlayer : MonoBehaviour
             spawnTransform.rotation = data.Rotation;
             movement.SupressMoveFrame();
 
-            hunger.Initialize(data.Hunger);
             sanity.Initialize(data.Sanity);
             runCount = data.RunCount;
 
@@ -94,10 +91,9 @@ public class SaveFileHelperPlayer : MonoBehaviour
         Quaternion rot = spawnTransform.rotation;
         InventorySaveData inventory = new(InvMasterBase.Instance.PlayerInventory.GetInventoryData());
         InventorySaveData equipment = new(InvMasterBase.Instance.EquipmentGrid.GetInventoryData());
-        int hungerInt = hunger.GetHungerValue();
         int sanityInt = sanity.GetSanityValue();
 
-        PlayerSaveData data = new(inventory, equipment, pos, rot, currentHP, sanityInt, hungerInt, runCount);
+        PlayerSaveData data = new(inventory, equipment, pos, rot, currentHP, sanityInt, runCount);
         return data;
     }
     
