@@ -32,8 +32,6 @@ public class PlayerUIController : MonoBehaviour
 
     public void OnQuickLoot(InputAction.CallbackContext context)
     {
-        Debug.Log(context.performed);
-
         if (context.performed)
         {
             InvMasterBase.DoQuickLoot = true;

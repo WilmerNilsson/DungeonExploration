@@ -1,21 +1,37 @@
 using UnityEngine;
 
-public class BreakableWall : MonoBehaviour
+public class BreakableWall : MonoBehaviour, IEnabledHelper
 {
-    public void Test(string s)
-    {
+    [SerializeField] private string phase2TriggerName;
+    [SerializeField] private Animator animator;
+    [SerializeField] private GameObject disableOnEnableFromSave;
 
+    private bool phase2triggerd;
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if(animator == null)
+        {
+            Debug.LogWarning("animator is null", this);
+        }
+    }
+#endif
+
+    public void Phase2Anim()
+    {
+        phase2triggerd = true;
+
+        animator.SetTrigger(phase2TriggerName);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void EnableFromSave()
     {
-        
+        disableOnEnableFromSave.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool IsEnabledForSave()
     {
-        
+        return phase2triggerd;
     }
 }
