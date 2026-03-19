@@ -32,13 +32,15 @@ public class DungeonSaveData
     [Serializable]
     public struct Enemy
     {
+        public int UniqueID;
         public Vector3 Position;
         public Quaternion Rotation;
         public int CurrentHP;
         public string PrefabID;
 
-        public Enemy(Vector3 pos, Quaternion rotation, int currentHP, string prefabID)
+        public Enemy(int uniqueID, Vector3 pos, Quaternion rotation, int currentHP, string prefabID)
         {
+            UniqueID = uniqueID;
             Position = pos;
             Rotation = rotation;
             CurrentHP = currentHP;

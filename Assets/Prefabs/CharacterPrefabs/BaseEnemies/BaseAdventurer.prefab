@@ -518,6 +518,7 @@ MonoBehaviour:
   crouchSpeed: 0.5
   airMoveMod: 0.1
   jumpHeight: 5
+  lastGroundedPosition: {x: 0, y: 0, z: 0}
   doJump: 0
   grounded: 0
 --- !u!114 &6611102069042242784
@@ -601,6 +602,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e8a981fbacd5fc4d829661477fcd283, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  respawnChance: 0.2
+  <UniqueID>k__BackingField: -1
   health: {fileID: 1693646842145338136}
   spawnTransform: {fileID: 7464491326631498920}
   movement: {fileID: 538933198194063175}
