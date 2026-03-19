@@ -49,8 +49,6 @@ public class SaveFileHelperPlayer : MonoBehaviour
 
     public void Initialize(PlayerSaveData data)
     {
-        Debug.Log("from town:" + data.FromTown);
-
         if(data.FromTown)
         {
             FromTown();
@@ -101,5 +99,30 @@ public class SaveFileHelperPlayer : MonoBehaviour
 
         PlayerSaveData data = new(inventory, equipment, pos, rot, currentHP, sanityInt, hungerInt, runCount);
         return data;
+    }
+    
+    public void DropItems()
+    {
+        Vector3 spawnPosition = GameObject.FindGameObjectWithTag("Player").GetComponent<HumanoidMovement>().lastGroundedPosition;
+        if (InvMasterBase.Instance.PlayerInventory.GetInventoryData().Count <= 0 && InvMasterBase.Instance.EquipmentGrid.GetInventoryData().Count <= 0)
+        {
+            return;
+        }
+        InventorySaveData inventory = new(InvMasterBase.Instance.PlayerInventory.GetInventoryData());
+        for (int i = 0; i < inventory.Items.Count; i++)
+        {
+            itemLibrary.TryGetItemPairByName(inventory.Items[i].PrefabID, out ItemPairing pair);
+            Instantiate(pair.WorldPrefab, spawnPosition, Quaternion.identity);
+        }
+        
+        InventorySaveData equipment = new(InvMasterBase.Instance.EquipmentGrid.GetInventoryData());
+        for (int i = 0; i < equipment.Items.Count; i++)
+        {
+            itemLibrary.TryGetItemPairByName(equipment.Items[i].PrefabID, out ItemPairing pair);
+            Instantiate(pair.WorldPrefab, spawnPosition, Quaternion.identity);
+        }
+
+        InvMasterBase.Instance.PlayerInventory.EmptyInventory();
+        InvMasterBase.Instance.EquipmentGrid.EmptyInventory();
     }
 }

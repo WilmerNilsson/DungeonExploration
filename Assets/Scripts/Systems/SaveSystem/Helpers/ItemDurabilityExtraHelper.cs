@@ -20,8 +20,6 @@ public class ItemDurabilityExtraHelper : MonoBehaviour, IExtraDataHelper
     {
         if (int.TryParse(json, out int result))
         {
-            Debug.Log("giving extra data: " + result);
-
             uIWeapon.StopSelfIntialize();
             uIWeapon.Durability = result;
 
