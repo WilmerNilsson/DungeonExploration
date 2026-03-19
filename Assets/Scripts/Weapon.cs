@@ -69,6 +69,11 @@ public class Weapon : MonoBehaviour
     private Vector3 P2 => Vector3.Lerp(P0,P3,1-endBend/2) + Vector3.forward * curveHeight;
     private Vector3 P3 => new (-P0.x, -P0.y, P0.z);
 
+    private void Start()
+    {
+        transform.rotation = Quaternion.LookRotation(SwordArm.data.tip.right, -SwordArm.data.tip.forward);
+    }
+
     #region Attack
 
     /// <summary>
@@ -336,11 +341,11 @@ public class Weapon : MonoBehaviour
         HandIK.position = Head.position + RelativeRotation(GetCurvePosition(time));
         
         //The direction the sword points
-        forward = Quaternion.AngleAxis(Angle-90, Head.forward) * Head.up; 
+        up = Quaternion.AngleAxis(Angle, Head.forward) * Head.right; // Needs to be the normal...
         // the direction of the knuckles
-        up = RotateVecAroundPoint(GetCurveTangent(time), Quaternion.AngleAxis(Core.transform.eulerAngles.y, Vector3.up), Vector3.zero);
+        forward = RotateVecAroundPoint(GetCurveTangent(time), Quaternion.AngleAxis(Core.transform.eulerAngles.y, Vector3.up), Vector3.zero);
         
-        HandIK.rotation = Quaternion.LookRotation(forward, up);
+        HandIK.rotation = Quaternion.LookRotation(-GetCurveNormal(), up);
     }
 
     private void BlockPositionRotation()
@@ -385,7 +390,7 @@ public class Weapon : MonoBehaviour
         return a * Mathf.Pow(1 - t, 2) + b * (2 * (1 - t) * t) + c * (t * t);
     }
     
-    private Vector3 GetCurveNormal(float t) // Doesnt really work atm
+    private Vector3 GetCurveNormal() // Doesnt really work atm
     {
         Vector3 normal = Vector3.Cross(up, forward);
         return normal.normalized;
