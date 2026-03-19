@@ -36,7 +36,6 @@ public class BlacksmithUI : MerchantInventory
 
     public void GiveSaveData(List<string> donatedWeapons)
     {
-
         this.donatedWeapons = donatedWeapons;
         foreach(string weapon in donatedWeapons)
         {
@@ -92,7 +91,7 @@ public class BlacksmithUI : MerchantInventory
         }
     }
 
-    public void OnRemoveItemFromDonatioNGrid(SimpleItem item)
+    public void OnRemoveItemFromDonationGrid(SimpleItem item)
     {
         if (item.TryGetComponent(out UIWeapon weapon))
         {
@@ -120,6 +119,7 @@ public class BlacksmithUI : MerchantInventory
         }
         else if (item.TryGetComponent<UIWeapon>(out _) && ActiveGrid.TryPlaceItem(item))
         {
+            OnSellEvent?.Invoke();
             return true;
         }
         return false;

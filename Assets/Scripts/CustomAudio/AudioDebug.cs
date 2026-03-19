@@ -213,8 +213,17 @@ public class AudioDebug : MonoBehaviour
                 {
                     for (int i = 0; i < objects.Length; i++)
                     {
-                        text += "==" + objects[i].name + "== \n Occlusion: " + occlusion[i] + " \n Walls: " + walls[i] + "\n";
-                        lines += 3;
+                        if (objects[i])
+                        {
+                            text += "==" + objects[i].name + "== \n Occlusion: " + occlusion[i] + " \n Walls: " + walls[i] + "\n";
+                            lines += 3;
+                        }
+                        else
+                        {
+                            text += "NULL";
+                            lines++;
+                        }
+
                     }
                 }
                 break;

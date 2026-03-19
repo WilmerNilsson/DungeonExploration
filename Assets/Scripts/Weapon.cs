@@ -10,6 +10,7 @@ public class Weapon : MonoBehaviour
     [Header("Events")]
     [FormerlySerializedAs("onDamage")] public UnityEvent OnDamage;
     [FormerlySerializedAs("onDeflectCollision")] public UnityEvent<string, Vector3> OnDeflectCollision;
+    public UnityEvent OnBreak;
     public UnityEvent onParry;
     public UnityEvent onBlock;
     public UnityEvent onSwing;
@@ -328,6 +329,7 @@ public class Weapon : MonoBehaviour
         Durability -= amount;
         if (Durability <= 0)
         {
+            OnBreak.Invoke();
             Destroy(gameObject);
         }
     }

@@ -113,6 +113,11 @@ public class InvMaster : InvMasterBase
     public void OpenPlayerInventory()
     {
         if (playerInventory.activeSelf) return;
+        
+        if (MinimapMaster.Instance)
+        {
+            MinimapMaster.Instance.CloseMinimap();
+        }
 
         contextMenu.Deselect();
         playerInventory.SetActive(true);
@@ -161,5 +166,10 @@ public class InvMaster : InvMasterBase
     public void CloseText()
     {
         openBookController.CloseText();
+    }
+
+    public bool GetIsActive()
+    {
+        return playerInventory.activeSelf;
     }
 }

@@ -23,7 +23,7 @@ public class HumanoidMovement : MonoBehaviour
     private Vector3 rotatedVector;
     private Vector3 initialAirVector;
     private float initialMagnitude;
-    private float initialAirHeight;
+    public Vector3 lastGroundedPosition;
     private Vector3 playerVelocity;
     
     [Header("Debug")]
@@ -33,7 +33,7 @@ public class HumanoidMovement : MonoBehaviour
     private bool supressMoveFrame = false;
 
     private moveActions currentAction = moveActions.None;
-
+    
     private void OnDestroy()
     {
         OnMoveActionChange = null;
@@ -51,6 +51,7 @@ public class HumanoidMovement : MonoBehaviour
     private void Start()
     {
         bodyTransform = animator.gameObject.transform;
+        lastGroundedPosition = bodyTransform.position;
     }
 
     private void FixedUpdate()
@@ -124,6 +125,7 @@ public class HumanoidMovement : MonoBehaviour
     
         finalMove = rotatedVector * deltaSpeed + playerVelocity;
         playerVelocity = finalMove;
+        lastGroundedPosition = transform.position;
 
         CC.Move(finalMove * Time.fixedDeltaTime);
     }
@@ -144,11 +146,10 @@ public class HumanoidMovement : MonoBehaviour
             {
                 initialAirVector = rotatedVector;
                 initialMagnitude = initialAirVector.magnitude;
-                initialAirHeight = transform.position.y;
             }
             else if (currentAction == moveActions.Airborne)
             {
-                OnLand.Invoke(initialAirHeight - transform.position.y);
+                OnLand.Invoke(lastGroundedPosition.y - transform.position.y);
             }
             if (newAction == moveActions.Sprinting)
             {

@@ -59,6 +59,7 @@ public class MinimapMaster : MonoBehaviour
         {
             if (child.prefab == null)
             {
+                Debug.Log("Minimap Prefab ID is null", child.gameObject);
                 continue;
             }
             minimapSoTest.AddToLists(child.prefab.name, child.transform, child.GetRotatedBounds());
@@ -96,17 +97,27 @@ public class MinimapMaster : MonoBehaviour
 
     public void OpenMinimap()
     {
+        if (minimap.activeSelf)
+        {
+            return;
+        }
+        if (InvMasterBase.Instance is InvMaster invMaster)
+        {
+            invMaster.ClosePlayerInventory();
+        }
         minimap.SetActive(true);
         Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined; //we need to controll curson with a pause menu once implimented
         GameManagerSO.Instance.LockMouse(true);
     }
 
     public void CloseMinimap()
     {
+        if (!minimap.activeSelf)
+        {
+            return;
+        }
         minimap.SetActive(false);
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
         GameManagerSO.Instance.LockMouse(false);
     }
 
@@ -118,5 +129,10 @@ public class MinimapMaster : MonoBehaviour
             area.DrawArea();
         }
         SpawnMinimap();
+    }
+
+    public bool GetIsActive()
+    {
+        return minimap.activeSelf;
     }
 }
