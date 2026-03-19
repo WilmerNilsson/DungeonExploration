@@ -265,7 +265,7 @@ public class EventList : ScriptableObject
         AudioDebug.Print(category + " has " + InstanceList.Count + " instance(s) in list after cleanup");
     }
     
-    public void CreateInstance(string eventName, GameObject gameObject = null, bool followObject = true)
+    public void CreateInstance(string eventName, GameObject gameObject = null)
     {
         if (!TryGetEvent(eventName, out var eventData)) return;
         
@@ -293,27 +293,7 @@ public class EventList : ScriptableObject
             InstanceToEventData.Add(instance, eventData);
             AudioDebug.Print("Created instance for " + eventName + " and added it to the instance list along with " + gameObject.name);
 
-            if (!eventData.is3D) return; //Om event är 3D och attachToObject, fäser vi eventet på gameObject,
-                                                            //om followObject är false följer eventet inte med gameObject utan
-                                                            //stannar kvar på samma position där objektet var när instansen skapades
-            if (followObject)
-            {
-                if (gameObject.TryGetComponent<Rigidbody>(out var rb))
-                {
-                    RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
-                }
-                else
-                {
-                    RuntimeManager.AttachInstanceToGameObject(instance, gameObject, true);
-                }
-                
-                AudioDebug.Print("Attached " + eventName + " to " + gameObject.name);
-            }
-            else
-            {
-                instance.set3DAttributes(gameObject.transform.To3DAttributes());
-                AudioDebug.Print("Set 3D attributes of " + eventName + " to those of " + gameObject.name);
-            }
+         
         }
         else //Om inget gameObject finns lägger vi istället instance i eventData, t.ex för musikEvent som bara har en emitter.
         {
@@ -408,7 +388,7 @@ public class EventList : ScriptableObject
         AudioDebug.Print("Unloading samples for" + eventName);
     }
     
-    public void StartEvent(string eventName, GameObject gameObject = null) //Som CreateInstance fast startar instansen istället OM instansen inte redan spelar
+    public void StartEvent(string eventName, GameObject gameObject = null, bool followObject = true) //Som CreateInstance fast startar instansen istället OM instansen inte redan spelar
     {
         if (TryGetEvent(eventName, out var eventData))
         {
@@ -423,6 +403,29 @@ public class EventList : ScriptableObject
                 instance.getPlaybackState(out var playbackState);
                 if (playbackState != PLAYBACK_STATE.PLAYING)
                 {
+                    if (!eventData.is3D) return; //Om event är 3D och attachToObject, fäser vi eventet på gameObject,
+                                                 //om followObject är false följer eventet inte med gameObject utan
+                                                 //stannar kvar på samma position där objektet var när instansen skapades
+                    if (followObject)
+                    {
+                        if (gameObject.TryGetComponent<Rigidbody>(out var rb))
+                        {
+                            RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+                        }
+                        else
+                        {
+                            RuntimeManager.AttachInstanceToGameObject(instance, gameObject, true);
+                        }
+
+                        AudioDebug.Print("Attached " + eventName + " to " + gameObject.name);
+                    }
+                    else
+                    {
+                        instance.set3DAttributes(gameObject.transform.To3DAttributes());
+                        AudioDebug.Print("Set 3D attributes of " + eventName + " to those of " + gameObject.name);
+                    }
+
+
                     instance.start();
                     AudioDebug.Print("Started event " + eventName + " on " + gameObject.name);
                 }
@@ -693,6 +696,7 @@ public class EventList : ScriptableObject
             }
             
             instance.start();
+            instance.release();
             
             AudioDebug.Print("Playing OneShot: " + eventName);
         }
