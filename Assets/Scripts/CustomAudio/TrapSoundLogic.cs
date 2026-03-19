@@ -12,6 +12,10 @@ public class TrapSoundLogic : MonoBehaviour
       {
          emitterObjects = new GameObject[1]{gameObject};
       }
+      foreach (GameObject emitter in emitterObjects)
+      {
+         AudioManager.Instance.CreateInstance(trapPath, emitter);
+      }
    }
    public void ActivateTrap()
    {
@@ -20,7 +24,6 @@ public class TrapSoundLogic : MonoBehaviour
       foreach (GameObject emitter in emitterObjects)
         {
          OcclusionHandler.AddToOcclusionList(emitter);
-         AudioManager.Instance.CreateInstance(trapPath, emitter);
          AudioManager.Instance.StartEvent(trapPath, emitter);
         }
     }
@@ -40,7 +43,6 @@ public class TrapSoundLogic : MonoBehaviour
       foreach (var emitter in emitterObjects)
       {
          AudioManager.Instance.StopEvent(trapPath, STOP_MODE.ALLOWFADEOUT, emitter);
-         AudioManager.Instance.ReleaseInstance(trapPath, emitter);
       }
    }
 

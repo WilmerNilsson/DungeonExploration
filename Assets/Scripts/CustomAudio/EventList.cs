@@ -592,6 +592,7 @@ public class EventList : ScriptableObject
     {
         foreach (var gameObject in objects)
         {
+            if (!gameObject) continue;
             if (!InstanceList.TryGetValue(gameObject, out var instance)) continue;
             if (!InstanceToEventData.TryGetValue(instance, out var eventData)) continue;
             if (!OcclusionHandler.TryGetOcclusionData(gameObject, out _tempOcclusion, out _tempWalls)) continue;
