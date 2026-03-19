@@ -59,6 +59,7 @@ public class MinimapMaster : MonoBehaviour
         {
             if (child.prefab == null)
             {
+                Debug.Log("Minimap Prefab ID is null", child.gameObject);
                 continue;
             }
             minimapSoTest.AddToLists(child.prefab.name, child.transform, child.GetRotatedBounds());

@@ -78,6 +78,7 @@ public class DevConsoleGha : MonoBehaviour
             new DebugCommand("set_sanity", "sets players sanity to value", "set_sanity int", SetSanity),
             new DebugCommand("give_item", "tries to insert a item into player inventory", "give_item itemID", GiveItemCommand),
             new DebugCommand("teleport_to", "tries to teleport player to object by name", "teleport_to name", TeleportToCommand),
+            new DebugCommand("unlock_map", "tries to unlock the full map", "unlock_map", UnlockMap)
         };
     }
 
@@ -226,6 +227,11 @@ public class DevConsoleGha : MonoBehaviour
     private void KillPlayerCommand()
     {
         GameObject.FindGameObjectWithTag("Player").GetComponent<Health>().TakeDamage(1000);
+    }
+    
+    private void UnlockMap()
+    {
+        FindFirstObjectByType<MinimapMaster>().UnlockFullMinimap();
     }
 
     private void HelpCommand(string input)
