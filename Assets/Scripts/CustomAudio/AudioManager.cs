@@ -554,8 +554,7 @@ public class AudioManager : MonoBehaviour
         AudioDebug.Print("Set pause to " + paused);
     }
 
-    public void
-        StopAndReleaseAllInstances() //Typ samma som ovan men denna releasar också instanser, oklart om detta är onödigt eller ej.
+    public void StopAndReleaseAllInstances() //Typ samma som ovan men denna releasar också instanser, oklart om detta är onödigt eller ej.
     {
         foreach (var eventList in eventLists)
         {
