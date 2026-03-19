@@ -37,6 +37,34 @@ public class UIWeapon : MonoBehaviour
         }
     }
     private int _durability;
+
+    public int MaxDurability
+    {
+        get
+        {
+            if(worldWeapon == null)
+            {
+                return _maxDurability;
+            }
+            else
+            {
+                return worldWeapon.MaxDurability;
+            }
+        }
+        set
+        {
+            if (worldWeapon == null)
+            {
+                _maxDurability = value;
+            }
+            else
+            {
+                worldWeapon.MaxDurability = value;
+            }
+            UpdateDurabilityText();
+        }
+    }
+    private int _maxDurability;
     private Weapon? worldWeapon;
     private bool stopSelfIntialize = false;
 

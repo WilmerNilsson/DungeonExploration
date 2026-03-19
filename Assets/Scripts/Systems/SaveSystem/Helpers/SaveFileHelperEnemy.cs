@@ -3,6 +3,9 @@ using UnityEngine.AI;
 
 public class SaveFileHelperEnemy : MonoBehaviour
 {
+    [SerializeField, Range(0f, 1f)] float respawnChance = 0.2f;
+    [field: SerializeField] public int UniqueID { get; private set; } = -1;
+    [Header("Save file references")]
     [SerializeField] private Health health;
     [SerializeField] private Transform spawnTransform;
     [SerializeField] private HumanoidMovement movement;
@@ -23,6 +26,16 @@ public class SaveFileHelperEnemy : MonoBehaviour
     }
 #endif
 
+    public bool ShouldRespawn()
+    {
+        return Random.value <= respawnChance;
+    }
+
+    public void SetID(int newID)
+    {
+        UniqueID = newID;
+    }
+
     public void Intialize(DungeonSaveData.Enemy data)
     {
         agent.Warp(data.Position);
@@ -41,7 +54,7 @@ public class SaveFileHelperEnemy : MonoBehaviour
         Vector3 pos = spawnTransform.position;
         Quaternion rot = spawnTransform.rotation;
 
-        DungeonSaveData.Enemy data = new(pos, rot, health.CurrentHealth, prefabID);
+        DungeonSaveData.Enemy data = new(UniqueID, pos, rot, health.CurrentHealth, prefabID);
 
         return data;
     }
