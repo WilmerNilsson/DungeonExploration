@@ -8018,6 +8018,7 @@ GameObject:
   - component: {fileID: 7751530102041314351}
   - component: {fileID: 7702765507109760792}
   - component: {fileID: 1421479404669316952}
+  - component: {fileID: 581456538794836009}
   m_Layer: 5
   m_Name: Settings Menu
   m_TagString: Untagged
@@ -8109,6 +8110,24 @@ MonoBehaviour:
     Slider: {fileID: 3032443103291255821}
   overNewValueWarningThreshhold: 150
   warningWindow: {fileID: 0}
+--- !u!114 &581456538794836009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4745701951426906442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc293c0446b8972448fbee1677af522d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emitterIsThisObject: 0
+  instructions:
+  - path: MainMenu/SliderSound
+    gameObject: {fileID: 0}
+    followObject: 0
+    parametersToSet: []
 --- !u!1 &4835721811084942374
 GameObject:
   m_ObjectHideFlags: 0
@@ -9467,6 +9486,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: AudioInputSettingsMaster, GameAssembly
         m_MethodName: ChangeEffectsAudioByFloat
         m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 581456538794836009}
+        m_TargetAssemblyTypeName: OneShotPlayer, GameAssembly
+        m_MethodName: Play
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -14096,6 +14127,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 581456538794836009}
+        m_TargetAssemblyTypeName: OneShotPlayer, GameAssembly
+        m_MethodName: Play
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &9087317596947160979
 GameObject:
   m_ObjectHideFlags: 0
@@ -14363,6 +14406,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: AudioInputSettingsMaster, GameAssembly
         m_MethodName: ChangeMusicAudioByFloat
         m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 581456538794836009}
+        m_TargetAssemblyTypeName: OneShotPlayer, GameAssembly
+        m_MethodName: Play
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

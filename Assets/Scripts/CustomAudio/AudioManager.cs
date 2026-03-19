@@ -545,7 +545,7 @@ public class AudioManager : MonoBehaviour
         foreach (var bus in busList)
         {
             bus.getPath(out var path);
-            if (path == "bus:/Sound")
+            if (path.Contains("bus:/Sound/") && path != "bus:/Sound/UI")
             {
                 bus.setPaused(paused);
             }
