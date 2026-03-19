@@ -547,7 +547,6 @@ public class AudioManager : MonoBehaviour
             bus.getPath(out var path);
             if (path.Contains("bus:/Sound/") && path != "bus:/Sound/UI")
             {
-                Debug.Log(path);
                 bus.setPaused(paused);
             }
         }
