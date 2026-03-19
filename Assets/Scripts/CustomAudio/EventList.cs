@@ -292,6 +292,10 @@ public class EventList : ScriptableObject
             InstanceList.Add(gameObject, instance);
             InstanceToEventData.Add(instance, eventData);
             AudioDebug.Print("Created instance for " + eventName + " and added it to the instance list along with " + gameObject.name);
+            if (eventData.is3D)
+            {
+                instance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject.transform));
+            }
 
          
         }
@@ -592,6 +596,7 @@ public class EventList : ScriptableObject
     {
         foreach (var gameObject in objects)
         {
+            if (!gameObject) continue;
             if (!InstanceList.TryGetValue(gameObject, out var instance)) continue;
             if (!InstanceToEventData.TryGetValue(instance, out var eventData)) continue;
             if (!OcclusionHandler.TryGetOcclusionData(gameObject, out _tempOcclusion, out _tempWalls)) continue;
