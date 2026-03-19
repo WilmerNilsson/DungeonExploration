@@ -100,20 +100,4 @@ public class SaveFileHelperPlayer : MonoBehaviour
         PlayerSaveData data = new(inventory, equipment, pos, rot, currentHP, sanityInt, hungerInt, runCount);
         return data;
     }
-
-    public void SpawnDeathChest()
-    {
-        if (InvMasterBase.Instance.PlayerInventory.GetInventoryData().Count <= 0)
-        {
-            return;
-        }
-        InventorySaveData inventory = new(InvMasterBase.Instance.PlayerInventory.GetInventoryData());
-        for (int i = 0; i < inventory.Items.Count; i++)
-        {
-            itemLibrary.TryGetItemPairByName(inventory.Items[i].PrefabID, out ItemPairing pair);
-            Instantiate(pair.WorldPrefab, spawnTransform.position, spawnTransform.rotation);
-        }
-
-        InvMasterBase.Instance.PlayerInventory.EmptyInventory();
-    }
 }

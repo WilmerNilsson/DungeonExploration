@@ -66,6 +66,7 @@ public class AudioDebugEditor : Editor
             {
                 EditorGUILayout.PropertyField(pathProperty);
             }
+            EditorGUILayout.PropertyField(executeInUpdateProperty);
             EditorGUILayout.SelectableLabel("Information will be displayed here when in play mode", EditorStyles.textField, GUILayout.Height(
                 EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing));
         }

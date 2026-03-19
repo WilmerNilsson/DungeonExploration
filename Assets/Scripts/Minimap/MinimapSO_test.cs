@@ -5,38 +5,25 @@ using UnityEngine;
 public class MinimapSO_test : ScriptableObject
 {
     [Header("The minimap component stuff")]
-    public List<GameObject> minimapObjects;
-    public List<string> prefabNames;
-    public List<Vector3> minimapPositions;
-    public List<Vector3> minimapScales;
-    public List<Vector3> minimapRotations;
+    public List<MinimapComponentData> minimapComponentData;
 
-    public void AddToLists(GameObject objectToAdd, Transform transform, Vector3 scale)
+    public void AddToLists(string nameToAdd, Transform transform, Vector3 scale)
     {
-        if (!minimapPositions.Contains(transform.position))
+        MinimapComponentData newData = new MinimapComponentData(nameToAdd, transform.position, scale, transform.eulerAngles);
+        if (minimapComponentData.Find(x => x.position  == newData.position) == null)
         {
-            if (!minimapObjects.Contains(objectToAdd))
-            {
-                minimapObjects.Add(objectToAdd);
-            }
-            prefabNames.Add(objectToAdd.name);
-            minimapPositions.Add(transform.position);
-            minimapScales.Add(scale);
-            minimapRotations.Add(transform.eulerAngles);
+            minimapComponentData.Add(newData);
         }
-    }
-
-    public GameObject GetPrefabByName(string prefabName)
-    {
-        return minimapObjects.Find(obj => obj.name == prefabName);
     }
 
     public void ClearAll()
     {
-        minimapObjects.Clear();
-        prefabNames.Clear();
-        minimapPositions.Clear();
-        minimapScales.Clear();
-        minimapRotations.Clear();
+        minimapComponentData.Clear();
+    }
+
+    public void SetToData(List<MinimapComponentData> newData)
+    {
+        minimapComponentData.Clear();
+        minimapComponentData.AddRange(newData);
     }
 }

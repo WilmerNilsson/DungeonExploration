@@ -42,31 +42,23 @@ public class HumanoidController : MonoBehaviour
     }
 
     /// <summary>
-    /// should be used by player
+    /// Updates the start position of the attack
     /// </summary>
-    public void PrepareAttackUpdate(float angle)
+    public void HoldAttackUpdate(float angle)
     {
         animateAttack.HoldAttackUpdate(angle);
     }
 
     /// <summary>
-    /// Prepares the attack animation by moving to the start position
-    /// </summary>
-    public void PrepareAttack(bool start)
-    {
-        animateAttack.HoldAttack(start);
-    }
-
-    /// <summary>
     /// Starts the Attack
     /// </summary>
-    public void Attack(float angle)
+    public bool TryAttack(float angle)
     {
-        animateAttack.Attack(angle);
+        return animateAttack.TryAttack(angle);
     }
     
     /// <summary>
-    /// should be used by player
+    /// Toggles Blocking
     /// </summary>
     public void HoldBlock(bool start)
     {
@@ -74,10 +66,18 @@ public class HumanoidController : MonoBehaviour
     }
 
     /// <summary>
-    /// should be used by player
+    /// Updates the position of the Block
     /// </summary>
     public void HoldBlockUpdate(float angle)
     {
         animateAttack.HoldBlockUpdate(angle);
+    }
+
+    /// <summary>
+    /// Attempts to parry while blocking
+    /// </summary>
+    public bool TryParry()
+    {
+        return animateAttack.TryParry();
     }
 }

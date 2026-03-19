@@ -197,11 +197,11 @@ public class AudioManager : MonoBehaviour
     #region Looping Events 
     //Alla metoder här vidarebefodrar instruktioner in i rätt evenlist baserat på path.
     
-    public void CreateInstance(string path, GameObject gameObj = null, bool followObject = true)
+    public void CreateInstance(string path, GameObject gameObj = null)
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
-            eventList.CreateInstance(eventName, gameObj, followObject);
+            eventList.CreateInstance(eventName, gameObj);
         }
     }
 
@@ -229,11 +229,11 @@ public class AudioManager : MonoBehaviour
         }
     }
     
-    public void StartEvent(string path, GameObject gameObj = null)
+    public void StartEvent(string path, GameObject gameObj = null, bool followObject = true)
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
-            eventList.StartEvent(eventName, gameObj);
+            eventList.StartEvent(eventName, gameObj, followObject);
         }
     }
 
@@ -266,6 +266,14 @@ public class AudioManager : MonoBehaviour
         foreach (var eventList in eventLists)
         {
             eventList.SetOcclusionOnObjects(occlusionObjects);
+        }
+    }
+
+    public void SetInstancePosition(string path, GameObject gameObject)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.SetInstancePosition(eventName, gameObject);
         }
     }
     
@@ -477,14 +485,25 @@ public class AudioManager : MonoBehaviour
         var cameras = GameObject.FindObjectsByType<Camera>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var camera in cameras)
         {
-            if (camera.TryGetComponent(typeof(StudioListener), out var studioListener))
+            if (camera.TryGetComponent(typeof(StudioListener), out var studioListener) && camera.isActiveAndEnabled)
             {
                 Listener = camera.gameObject;
                 AudioDebug.Print("Successfully found listener");
                 return;
             }
+            else if (camera.TryGetComponent(typeof(StudioListener), out studioListener))
+            {
+                Listener = camera.gameObject;
+            }
         }
-        AudioDebug.Print("No listener found", true);
+        if (!Listener)
+        {
+            AudioDebug.Print("No listener found", true);
+        }
+        else
+        {
+            AudioDebug.Print("Successfully found Listener but it is not enabled in the scene");
+        }
     }
     
     #endregion
