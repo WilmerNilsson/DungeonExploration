@@ -5,6 +5,7 @@ public class TrapSoundLogic : MonoBehaviour
 {
    [SerializeField] private string trapPath;
    [SerializeField] private GameObject[] emitterObjects;
+   private bool addedSelfToList;
 
    private void Start()
    {
@@ -12,9 +13,23 @@ public class TrapSoundLogic : MonoBehaviour
       {
          emitterObjects = new GameObject[1]{gameObject};
       }
-      foreach (GameObject emitter in emitterObjects)
+      for (int i = 0; i < emitterObjects.Length; i++)
       {
-         AudioManager.Instance.CreateInstance(trapPath, emitter);
+         if (!emitterObjects[i])
+         {
+            if (!addedSelfToList)
+                {
+                    emitterObjects[i] = gameObject;
+                    AudioManager.Instance.CreateInstance(trapPath, emitterObjects[i]);
+                    addedSelfToList = true;
+                }
+            
+
+         }
+            else
+            {
+                AudioManager.Instance.CreateInstance(trapPath, emitterObjects[i]);
+            }
       }
    }
    public void ActivateTrap()

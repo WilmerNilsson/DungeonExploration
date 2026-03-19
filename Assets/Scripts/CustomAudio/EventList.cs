@@ -292,6 +292,10 @@ public class EventList : ScriptableObject
             InstanceList.Add(gameObject, instance);
             InstanceToEventData.Add(instance, eventData);
             AudioDebug.Print("Created instance for " + eventName + " and added it to the instance list along with " + gameObject.name);
+            if (eventData.is3D)
+            {
+                instance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject.transform));
+            }
 
          
         }
