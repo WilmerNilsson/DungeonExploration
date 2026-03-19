@@ -51,6 +51,7 @@ public class HumanoidMovement : MonoBehaviour
     private void Start()
     {
         bodyTransform = animator.gameObject.transform;
+        lastGroundedPosition = bodyTransform.position;
     }
 
     private void FixedUpdate()
