@@ -404,6 +404,8 @@ MonoBehaviour:
   crouchSpeed: 2
   airMoveMod: 5
   jumpHeight: 0.9
+  lastGroundedPosition: {x: 0, y: 0, z: 0}
+  LastGroundedTransform: {fileID: 0}
   doJump: 0
   grounded: 0
 --- !u!114 &4104227061447592378
@@ -755,7 +757,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: -1075263557498986769}
         m_TargetAssemblyTypeName: SaveFileHelperPlayer, GameAssembly
-        m_MethodName: SpawnDeathChest
+        m_MethodName: DropItems
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
