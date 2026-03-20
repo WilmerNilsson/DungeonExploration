@@ -142,7 +142,10 @@ public class MadAdventurerStateMachine : MonoBehaviour
 
     public void Die()
     {
-        StopCoroutine(currentAttack);
+        if(currentAttack != null)
+        {
+            StopCoroutine(currentAttack);
+        }
         Transit(DyingState);
     }
 
