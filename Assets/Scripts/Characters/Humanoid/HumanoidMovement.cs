@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Profiling;
 
 public class HumanoidMovement : MonoBehaviour
 {
@@ -79,6 +80,7 @@ public class HumanoidMovement : MonoBehaviour
         Vector3 finalMove = Vector3.zero;
         if (!grounded)
         {
+            Profiler.BeginSample("Airborne");
             deltaSpeed = (controller.isSprinting && Vector3.Dot(transform.forward, rotatedVector) >= 0) ? sprintSpeed : moveSpeed;
             
             float speedX = playerVelocity.x + rotatedVector.x * airMoveMod * Time.fixedDeltaTime;
@@ -98,9 +100,11 @@ public class HumanoidMovement : MonoBehaviour
             finalMove = rotatedVector + playerVelocity;
             playerVelocity = finalMove;
             CC.Move(finalMove * Time.fixedDeltaTime);
+            Profiler.EndSample();
             return;
         }
-        else if (moveVector == Vector3.zero)
+        Profiler.BeginSample("Movement Actions");
+        if (moveVector == Vector3.zero)
         {
             SetMoveAction(moveActions.None);
         }
@@ -119,7 +123,9 @@ public class HumanoidMovement : MonoBehaviour
             deltaSpeed = moveSpeed;
             SetMoveAction(moveActions.Walking);
         }
-
+        Profiler.EndSample();
+        
+        Profiler.BeginSample("Apply movement");
         playerVelocity = new Vector3(0, playerVelocity.y + (Physics.gravity.y * Time.fixedDeltaTime), 0);
         //playerVelocity.y += Physics.gravity.y * Time.fixedDeltaTime;
     
@@ -128,6 +134,7 @@ public class HumanoidMovement : MonoBehaviour
         lastGroundedPosition = transform.position;
 
         CC.Move(finalMove * Time.fixedDeltaTime);
+        Profiler.EndSample();
     }
 
     /// <summary>
@@ -140,6 +147,7 @@ public class HumanoidMovement : MonoBehaviour
 
     void SetMoveAction(moveActions newAction)
     {
+        Profiler.BeginSample("SetMoveAction");
         if(newAction != currentAction)
         {
             if (newAction == moveActions.Airborne)
@@ -162,6 +170,7 @@ public class HumanoidMovement : MonoBehaviour
             currentAction = newAction; 
             OnMoveActionChange?.Invoke(currentAction);
         }
+        Profiler.EndSample();
     }
 
     public void Move(Vector3 direction)
