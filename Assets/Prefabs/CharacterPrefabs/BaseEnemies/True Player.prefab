@@ -1047,6 +1047,7 @@ MonoBehaviour:
   ResetOnAwake: 1
   damageToSanityMod: 5
   sanityLightProbe: {fileID: 7592676639121055526}
+  lightThreshold: 0
 --- !u!114 &1608432785845023580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1437,6 +1438,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1879338547510664418}
     m_Modifications:
+    - target: {fileID: 735329421399159135, guid: d9602fe0ef1aac44faf138e1d38d189f, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1394184070466735953, guid: d9602fe0ef1aac44faf138e1d38d189f, type: 3}
       propertyPath: m_Effectors.Array.size
       value: 10
