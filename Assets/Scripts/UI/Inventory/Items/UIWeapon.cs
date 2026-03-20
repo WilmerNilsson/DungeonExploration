@@ -61,7 +61,6 @@ public class UIWeapon : MonoBehaviour
             {
                 worldWeapon.MaxDurability = value;
             }
-            UpdateDurabilityText();
         }
     }
     private int _maxDurability;
@@ -86,10 +85,11 @@ public class UIWeapon : MonoBehaviour
 
     private void Start()
     {
-        if (stopSelfIntialize) return;
-
-        if(weaponPrefab.TryGetComponent(out Weapon component))
+        if (weaponPrefab.TryGetComponent(out Weapon component))
         {
+            MaxDurability = component.MaxDurability;
+            if (stopSelfIntialize) return;
+            worldWeapon = component;
             Durability = component.Durability;
             UpdateDurabilityText();
         }
@@ -105,6 +105,7 @@ public class UIWeapon : MonoBehaviour
         if(worldWeapon != null)
         {
             _durability = worldWeapon.Durability;
+            _maxDurability = worldWeapon.MaxDurability;
             worldWeapon = null;
         }
     }
@@ -118,6 +119,7 @@ public class UIWeapon : MonoBehaviour
     {
         worldWeapon = weaponScript;
         worldWeapon.Durability = _durability;
+        worldWeapon.MaxDurability = _maxDurability;
         UpdateDurabilityText();
         worldWeapon.OnDamage.AddListener(UpdateDurabilityText);
     }
