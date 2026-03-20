@@ -9,18 +9,26 @@ public class DetectPlayer : MonoBehaviour
     private bool initialized = false;
 
     [Header("Vision")] 
-    [SerializeField, Tooltip("full sight cone")] private float sightAngle;
+    [SerializeField, Tooltip("brightness level")] private float lightThreshold;
+    [SerializeField, Tooltip("full sight cone")] private float lightSightAngle;
+    [SerializeField, Tooltip("sight distance")] private float lightSightDistance;
+    [SerializeField, Tooltip("full sight cone")] private float darkSightAngle;
+    [SerializeField, Tooltip("sight distance")] private float darkSightDistance;
+    private float maxSightDistance;
+    private float sightAngle;
     [SerializeField] private LayerMask visionMask;
 
     private PlayerVisionData visionData;
     private RaycastHit[] sightHits;
+    private SanityLightProbe sanityLightProbe;
 
     [Header("Sound")] 
+    [SerializeField] private float maxSoundDistance;
     [SerializeField, Tooltip("percent modifier applied to sound when player crouches, 1 is full sound 0 is no sound"), Range(0,1)] private float crouchSoundModifier;
     [SerializeField] private OcclusionChecker occlusionChecker = new OcclusionChecker();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    public bool Detect(float sightThreshold, float soundThreshold, float soundRange, float maxSightDistance)
+    public bool Detect(float sightThreshold, float soundThreshold)
     {
         if (!initialized)
         {
@@ -44,18 +52,48 @@ public class DetectPlayer : MonoBehaviour
             {
                 Debug.LogWarning("Cant find Vision Data on Player", this);
             }
+
+            if (Camera.main.TryGetComponent(out SanityLightProbe probe))
+            {
+                sanityLightProbe = probe;
+            }
+            else
+            {
+                Debug.LogWarning("Cant find LightProbe on Main Camera", this);
+            }
         }
-        return (SightDetection(maxSightDistance) > sightThreshold || SoundDetection(soundRange) > soundThreshold);
+
+        if (sanityLightProbe.Sample() > lightThreshold)
+        {
+            maxSightDistance = lightSightDistance;
+            sightAngle = lightSightAngle;
+        }
+        else
+        {
+            maxSightDistance = darkSightDistance;
+            sightAngle = darkSightAngle;
+        }
+        
+        
+        return (SightDetection() > sightThreshold || SoundDetection() > soundThreshold);
     }
 
-    private float SoundDetection(float soundRange) // returns the percentage of how well the enemy can "hear" the player
+    private float SoundDetection() // returns the percentage of how well the enemy can "hear" the player
     {
-        if(Vector3.Distance(player.position, transform.position) > soundRange) return 0; // return if the player is too far away
+        if(Vector3.Distance(player.position, transform.position) > maxSoundDistance) return 0; // return if the player is too far away
         occlusionChecker.CheckOcclusion(head.gameObject,player.gameObject,out float occlusion); // run sound occlusion in reverse
-        return (1-occlusion) * crouchSoundModifier;
+
+        occlusion = 1 - occlusion;
+        
+        if (player.TryGetComponent(out HumanoidController controller) && controller.isCrouching)
+        {
+            occlusion *= crouchSoundModifier;
+        }
+        
+        return occlusion;
     }
 
-    private float SightDetection(float maxSightDistance) // returns what percentage of the player that can be seen based on the PlayerVisionData
+    private float SightDetection() // returns what percentage of the player that can be seen based on the PlayerVisionData
     {
         if (Vector3.Distance(head.position, player.position) > maxSightDistance) return 0; //return if player too far away
         if (Vector3.Angle(head.forward, player.position) > sightAngle/2) return 0; // return if player outside line of sight
@@ -88,5 +126,11 @@ public class DetectPlayer : MonoBehaviour
     private Vector3 RelativePosition(Vector3 position)
     {
         return transform.TransformDirection(position);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawRay(head.position, (Quaternion.AngleAxis(transform.eulerAngles.y + (sightAngle/2), Vector3.up) * Vector3.forward) * maxSightDistance);
+        Gizmos.DrawRay(head.position, (Quaternion.AngleAxis(transform.eulerAngles.y - (sightAngle/2), Vector3.up) * Vector3.forward) * maxSightDistance);
     }
 }
