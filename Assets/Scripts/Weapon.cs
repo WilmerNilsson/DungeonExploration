@@ -9,7 +9,7 @@ public class Weapon : MonoBehaviour
 {
     [Header("Events")]
     [FormerlySerializedAs("onDamage")] public UnityEvent OnDamage;
-    [FormerlySerializedAs("onDeflectCollision")] public UnityEvent<string, Vector3, Vector3> OnDeflectCollision;
+    [FormerlySerializedAs("onDeflectCollision")] public UnityEvent<string, Vector3> OnDeflectCollision;
     public UnityEvent OnBreak;
     public UnityEvent onParry;
     public UnityEvent onBlock;
@@ -72,7 +72,11 @@ public class Weapon : MonoBehaviour
     private Vector3 P1 => Vector3.Lerp(P0,P3,startBend/2) + Vector3.forward * curveHeight;
     private Vector3 P2 => Vector3.Lerp(P0,P3,1-endBend/2) + Vector3.forward * curveHeight;
     private Vector3 P3 => new (-P0.x, -P0.y, P0.z);
-    
+
+    private void Start()
+    {
+        transform.rotation = Quaternion.LookRotation(SwordArm.data.tip.right, -SwordArm.data.tip.forward);
+    }
 
     #region Attack
 
@@ -241,14 +245,14 @@ public class Weapon : MonoBehaviour
     {
         isParrying = value;
     }
-
-    private void OnCollisionEnter(Collision other)
+    
+    private void OnTriggerEnter(Collider other)
     {
         if (dealDamage)
         {
             if (!transform.IsChildOf(other.transform))
             {
-                if (other.gameObject.TryGetComponent(out Health health))
+                if (other.TryGetComponent(out Health health))
                 {
                     health.TakeDamage(damage);
                     LoseDurability(health.DurabilityDamage);
@@ -272,37 +276,31 @@ public class Weapon : MonoBehaviour
                         Debug.Log($"The target {other.gameObject.name} health is NULL, or it was self harm");
                     }
                 }
-                
-                Vector3 point = other.GetContact(0).point;
-                Vector3 normal = other.GetContact(0).normal;
-                
-                switch (other.gameObject.tag) // Handle Audio Visual Feedback
+                switch (other.tag) // Handle Audio Visual Feedback
                 {
                     case "Wood":
                         Debug.Log("Wood");
-                        OnDeflectCollision.Invoke("Wood", point, normal);
+                        OnDeflectCollision.Invoke("Wood", transform.position);
                         Companion.OnGetBlocked();
                         break;
                     case "Stone":
                         Debug.Log("Stone");
-                        OnDeflectCollision.Invoke("Stone", point, normal);
+                        OnDeflectCollision.Invoke("Stone", transform.position);
                         Companion.OnGetBlocked();
                         break;
                     case "Metal":
                         Debug.Log("Metal");
-                        if (other.gameObject.TryGetComponent(out Weapon weapon))
+                        if (other.TryGetComponent(out Weapon weapon))
                         {
                             if (weapon.isParrying)
                             {
                                 onParry.Invoke();
                                 Companion.OnGetParried();
-                                OnDeflectCollision.Invoke("Metal", point, normal);
                             }
                             else if(weapon.isBlocking)
                             {
                                 onBlock.Invoke();
                                 Companion.OnGetBlocked();
-                                OnDeflectCollision.Invoke("Metal", point, normal);
                             }
                             else
                             {
@@ -310,13 +308,13 @@ public class Weapon : MonoBehaviour
                             }
                             break;
                         }
-                        OnDeflectCollision.Invoke("Metal", point, normal);
+                        OnDeflectCollision.Invoke("Metal", transform.position);
                         Companion.OnGetBlocked();
                         break;
                     case "Player":
                     case "Flesh":
                         Debug.Log("Flesh");
-                        OnDeflectCollision.Invoke("Flesh", point, normal);
+                        OnDeflectCollision.Invoke("Flesh", transform.position);
                         Companion.OnHitFlesh();
                         break;
                 }

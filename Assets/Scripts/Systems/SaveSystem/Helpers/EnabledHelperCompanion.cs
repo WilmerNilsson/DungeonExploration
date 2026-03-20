@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.SearchService;
 using UnityEngine;
 
 [RequireComponent(typeof(IEnabledHelper))]

@@ -9,20 +9,20 @@ public class UIGamepadButtonSetter : MonoBehaviour
 {
     [SerializeField] private GameObject FirstSelected;
 
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        if (FirstSelected == null) Debug.LogWarning("first selected is null", this);
-    }
-#endif
-
     private void OnEnable()
     {
-        UIGamepadHandler.Instance.OpenMenu(FirstSelected);
+        if (UIGamepadHandler.instance)
+        {
+            UIGamepadHandler.instance.OpenMenu(FirstSelected);
+        }
+        else
+        {
+            FindAnyObjectByType<UIGamepadHandler>().OpenMenu(FirstSelected);
+        }
     }
 
     private void OnDisable()
     {
-        UIGamepadHandler.Instance.CloseMenu(FirstSelected);
+        UIGamepadHandler.instance.CloseMenu(FirstSelected);
     }
 }

@@ -153,11 +153,11 @@ public class HumanoidMovement : MonoBehaviour
             }
             if (newAction == moveActions.Sprinting)
             {
-                animator.SetBool("Running", true);
+                animator.SetFloat("RunSpeed", 2);
             }
             else
             {
-                animator.SetBool("Running", false);
+                animator.SetFloat("RunSpeed", 1);
             }
             currentAction = newAction; 
             OnMoveActionChange?.Invoke(currentAction);
