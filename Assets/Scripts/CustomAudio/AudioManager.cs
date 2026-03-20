@@ -475,6 +475,7 @@ public class AudioManager : MonoBehaviour
         SetGlobalParameter("Sanity", 1);
         SetGlobalParameter("Hunger", 1);
         SetGlobalParameter("hpRatio", 1);
+        SetGlobalParameter("Location", 0);
         SetGlobalParameter("Exertion", 0);
     }
     
