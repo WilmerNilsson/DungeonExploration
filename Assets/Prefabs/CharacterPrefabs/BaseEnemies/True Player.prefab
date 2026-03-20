@@ -195,6 +195,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be7280be7f1e7e643a6d3e17dd2a062c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onLightTorch:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1725965202738370731}
+        m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5100284084958003180}
+        m_TargetAssemblyTypeName: UnityEngine.Light, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  onSnuffTorch:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1725965202738370731}
+        m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
+        m_MethodName: Stop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5100284084958003180}
+        m_TargetAssemblyTypeName: UnityEngine.Light, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   controller: {fileID: 460348200128992605}
   mouseSensitivity: 0.1
   stickSensitivity: 5
@@ -894,6 +948,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: ee74a1bf-90ea-46ae-b106-aa56c81ca74c
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7696982201766261837}
+        m_TargetAssemblyTypeName: PlayerController, GameAssembly
+        m_MethodName: OnTorch
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 343e0560-a11a-4892-bd17-d91ae9758675
+    m_ActionName: 'Player/Torch[/Keyboard/f]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -940,7 +1010,6 @@ MonoBehaviour:
   movement: {fileID: 6844093797709260482}
   health: {fileID: 1354050652585229241}
   itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
-  hunger: {fileID: 0}
   sanity: {fileID: 8039961835658388922}
   runCount: 0
   startingWeaponID: BasicSword
@@ -1885,8 +1954,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+--- !u!198 &1725965202738370731 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2935824123919371487, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+  m_PrefabInstance: {fileID: 4561574992140784756}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4229444106205551951 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 432338180996008251, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+  m_PrefabInstance: {fileID: 4561574992140784756}
+  m_PrefabAsset: {fileID: 0}
+--- !u!108 &5100284084958003180 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: -465523245192008808, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
   m_PrefabInstance: {fileID: 4561574992140784756}
   m_PrefabAsset: {fileID: 0}
