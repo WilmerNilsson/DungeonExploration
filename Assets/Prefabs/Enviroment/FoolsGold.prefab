@@ -1280,6 +1280,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5435467201701623862}
     m_Modifications:
+    - target: {fileID: -3724903551251670815, guid: d97210db1b67d4147b101a952d97bb0a, type: 3}
+      propertyPath: instructions.Array.data[0].path
+      value: Traps/TrapFountain
+      objectReference: {fileID: 0}
     - target: {fileID: 3939108334137299733, guid: d97210db1b67d4147b101a952d97bb0a, type: 3}
       propertyPath: m_Size.x
       value: 80
@@ -1361,6 +1365,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2566017086557738624}
   m_SourcePrefab: {fileID: 100100000, guid: d97210db1b67d4147b101a952d97bb0a, type: 3}
+--- !u!114 &5421469079858078053 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -3724903551251670815, guid: d97210db1b67d4147b101a952d97bb0a, type: 3}
+  m_PrefabInstance: {fileID: 536656867820697988}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5952382912171683795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc293c0446b8972448fbee1677af522d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5952382912171683795 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6190631081220298327, guid: d97210db1b67d4147b101a952d97bb0a, type: 3}
@@ -1423,6 +1438,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5421469079858078053}
+        m_TargetAssemblyTypeName: OneShotPlayer, GameAssembly
+        m_MethodName: Play
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
