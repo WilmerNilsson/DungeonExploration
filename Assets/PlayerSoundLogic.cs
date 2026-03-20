@@ -25,8 +25,8 @@ public class PlayerSoundLogic : MonoBehaviour
         AudioManager.Instance.CreateInstance(sanityPath, gameObject);
         AudioManager.Instance.StartEvent(sanityPath, gameObject);
         
-        AudioManager.Instance.CreateInstance(exhaustionPath, gameObject);
-        AudioManager.Instance.StartEvent(exhaustionPath, gameObject);
+        AudioManager.Instance.CreateInstance(exhaustionPath);
+        AudioManager.Instance.StartEvent(exhaustionPath);
     }
     
     public void OnLoseSanity(float sanity)
