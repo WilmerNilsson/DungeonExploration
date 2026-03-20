@@ -125,9 +125,9 @@ public class InvMaster : InvMasterBase
         GameManagerSO.Instance.LockMouse(true);
     }
 
-    public bool ClosePlayerInventory()
+    public void ClosePlayerInventory()
     {
-        if (!playerInventory.activeSelf) return false;
+        if (!playerInventory.activeSelf) return;
 
         contextMenu.Deselect();
         CloseText();
@@ -141,7 +141,6 @@ public class InvMaster : InvMasterBase
         }
 
         openContainers.Clear();
-        return true;
     }
 
     public override void ParentTransformOntop(Transform transform)
@@ -167,5 +166,10 @@ public class InvMaster : InvMasterBase
     public void CloseText()
     {
         openBookController.CloseText();
+    }
+
+    public bool GetIsActive()
+    {
+        return playerInventory.activeSelf;
     }
 }

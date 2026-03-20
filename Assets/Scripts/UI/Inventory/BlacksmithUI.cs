@@ -69,7 +69,7 @@ public class BlacksmithUI : MerchantInventory
         else if (startHover && simpleItem.TryGetComponent(out UIWeapon uIWeapon))
         {
             SetDescriptionText(simpleItem.GetDescription());
-            int repairCost = (uIWeapon.BlacksmithHelper.MaxDurability - uIWeapon.Durability) * uIWeapon.BlacksmithHelper.CostPerDurability;
+            int repairCost = (uIWeapon.MaxDurability - uIWeapon.Durability) * uIWeapon.BlacksmithHelper.CostPerDurability;
             SetGoldValueText($"Repair cost is {repairCost} crowns.");
         }
         else
@@ -216,16 +216,21 @@ public class BlacksmithUI : MerchantInventory
         }
         else if (weaponInDonateGrid != null)
         {
-            int repairCost = (weaponInDonateGrid.BlacksmithHelper.MaxDurability - weaponInDonateGrid.Durability) * weaponInDonateGrid.BlacksmithHelper.CostPerDurability;
+            int repairCost = (weaponInDonateGrid.MaxDurability - weaponInDonateGrid.Durability) * weaponInDonateGrid.BlacksmithHelper.CostPerDurability;
 
-            if(weaponInDonateGrid.Durability == weaponInDonateGrid.BlacksmithHelper.MaxDurability)
+            if (repairCost < 0)
+            {
+                return;
+            }
+
+            if(weaponInDonateGrid.Durability == weaponInDonateGrid.MaxDurability)
             {
                 SetDescriptionText(weaponAlreadyFullDurabilityText);
             }
             else if(playerCashSO.TryBuy(repairCost))
             {
                 SetDescriptionText(couldRepairWeaponText);
-                weaponInDonateGrid.Durability = weaponInDonateGrid.BlacksmithHelper.MaxDurability;
+                weaponInDonateGrid.Durability = weaponInDonateGrid.MaxDurability;
                 OnRepairEvent.Invoke();
             }
             else
