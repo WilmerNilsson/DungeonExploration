@@ -78,7 +78,8 @@ public class DevConsoleGha : MonoBehaviour
             new DebugCommand("set_sanity", "sets players sanity to value", "set_sanity int", SetSanity),
             new DebugCommand("give_item", "tries to insert a item into player inventory", "give_item itemID", GiveItemCommand),
             new DebugCommand("teleport_to", "tries to teleport player to object by name", "teleport_to name", TeleportToCommand),
-            new DebugCommand("unlock_map", "tries to unlock the full map", "unlock_map", UnlockMap)
+            new DebugCommand("unlock_map", "tries to unlock the full map", "unlock_map", UnlockMap),
+            new DebugCommand("kill_all", "kill all enemies", "kill_all", KillAllCommand)
         };
     }
 
@@ -135,6 +136,16 @@ public class DevConsoleGha : MonoBehaviour
     #region command methods 
 
 #nullable enable
+
+    private void KillAllCommand()
+    {
+        SaveFileHelperEnemy[] animone = FindObjectsByType<SaveFileHelperEnemy>(FindObjectsSortMode.None);
+
+        foreach(SaveFileHelperEnemy animinimemone in animone)
+        {
+            Destroy(animinimemone.gameObject);
+        }
+    }
 
     private void TeleportToCommand(string input)
     {
