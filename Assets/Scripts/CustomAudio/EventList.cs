@@ -50,6 +50,15 @@ public class EventList : ScriptableObject
         eventInstance = new EventInstance();
         return false;
     }
+
+    public bool IsEventOcclusion(string eventName)
+    {
+        if (TryGetEvent(eventName, out var eventData))
+        {
+            if (eventData.isOcclusion) return true;
+        }
+        return false;
+    }
     
     #if UNITY_EDITOR
     [ContextMenu("Fill eventData")]

@@ -154,6 +154,18 @@ public class AudioManager : MonoBehaviour
         return false;
     }
 
+    public bool IsEventOcclusion(string path)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            if (eventList.IsEventOcclusion(eventName))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     #endregion
 
     #region Global Parameters
