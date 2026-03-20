@@ -384,7 +384,11 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     public void Unequip()
     {
-        StopCoroutine(currentAnimation);
+        if(currentAnimation != null)
+        {
+            StopCoroutine(currentAnimation);
+        }
+        
         Destroy(weapon);
         weaponScript = null;
         hasWeapon = false;
