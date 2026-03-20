@@ -40,11 +40,15 @@ public class Sanity : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        ResetSanityTick();
         if (ResetOnAwake)
         {
             ResetSanity();
         }
+    }
+
+    private void Start()
+    {
+        ResetSanityTick();
     }
 
     /// <summary>
