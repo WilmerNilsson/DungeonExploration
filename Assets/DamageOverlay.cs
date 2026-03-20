@@ -13,7 +13,7 @@ public class DamageOverlay : MonoBehaviour
             Debug.Log("no animator found");
         }
         
-        PlayerTrackerSingleton.Instance.player.GetComponent<Health>().OnTakeDamage.AddListener(PlayDamageAnimation);
+        PlayerTrackerSingleton.Instance.playerGameObject.GetComponent<Health>().OnTakeDamage.AddListener(PlayDamageAnimation);
     }
 
     public void PlayDamageAnimation(int damage)

@@ -33,7 +33,7 @@ public class DetectPlayer : MonoBehaviour
         if (!initialized)
         {
             initialized = true;
-            player = PlayerTrackerSingleton.Instance.player.transform;
+            player = PlayerTrackerSingleton.Instance.playerGameObject.transform;
             
             if (player.TryGetComponent(out HumanoidController controller))
             {

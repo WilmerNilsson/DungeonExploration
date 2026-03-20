@@ -58,7 +58,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
         {
             try
             {
-                PlayerTransform = PlayerTrackerSingleton.Instance.player.transform;
+                PlayerTransform = PlayerTrackerSingleton.Instance.playerGameObject.transform;
             }
             catch
             {

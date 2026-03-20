@@ -11,9 +11,9 @@ public class UIGamepadButtonSetter : MonoBehaviour
 
     private void OnEnable()
     {
-        if (UIGamepadHandler.instance)
+        if (UIGamepadHandler.Instance)
         {
-            UIGamepadHandler.instance.OpenMenu(FirstSelected);
+            UIGamepadHandler.Instance.OpenMenu(FirstSelected);
         }
         else
         {
@@ -23,6 +23,6 @@ public class UIGamepadButtonSetter : MonoBehaviour
 
     private void OnDisable()
     {
-        UIGamepadHandler.instance.CloseMenu(FirstSelected);
+        UIGamepadHandler.Instance.CloseMenu(FirstSelected);
     }
 }
