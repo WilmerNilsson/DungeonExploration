@@ -229,11 +229,11 @@ public class AudioManager : MonoBehaviour
         }
     }
     
-    public void StartEvent(string path, GameObject gameObj = null, bool followObject = true)
+    public void StartEvent(string path, GameObject gameObj = null, bool followObject = true, bool allowRestart = false)
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
-            eventList.StartEvent(eventName, gameObj, followObject);
+            eventList.StartEvent(eventName, gameObj, followObject, allowRestart);
         }
     }
 
@@ -475,6 +475,7 @@ public class AudioManager : MonoBehaviour
         SetGlobalParameter("Sanity", 1);
         SetGlobalParameter("Hunger", 1);
         SetGlobalParameter("hpRatio", 1);
+        SetGlobalParameter("Location", 0);
         SetGlobalParameter("Exertion", 0);
     }
     
@@ -554,8 +555,7 @@ public class AudioManager : MonoBehaviour
         AudioDebug.Print("Set pause to " + paused);
     }
 
-    public void
-        StopAndReleaseAllInstances() //Typ samma som ovan men denna releasar också instanser, oklart om detta är onödigt eller ej.
+    public void StopAndReleaseAllInstances() //Typ samma som ovan men denna releasar också instanser, oklart om detta är onödigt eller ej.
     {
         foreach (var eventList in eventLists)
         {
