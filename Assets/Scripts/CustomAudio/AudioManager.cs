@@ -229,11 +229,11 @@ public class AudioManager : MonoBehaviour
         }
     }
     
-    public void StartEvent(string path, GameObject gameObj = null, bool followObject = true)
+    public void StartEvent(string path, GameObject gameObj = null, bool followObject = true, bool allowRestart = false)
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
-            eventList.StartEvent(eventName, gameObj, followObject);
+            eventList.StartEvent(eventName, gameObj, followObject, allowRestart);
         }
     }
 
