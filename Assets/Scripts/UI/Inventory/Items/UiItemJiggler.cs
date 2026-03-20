@@ -37,6 +37,11 @@ public class UiItemJiggler : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
         animator = GetComponent<Animator>();
     }
 
+    private void OnDisable()
+    {
+        transform.localScale = Vector3.one;
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         animator.Play(animationNameClick);

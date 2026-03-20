@@ -22,7 +22,7 @@ public class SaveFileHelperEnemy : MonoBehaviour
 
         bool nameEmpty = prefabID == null || prefabID == string.Empty;
 
-        if (nameEmpty) Debug.LogWarning("Helper prefab ID is empty", this);
+        if (nameEmpty && gameObject.name != "BaseAdventurer") Debug.LogWarning("Helper prefab ID is empty", this);
     }
 #endif
 

@@ -34,7 +34,6 @@ public class SanityLightProbe : MonoBehaviour
                 }
             }
         }
-
         return returnValue;
     }
 }
