@@ -5,7 +5,7 @@ public class PlayerTrackerSingleton : MonoBehaviour
 {
     public static PlayerTrackerSingleton Instance;
 
-    public GameObject player;
+    public GameObject playerGameObject { get; private set; }
 
     private void Awake()
     {
@@ -13,6 +13,6 @@ public class PlayerTrackerSingleton : MonoBehaviour
         {
             Instance = this;
         }
-        player = this.gameObject;
+        playerGameObject = this.gameObject;
     }
 }
