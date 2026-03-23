@@ -38,8 +38,8 @@ public class Weapon : MonoBehaviour
     [Header("Attack")]
     [SerializeField, FormerlySerializedAs("angle")] public float Angle;
     [SerializeField] private float curveHeight = 1.5f;
-    [SerializeField, Tooltip("distance from middle toward start"), Range(0,1)] private float startBend;
-    [SerializeField, Tooltip("distance from middle toward end"), Range(0,1)] private float endBend;
+    [SerializeField, Tooltip("distance from middle toward start"), Min(0)] private float startBend;
+    [SerializeField, Tooltip("distance from middle toward end"), Min(0)] private float endBend;
     [SerializeField, Min(0)] private float attackChargeTime = 0.5f;
     [SerializeField, Min(0)] private float attackSwingTime = 1f;
     [SerializeField, Min(0)] private float attackResetTime = 1f;
@@ -364,7 +364,7 @@ public class Weapon : MonoBehaviour
         
         HandIK.rotation = Quaternion.LookRotation(forward, up);
         
-        HandIK.position = Head.position + Vector3.ClampMagnitude(position + HandIK.right * blockHandOffset, P0.magnitude);
+        HandIK.position = Head.position + Vector3.ClampMagnitude(position + (HandIK.forward) * blockHandOffset, P0.magnitude);
     }
 
     private void ParryPositionRotation(float time)
