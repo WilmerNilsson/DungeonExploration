@@ -33,6 +33,7 @@ public class SaveFileHelperContainer : MonoBehaviour
         spawnTransform.rotation = data.Rotation;
 
         randomItemGiver.StopSelfIntialize();
+        refillChance = data.RefillChance;
 
         if(data.Inventory.IsEmpty() && data.RefillChance != 0f && ShouldRespawn(data.RefillChance))
         {
