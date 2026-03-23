@@ -108,10 +108,6 @@ public class SaveFileHelperPlayer : MonoBehaviour
         for (int i = 0; i < inventory.Items.Count; i++)
         {
             itemLibrary.TryGetItemPairByName(inventory.Items[i].PrefabID, out ItemPairing pair);
-            if (pair.WorldPrefab == null)
-            {
-                continue;
-            }
             Instantiate(pair.WorldPrefab, spawnPosition, Quaternion.identity);
         }
         
@@ -119,10 +115,6 @@ public class SaveFileHelperPlayer : MonoBehaviour
         for (int i = 0; i < equipment.Items.Count; i++)
         {
             itemLibrary.TryGetItemPairByName(equipment.Items[i].PrefabID, out ItemPairing pair);
-            if (pair.WorldPrefab == null)
-            {
-                continue;
-            }
             Instantiate(pair.WorldPrefab, spawnPosition, Quaternion.identity);
         }
 

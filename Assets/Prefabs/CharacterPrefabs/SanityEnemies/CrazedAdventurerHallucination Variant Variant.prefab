@@ -224,10 +224,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 15
       objectReference: {fileID: 0}
-    - target: {fileID: 5246687245887092097, guid: 3c100d158cd677644a18e7767e1733f9, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 8c2384b831ea4a24b9490e9f45b298b0, type: 2}
     - target: {fileID: 5277275271629144158, guid: 3c100d158cd677644a18e7767e1733f9, type: 3}
       propertyPath: m_Layer
       value: 15
@@ -240,10 +236,6 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
-    - target: {fileID: 5358009524975247695, guid: 3c100d158cd677644a18e7767e1733f9, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 8c2384b831ea4a24b9490e9f45b298b0, type: 2}
     - target: {fileID: 5388092064798776646, guid: 3c100d158cd677644a18e7767e1733f9, type: 3}
       propertyPath: moveSpeed
       value: 1
@@ -272,10 +264,6 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
-    - target: {fileID: 5957181609835382098, guid: 3c100d158cd677644a18e7767e1733f9, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 8c2384b831ea4a24b9490e9f45b298b0, type: 2}
     - target: {fileID: 5979329689491767415, guid: 3c100d158cd677644a18e7767e1733f9, type: 3}
       propertyPath: m_Layer
       value: 15
@@ -304,6 +292,10 @@ PrefabInstance:
       propertyPath: _maxHealth
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 6502633917926070553, guid: 3c100d158cd677644a18e7767e1733f9, type: 3}
+      propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[15].m_Target
+      value: 
+      objectReference: {fileID: 2214954757140950278}
     - target: {fileID: 6502633917926070553, guid: 3c100d158cd677644a18e7767e1733f9, type: 3}
       propertyPath: OnDeath.m_PersistentCalls.m_Calls.Array.data[15].m_MethodName
       value: set_enabled
@@ -450,3 +442,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c100d158cd677644a18e7767e1733f9, type: 3}
+--- !u!95 &2214954757140950278 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 112431104312704928, guid: 3c100d158cd677644a18e7767e1733f9, type: 3}
+  m_PrefabInstance: {fileID: 2247989884137624230}
+  m_PrefabAsset: {fileID: 0}

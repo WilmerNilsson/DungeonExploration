@@ -1186,7 +1186,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 16777215
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -3725,12 +3725,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\nCrazed Adventurer -  Adam Lundstr\xF6m \r\n                           
-    Alexander Ekblom\r\n                          Amanda Sundin\r\n                           
-    Aron Samuelsson\r\n                              Elle Gonias Ekblad\r\n                      
-    Erik Persson\r\n                          Walter Cramby\r\n                           
-    Jonathan Lenell\r\n                 Lisbeth\r\n                          Max
-    Wahlgren\r\n                                       Thespian van Dorrestein"
+  m_text: "\nCrazed Adventurer\n \nAdam Lundstr\xF6m           Alexander Ekblom\r\nAmanda
+    Sundin             Aron Samuelsson\r\nElle Gonias Ekblad              Erik Persson\r\nWalter
+    Cramby               Jonathan Lenell\r\nLisbeth Maniette              Max Wahlgren\r\nThespian
+    van Dorrestein                     :)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fb8f5ff0c1dd59b428349091f0eccfb2, type: 2}
   m_sharedMaterial: {fileID: -9182613835626888002, guid: fb8f5ff0c1dd59b428349091f0eccfb2, type: 2}
@@ -3739,7 +3737,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 16777215
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -4701,7 +4699,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: 279903f06338b05498594439b7a5237a, type: 2}
         m_TargetAssemblyTypeName: GameManagerSO, GameAssembly
-        m_MethodName: MoveToSceneAndSave
+        m_MethodName: MoveToScene
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5156,6 +5154,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1982915870}
   - component: {fileID: 1982915871}
+  - component: {fileID: 1982915872}
   m_Layer: 5
   m_Name: Text till end credits
   m_TagString: Untagged
@@ -5218,6 +5217,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1982915872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1982915869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f878064f238221a4d9d8e66d6fb7a3df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onTrigger:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 279903f06338b05498594439b7a5237a, type: 2}
+        m_TargetAssemblyTypeName: GameManagerSO, GameAssembly
+        m_MethodName: MoveToScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: MainMenu
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2037496291
 GameObject:
   m_ObjectHideFlags: 0

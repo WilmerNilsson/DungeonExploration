@@ -77,14 +77,15 @@ public class MinimapMaster : MonoBehaviour
         {
             GameObject currentMinimap = Instantiate(minimapLibrary.minimapObjects.Find(x => x.name == minimapSoTest.minimapComponentData[i].name), transform);
             currentMinimap.transform.position = minimapSoTest.minimapComponentData[i].position;
-            currentMinimap.transform.eulerAngles = minimapSoTest.minimapComponentData[i].rotation;
             currentMinimap.transform.localScale = minimapSoTest.minimapComponentData[i].scale;
+            currentMinimap.transform.eulerAngles = minimapSoTest.minimapComponentData[i].rotation;
             spawnedObjects.Add(currentMinimap);
         }
     }
 
     public void ToggleMinimap()
     {
+        if (GameManagerSO.Instance.IsGameFrozen) return;
         if(minimap.activeSelf)
         {
             CloseMinimap();
