@@ -2,7 +2,6 @@
 
 using System;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(HumanoidController),typeof(HumanoidMovement),typeof(HumanoidRotator))]
@@ -10,8 +9,6 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerUIController),typeof(OneShotPlayer))]
 public class PlayerController : MonoBehaviour
 {
-    public UnityEvent onLightTorch;
-    public UnityEvent onSnuffTorch;
     [SerializeField] private HumanoidController controller;
     
     [SerializeField] private float mouseSensitivity = 0.1f;
@@ -20,8 +17,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 lookVector;
     private Vector2 lookInput;
     private Vector3 moveVector;
-
-    private bool torchIsLit = true;
 
     [SerializeField]private bool lockedMovement = false;
     [SerializeField]private bool lockedCamera = false;
@@ -123,8 +118,7 @@ public class PlayerController : MonoBehaviour
     public void OnCrouch(InputAction.CallbackContext context)
     {
         if (lockedMovement) return;
-        if (context.performed) controller.Crouch(true);
-        if (context.canceled) controller.Crouch(false);
+        if (context.performed) controller.Crouch();
     }
     
     public void OnMouseLook(InputAction.CallbackContext context)
@@ -201,24 +195,6 @@ public class PlayerController : MonoBehaviour
             mouseEnd = Mouse.current.position.ReadValue();
             startedBlock = false;
             GameManagerSO.Instance.LockCamera(false);
-        }
-    }
-
-    public void OnTorch(InputAction.CallbackContext context)
-    {
-        if (lockedMovement) return;
-        if (context.performed)
-        {
-            if (torchIsLit)
-            {
-                torchIsLit = false;
-                onSnuffTorch.Invoke();
-            }
-            else
-            {
-                torchIsLit = true;
-                onLightTorch.Invoke();
-            }
         }
     }
 

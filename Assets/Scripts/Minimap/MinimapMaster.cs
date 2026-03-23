@@ -85,6 +85,7 @@ public class MinimapMaster : MonoBehaviour
 
     public void ToggleMinimap()
     {
+        if (GameManagerSO.Instance.IsGameFrozen) return;
         if(minimap.activeSelf)
         {
             CloseMinimap();

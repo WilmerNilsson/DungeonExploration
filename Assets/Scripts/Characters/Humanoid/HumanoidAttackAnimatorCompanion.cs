@@ -371,7 +371,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
             weaponScripta = null;
             return false;
         }
-        weapon.transform.rotation = Quaternion.LookRotation(Hand.right, -Hand.forward);
+
         weaponScripta = weaponScript;
         hasWeapon = true;
         weaponScript!.Companion = this;
@@ -384,11 +384,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     public void Unequip()
     {
-        if(currentAnimation != null)
-        {
-            StopCoroutine(currentAnimation);
-        }
-        
+        StopCoroutine(currentAnimation);
         Destroy(weapon);
         weaponScript = null;
         hasWeapon = false;
