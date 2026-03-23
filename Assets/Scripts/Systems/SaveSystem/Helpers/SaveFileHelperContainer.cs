@@ -19,6 +19,8 @@ public class SaveFileHelperContainer : MonoBehaviour
         if (grid == null) Debug.LogWarning("Helper grid is null", this);
         if (spawnTransform == null) Debug.LogWarning("Helper spawn tranform is null", this);
         if (prefabID == null || prefabID == string.Empty) Debug.LogWarning("Helper prefab ID is empty", this);
+        if (randomItemGiver == null) Debug.LogWarning("random item giver is null", this);
+        if (itemLibrary == null) Debug.LogWarning("item library is null", this);
     }
 #endif
 
@@ -33,12 +35,10 @@ public class SaveFileHelperContainer : MonoBehaviour
         spawnTransform.rotation = data.Rotation;
 
         randomItemGiver.StopSelfIntialize();
+        refillChance = data.RefillChance;
 
         if(data.Inventory.IsEmpty() && data.RefillChance != 0f && ShouldRespawn(data.RefillChance))
         {
-            //note that we could stop self initialize even if it should not respawn, but since prefab will not have a loot pool it is fine not to.
-            //if the prefab does have a loot pool then remove that instead of changing this.
-
             randomItemGiver.Initialize(data.LootPoolNames, data.MinItemSpawn, data.MaxItemSpawn);
         }
         else

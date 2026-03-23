@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         GameManagerSO.Instance.OnLockMouse -= LockMovement;
         GameManagerSO.Instance.OnLockCamera -= LockCamera;
@@ -160,7 +160,6 @@ public class PlayerController : MonoBehaviour
                 if (controller.TryParry())
                 {
                     startedBlock = false;
-                    controller.HoldBlock(false);
                     GameManagerSO.Instance.LockCamera(false);
                 }
             }

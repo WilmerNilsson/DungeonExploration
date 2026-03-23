@@ -296,30 +296,30 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     public void HoldBlock(bool start)
     {
-        isBlocking = start;
-        if (hasWeapon && !isInAnimation)
+        if (start)
         {
-            if(start)
+            if (hasWeapon && !isInAnimation)
             {
+                isBlocking = true;
                 weaponScript.SetBlockActive(true);
                 currentAnimation = StartCoroutine(BlockAnimation());
             }
-            else
-            {
-                swordArm.data.targetPositionWeight = 0;
-                swordArm.data.targetRotationWeight = 0;
+        }
+        else
+        {
+            isBlocking = false;
+            swordArm.data.targetPositionWeight = 0;
+            swordArm.data.targetRotationWeight = 0;
 
-                weaponScript.SetBlockActive(false);
-            }
+            weaponScript.SetBlockActive(false);
         }
     }
 
-    public void HoldBlockUpdate(float angle)
+    public void HoldBlockUpdate(float newAngle) //TODO make it only run while blocking
     {
-        if (hasWeapon)
+        if (hasWeapon && isBlocking)
         {
-            angle = FixAngle(angle);
-            this.angle = angle;
+            angle = FixAngle(newAngle);
             weaponScript.Angle = angle;
         }
     }

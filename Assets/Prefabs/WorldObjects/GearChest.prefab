@@ -103,7 +103,6 @@ GameObject:
   - component: {fileID: 7627061576712550295}
   - component: {fileID: 3612840960867317309}
   - component: {fileID: 8767876181034157955}
-  - component: {fileID: 8752703113907202988}
   m_Layer: 5
   m_Name: TestChest
   m_TagString: Untagged
@@ -191,21 +190,6 @@ MonoBehaviour:
   drawCenter: 0
   drawGrid: 0
   drawOccupied: 1
---- !u!114 &8752703113907202988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 755646860445830087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c35877c8d8cb8b438f3a4734af7ad9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lootPool: {fileID: 11400000, guid: 77268e70a1126f64aac4244a379e9556, type: 2}
-  lootPoolName: Standard
-  lootAmountRange: {x: 2, y: 4}
 --- !u!1 &1007070657314993592
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,6 +200,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3809707799358460188}
   - component: {fileID: 7238762930757179238}
+  - component: {fileID: 1800137518134321828}
   m_Layer: 18
   m_Name: GearChest
   m_TagString: Wood
@@ -252,10 +237,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29b5e901713877e47a81c7619f5023ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  refillChance: 0.2
   grid: {fileID: 8767876181034157955}
   spawnTransform: {fileID: 3809707799358460188}
   prefabID: GearChest
   itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
+  randomItemGiver: {fileID: 1800137518134321828}
+--- !u!114 &1800137518134321828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1007070657314993592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c35877c8d8cb8b438f3a4734af7ad9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryGrid: {fileID: 8767876181034157955}
+  lootPool: {fileID: 11400000, guid: 77268e70a1126f64aac4244a379e9556, type: 2}
+  lootPoolName:
+  - GearChest
+  lootAmountRange: {x: 2, y: 4}
 --- !u!1 &2067215900535007154
 GameObject:
   m_ObjectHideFlags: 0
