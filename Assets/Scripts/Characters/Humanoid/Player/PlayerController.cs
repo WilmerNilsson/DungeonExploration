@@ -118,8 +118,7 @@ public class PlayerController : MonoBehaviour
     public void OnCrouch(InputAction.CallbackContext context)
     {
         if (lockedMovement) return;
-        if (context.performed) controller.Crouch(true);
-        if (context.canceled) controller.Crouch(false);
+        if (context.performed) controller.Crouch();
     }
     
     public void OnMouseLook(InputAction.CallbackContext context)
