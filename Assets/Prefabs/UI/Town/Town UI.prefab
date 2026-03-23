@@ -2966,6 +2966,12 @@ MonoBehaviour:
   SpawnItems: []
   itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
   playerCashSO: {fileID: 11400000, guid: ffae8245bc035e74c8db57a6b9da2ca3, type: 2}
+  OnBuyEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSellEvent:
+    m_PersistentCalls:
+      m_Calls: []
   deliverWeaponPanel: {fileID: 1884521984008488567}
   weaponAlreadyDonatedText: 'Don''t really need more of those.  '
   couldDonateText: "I\u2019ll gladly take that of your hands. "
@@ -8762,7 +8768,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 2802758978755215620}
         m_TargetAssemblyTypeName: BlacksmithUI, GameAssembly
-        m_MethodName: OnRemoveItemFromDonatioNGrid
+        m_MethodName: OnRemoveItemFromDonationGrid
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

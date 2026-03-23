@@ -6,7 +6,7 @@ public class MinimapPart : MonoBehaviour
 {
     [Tooltip("The minimap prefab corresponding to this object")]
     public GameObject prefab;
-
+    
     private Renderer Renderer;
 
     private void Awake()
@@ -21,10 +21,13 @@ public class MinimapPart : MonoBehaviour
             Debug.LogWarning("No renderer", this);
             return Vector3.zero;
         }
-        float Y = transform.eulerAngles.y;
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x, 0, transform.eulerAngles.z);
+
+        //gameObject.isStatic = false;
+        Vector3 originalRotation = transform.eulerAngles;
+        transform.eulerAngles = new Vector3(0, 0, 0);
         Vector3 bounds = Renderer.bounds.extents * 2;
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x, Y, transform.eulerAngles.z);
+        transform.eulerAngles = originalRotation;
+        //gameObject.isStatic = true;
         return bounds;
     }
 }

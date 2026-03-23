@@ -3,47 +3,29 @@ using UnityEngine;
 
 public class EquipmentSlotCompanion : MonoBehaviour
 {
-    [SerializeField] private HumanoidAttackAnimatorCompanion humanoidAttackCompanion;
-
 #nullable enable
 
-#if UNITY_EDITOR
-    [SerializeField] private bool quickConnectCompanion = false;
-    private void OnValidate()
+    private HumanoidAttackAnimatorCompanion? _humanoidAAC;
+    private HumanoidAttackAnimatorCompanion HumanoidAttackCompanion
     {
-        if(quickConnectCompanion)
+        get
         {
-            quickConnectCompanion = false;
-
-            HumanoidAttackAnimatorCompanion? a = GameObject.FindAnyObjectByType<HumanoidAttackAnimatorCompanion>();
-
-            if(a != null)
+            if(_humanoidAAC == null)
             {
-                humanoidAttackCompanion = a;
+                _humanoidAAC = PlayerTrackerSingleton.Instance.GetComponent<HumanoidAttackAnimatorCompanion>(); ;
             }
-            else
-            {
-                Debug.Log("could not find HumanoidAttackAnimatorCompanion in scene", this);
-            }
+            return _humanoidAAC;
         }
-
-        if (!UnityEditor.EditorUtility.IsPersistent(gameObject) && humanoidAttackCompanion == null)
-            Debug.LogWarning("attack companion is null", this);
     }
-#endif
 
+    //this can be called before start
     public void OnEquip(SimpleItem item)
     {
         if(item.TryGetComponent(out UIWeapon uIWeapon))
         {
             GameObject prefab = uIWeapon.GetEquipPrefab();
-            
-            if (humanoidAttackCompanion == null)
-            {
-                PlayerTrackerSingleton.Instance.player.TryGetComponent(out humanoidAttackCompanion);
-            }
 
-            if (humanoidAttackCompanion.TryEquip(prefab, out Weapon? weaponScript))
+            if (HumanoidAttackCompanion.TryEquip(prefab, out Weapon? weaponScript))
             {
                 uIWeapon.ConnectToWeapon(weaponScript);
             }
@@ -57,11 +39,7 @@ public class EquipmentSlotCompanion : MonoBehaviour
         {
             weapon.Unequip();
         }
-        if (humanoidAttackCompanion == null)
-        {
-            PlayerTrackerSingleton.Instance.player.TryGetComponent(out humanoidAttackCompanion);
-        }
         
-        humanoidAttackCompanion.Unequip();
+        HumanoidAttackCompanion.Unequip();
     }
 }
