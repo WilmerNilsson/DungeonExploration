@@ -32,6 +32,24 @@ public class EventList : ScriptableObject
             AudioDebug.Print("Added " + eventData.eventName + " to eventCache");
         }
     }
+
+    public bool TryGetEventInstance(string eventName, out EventInstance eventInstance, GameObject gameObject = null)
+    {
+        if (gameObject)
+        {
+            InstanceList.TryGetValue(gameObject, out eventInstance);
+            return true;
+        }
+
+        if (TryGetEvent(eventName, out var eventData))
+        {
+            eventInstance = eventData.EventInstance;
+            return true;
+        }
+
+        eventInstance = new EventInstance();
+        return false;
+    }
     
     #if UNITY_EDITOR
     [ContextMenu("Fill eventData")]
@@ -247,7 +265,7 @@ public class EventList : ScriptableObject
         AudioDebug.Print(category + " has " + InstanceList.Count + " instance(s) in list after cleanup");
     }
     
-    public void CreateInstance(string eventName, GameObject gameObject = null, bool followObject = true)
+    public void CreateInstance(string eventName, GameObject gameObject = null)
     {
         if (!TryGetEvent(eventName, out var eventData)) return;
         
@@ -263,7 +281,7 @@ public class EventList : ScriptableObject
             return;
         }
         
-        if (gameObject != null) //Om gameObject skickas med så skapa ny instans och lägg till den i InstanceList tillsammans med gameObject
+        if (gameObject) //Om gameObject skickas med så skapa ny instans och lägg till den i InstanceList tillsammans med gameObject
         {
             if (InstanceList.ContainsKey(gameObject))
             {
@@ -274,28 +292,12 @@ public class EventList : ScriptableObject
             InstanceList.Add(gameObject, instance);
             InstanceToEventData.Add(instance, eventData);
             AudioDebug.Print("Created instance for " + eventName + " and added it to the instance list along with " + gameObject.name);
+            if (eventData.is3D)
+            {
+                instance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject.transform));
+            }
 
-            if (!eventData.is3D) return; //Om event är 3D och attachToObject, fäser vi eventet på gameObject,
-                                                            //om followObject är false följer eventet inte med gameObject utan
-                                                            //stannar kvar på samma position där objektet var när instansen skapades
-            if (followObject)
-            {
-                if (gameObject.TryGetComponent<Rigidbody>(out var rb))
-                {
-                    RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
-                }
-                else
-                {
-                    RuntimeManager.AttachInstanceToGameObject(instance, gameObject, true);
-                }
-                
-                AudioDebug.Print("Attached " + eventName + " to " + gameObject.name);
-            }
-            else
-            {
-                instance.set3DAttributes(gameObject.transform.To3DAttributes());
-                AudioDebug.Print("Set 3D attributes of " + eventName + " to those of " + gameObject.name);
-            }
+         
         }
         else //Om inget gameObject finns lägger vi istället instance i eventData, t.ex för musikEvent som bara har en emitter.
         {
@@ -390,7 +392,7 @@ public class EventList : ScriptableObject
         AudioDebug.Print("Unloading samples for" + eventName);
     }
     
-    public void StartEvent(string eventName, GameObject gameObject = null) //Som CreateInstance fast startar instansen istället OM instansen inte redan spelar
+    public void StartEvent(string eventName, GameObject gameObject = null, bool followObject = true) //Som CreateInstance fast startar instansen istället OM instansen inte redan spelar
     {
         if (TryGetEvent(eventName, out var eventData))
         {
@@ -405,6 +407,29 @@ public class EventList : ScriptableObject
                 instance.getPlaybackState(out var playbackState);
                 if (playbackState != PLAYBACK_STATE.PLAYING)
                 {
+                    if (!eventData.is3D) return; //Om event är 3D och attachToObject, fäser vi eventet på gameObject,
+                                                 //om followObject är false följer eventet inte med gameObject utan
+                                                 //stannar kvar på samma position där objektet var när instansen skapades
+                    if (followObject)
+                    {
+                        if (gameObject.TryGetComponent<Rigidbody>(out var rb))
+                        {
+                            RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+                        }
+                        else
+                        {
+                            RuntimeManager.AttachInstanceToGameObject(instance, gameObject, true);
+                        }
+
+                        AudioDebug.Print("Attached " + eventName + " to " + gameObject.name);
+                    }
+                    else
+                    {
+                        instance.set3DAttributes(gameObject.transform.To3DAttributes());
+                        AudioDebug.Print("Set 3D attributes of " + eventName + " to those of " + gameObject.name);
+                    }
+
+
                     instance.start();
                     AudioDebug.Print("Started event " + eventName + " on " + gameObject.name);
                 }
@@ -492,6 +517,17 @@ public class EventList : ScriptableObject
             AudioDebug.Print("KeyOff in event " + eventName);
         }
     }
+
+    public void SetInstancePosition(string eventName, GameObject gameObject)
+    {
+        if (!TryGetEvent(eventName, out var eventData)) return;
+        if (!eventData.is3D) return;
+        if (InstanceList.TryGetValue(gameObject, out var instance))
+        {
+            instance.set3DAttributes(gameObject.transform.To3DAttributes());
+            AudioDebug.Print("Set 3D attributes of " + eventName + " to those of " + gameObject.name);
+        }
+    }
     
     public void StopAndReleaseAllInstances()
     {
@@ -523,8 +559,8 @@ public class EventList : ScriptableObject
             if (Vector3.Distance(kvp.Key.transform.position, AudioManager.Listener.transform.position) <
                 eventData.maxDistance + 1) //gör inte raycast om distance är för långt, vi lägger till +1 på maxDistance så värden hinner sättas innan ljudet börjar bli audible
             {
-                AudioManager.Instance.occlusionChecker.CheckOcclusion(kvp.Key, AudioManager.Listener,out _occlusion, eventData.maxDistance + 1);
-                AudioManager.Instance.wallChecker.CheckWalls(kvp.Key, AudioManager.Listener, out _walls);
+                //AudioManager.Instance.occlusionChecker.CheckOcclusion(kvp.Key, AudioManager.Listener,out _occlusion, eventData.maxDistance + 1);
+                //AudioManager.Instance.wallChecker.CheckWalls(kvp.Key, AudioManager.Listener, out _walls);
                 if (eventData.ParameterCache.TryGetValue("Occluded", out var parameterData))
                 {
                     kvp.Value.setParameterByID(parameterData.ID(), _occlusion);
@@ -536,11 +572,55 @@ public class EventList : ScriptableObject
             }
         }
     }
+
+    
+    private List<GameObject> _tempObjectList = new List<GameObject>();
+    public void GetOcclusionList(out List<GameObject> instanceList)
+    {
+        _tempObjectList.Clear();
+        foreach (var kvp in InstanceList)
+        {
+            if (!InstanceToEventData.TryGetValue(kvp.Value, out var eventData)) continue;
+            if (eventData.isOcclusion)
+            {
+                _tempObjectList.Add(kvp.Key);
+            }
+        }
+        instanceList = _tempObjectList;
+    }
+
+    private float _tempOcclusion;
+    private float _tempWalls;
+    
+    public void SetOcclusionOnObjects(GameObject[] objects) //Om listan har instans på objekt 
+    {
+        foreach (var gameObject in objects)
+        {
+            if (!gameObject) continue;
+            if (!InstanceList.TryGetValue(gameObject, out var instance)) continue;
+            if (!InstanceToEventData.TryGetValue(instance, out var eventData)) continue;
+            if (!OcclusionHandler.TryGetOcclusionData(gameObject, out _tempOcclusion, out _tempWalls)) continue;
+            if (eventData.ParameterCache.TryGetValue("Occluded", out var parameterData))
+            {
+                instance.setParameterByID(parameterData.ID(), _tempOcclusion);
+            }
+
+            if (eventData.ParameterCache.TryGetValue("Walls", out parameterData))
+            {
+                instance.setParameterByID(parameterData.ID(), _tempWalls);
+            }
+        }
+    }
+
+    public bool TryGetOcclusion(GameObject gameObject, out float occlusion, out float walls)
+    {
+        return OcclusionHandler.TryGetOcclusionData(gameObject, out occlusion, out walls);
+    }
     
     #endregion
 
     #region SFX
-
+    
     public void PlayOneShot(string eventName, string[] paramNames = null, float[] paramValues = null,GameObject gameObject = null, bool followObject = true)
     {
         //Om event finns och är oneshot skapar vi en instans, ställer in parametrar (om de finns) och fäster ljudet på ett gameObject (om de finns), om followObject är false följer ljudet inte efter objektet (crazy)
@@ -579,19 +659,24 @@ public class EventList : ScriptableObject
                 if (eventData.isOcclusion)
                 {
                     if (Vector3.Distance(gameObject.transform.position, AudioManager.Listener.transform.position) <
-                        eventData.maxDistance + 1)
+                        eventData.maxDistance + 0.2f)
                     {
-                        AudioManager.Instance.occlusionChecker.CheckOcclusion(gameObject,AudioManager.Listener, out var occlusion);
-                        AudioManager.Instance.wallChecker.CheckWalls(gameObject,AudioManager.Listener, out var walls);
-                        if (eventData.ParameterCache.TryGetValue("Occlusion", out var parameterData))
+                        if (TryGetOcclusion(gameObject, out _tempOcclusion, out _tempWalls))
                         {
-                            instance.setParameterByID(parameterData.ID(), occlusion);
-                            AudioDebug.Print("Successfully set occlusion for " + eventName);
+                            if (eventData.ParameterCache.TryGetValue("Occluded", out var parameterData))
+                            {
+                                instance.setParameterByID(parameterData.ID(), _tempOcclusion);
+                                AudioDebug.Print("Successfully set occlusion for " + eventName);
+                            }
+                            if (eventData.ParameterCache.TryGetValue("Walls", out parameterData))
+                            {
+                                instance.setParameterByID(parameterData.ID(), _tempWalls);
+                                AudioDebug.Print("Successfully set walls for " + eventName);
+                            }
                         }
-                        if (eventData.ParameterCache.TryGetValue("Walls", out parameterData))
+                        else
                         {
-                            instance.setParameterByID(parameterData.ID(), walls);
-                            AudioDebug.Print("Successfully set walls for " + eventName);
+                            Debug.LogWarning("COULDNT GET OCCLUSION");
                         }
                     }
                 }
@@ -614,7 +699,7 @@ public class EventList : ScriptableObject
                     }
                 }
             }
-
+            
             instance.start();
             instance.release();
             
@@ -681,4 +766,150 @@ public class EventList : ScriptableObject
             eventData.SetDebug(debug);
         }
     }
+    #region WIP    
+/*
+    
+    
+    private FMOD.Studio.EVENT_CALLBACK _instanceStopCallback;
+
+    [AOT.MonoPInvokeCallback(typeof(FMOD.Studio.EVENT_CALLBACK))]
+    private static FMOD.RESULT StopInstance(FMOD.Studio.EVENT_CALLBACK_TYPE type, IntPtr instancePtr, IntPtr parameterPtr)
+    {
+        var instance = new EventInstance(instancePtr);
+        switch (type)
+        {
+            case EVENT_CALLBACK_TYPE.CREATED:
+                break;
+            case EVENT_CALLBACK_TYPE.DESTROYED:
+                break;
+            case EVENT_CALLBACK_TYPE.STARTING:
+                break;
+            case EVENT_CALLBACK_TYPE.STARTED:
+                break;
+            case EVENT_CALLBACK_TYPE.RESTARTED:
+                break;
+            case EVENT_CALLBACK_TYPE.STOPPED:
+                Debug.Log("Stoppinggg");
+                instance.release();
+                break;
+            case EVENT_CALLBACK_TYPE.START_FAILED:
+                break;
+            case EVENT_CALLBACK_TYPE.CREATE_PROGRAMMER_SOUND:
+                break;
+            case EVENT_CALLBACK_TYPE.DESTROY_PROGRAMMER_SOUND:
+                break;
+            case EVENT_CALLBACK_TYPE.PLUGIN_CREATED:
+                break;
+            case EVENT_CALLBACK_TYPE.PLUGIN_DESTROYED:
+                break;
+            case EVENT_CALLBACK_TYPE.TIMELINE_MARKER:
+                break;
+            case EVENT_CALLBACK_TYPE.TIMELINE_BEAT:
+                break;
+            case EVENT_CALLBACK_TYPE.SOUND_PLAYED:
+                break;
+            case EVENT_CALLBACK_TYPE.SOUND_STOPPED:
+                break;
+            case EVENT_CALLBACK_TYPE.REAL_TO_VIRTUAL:
+                break;
+            case EVENT_CALLBACK_TYPE.VIRTUAL_TO_REAL:
+                break;
+            case EVENT_CALLBACK_TYPE.START_EVENT_COMMAND:
+                break;
+            case EVENT_CALLBACK_TYPE.NESTED_TIMELINE_BEAT:
+                break;
+            case EVENT_CALLBACK_TYPE.ALL:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+        }
+        return FMOD.RESULT.OK;
+    }
+    
+    public void PlayOneShot(string eventName, string[] paramNames = null, float[] paramValues = null,GameObject gameObject = null, bool followObject = true)
+    {
+        //Om event finns och är oneshot skapar vi en instans, ställer in parametrar (om de finns) och fäster ljudet på ett gameObject (om de finns), om followObject är false följer ljudet inte efter objektet (crazy)
+        if (TryGetEvent(eventName, out var eventData))
+        {
+            
+            if (!eventData.isOneShot)
+            {
+                AudioDebug.Print(eventName + " is not a OneShot event and should not be played through this method", true);
+                return;
+            }
+            
+            if (eventData.is3D && gameObject == null)
+            {
+                AudioDebug.Print("Didn't play OneShot for " + eventName + " Since it is a 3D event and needs a gameObject to attach to", true);
+                return;
+            }
+
+            _instanceStopCallback = new FMOD.Studio.EVENT_CALLBACK(StopInstance);
+            
+            var instance = RuntimeManager.CreateInstance(eventData.eventReference);
+            
+            if (gameObject && eventData.is3D)
+            {
+                if (followObject)
+                {
+                    if (gameObject.TryGetComponent<Rigidbody>(out var rb))
+                    {
+                        RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+                    }
+                    else
+                    {
+                        RuntimeManager.AttachInstanceToGameObject(instance, gameObject, true);
+                    }
+                }
+                else instance.set3DAttributes(gameObject.transform.To3DAttributes());
+
+                if (eventData.isOcclusion)
+                {
+                    if (Vector3.Distance(gameObject.transform.position, AudioManager.Listener.transform.position) <
+                        eventData.maxDistance + 0.2f)
+                    {
+                        AudioManager.Instance.occlusionChecker.CheckOcclusion(gameObject,AudioManager.Listener, out var occlusion);
+                        AudioManager.Instance.wallChecker.CheckWalls(gameObject,AudioManager.Listener, out var walls);
+                        if (eventData.ParameterCache.TryGetValue("Occlusion", out var parameterData))
+                        {
+                            instance.setParameterByID(parameterData.ID(), occlusion);
+                            AudioDebug.Print("Successfully set occlusion for " + eventName);
+                        }
+                        if (eventData.ParameterCache.TryGetValue("Walls", out parameterData))
+                        {
+                            instance.setParameterByID(parameterData.ID(), walls);
+                            AudioDebug.Print("Successfully set walls for " + eventName);
+                        }
+                    }
+                }
+            }
+            
+            if (paramNames != null && paramValues != null)
+            {
+                for (var i = 0; i < paramNames.Length; i++)
+                {
+                    if (eventData.TryGetParamData(paramNames[i], out var paramData))
+                    {
+                        if (paramData.isGlobal)
+                        {
+                            RuntimeManager.StudioSystem.setParameterByID(paramData.ID(), paramValues[i]);
+                        }
+                        else
+                        {
+                            instance.setParameterByID(paramData.ID(), paramValues[i]);
+                        }
+                    }
+                }
+            }
+
+            instance.setCallback(_instanceStopCallback, EVENT_CALLBACK_TYPE.STOPPED);
+            
+            instance.start();
+            
+            AudioDebug.Print("Playing OneShot: " + eventName);
+        }
+    }
+    
+    */
+#endregion
 }

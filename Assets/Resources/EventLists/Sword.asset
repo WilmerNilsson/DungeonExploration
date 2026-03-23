@@ -1,0 +1,131 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7493b6246a18ce4ca3407bc85a819a4, type: 3}
+  m_Name: Sword
+  m_EditorClassIdentifier: 
+  category: Sword
+  events:
+  - eventName: Swing
+    eventReference:
+      Guid:
+        Data1: 2099678300
+        Data2: 1108240502
+        Data3: -1972189767
+        Data4: -1576565586
+      Path: event:/Sound/Player/Weapons/Sword/SwordSwing
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Block
+    eventReference:
+      Guid:
+        Data1: -611396921
+        Data2: 1269773903
+        Data3: -551713146
+        Data4: -1597503729
+      Path: event:/Sound/Player/Weapons/Sword/SwordBlock
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Parry
+    eventReference:
+      Guid:
+        Data1: 1736530211
+        Data2: 1131489808
+        Data3: -516748105
+        Data4: 615583645
+      Path: event:/Sound/Player/Weapons/Sword/SwordParry
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Draw
+    eventReference:
+      Guid:
+        Data1: 1826768141
+        Data2: 1195450235
+        Data3: 665233564
+        Data4: 1390284585
+      Path: event:/Sound/Player/Weapons/Sword/SwordDraw
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  - eventName: Collision
+    eventReference:
+      Guid:
+        Data1: -1072188360
+        Data2: 1275284736
+        Data3: 1188076416
+        Data4: -1723535174
+      Path: event:/Sound/Ambiance/Environmental_Collision
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 1
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters:
+    - paramName: SurfaceTypes
+      isGlobal: 0
+      data1: 757657718
+      data2: 2250340172
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
+    - paramName: Walls
+      isGlobal: 0
+      data1: 3996502556
+      data2: 1746408966
+  - eventName: Break
+    eventReference:
+      Guid:
+        Data1: -255586069
+        Data2: 1239300663
+        Data3: -1970824809
+        Data4: 1554925985
+      Path: event:/Sound/Player/Weapons/Sword/SwordBreak
+    banks:
+    - SFX
+    isOneShot: 1
+    is3D: 1
+    isOcclusion: 0
+    minDistance: 1
+    maxDistance: 20
+    debug: 0
+    parameters: []
+  debug: 0

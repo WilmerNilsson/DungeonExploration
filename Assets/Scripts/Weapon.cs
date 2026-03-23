@@ -3,13 +3,16 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using UnityEngine.Splines;
 
 public class Weapon : MonoBehaviour
 {
     [Header("Events")]
     [FormerlySerializedAs("onDamage")] public UnityEvent OnDamage;
     [FormerlySerializedAs("onDeflectCollision")] public UnityEvent<string, Vector3> OnDeflectCollision;
+    public UnityEvent OnBreak;
     public UnityEvent onParry;
+    public UnityEvent onBlock;
     public UnityEvent onSwing;
     
     [Header("Weapon Stats")]
@@ -20,41 +23,42 @@ public class Weapon : MonoBehaviour
         get;
         set;
     } = 1;
+
+    [Min(1)]
+    public int MaxDurability;
+    
     [SerializeField] private bool dealDamage = false;
     [SerializeField] private bool isBlocking = false;
+    [SerializeField] private bool isParrying = false;
     [SerializeField] private bool unbreakable;
     [SerializeField] private Collider body;
+    public Spline startSpline;
+    private float splinePosition;
     
     [Header("Attack")]
     [SerializeField, FormerlySerializedAs("angle")] public float Angle;
     [SerializeField] private float curveHeight = 1.5f;
     [SerializeField, Tooltip("distance from middle toward start"), Range(0,1)] private float startBend;
     [SerializeField, Tooltip("distance from middle toward end"), Range(0,1)] private float endBend;
-    [SerializeField] private float attackChargeTime = 0.5f;
-    [SerializeField] private float attackHoldTime = 2f;
-    [SerializeField] private float attackSwingTime = 1f;
-    [SerializeField] private float attackResetTime = 1f;
+    [SerializeField, Min(0)] private float attackChargeTime = 0.5f;
+    [SerializeField, Min(0)] private float attackSwingTime = 1f;
+    [SerializeField, Min(0)] private float attackResetTime = 1f;
     
     [Header("Block")]
-    [SerializeField] private float blockDistance = 0.5f;
-    [SerializeField] private float blockChargeTime = 0.5f;
-    [SerializeField] private float blockHoldTime = 1f;
-    [SerializeField] private float blockReturnTime = 0.5f;
+    [SerializeField, Min(0), Tooltip("The time it takes to get to block")] private float blockChargeTime = 0.5f;
+    [SerializeField, Min(0), Tooltip("The time it takes to return from block")] private float blockReturnTime = 0.5f;
+    [SerializeField, Range(0,2), Tooltip("The offset between block position and the position of the hand")] private float blockHandOffset = 0.5f;
+    [SerializeField, Tooltip("How fast the block moves")] private float blockMoveSpeed = 1;
+    
+    [Header("Parry")]
+    [SerializeField, Min(0), Tooltip("How long the parry takes")] private float parrySwingTime = 0.5f;
+    [SerializeField, Min(0), Tooltip("How long it stays after parry")] private float parryWaitTime = 0.5f;
+    [SerializeField, Min(0), Tooltip("The time it takes to return from parry")] private float parryReturnTime = 0.5f;
+    [SerializeField, Min(0), Tooltip("The angle of the Parry Animation")] private float parryAngle = 45;
     
     private Vector3 up;
     private Vector3 forward;
     private Vector3 right;
-    
-    private Vector3 blockAnglePos;
-    private Vector3 blockOffsetPos;
-    public Vector3 BlockPos 
-    {
-        set => blockAnglePos = value;
-    }
-    public Vector3 BlockOffset 
-    {
-        set => blockOffsetPos = value;
-    }
     
     [Header("References")]
     [FormerlySerializedAs("companion")] public HumanoidAttackAnimatorCompanion Companion;
@@ -64,10 +68,15 @@ public class Weapon : MonoBehaviour
     private Transform HandIK => SwordArm.data.target;
     private Transform Shoulder => SwordArm.data.root;
     
-    private Vector3 P0 => Quaternion.AngleAxis(Angle, Vector3.forward) * Vector3.up;
+    private Vector3 P0 => startSpline.EvaluatePosition(splinePosition);
     private Vector3 P1 => Vector3.Lerp(P0,P3,startBend/2) + Vector3.forward * curveHeight;
     private Vector3 P2 => Vector3.Lerp(P0,P3,1-endBend/2) + Vector3.forward * curveHeight;
-    private Vector3 P3 => Quaternion.AngleAxis(Angle, Vector3.forward) * Vector3.down + Vector3.forward;
+    private Vector3 P3 => new (-P0.x, -P0.y, P0.z);
+
+    private void Start()
+    {
+        transform.rotation = Quaternion.LookRotation(SwordArm.data.tip.right, -SwordArm.data.tip.forward);
+    }
 
     #region Attack
 
@@ -86,21 +95,20 @@ public class Weapon : MonoBehaviour
     }
 
     /// <summary>
-    /// Stay at P0 (with optional pos offset) <br/>
-    /// returns true when time is more than attack time and state machine can continue
+    /// Stay at P0 <br/>
     /// </summary>
-    public bool HoldAttack(float time, float pos = 0)
+    public void HoldAttack(float percentage)
     {
         SwordArm.data.targetPositionWeight = 1;
         SwordArm.data.targetRotationWeight = 1;
         
-        AttackPositionRotation(pos);
-
-        return time >= attackHoldTime;
+        splinePosition = percentage;
+        
+        AttackPositionRotation(0);
     }
 
     /// <summary>
-    /// Swing along bezier curve <br/>
+    /// Swing along Bézier curve <br/>
     /// returns true when time is more than attack time and state machine can continue
     /// </summary>
     public bool Swing(float time)
@@ -153,12 +161,14 @@ public class Weapon : MonoBehaviour
     /// Go from neutral to BlockPos <br/>
     /// returns true when time is more than block time and state machine can continue
     /// </summary>
-    public bool ChargeBlock(float time)
+    public bool ChargeBlock(float time, float percentage)
     {
         SwordArm.data.targetPositionWeight = time / blockChargeTime;
         SwordArm.data.targetRotationWeight = time / blockChargeTime;
         
-        BlockPositionRotation(1);
+        splinePosition = percentage;
+        
+        BlockPositionRotation();
         
         return time >= blockChargeTime;
     }
@@ -167,32 +177,60 @@ public class Weapon : MonoBehaviour
     /// Stay at BlockPos <br/>
     /// returns true when time is more than block time and state machine can continue
     /// </summary>
-    public bool HoldBlock(float time)
+    public void HoldBlock(float percentage)
     {
         SwordArm.data.targetPositionWeight = 1;
         SwordArm.data.targetRotationWeight = 1;
         
-        BlockPositionRotation(1);
+        splinePosition = Mathf.Lerp(splinePosition, percentage, blockMoveSpeed * Time.deltaTime);
         
-        return time >= blockHoldTime;
+        BlockPositionRotation();
     }
     /// <summary>
     /// Go back to Neutral from BlockPos <br/>
     /// returns true when time is more than block time and state machine can continue
     /// </summary>
 
-    public bool ReturnBlock(float time)
+    public bool ReturnBlock(float time, float percentage)
     {
         SwordArm.data.targetPositionWeight = 1 - time / blockReturnTime;
         SwordArm.data.targetRotationWeight = 1 - time / blockReturnTime;
         
-        BlockPositionRotation(1);
+        splinePosition = percentage;
+        
+        BlockPositionRotation();
         
         return time >= blockReturnTime;
     }
     
     #endregion
 
+    #region Parry
+
+    public bool ParrySwing(float time)
+    {
+        ParryPositionRotation(time/parrySwingTime);
+        
+        return time >= parrySwingTime;
+    }
+
+    public bool ParryWait(float time)
+    {
+        
+        return time >= parryWaitTime;
+    }
+
+    public bool ParryReturn(float time)
+    {
+        SwordArm.data.targetPositionWeight = 1 - time / parryReturnTime;
+        SwordArm.data.targetRotationWeight = 1 - time / parryReturnTime;
+        
+        return time >= parryReturnTime;
+    }
+
+    #endregion
+
+    #region Collision
     public void SetDamageActive(bool value)
     {
         dealDamage = value;
@@ -202,15 +240,18 @@ public class Weapon : MonoBehaviour
     {
         isBlocking = value;
     }
+
+    public void SetParryActive(bool value)
+    {
+        isParrying = value;
+    }
     
     private void OnTriggerEnter(Collider other)
     {
         if (dealDamage)
         {
-            Debug.Log($"OnTriggerEnter name {other.gameObject.name} tag {other.gameObject.tag}");
             if (!transform.IsChildOf(other.transform))
             {
-                dealDamage = false;
                 if (other.TryGetComponent(out Health health))
                 {
                     health.TakeDamage(damage);
@@ -221,6 +262,8 @@ public class Weapon : MonoBehaviour
                 else if (other.gameObject.CompareTag("Flesh")) // Potential fix for ragdoll 
                 {
                     health = other.gameObject.GetComponentInParent<Health>();
+                    Debug.Log($"health object is {health.gameObject.name}, companion object is {Companion.gameObject.name}");
+                    if (health.gameObject == Companion.gameObject) return;
                     if (health != null)
                     {
                         health.TakeDamage(damage);
@@ -230,7 +273,7 @@ public class Weapon : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log($"The target {other.gameObject.name} health is NULL");
+                        Debug.Log($"The target {other.gameObject.name} health is NULL, or it was self harm");
                     }
                 }
                 switch (other.tag) // Handle Audio Visual Feedback
@@ -249,14 +292,19 @@ public class Weapon : MonoBehaviour
                         Debug.Log("Metal");
                         if (other.TryGetComponent(out Weapon weapon))
                         {
-                            if (!weapon.isBlocking)
+                            if (weapon.isParrying)
                             {
-                                Debug.Log("Other weapon not blocking");
+                                onParry.Invoke();
+                                Companion.OnGetParried();
+                            }
+                            else if(weapon.isBlocking)
+                            {
+                                onBlock.Invoke();
+                                Companion.OnGetBlocked();
                             }
                             else
                             {
-                                onParry.Invoke();
-                                Companion.OnGetBlocked();
+                                Debug.Log("Other weapon not blocking or parrying");
                             }
                             break;
                         }
@@ -271,6 +319,7 @@ public class Weapon : MonoBehaviour
                         break;
                 }
             }
+            dealDamage = false;
         }
     }
     
@@ -283,27 +332,49 @@ public class Weapon : MonoBehaviour
         Durability -= amount;
         if (Durability <= 0)
         {
+            OnBreak.Invoke();
             Destroy(gameObject);
         }
     }
+    
+    #endregion
     
     #region Support Functions
 
     private void AttackPositionRotation(float time)
     {
-        HandIK.position = Shoulder.position + RelativeRotation(GetCurvePosition(time));
+        HandIK.position = Head.position + RelativeRotation(GetCurvePosition(time));
         
-        up = Quaternion.AngleAxis(Angle+90, Head.forward) * Head.up; // Doesnt account for head tilt
-        forward = RotateVecAroundPoint(GetCurveTangent(time), Quaternion.AngleAxis(Core.transform.eulerAngles.y, Vector3.up), Vector3.zero );
-            
-        HandIK.rotation = Quaternion.LookRotation(up, forward);
+        //The direction of the palm
+        up = Quaternion.AngleAxis(Angle, Head.forward) * Head.right;
+        // the direction of the pinky
+        forward = RotateVecAroundPoint(GetCurveTangent(time), Quaternion.AngleAxis(Core.transform.eulerAngles.y, Vector3.up), Vector3.zero);
+        
+        HandIK.rotation = Quaternion.LookRotation(-GetCurveNormal(), up);
     }
 
-    private void BlockPositionRotation(float time)
+    private void BlockPositionRotation()
     {
-        HandIK.position = Head.position + RelativeRotation((blockAnglePos + blockOffsetPos).normalized * blockDistance + Vector3.forward * 0.5f);
+        Vector3 position = Head.transform.TransformDirection(P0);
         
-        HandIK.rotation = Quaternion.LookRotation(RelativeRotation((Vector3.forward * Angle).normalized), RelativeRotation(blockAnglePos + blockOffsetPos * 0.5f));
+        up = Head.forward * -(Angle - 180);
+        forward = Vector3.Cross(position, up);
+        
+        HandIK.rotation = Quaternion.LookRotation(forward, up);
+        
+        HandIK.position = Head.position + Vector3.ClampMagnitude(position + HandIK.right * blockHandOffset, P0.magnitude);
+    }
+
+    private void ParryPositionRotation(float time)
+    {
+        Vector3 position = Head.transform.TransformDirection(P0);
+        
+        up = Head.forward * -(Angle - 180);
+        forward = Vector3.Cross(position, up);
+        
+        HandIK.rotation = Quaternion.LookRotation(forward, up) * Quaternion.AngleAxis(time * parryAngle, Vector3.down);
+        
+        HandIK.position = Head.position + Vector3.ClampMagnitude(position + HandIK.right * blockHandOffset, P0.magnitude);
     }
     private Vector3 RelativeRotation(Vector3 rotation)
     {
@@ -324,7 +395,7 @@ public class Weapon : MonoBehaviour
         return a * Mathf.Pow(1 - t, 2) + b * (2 * (1 - t) * t) + c * (t * t);
     }
     
-    private Vector3 GetCurveNormal(float t) // Doesnt really work atm
+    private Vector3 GetCurveNormal() // Doesnt really work atm
     {
         Vector3 normal = Vector3.Cross(up, forward);
         return normal.normalized;
@@ -339,12 +410,20 @@ public class Weapon : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        if (Head == null) return;
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawSphere(Head.position + RelativeRotation(blockAnglePos), 0.1f);
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(Head.position + RelativeRotation(blockOffsetPos), 0.1f);
+        // if (startSpline != null)
+        // {
+        //     Gizmos.color = Color.blue;
+        //     for (float i = 0; i < 1; i+=.01f)
+        //     {
+        //         Vector3 position = Head.transform.TransformPoint(startSpline.EvaluatePosition(i));
+        //         Vector3 direction = startSpline.EvaluateTangent(i);
+        //         Gizmos.DrawRay(position, direction.normalized * 0.1f);
+        //     }
+        // }
+        // Gizmos.color = Color.green;
+        // Gizmos.DrawSphere(P0,.1f);
+        // Gizmos.color = Color.red;
+        // Gizmos.DrawSphere(P3,.1f);
     }
 #endif
 

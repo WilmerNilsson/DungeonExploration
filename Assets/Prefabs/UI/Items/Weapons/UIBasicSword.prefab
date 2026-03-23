@@ -17,6 +17,9 @@ GameObject:
   - component: {fileID: 1068279826599745969}
   - component: {fileID: -9108539040615138340}
   - component: {fileID: 4096526758933086186}
+  - component: {fileID: 7782341076632175528}
+  - component: {fileID: -6136178304056373806}
+  - component: {fileID: -2070756347938269141}
   m_Layer: 5
   m_Name: UIBasicSword
   m_TagString: Untagged
@@ -120,7 +123,9 @@ MonoBehaviour:
   descriptionTextIsLibraryName: 0
   textLibrary: {fileID: 11400000, guid: 1b1f8771b2a7c1940b19f8003b6ca232, type: 2}
   prefabID: BasicSword
-  <CashValue>k__BackingField: 15
+  <CashValueBuy>k__BackingField: 15
+  <CashValueSell>k__BackingField: 6
+  <QuickLootToEquip>k__BackingField: 1
   OnStopDrag:
     m_PersistentCalls:
       m_Calls:
@@ -178,7 +183,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e701aad7fafe36449af29dab6c3bfee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponPrefab: {fileID: 6231285627939046001, guid: 3150ce962721a6e4cac9d63fe863aa9b, type: 3}
+  weaponPrefab: {fileID: 6231285627939046001, guid: d294ddc9617747141bb6e8aee7368bbc, type: 3}
   durabilityText: {fileID: 7484359017320565594}
   BlacksmithHelper:
     MaxDurability: 10
@@ -212,6 +217,59 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uIWeapon: {fileID: 1068279826599745969}
+--- !u!95 &7782341076632175528
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659243512019290888}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 86371ff051eb84344aa01a786d38c513, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-6136178304056373806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659243512019290888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7704e0e9fcdd38459ccc708b9e6744b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationNameClick: UIItemJiggleAnimation
+  animationNameRelease: UIItemJiggleAnimation
+  mySimpleItem: {fileID: 6101294717193550440}
+  blockAutoConnect: 0
+--- !u!114 &-2070756347938269141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659243512019290888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 758bebe94122d1c43bf7c54d1ac813de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetGraphic: {fileID: 1474761305827880754}
+  highlightCollor: {r: 0, g: 1, b: 1, a: 1}
+  supressFind: 0
 --- !u!1 &3774929366689480808
 GameObject:
   m_ObjectHideFlags: 0

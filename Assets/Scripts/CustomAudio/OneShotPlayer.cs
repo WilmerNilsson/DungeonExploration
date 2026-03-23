@@ -15,9 +15,18 @@ public class OneShotPlayer : MonoBehaviour
 
     public bool emitterIsThisObject;
     public OneShotInstruction[] instructions;
-    
+
+    private void Start()
+    {
+        foreach (OneShotInstruction instruction in instructions)
+        {
+            if (instruction.gameObject || emitterIsThisObject) OcclusionHandler.AddToOcclusionList(gameObject);
+        }
+    }
+
     public void Play(int index)
     {
+        // Debug.Log("Playing one shot with index " + index);
         if (!AudioManager.IsValid)
         {
             Debug.LogWarning("There is no AudioManager in the scene, please add one");
@@ -40,5 +49,10 @@ public class OneShotPlayer : MonoBehaviour
         {
             AudioManager.Instance.PlayOneShot(instructions[index].path, nameList.ToArray(), valueList.ToArray(), instructions[index].gameObject, instructions[index].followObject);
         }
+    }
+
+    private void OnDestroy()
+    {
+        OcclusionHandler.RemoveFromOcclusionList(gameObject);
     }
 }

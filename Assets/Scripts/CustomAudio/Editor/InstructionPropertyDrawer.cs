@@ -48,7 +48,7 @@ public class InstructionPropertyDrawer : PropertyDrawer
                     EditorGUI.PropertyField(pos, gameObj, lbl);
                 }
 
-                if (command.enumValueIndex == 0 || command.enumValueIndex == 8)
+                if (command.enumValueIndex == 2 || command.enumValueIndex == 8)
                 {
                     pos.y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
                     lbl.text = "Follow Object";
@@ -113,7 +113,7 @@ public class InstructionPropertyDrawer : PropertyDrawer
                 height += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2;
             }
 
-            if (command.enumValueIndex == 0 || command.enumValueIndex == 8)
+            if (command.enumValueIndex == 2 || command.enumValueIndex == 8)
             {
                 height += (EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing);
             }

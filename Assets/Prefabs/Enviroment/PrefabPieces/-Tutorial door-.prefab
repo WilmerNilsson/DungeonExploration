@@ -14,9 +14,11 @@ GameObject:
   - component: {fileID: 1903936927232098272}
   - component: {fileID: 7095067566852399215}
   - component: {fileID: 2347193250469546462}
-  m_Layer: 6
+  - component: {fileID: 5617637118507412565}
+  - component: {fileID: 3732515054372955833}
+  m_Layer: 18
   m_Name: Cube (4)
-  m_TagString: Untagged
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -123,8 +125,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 0}
-  _currentHealth: 5
-  _maxHealth: 5
+  _currentHealth: 100
+  _maxHealth: 100
+  minimumFallDamageHeight: 0
+  fallDamageMultiplier: 0
   DurabilityDamage: 0
   OnChangeHealths:
     m_PersistentCalls:
@@ -159,6 +163,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 5617637118507412565}
+        m_TargetAssemblyTypeName: BreakablePlank, GameAssembly
+        m_MethodName: Break
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &2347193250469546462
 Animator:
   serializedVersion: 7
@@ -181,6 +197,32 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5617637118507412565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522831942892078147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9da72c89b0c08bf43bb2e03ef4ea4b39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3732515054372955833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522831942892078147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc87a31ceb9df043a534d60d54a99ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <UniqueID>k__BackingField: -1
+  fetchIDButton: 0
 --- !u!1 &695939205963206162
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,9 +237,11 @@ GameObject:
   - component: {fileID: 5213552650545247779}
   - component: {fileID: 5355502583921927032}
   - component: {fileID: 3354725606170357878}
-  m_Layer: 6
+  - component: {fileID: 2355830793447068268}
+  - component: {fileID: 9190202214287899997}
+  m_Layer: 18
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -304,8 +348,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 0}
-  _currentHealth: 5
-  _maxHealth: 5
+  _currentHealth: 100
+  _maxHealth: 100
+  minimumFallDamageHeight: 0
+  fallDamageMultiplier: 0
   DurabilityDamage: 0
   OnChangeHealths:
     m_PersistentCalls:
@@ -340,6 +386,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2355830793447068268}
+        m_TargetAssemblyTypeName: BreakablePlank, GameAssembly
+        m_MethodName: Break
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &3354725606170357878
 Animator:
   serializedVersion: 7
@@ -362,6 +420,32 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2355830793447068268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695939205963206162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9da72c89b0c08bf43bb2e03ef4ea4b39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9190202214287899997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695939205963206162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc87a31ceb9df043a534d60d54a99ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <UniqueID>k__BackingField: -1
+  fetchIDButton: 0
 --- !u!1 &4944036244649083591
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,7 +455,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1440987826170974447}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: -Tutorial door-
   m_TagString: Stone
   m_Icon: {fileID: 0}
@@ -413,9 +497,11 @@ GameObject:
   - component: {fileID: 7844373754313781555}
   - component: {fileID: 5087831302819394352}
   - component: {fileID: 287610781709609374}
-  m_Layer: 6
+  - component: {fileID: 8071018126076771815}
+  - component: {fileID: 1328097513208579875}
+  m_Layer: 18
   m_Name: Cube (2)
-  m_TagString: Untagged
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -522,8 +608,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 0}
-  _currentHealth: 5
-  _maxHealth: 5
+  _currentHealth: 100
+  _maxHealth: 100
+  minimumFallDamageHeight: 0
+  fallDamageMultiplier: 0
   DurabilityDamage: 0
   OnChangeHealths:
     m_PersistentCalls:
@@ -558,6 +646,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8071018126076771815}
+        m_TargetAssemblyTypeName: BreakablePlank, GameAssembly
+        m_MethodName: Break
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &287610781709609374
 Animator:
   serializedVersion: 7
@@ -580,6 +680,32 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8071018126076771815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8373730199246969629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9da72c89b0c08bf43bb2e03ef4ea4b39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1328097513208579875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8373730199246969629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc87a31ceb9df043a534d60d54a99ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <UniqueID>k__BackingField: -1
+  fetchIDButton: 0
 --- !u!1 &8611604710777326888
 GameObject:
   m_ObjectHideFlags: 0
@@ -594,9 +720,11 @@ GameObject:
   - component: {fileID: 402823240640075646}
   - component: {fileID: 2722521203911777318}
   - component: {fileID: 8784239075148869312}
-  m_Layer: 6
+  - component: {fileID: 3865058708339836284}
+  - component: {fileID: 3630910545628742935}
+  m_Layer: 18
   m_Name: Cube (3)
-  m_TagString: Untagged
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -703,8 +831,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 0}
-  _currentHealth: 5
-  _maxHealth: 5
+  _currentHealth: 100
+  _maxHealth: 100
+  minimumFallDamageHeight: 0
+  fallDamageMultiplier: 0
   DurabilityDamage: 0
   OnChangeHealths:
     m_PersistentCalls:
@@ -739,6 +869,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 3865058708339836284}
+        m_TargetAssemblyTypeName: BreakablePlank, GameAssembly
+        m_MethodName: Break
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &8784239075148869312
 Animator:
   serializedVersion: 7
@@ -761,6 +903,32 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3865058708339836284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8611604710777326888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9da72c89b0c08bf43bb2e03ef4ea4b39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3630910545628742935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8611604710777326888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc87a31ceb9df043a534d60d54a99ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <UniqueID>k__BackingField: -1
+  fetchIDButton: 0
 --- !u!1 &9063959348896510942
 GameObject:
   m_ObjectHideFlags: 0
@@ -775,9 +943,11 @@ GameObject:
   - component: {fileID: 7049460120408757881}
   - component: {fileID: 5961069519499382597}
   - component: {fileID: 5984882306345978489}
-  m_Layer: 6
+  - component: {fileID: 4273887854605218969}
+  - component: {fileID: 6934607341854191684}
+  m_Layer: 18
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Wood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -884,8 +1054,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 0}
-  _currentHealth: 5
-  _maxHealth: 5
+  _currentHealth: 100
+  _maxHealth: 100
+  minimumFallDamageHeight: 0
+  fallDamageMultiplier: 0
   DurabilityDamage: 0
   OnChangeHealths:
     m_PersistentCalls:
@@ -920,6 +1092,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 4273887854605218969}
+        m_TargetAssemblyTypeName: BreakablePlank, GameAssembly
+        m_MethodName: Break
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &5984882306345978489
 Animator:
   serializedVersion: 7
@@ -942,6 +1126,32 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4273887854605218969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9063959348896510942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9da72c89b0c08bf43bb2e03ef4ea4b39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6934607341854191684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9063959348896510942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cc87a31ceb9df043a534d60d54a99ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <UniqueID>k__BackingField: -1
+  fetchIDButton: 0
 --- !u!1001 &2178997789253137345
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -998,6 +1208,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arch 1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8e9baf8fd4e0ccb42b5df3cc94a92276, type: 3}
+      propertyPath: m_TagString
+      value: Stone
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1048,7 +1262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fe38f654fc77314b9c8a03e822a8aaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1368024600130506384}
+  prefab: {fileID: 6945691001961487597, guid: 505ea5cf2cabb8440a871d177b8a57d8, type: 3}
 --- !u!4 &1853199965148812330 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8e9baf8fd4e0ccb42b5df3cc94a92276, type: 3}

@@ -69,6 +69,10 @@ PrefabInstance:
       value: Fountain
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ff95bd3dd1d029b4b9efde2ec6f1aeea, type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ff95bd3dd1d029b4b9efde2ec6f1aeea, type: 3}
       propertyPath: m_TagString
       value: Stone
       objectReference: {fileID: 0}
@@ -82,6 +86,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ff95bd3dd1d029b4b9efde2ec6f1aeea, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3877697678285277906}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ff95bd3dd1d029b4b9efde2ec6f1aeea, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 718146616544761044}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ff95bd3dd1d029b4b9efde2ec6f1aeea, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -3724903551251670815}
   m_SourcePrefab: {fileID: 100100000, guid: ff95bd3dd1d029b4b9efde2ec6f1aeea, type: 3}
 --- !u!1 &6190631081220298327 stripped
 GameObject:
@@ -126,3 +136,80 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: -10.4, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &718146616544761044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6190631081220298327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f58a3f488e2be34d94a421e17b6a95f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  graphicModel: {fileID: 6190631081220298327}
+  canInteract: 1
+  OnInteract:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8039961835658388922, guid: bd6d753639a52a1479239516af94f776, type: 3}
+        m_TargetAssemblyTypeName: Sanity, GameAssembly
+        m_MethodName: GainSanity
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 10
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 718146616544761044}
+        m_TargetAssemblyTypeName: Interactable, GameAssembly
+        m_MethodName: SetInteractability
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 10
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: -3724903551251670815}
+        m_TargetAssemblyTypeName: OneShotPlayer, GameAssembly
+        m_MethodName: Play
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnSeen:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUnSeen:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &-3724903551251670815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6190631081220298327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc293c0446b8972448fbee1677af522d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emitterIsThisObject: 0
+  instructions:
+  - path: Interactables/Fountain
+    gameObject: {fileID: 0}
+    followObject: 0
+    parametersToSet: []

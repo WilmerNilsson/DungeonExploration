@@ -21,8 +21,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private bool lockedMovement = false;
     [SerializeField]private bool lockedCamera = false;
     
-    private bool startedAttack = false;
-    private bool startedBlock = false;
+    [SerializeField] private bool startedAttack = false;
+    [SerializeField] private bool startedBlock = false;
 
     private Vector2 mouseStart;
     private Vector2 mouseEnd;
@@ -55,15 +55,14 @@ public class PlayerController : MonoBehaviour
         {
             Rotate(lookInput);
         }
-
-#if !DebugAttacks
+        
         if(startedAttack)
         {
             mouseEnd = Mouse.current.position.ReadValue();
 
             if(Vector2.Distance(mouseStart, mouseEnd) > 10)
             {
-                controller.PrepareAttackUpdate(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
+                controller.HoldAttackUpdate(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)) + 180);
             }
         }
         else if(startedBlock)
@@ -72,10 +71,9 @@ public class PlayerController : MonoBehaviour
 
             if (Vector2.Distance(mouseStart, mouseEnd) > 10)
             {
-                controller.HoldBlockUpdate(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
+                controller.HoldBlockUpdate(Vector2.SignedAngle(Vector2.up, (mouseEnd - mouseStart)) + 180);
             }
         }
-#endif
     }
 
     private void OnDestroy()
@@ -120,8 +118,7 @@ public class PlayerController : MonoBehaviour
     public void OnCrouch(InputAction.CallbackContext context)
     {
         if (lockedMovement) return;
-        if (context.performed) controller.Crouch(true);
-        if (context.canceled) controller.Crouch(false);
+        if (context.performed) controller.Crouch();
     }
     
     public void OnMouseLook(InputAction.CallbackContext context)
@@ -151,31 +148,31 @@ public class PlayerController : MonoBehaviour
     public void OnAttack(InputAction.CallbackContext context)
     {
         if (lockedMovement) return;
-        if (context.performed && !lockedCamera)
+        if (context.performed)
         {
-            mouseStart = Mouse.current.position.ReadValue();
-            startedAttack = true;
-            GameManagerSO.Instance.LockCamera(true);
-
-#if !DebugAttacks
-            controller.PrepareAttack(true);
-#endif
+            if (lockedCamera && startedBlock) // Parry
+            {
+                if (controller.TryParry())
+                {
+                    startedBlock = false;
+                    controller.HoldBlock(false);
+                    GameManagerSO.Instance.LockCamera(false);
+                }
+            }
+            else // Attack
+            {
+                startedAttack = true;
+                GameManagerSO.Instance.LockCamera(true);
+                mouseStart = Mouse.current.position.ReadValue();
+            }
         }
         if (context.canceled && startedAttack)
         {
-#if !DebugAttacks
-            controller.PrepareAttack(false);
-#endif
-
             mouseEnd = Mouse.current.position.ReadValue();
             startedAttack = false;
             if (Vector2.Distance(mouseStart, mouseEnd) > 10)
             {
-#if DebugAttacks
-                controller.AttackWithChargeup(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
-#else
-                controller.Attack(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
-#endif
+                controller.TryAttack(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)) + 180);
             }
             GameManagerSO.Instance.LockCamera(false);
         }
@@ -189,26 +186,14 @@ public class PlayerController : MonoBehaviour
             mouseStart = Mouse.current.position.ReadValue();
             startedBlock = true;
             GameManagerSO.Instance.LockCamera(true);
-#if !DebugAttacks
             controller.HoldBlock(true);
-#endif
         }
         if (context.canceled && startedBlock)
         {
-#if !DebugAttacks
             controller.HoldBlock(false);
-#endif
 
             mouseEnd = Mouse.current.position.ReadValue();
             startedBlock = false;
-            if (Vector2.Distance(mouseStart, mouseEnd) > 10)
-            {
-#if DebugAttacks
-                controller.BlockWithCharge(Vector2.SignedAngle(Vector2.down, (mouseEnd - mouseStart)));
-#else
-                //parry here
-#endif
-            }
             GameManagerSO.Instance.LockCamera(false);
         }
     }

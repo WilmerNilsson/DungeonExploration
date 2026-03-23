@@ -9,10 +9,6 @@ using STOP_MODE = FMOD.Studio.STOP_MODE;
 public class AudioManager : MonoBehaviour
 {
     #region Initialization
-
-    public OcclusionChecker occlusionChecker = new();
-    
-    public WallChecker wallChecker = new();
     
     public static AudioManager Instance;
     
@@ -31,6 +27,8 @@ public class AudioManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
         
+        MoveToRoot();
+        
         if (GameManagerSO.Instance != null)
         {
             GameManagerSO.Instance.OnFreezeGameChange += OnPauseEvent;
@@ -48,9 +46,15 @@ public class AudioManager : MonoBehaviour
         RefreshAllEventCaches();
         RefreshGlobalParameterCache();
         GetListener();
+        LoadVolume();
         CombatChecker.ResetCombatList();
 
         AudioDebug.Print("AudioManager Initialized");
+    }
+
+    private void MoveToRoot()
+    {
+        gameObject.transform.parent = null;
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -76,7 +80,7 @@ public class AudioManager : MonoBehaviour
 
     private void RefreshEventListCache() //Lägger till alla eventLists i eventListCache
     {
-        eventLists = Resources.LoadAll<EventList>("EventLists/");
+        eventLists = Resources.LoadAll<EventList>("EventLists");
         
         EventListCache = new Dictionary<string, EventList>();
         if (eventLists == null)
@@ -139,6 +143,17 @@ public class AudioManager : MonoBehaviour
         return false;
     }
 
+    public bool TryGetEventInstance(string path, GameObject obj, out EventInstance eventInstance)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.TryGetEventInstance(path, out eventInstance, obj);
+            return true;
+        }
+        eventInstance = new EventInstance();
+        return false;
+    }
+
     #endregion
 
     #region Global Parameters
@@ -182,11 +197,11 @@ public class AudioManager : MonoBehaviour
     #region Looping Events 
     //Alla metoder här vidarebefodrar instruktioner in i rätt evenlist baserat på path.
     
-    public void CreateInstance(string path, GameObject gameObj = null, bool followObject = true)
+    public void CreateInstance(string path, GameObject gameObj = null)
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
-            eventList.CreateInstance(eventName, gameObj, followObject);
+            eventList.CreateInstance(eventName, gameObj);
         }
     }
 
@@ -214,11 +229,11 @@ public class AudioManager : MonoBehaviour
         }
     }
     
-    public void StartEvent(string path, GameObject gameObj = null)
+    public void StartEvent(string path, GameObject gameObj = null, bool followObject = true)
     {
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
-            eventList.StartEvent(eventName, gameObj);
+            eventList.StartEvent(eventName, gameObj, followObject);
         }
     }
 
@@ -243,6 +258,22 @@ public class AudioManager : MonoBehaviour
         if (TryGetEventList(path, out var eventList, out var eventName))
         {
             eventList.KeyOff(eventName, gameObj);
+        }
+    }
+
+    public void SetOcclusions(GameObject[] occlusionObjects)
+    {
+        foreach (var eventList in eventLists)
+        {
+            eventList.SetOcclusionOnObjects(occlusionObjects);
+        }
+    }
+
+    public void SetInstancePosition(string path, GameObject gameObject)
+    {
+        if (TryGetEventList(path, out var eventList, out var eventName))
+        {
+            eventList.SetInstancePosition(eventName, gameObject);
         }
     }
     
@@ -348,6 +379,13 @@ public class AudioManager : MonoBehaviour
         return 0;
     }
 
+    private void LoadVolume()
+    {
+        SetVolume("SFX", GameManagerSO.Instance.GetEffectsVolume() * 0.01f);
+        SetVolume("Music", GameManagerSO.Instance.GetMusicVolume() * 0.01f);
+        SetVolume("Master", GameManagerSO.Instance.GetMasterVolume() * 0.01f);
+    }
+
     #endregion
 
     #region Banks
@@ -399,13 +437,13 @@ public class AudioManager : MonoBehaviour
         SetPause(paused);
     }
 
-    private void FixedUpdate()
-    {
-        foreach (var eventList in eventLists)
-        {
-            eventList.CheckOcclusions();
-        }
-    }
+    // private void FixedUpdate()
+    // {
+    //     foreach (var eventList in eventLists)
+    //     {
+    //         eventList.CheckOcclusions();
+    //     }
+    // }
 
     #endregion
 
@@ -416,6 +454,7 @@ public class AudioManager : MonoBehaviour
         GetListener();
         CombatChecker.ResetCombatList();
         OnPauseEvent(false);
+        ResetGlobalParameters();
     }
 
     private void OnSceneUnloaded(Scene scene)
@@ -431,6 +470,14 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    private void ResetGlobalParameters()
+    {
+        SetGlobalParameter("Sanity", 1);
+        SetGlobalParameter("Hunger", 1);
+        SetGlobalParameter("hpRatio", 1);
+        SetGlobalParameter("Exertion", 0);
+    }
+    
     public static GameObject Listener;
 
     private static void GetListener()
@@ -438,14 +485,25 @@ public class AudioManager : MonoBehaviour
         var cameras = GameObject.FindObjectsByType<Camera>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         foreach (var camera in cameras)
         {
-            if (camera.TryGetComponent(typeof(StudioListener), out var studioListener))
+            if (camera.TryGetComponent(typeof(StudioListener), out var studioListener) && camera.isActiveAndEnabled)
             {
                 Listener = camera.gameObject;
                 AudioDebug.Print("Successfully found listener");
                 return;
             }
+            else if (camera.TryGetComponent(typeof(StudioListener), out studioListener))
+            {
+                Listener = camera.gameObject;
+            }
         }
-        AudioDebug.Print("No listener found", true);
+        if (!Listener)
+        {
+            AudioDebug.Print("No listener found", true);
+        }
+        else
+        {
+            AudioDebug.Print("Successfully found Listener but it is not enabled in the scene");
+        }
     }
     
     #endregion
@@ -487,7 +545,7 @@ public class AudioManager : MonoBehaviour
         foreach (var bus in busList)
         {
             bus.getPath(out var path);
-            if (path == "bus:/Sound")
+            if (path.Contains("bus:/Sound/") && path != "bus:/Sound/UI")
             {
                 bus.setPaused(paused);
             }

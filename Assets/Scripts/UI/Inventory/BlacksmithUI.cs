@@ -36,7 +36,6 @@ public class BlacksmithUI : MerchantInventory
 
     public void GiveSaveData(List<string> donatedWeapons)
     {
-
         this.donatedWeapons = donatedWeapons;
         foreach(string weapon in donatedWeapons)
         {
@@ -70,7 +69,7 @@ public class BlacksmithUI : MerchantInventory
         else if (startHover && simpleItem.TryGetComponent(out UIWeapon uIWeapon))
         {
             SetDescriptionText(simpleItem.GetDescription());
-            int repairCost = (uIWeapon.BlacksmithHelper.MaxDurability - uIWeapon.Durability) * uIWeapon.BlacksmithHelper.CostPerDurability;
+            int repairCost = (uIWeapon.MaxDurability - uIWeapon.Durability) * uIWeapon.BlacksmithHelper.CostPerDurability;
             SetGoldValueText($"Repair cost is {repairCost} crowns.");
         }
         else
@@ -92,7 +91,7 @@ public class BlacksmithUI : MerchantInventory
         }
     }
 
-    public void OnRemoveItemFromDonatioNGrid(SimpleItem item)
+    public void OnRemoveItemFromDonationGrid(SimpleItem item)
     {
         if (item.TryGetComponent(out UIWeapon weapon))
         {
@@ -120,6 +119,7 @@ public class BlacksmithUI : MerchantInventory
         }
         else if (item.TryGetComponent<UIWeapon>(out _) && ActiveGrid.TryPlaceItem(item))
         {
+            OnSellEvent?.Invoke();
             return true;
         }
         return false;
@@ -216,16 +216,21 @@ public class BlacksmithUI : MerchantInventory
         }
         else if (weaponInDonateGrid != null)
         {
-            int repairCost = (weaponInDonateGrid.BlacksmithHelper.MaxDurability - weaponInDonateGrid.Durability) * weaponInDonateGrid.BlacksmithHelper.CostPerDurability;
+            int repairCost = (weaponInDonateGrid.MaxDurability - weaponInDonateGrid.Durability) * weaponInDonateGrid.BlacksmithHelper.CostPerDurability;
 
-            if(weaponInDonateGrid.Durability == weaponInDonateGrid.BlacksmithHelper.MaxDurability)
+            if (repairCost < 0)
+            {
+                return;
+            }
+
+            if(weaponInDonateGrid.Durability == weaponInDonateGrid.MaxDurability)
             {
                 SetDescriptionText(weaponAlreadyFullDurabilityText);
             }
             else if(playerCashSO.TryBuy(repairCost))
             {
                 SetDescriptionText(couldRepairWeaponText);
-                weaponInDonateGrid.Durability = weaponInDonateGrid.BlacksmithHelper.MaxDurability;
+                weaponInDonateGrid.Durability = weaponInDonateGrid.MaxDurability;
                 OnRepairEvent.Invoke();
             }
             else

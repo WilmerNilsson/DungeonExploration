@@ -81,6 +81,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 367965010ea3bb74f826a74da015a142, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4513978001194025255}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 367965010ea3bb74f826a74da015a142, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8770966213445489112}
   m_SourcePrefab: {fileID: 100100000, guid: 367965010ea3bb74f826a74da015a142, type: 3}
 --- !u!1 &1225685218680073765 stripped
 GameObject:
@@ -99,6 +102,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f58a3f488e2be34d94a421e17b6a95f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  graphicModel: {fileID: 1225685218680073765}
+  canInteract: 1
   OnInteract:
     m_PersistentCalls:
       m_Calls:
@@ -106,6 +111,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: ItemPickup, GameAssembly
         m_MethodName: PickUp
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8770966213445489112}
+        m_TargetAssemblyTypeName: OneShotPlayer, GameAssembly
+        m_MethodName: Play
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -153,5 +170,23 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.27899674, y: 0.08307922, z: 0.4}
-  m_Center: {x: 0, y: 0.0036967918, z: 0}
+  m_Size: {x: 0.5296546, y: 0.2638606, z: 0.5866507}
+  m_Center: {x: 0, y: 0.082243964, z: 0}
+--- !u!114 &8770966213445489112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1225685218680073765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc293c0446b8972448fbee1677af522d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emitterIsThisObject: 1
+  instructions:
+  - path: Interactables/Book_Pickup
+    gameObject: {fileID: 0}
+    followObject: 0
+    parametersToSet: []

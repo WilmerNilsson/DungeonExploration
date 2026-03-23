@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WorldFromDataCreator : MonoBehaviour
@@ -5,25 +6,73 @@ public class WorldFromDataCreator : MonoBehaviour
     [SerializeField] private ItemLibrarySO itemLibrary;
     [SerializeField] private ContainerLibrarySO containerLibrary;
     [SerializeField] private EnemyLibrarySO enemyLibrary;
-    [SerializeField] private GameObject[] newWorldObjects;
+    [SerializeField] private List<GameObject> newWorldObjects;
+    [SerializeField] private List<SaveFileHelperEnemy> newWorldEnemies;
+    [SerializeField] public List<DialogueContainer> dialogueContainers;
 #nullable enable
 
-#if DEBUG && UNITY_EDITOR
+#if UNITY_EDITOR
+    [SerializeField] private bool reimportContainerAndItemsInNewWorld;
+    [SerializeField] private bool importEnemiesAndGiveID;
     private void OnValidate()
     {
         if (itemLibrary == null) Debug.LogWarning("item library is null", this);
         if (containerLibrary == null) Debug.LogWarning("container library is null", this);
         if (enemyLibrary == null) Debug.LogWarning("enemy library is null", this);
+
+        if(importEnemiesAndGiveID)
+        {
+            importEnemiesAndGiveID = false;
+
+            newWorldEnemies = new();
+
+            int currentID = 0;
+
+            foreach (var enemy in GameObject.FindObjectsByType<SaveFileHelperEnemy>(FindObjectsSortMode.None))
+            {
+                newWorldEnemies.Add(enemy);
+                enemy.SetID(currentID);
+                currentID++;
+            }
+        }
+
+        if(reimportContainerAndItemsInNewWorld)
+        {
+            reimportContainerAndItemsInNewWorld = false;
+
+            newWorldObjects = new List<GameObject>();
+            foreach (var container in GameObject.FindObjectsByType<SaveFileHelperContainer>(FindObjectsSortMode.None))
+            {
+                newWorldObjects.Add(container.gameObject);
+            }
+
+            foreach (var item in GameObject.FindObjectsByType<ItemPickup>(FindObjectsSortMode.None))
+            {
+                newWorldObjects.Add(item.gameObject);
+            }
+        }
     }
 #endif
 
     private void Start()
     {
-        if (GameManagerSO.Instance.TryConsumeSavefileData(out SavefileData? data))
+        if (GameManagerSO.Instance.SavefileManager.TryConsumeSavefileData(out SavefileData? data))
         {
+            if (data.DialogueSaves.Count > 0)
+            {
+                for (int i = 0; i < data.DialogueSaves.Count; i++)
+                {
+                    dialogueContainers.Find(x => x.name == data.DialogueSaves[i].TreeName).SetDialogueData(data.DialogueSaves[i]);
+                }
+            }
+
             if(data.Dungeon != null && data.Dungeon.Initialized)
             {
-                DestoryNewWorld();
+                MinimapMaster minimapMaster = FindFirstObjectByType<MinimapMaster>();
+                Debug.Log("setting minimap master");
+                minimapMaster.GetSO().SetToData(data.Dungeon.minimapComponentData);
+
+                DestoryNewWorld(data.Dungeon);
                 InitializeWorld(data.Dungeon, data.PlayerSaveData);
             }
             else
@@ -31,7 +80,7 @@ public class WorldFromDataCreator : MonoBehaviour
                 CreateNewWorld();
             }
         }
-#if DEBUG && !UNIT_TESTS
+#if!UNIT_TESTS
         else
         {
             Debug.LogError("World from data creator tried to consume save file data, but it failed", this);
@@ -40,13 +89,35 @@ public class WorldFromDataCreator : MonoBehaviour
     }
 
     //TODO remake initialize system to not use inactive objects
-    private void DestoryNewWorld()
+    private void DestoryNewWorld(DungeonSaveData dungeonSaveData)
     {
         Debug.Log("destroying new world items");
 
         foreach (var item in newWorldObjects)
         {
-            GameObject.Destroy(item);
+            Destroy(item);
+        }
+
+        //big O is crying, let it. (TODO calm big O) (n^2 club)
+        //prob go trough order under -enemies- for the bigO(n) feel good experience
+        foreach (var enemy in newWorldEnemies)
+        {
+            bool isDead = true;
+
+            foreach(var data in dungeonSaveData.Enemies)
+            {
+                if(data.UniqueID == enemy.UniqueID) //if there is a clone of the enemy in new objects
+                {
+                    isDead = false;
+                    Destroy(enemy.gameObject);
+                    break;
+                }
+            }
+
+            if (isDead && !enemy.ShouldRespawn())
+            {
+                Destroy(enemy.gameObject);
+            }
         }
     }
 
@@ -74,10 +145,24 @@ public class WorldFromDataCreator : MonoBehaviour
             InitializeContainers(dungeonSaveData);
             InitializeEnemies(dungeonSaveData);
             InitializeDroppedItems(dungeonSaveData);
+            InitializeEnabledObjects(dungeonSaveData);
         }
 
 
         InitializePlayer(playerSaveData);
+
+        void InitializeEnabledObjects(DungeonSaveData data)
+        {
+            EnabledHelperCompanion[] enabledHelpers = GameObject.FindObjectsByType<EnabledHelperCompanion>(FindObjectsSortMode.None);
+
+            foreach (EnabledHelperCompanion helper in enabledHelpers)
+            {
+                if (data.EnabledObjects.Contains(helper.UniqueID))
+                {
+                    helper.EnableFromSave();
+                }
+            }
+        }
 
         void InitializePlayer(PlayerSaveData? playerSaveData)
         {

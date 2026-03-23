@@ -4,6 +4,7 @@ using UnityEditor.Events;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(RectTransform))]
 public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
@@ -23,7 +24,9 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
     [SerializeField] private bool descriptionTextIsLibraryName;
     [SerializeField] private TextLibrarySO textLibrary;
     [SerializeField] private string prefabID;
-    [field: SerializeField] public int CashValue { get; private set; }
+    [field: SerializeField, FormerlySerializedAs("CashValue")] public int CashValueBuy { get; private set; }
+    [field: SerializeField] public int CashValueSell { get; private set; }
+    [field: SerializeField] public bool QuickLootToEquip { get; private set; }
 
 #nullable enable
 
@@ -31,6 +34,7 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
 
     public UnityEvent? OnStopDrag;
     private InventoryGrid? currentInventory;
+    private bool blockReleaseAnim = false;
 
     public RectTransform RectTransform { get { return (transform as RectTransform)!; } }
     private bool isDragging;
@@ -111,16 +115,42 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
         }
     }
 
+    public bool TryConsumeBlockReleaseAnimation()
+    {
+        if(blockReleaseAnim)
+        {
+            blockReleaseAnim = false;
+            return true;
+        }
+        return false;
+    }
+
+    public bool GridIsCurrent(InventoryGrid inventoryGrid)
+    {
+        if(currentInventory == null) return false;
+        else
+        {
+            return inventoryGrid == currentInventory;
+        }
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         if(eventData.button == PointerEventData.InputButton.Left)
         {
-            returnPos = RectTransform.position;
-            returnParent = transform.parent;
+            if(InvMasterBase.Instance.TryQuickLootItem(this))
+            {
+                blockReleaseAnim = true;
+            }
+            else
+            {
+                returnPos = RectTransform.position;
+                returnParent = transform.parent;
 
-            InvMasterBase.Instance.ParentTransformOntop(transform);
+                InvMasterBase.Instance.ParentTransformOntop(transform);
 
-            isDragging = true;
+                isDragging = true;
+            }
         }
         else if(eventData.button == PointerEventData.InputButton.Right)
         {
@@ -139,12 +169,12 @@ public class SimpleItem : MonoBehaviour, IPointerDownHandler, IPointerUpHandler,
             {
                 isDragging = false;
                 OnStopDrag?.Invoke();
-            }
-            
-            if (!InvMasterBase.Instance.TryPlaceItem(this, out InventoryGrid? newGrid))
-            {
-                RectTransform.position = returnPos;
-                transform.SetParent(returnParent);
+
+                if (!InvMasterBase.Instance.TryPlaceItem(this, out InventoryGrid? newGrid))
+                {
+                    RectTransform.position = returnPos;
+                    transform.SetParent(returnParent);
+                }
             }
         }
     }

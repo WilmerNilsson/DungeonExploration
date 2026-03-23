@@ -52841,6 +52841,8 @@ MonoBehaviour:
   playerCashSO: {fileID: 11400000, guid: ffae8245bc035e74c8db57a6b9da2ca3, type: 2}
   itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
   blacksmithUI: {fileID: 6404956813135150732}
+  dialogueContainers: []
+  RunCount: 0
 --- !u!4 &570447857
 Transform:
   m_ObjectHideFlags: 0
@@ -172266,6 +172268,14 @@ PrefabInstance:
     - target: {fileID: 2624911322868391488, guid: 46d006db2458e5243828141b74a812e6, type: 3}
       propertyPath: m_Name
       value: Town UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 2802758978755215620, guid: 46d006db2458e5243828141b74a812e6, type: 3}
+      propertyPath: SpawnItems.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2802758978755215620, guid: 46d006db2458e5243828141b74a812e6, type: 3}
+      propertyPath: 'SpawnItems.Array.data[0]'
+      value: BasicSword
       objectReference: {fileID: 0}
     - target: {fileID: 3213746008120322548, guid: 46d006db2458e5243828141b74a812e6, type: 3}
       propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.size

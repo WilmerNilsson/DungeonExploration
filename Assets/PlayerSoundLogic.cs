@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class PlayerSoundLogic : MonoBehaviour
 {
+
+    private float lastHealth;
     [SerializeField] private string sanityPath;
-    
     [SerializeField] private string hungerPath;
-    
+
     [SerializeField] private string exhaustionPath;
     [SerializeField] private string exhaustionParameter;
     [SerializeField] private float exhaustionMax;
@@ -14,7 +15,7 @@ public class PlayerSoundLogic : MonoBehaviour
     [SerializeField] private Vector2 exhaustionSpeed;
     [SerializeField] private float swingExhaustionDelta;
     
-    private float _exhaustion;
+    public float exhaustion;
     private HumanoidMovement.moveActions _currentMoveAction;
     
 
@@ -36,9 +37,9 @@ public class PlayerSoundLogic : MonoBehaviour
 
     public void ChangeExhaustion(float delta)
     {
-        _exhaustion += delta;
+        exhaustion += delta;
         if (!AudioManager.IsValid) return;
-        AudioManager.Instance.SetGlobalParameter(exhaustionParameter, _exhaustion);
+        AudioManager.Instance.SetGlobalParameter(exhaustionParameter, exhaustion);
     }
 
     private void FixedUpdate()
@@ -46,12 +47,14 @@ public class PlayerSoundLogic : MonoBehaviour
         if (!AudioManager.IsValid) return;
         if (_currentMoveAction == HumanoidMovement.moveActions.Sprinting)
         {
-            _exhaustion = Mathf.MoveTowards(_exhaustion, exhaustionMax, exhaustionSpeed.x * Time.fixedDeltaTime);
+            exhaustion = Mathf.MoveTowards(exhaustion, exhaustionMax, exhaustionSpeed.x * Time.fixedDeltaTime);
         }
         else
         {
-            _exhaustion = Mathf.MoveTowards(_exhaustion, 0f, exhaustionSpeed.y * Time.fixedDeltaTime);
+            exhaustion = Mathf.MoveTowards(exhaustion, 0f, exhaustionSpeed.y * Time.fixedDeltaTime);
         }
+        exhaustion = Mathf.Clamp(exhaustion, 0f, exhaustionMax);
+        AudioManager.Instance.SetGlobalParameter(exhaustionParameter, exhaustion);
     }
 
     public void OnMoveStateChange(HumanoidMovement.moveActions moveAction)
@@ -78,13 +81,21 @@ public class PlayerSoundLogic : MonoBehaviour
     {
         AudioManager.Instance.StopEvent(sanityPath, STOP_MODE.ALLOWFADEOUT, gameObject);
         AudioManager.Instance.ReleaseInstance(sanityPath, gameObject);
-        
+
         AudioManager.Instance.StopEvent(exhaustionPath, STOP_MODE.ALLOWFADEOUT, gameObject);
         AudioManager.Instance.ReleaseInstance(exhaustionPath, gameObject);
+    }
+
+    public void OnHealthChange(HealthData healthData)
+    {
+        if (!AudioManager.IsValid) return;
+        AudioManager.Instance.SetGlobalParameter("HP", healthData.CurrentHealth);
+        AudioManager.Instance.SetGlobalParameter("hpRatio", (float)healthData.CurrentHealth / healthData.MaxHealth);
     }
 
     private void OnDestroy()
     {
         OnDeath();
     }
+
 }

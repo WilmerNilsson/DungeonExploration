@@ -15,6 +15,9 @@ GameObject:
   - component: {fileID: -8854653704836512832}
   - component: {fileID: -3702027065416735679}
   - component: {fileID: -531105818329562413}
+  - component: {fileID: -8831588725022640878}
+  - component: {fileID: 1838118372927732208}
+  - component: {fileID: -5887198667769238081}
   m_Layer: 5
   m_Name: UIBookStarving
   m_TagString: Untagged
@@ -111,11 +114,24 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: -531105818329562413}
+          m_TargetAssemblyTypeName: OneShotPlayer, GameAssembly
+          m_MethodName: Play
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   descriptionText: Description(NoteStarving)
   descriptionTextIsLibraryName: 1
   textLibrary: {fileID: 11400000, guid: 1b1f8771b2a7c1940b19f8003b6ca232, type: 2}
   prefabID: Starving
-  <CashValue>k__BackingField: 0
+  <CashValueBuy>k__BackingField: 0
+  <CashValueSell>k__BackingField: 0
   OnStopDrag:
     m_PersistentCalls:
       m_Calls:
@@ -179,3 +195,58 @@ MonoBehaviour:
     gameObject: {fileID: 0}
     followObject: 0
     parametersToSet: []
+  - path: Inventory/Open_Journal
+    gameObject: {fileID: 0}
+    followObject: 0
+    parametersToSet: []
+--- !u!114 &-8831588725022640878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4294192794624958368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 758bebe94122d1c43bf7c54d1ac813de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetGraphic: {fileID: 2895719447209793109}
+  highlightCollor: {r: 0, g: 1, b: 1, a: 1}
+  supressFind: 0
+--- !u!114 &1838118372927732208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4294192794624958368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7704e0e9fcdd38459ccc708b9e6744b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationNameClick: UIItemJiggleAnimation
+  animationNameRelease: UIItemJiggleAnimation
+--- !u!95 &-5887198667769238081
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4294192794624958368}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 86371ff051eb84344aa01a786d38c513, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

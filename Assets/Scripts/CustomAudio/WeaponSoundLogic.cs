@@ -3,13 +3,19 @@ using UnityEngine;
 public class WeaponSoundLogic : MonoBehaviour
 {
     [SerializeField] private string swingPath;
+    [SerializeField] private string blockPath;
     [SerializeField] private string parryPath;
-    [SerializeField] private string metalHitPath;
-    [SerializeField] private string woodHitPath;
-    [SerializeField] private string stoneHitPath;
-    [SerializeField] private string fleshHitPath;
+    [SerializeField] private string breakPath;
+    [SerializeField] private string collisionPath;
+    [SerializeField] private string materialParameter;
+    private string[] _materialParameters;
+    private float[] _materialIndexes = new float[1];
 
-    private string _currentPath;
+    private void Start()
+    {
+        _materialParameters = new string[1] { materialParameter };
+        OcclusionHandler.AddToOcclusionList(gameObject);
+    }
 
     public void PlaySwingSound()
     {
@@ -17,10 +23,22 @@ public class WeaponSoundLogic : MonoBehaviour
         AudioManager.Instance.PlayOneShot(swingPath, null, null, gameObject);
     }
 
+    public void PlayBlockSound()
+    {
+        if(!AudioManager.IsValid) return;
+        AudioManager.Instance.PlayOneShot(blockPath, null, null, gameObject);
+    }
+
     public void PlayParrySound()
     {
         if(!AudioManager.IsValid) return;
         AudioManager.Instance.PlayOneShot(parryPath, null, null, gameObject);
+    }
+
+    public void PlayBreakSound()
+    {
+        if (!AudioManager.IsValid) return;
+        AudioManager.Instance.PlayOneShot(breakPath, null, null, gameObject);
     }
     
     public void OnCollision(string collisionTag, Vector3 weaponLocation)
@@ -29,22 +47,25 @@ public class WeaponSoundLogic : MonoBehaviour
         switch (collisionTag)
         {
             case "Wood":
-                _currentPath = woodHitPath;
+                _materialIndexes[0] = 0;
                 break;
             case "Stone":
-                _currentPath = stoneHitPath;
+                _materialIndexes[0] = 1;
                 break;
             case "Metal":
-                _currentPath = metalHitPath;
+                _materialIndexes[0] = 2;
                 break;
             case "Flesh":
-                _currentPath = fleshHitPath;
+                _materialIndexes[0] = 3;
                 break;
+            default:
+                return;
         }
-        AudioManager.Instance.PlayOneShot(_currentPath, null, null, gameObject);
+        AudioManager.Instance.PlayOneShot(collisionPath, _materialParameters, _materialIndexes, gameObject);
     }
-    
-    
-    
-    //TODO: swing sounds here?
+
+    private void OnDestroy()
+    {
+        OcclusionHandler.RemoveFromOcclusionList(gameObject);
+    }
 }

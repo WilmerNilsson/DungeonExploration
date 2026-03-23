@@ -9,6 +9,8 @@ public class DungeonSaveData
     public List<DroppedItem> DroppedItems = new();
     public List<Enemy> Enemies = new();
     public List<Container> Containers = new();
+    public List<int> EnabledObjects = new();
+    public List<MinimapComponentData> minimapComponentData = new();
     public bool Initialized = false;
 
     internal DungeonSaveData Clone()
@@ -16,9 +18,12 @@ public class DungeonSaveData
         DungeonSaveData cloneData = new();
         cloneData.DroppedItems = new(DroppedItems);
         cloneData.Enemies = new(Enemies);
-        cloneData.Containers = new(Containers.Count);
+        cloneData.EnabledObjects = new(EnabledObjects);
 
+        cloneData.Containers = new(Containers.Count);
         cloneData.Containers.AddRange(Containers.Select(i => i.Clone()));
+        
+        cloneData.minimapComponentData = new(minimapComponentData);
 
         cloneData.Initialized = Initialized;
         return cloneData;
@@ -27,13 +32,15 @@ public class DungeonSaveData
     [Serializable]
     public struct Enemy
     {
+        public int UniqueID;
         public Vector3 Position;
         public Quaternion Rotation;
         public int CurrentHP;
         public string PrefabID;
 
-        public Enemy(Vector3 pos, Quaternion rotation, int currentHP, string prefabID)
+        public Enemy(int uniqueID, Vector3 pos, Quaternion rotation, int currentHP, string prefabID)
         {
+            UniqueID = uniqueID;
             Position = pos;
             Rotation = rotation;
             CurrentHP = currentHP;

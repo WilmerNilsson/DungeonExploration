@@ -18,11 +18,18 @@ public abstract class InvMasterBase : MonoBehaviour
         get; private set;
     }
 
+    /// <summary>
+    /// if player is holding run
+    /// </summary>
+    public static bool DoQuickLoot;
+
     public static InvMasterBase Instance
     {
         get; private set;
     }
 #nullable enable
+
+    protected InventoryGrid? quickLootInventory;
 
     protected virtual void Awake()
     {
@@ -61,6 +68,34 @@ public abstract class InvMasterBase : MonoBehaviour
     public Vector2 GetSlotSize()
     {
         return PlayerInventory.GetSlotSize();
+    }
+
+    public virtual bool TryQuickLootItem(SimpleItem item)
+    {
+        if(!DoQuickLoot || quickLootInventory == null) return false;
+
+        if (item.GridIsCurrent(PlayerInventory) || item.GridIsCurrent(EquipmentGrid))
+        {
+            return quickLootInventory.TryInsertItem(item);
+        }
+        else
+        {
+            if (item.QuickLootToEquip)
+            {
+                if (EquipmentGrid.TryInsertItem(item))
+                {
+                    return true;
+                }
+                else
+                {
+                    return PlayerInventory.TryInsertItem(item);
+                }
+            }
+            else
+            {
+                return PlayerInventory.TryInsertItem(item);
+            }
+        }
     }
 
     public virtual bool TryPlaceItem(SimpleItem item, [NotNullWhen(true)]out InventoryGrid? inventoryGrid)

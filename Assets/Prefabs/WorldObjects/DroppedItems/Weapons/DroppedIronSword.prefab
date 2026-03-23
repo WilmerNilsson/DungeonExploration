@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1882501044998287893}
   - component: {fileID: 4137522555162847260}
   - component: {fileID: 3138500281842187793}
+  - component: {fileID: 486070602032244836}
   m_Layer: 13
   m_Name: DroppedIronSword
   m_TagString: Untagged
@@ -69,6 +70,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f58a3f488e2be34d94a421e17b6a95f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  graphicModel: {fileID: 1566121775148326657}
+  canInteract: 1
   OnInteract:
     m_PersistentCalls:
       m_Calls:
@@ -76,6 +79,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: ItemPickup, GameAssembly
         m_MethodName: PickUp
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 486070602032244836}
+        m_TargetAssemblyTypeName: OneShotPlayer, GameAssembly
+        m_MethodName: Play
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -131,6 +146,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &486070602032244836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2949275965137294258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc293c0446b8972448fbee1677af522d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emitterIsThisObject: 1
+  instructions:
+  - path: Interactables/Sword_Pickup
+    gameObject: {fileID: 0}
+    followObject: 0
+    parametersToSet: []
 --- !u!1001 &1835941035855143504
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -179,6 +212,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 659059b20c47f89409c519719afdbdc7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: a1e09cc023e579744bda3cd40d98172a, type: 2}
     - target: {fileID: 919132149155446097, guid: 659059b20c47f89409c519719afdbdc7, type: 3}
       propertyPath: m_Name
       value: Adventurer's_Sword
@@ -188,6 +225,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 659059b20c47f89409c519719afdbdc7, type: 3}
+--- !u!1 &1566121775148326657 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 659059b20c47f89409c519719afdbdc7, type: 3}
+  m_PrefabInstance: {fileID: 1835941035855143504}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2229330024006682043 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 659059b20c47f89409c519719afdbdc7, type: 3}

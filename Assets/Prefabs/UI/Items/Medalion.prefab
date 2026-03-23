@@ -14,6 +14,9 @@ GameObject:
   - component: {fileID: 6101294717193550440}
   - component: {fileID: 1261072922002475423}
   - component: {fileID: 5589452966782064776}
+  - component: {fileID: -6438223332966670537}
+  - component: {fileID: 5055744566690130736}
+  - component: {fileID: 5174499130211067970}
   m_Layer: 5
   m_Name: Medalion
   m_TagString: Untagged
@@ -98,7 +101,8 @@ MonoBehaviour:
   descriptionTextIsLibraryName: 1
   textLibrary: {fileID: 11400000, guid: 1b1f8771b2a7c1940b19f8003b6ca232, type: 2}
   prefabID: Medalion
-  <CashValue>k__BackingField: 4
+  <CashValueBuy>k__BackingField: 0
+  <CashValueSell>k__BackingField: 7
   OnStopDrag:
     m_PersistentCalls:
       m_Calls:
@@ -144,3 +148,54 @@ MonoBehaviour:
     gameObject: {fileID: 0}
     followObject: 0
     parametersToSet: []
+--- !u!95 &-6438223332966670537
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659243512019290888}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 86371ff051eb84344aa01a786d38c513, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5055744566690130736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659243512019290888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7704e0e9fcdd38459ccc708b9e6744b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationNameClick: UIItemJiggleAnimation
+  animationNameRelease: UIItemJiggleAnimation
+--- !u!114 &5174499130211067970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659243512019290888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 758bebe94122d1c43bf7c54d1ac813de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetGraphic: {fileID: 1474761305827880754}
+  highlightCollor: {r: 0, g: 1, b: 1, a: 1}
+  supressFind: 0

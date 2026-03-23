@@ -25,10 +25,9 @@ public class HumanoidController : MonoBehaviour
         movement.Jump();
     }
 
-    public void Crouch(bool isCrouching)
+    public void Crouch()
     {
-        this.isCrouching = isCrouching;
-        movement.Crouch(isCrouching);
+        this.isCrouching = movement.Crouch();
     }
 
     public void Rotate(Quaternion rotationQuaternion)
@@ -42,39 +41,23 @@ public class HumanoidController : MonoBehaviour
     }
 
     /// <summary>
-    /// should be used by player
+    /// Updates the start position of the attack
     /// </summary>
-    public void PrepareAttackUpdate(float angle)
+    public void HoldAttackUpdate(float angle)
     {
         animateAttack.HoldAttackUpdate(angle);
     }
 
     /// <summary>
-    /// should be used by player
+    /// Starts the Attack
     /// </summary>
-    public void PrepareAttack(bool start)
+    public bool TryAttack(float angle)
     {
-        animateAttack.HoldAttack(start);
-    }
-
-    /// <summary>
-    /// should be used by player
-    /// </summary>
-    public void Attack(float angle)
-    {
-        animateAttack.Attack(angle);
-    }
-
-    /// <summary>
-    /// should be used by enemy
-    /// </summary>
-    public void AttackWithChargeup(float angle)
-    {
-        animateAttack.AttackWithChargeupp(angle);
+        return animateAttack.TryAttack(angle);
     }
     
     /// <summary>
-    /// should be used by player
+    /// Toggles Blocking
     /// </summary>
     public void HoldBlock(bool start)
     {
@@ -82,7 +65,7 @@ public class HumanoidController : MonoBehaviour
     }
 
     /// <summary>
-    /// should be used by player
+    /// Updates the position of the Block
     /// </summary>
     public void HoldBlockUpdate(float angle)
     {
@@ -90,10 +73,10 @@ public class HumanoidController : MonoBehaviour
     }
 
     /// <summary>
-    /// should be used by enemy
+    /// Attempts to parry while blocking
     /// </summary>
-    public void BlockWithCharge(float angle)
+    public bool TryParry()
     {
-        animateAttack.BlockWithChargeup(angle);
+        return animateAttack.TryParry();
     }
 }

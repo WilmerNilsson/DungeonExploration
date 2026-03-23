@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,7 +19,9 @@ public class SaveFileManager
     public GlobalSettings GlobalSettings { get; private set; }
     // Save file settings are stuff like accesability options and cheats
     public SavefileSettings? SavefileSettings;
-    public int CurrentSavefileNr = 1;
+    public int CurrentSavefileNr = testSaveFileNr;
+    private SavefileData? tempSavefile;
+    private const int testSaveFileNr = 1337;
 
     public SaveFileManager()
     {
@@ -73,13 +77,46 @@ public class SaveFileManager
 
     public void PlaySavefile(int saveFileNr) //should also be a private one that takes savefile data
     {
+        PlaySavefile(saveFileNr, "JSaveFileTest");
+    }
+
+    public void PlaySavefile(int saveFileNr, string defaultScene)
+    {
         CurrentSavefileNr = saveFileNr;
 
         GlobalSettings.LastSaveFileNr = CurrentSavefileNr;
 
         SavefileData data = ReadSavefile(CurrentSavefileNr);
 
-        GameManagerSO.Instance.LoadSavefileScene(data);
+        if(data.SceneName == SavefileData.UnInitializedSceneName)
+        {
+            data.SceneName = defaultScene;
+        }
+
+        LoadSavefileScene(data);
+    }
+
+    public bool TryConsumeSavefileData([NotNullWhen(true)] out SavefileData? data)
+    {
+        if(tempSavefile == null && CurrentSavefileNr == testSaveFileNr)
+        {
+            tempSavefile = ReadSavefile(CurrentSavefileNr);
+        }
+
+        data = tempSavefile;
+        tempSavefile = null;
+        return data != null;
+    }
+
+    public void LoadSavefileScene(SavefileData data)
+    {
+        tempSavefile = data;
+        GameManagerSO.Instance.MoveToScene(data.SceneName);
+    }
+
+    public void LoadTempSaveFile(SavefileData data)
+    {
+        tempSavefile = data;
     }
 
     #region GlobalSettings
@@ -102,7 +139,7 @@ public class SaveFileManager
         SavefileData data = ReadSavefile(CurrentSavefileNr); //we prob want to keep track of journals in real time aswell
         Debug.Log("reading save to get full data, need to split it up better");
 
-        WorldDataCreator.CreateWorldData(out data.Dungeon, out data.PlayerSaveData);
+        SaveDataCreator.CreateWorldData(out data.Dungeon, out data.PlayerSaveData, out data.DialogueSaves);
         if (newScene != null)
         {
             data.SceneName = newScene;
@@ -133,11 +170,11 @@ public class SaveFileManager
             return;
         }
 #endif
-        TownDataCreator.TownData townData = TownDataCreator.GetTownData();
+        SaveDataCreator.TownData townData = SaveDataCreator.GetTownData();
 
         if(data.PlayerSaveData == null)
         {
-            data.PlayerSaveData = new(townData.Inventory, townData.Equipment, true, 1, 1, 1, 0);
+            data.PlayerSaveData = new(townData.Inventory, townData.Equipment, true, 1, 1, 0);
             data.PlayerGold = townData.Cash;
         }
         else
@@ -149,6 +186,8 @@ public class SaveFileManager
         }
 
         data.DonatedWeapons = townData.DonatedWeapons;
+
+        data.DialogueSaves = townData.DialogueSaveDatas;
 
         if (newScene != null)
         {
@@ -171,7 +210,6 @@ public class SaveFileManager
             Directory.CreateDirectory(Application.dataPath + SaveFileFolderName);
         }
     }
-
 
     /// <summary>
     /// writes data to storage
