@@ -21,6 +21,11 @@ public class RandomItemGiver : MonoBehaviour
         }
     }
 
+    public void StopSelfIntialize()
+    {
+        selfInitialize = false;
+    }
+
     public void Initialize(List<string> inLootPoolName, int inMinLoot, int inMaxLoot)
     {
         selfInitialize = false;

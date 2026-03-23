@@ -32,6 +32,8 @@ public class SaveFileHelperContainer : MonoBehaviour
         spawnTransform.position = data.Position;
         spawnTransform.rotation = data.Rotation;
 
+        randomItemGiver.StopSelfIntialize();
+
         if(data.Inventory.IsEmpty() && data.RefillChance != 0f && ShouldRespawn(data.RefillChance))
         {
             //note that we could stop self initialize even if it should not respawn, but since prefab will not have a loot pool it is fine not to.
