@@ -20,7 +20,7 @@ public class OneShotPlayer : MonoBehaviour
     {
         foreach (OneShotInstruction instruction in instructions)
         {
-            if ((instruction.gameObject || emitterIsThisObject) && AudioManager.Instance.IsEventOcclusion(instruction.path)) OcclusionHandler.AddToOcclusionList(gameObject);
+            if (instruction.gameObject || emitterIsThisObject) OcclusionHandler.AddToOcclusionList(gameObject);
         }
     }
 

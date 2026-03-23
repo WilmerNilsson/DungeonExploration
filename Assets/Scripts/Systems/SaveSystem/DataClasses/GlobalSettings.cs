@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [System.Serializable]
@@ -13,20 +12,4 @@ public class GlobalSettings
     //Languige is taken care of automaticly apparently
     //Gameplay
     public bool ConflictingControllsNeutralizes = false;
-
-    public int Fov = 80;
-
-#nullable enable
-
-    /// <summary>
-    /// sends out the new value
-    /// </summary>
-    public event Action<int>? OnFovChange;
-
-    public void ChangeFovWithNotify(int newFov)
-    {
-        Fov = newFov;
-
-        OnFovChange?.Invoke(Fov);
-    }
 }

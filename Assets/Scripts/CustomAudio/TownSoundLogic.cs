@@ -12,15 +12,12 @@ public class TownSoundLogic : MonoBehaviour
     [SerializeField] private string sellPath;
     //[SerializeField] private string bigPurchasePath;
     [SerializeField] private string doorbellPath;
-    [SerializeField] private string ambiancePath;
 
     private void Start()
     {
         if (!AudioManager.IsValid) return;
         AudioManager.Instance.CreateInstance(townMusicPath);
         AudioManager.Instance.StartEvent(townMusicPath);
-        AudioManager.Instance.CreateInstance(ambiancePath);
-        AudioManager.Instance.StartEvent(ambiancePath);
     }
 
     private int _location;
@@ -46,7 +43,7 @@ public class TownSoundLogic : MonoBehaviour
                 Debug.LogWarning(newLocation + " is not a valid location");
                 break;
         }
-        AudioManager.Instance.SetGlobalParameter("Location", _location);
+        AudioManager.Instance.SetParameter(townMusicPath, "Location", _location);
     }
 
     private void OnDestroy()
@@ -54,8 +51,6 @@ public class TownSoundLogic : MonoBehaviour
         if (!AudioManager.IsValid) return;
         AudioManager.Instance.StopEvent(townMusicPath, STOP_MODE.ALLOWFADEOUT);
         AudioManager.Instance.ReleaseInstance(townMusicPath);
-        AudioManager.Instance.StopEvent(ambiancePath, STOP_MODE.ALLOWFADEOUT);
-        AudioManager.Instance.ReleaseInstance(ambiancePath);
     }
     
     public void PlayBuySound()

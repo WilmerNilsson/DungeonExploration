@@ -7,22 +7,7 @@ public class UiItemHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
     [SerializeField] private Graphic targetGraphic;
     [SerializeField] private Color highlightCollor = Color.cyan;
 
-
-    private bool _colorFetched;
-    private Color _defaultCollor;
-    private Color defaultCollor
-    {
-        get
-        {
-            if(_colorFetched == false)
-            {
-                _defaultCollor = targetGraphic.color;
-                _colorFetched = true;
-            }
-
-            return _defaultCollor;
-        }
-    }
+    private Color defaultCollor;
 
 #if UNITY_EDITOR
     [SerializeField] private bool supressFind = false;
@@ -47,9 +32,9 @@ public class UiItemHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
     }
 #endif
 
-    private void OnDisable()
+    private void Start()
     {
-        targetGraphic.color = defaultCollor;
+        defaultCollor  = targetGraphic.color;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
