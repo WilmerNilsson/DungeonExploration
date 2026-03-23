@@ -11,16 +11,12 @@ public class BreakablePlank : MonoBehaviour,  IEnabledHelper
 
     public void EnableFromSave()
     {
-        Debug.Log("aaaaaaaaa");
-
         broken = true;
         gameObject.SetActive(false);
     }
 
     public bool IsEnabledForSave()
     {
-        Debug.Log("bbbbbbbb: " + broken);
-
         return broken;
     }
 }
