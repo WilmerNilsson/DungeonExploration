@@ -9,12 +9,12 @@ public class UIGamepadHandler : MonoBehaviour
     [SerializeField] private EventSystem eventSystem;
     private PlayerInput _playerInput;
     private string ControlScheme;
-    public static UIGamepadHandler Instance;
+    public static UIGamepadHandler instance;
     private List<GameObject> buttons = new List<GameObject>();
 
     private void Awake()
     {
-        Instance = this;
+        instance = this;
         _playerInput = FindAnyObjectByType<PlayerInput>();
     }
 

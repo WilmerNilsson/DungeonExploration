@@ -6,23 +6,20 @@ using UnityEngine.UI;
 
 public class GraphicsSettingsMaster : MonoBehaviour
 {
-    [SerializeField] private GameObject warningWindow;
-    [SerializeField] private TMP_Dropdown resolutionDropdown;
-    [SerializeField] private TMP_Dropdown screenmodeDropdown;
-    [SerializeField] private TMP_InputField framerateInputField;
-    [SerializeField] private TMP_InputField fovInputField;
-    [SerializeField] private int minFov = 30;
-    [SerializeField] private int maxFov = 140;
+    [SerializeField] GameObject warningWindow;
+    [SerializeField] TMP_Dropdown resolutionDropdown;
+    [SerializeField] TMP_Dropdown screenmodeDropdown;
+    [SerializeField] TMP_InputField framerateInputField;
 
-    private IUIController uIController;
+    IUIController uIController;
 
-    private bool hasMadeChanges = false;
+    bool hasMadeChanges = false;
 
-    private Resolution oldResolution = new Resolution();
-    private Resolution newResolution = new Resolution();
+    Resolution oldResolution = new Resolution();
+    Resolution newResolution = new Resolution();
 
-    private FullScreenMode oldFullScreenMode;
-    private FullScreenMode newFullScreenMode;
+    FullScreenMode oldFullScreenMode;
+    FullScreenMode newFullScreenMode;
 
     private void Start()
     {
@@ -31,12 +28,7 @@ public class GraphicsSettingsMaster : MonoBehaviour
         ResetSettings();
     }
 
-    private void ResetSettings()
-    {
-        fovInputField.SetTextWithoutNotify(GameManagerSO.Instance.SavefileManager.GlobalSettings.Fov.ToString());
-    }
-
-    private void ResetSettingsOld()
+    void ResetSettings()
     {
         oldResolution.height = Screen.height;
         oldResolution.refreshRateRatio = Screen.currentResolution.refreshRateRatio;
@@ -129,30 +121,6 @@ public class GraphicsSettingsMaster : MonoBehaviour
 
         warningWindow.SetActive(false);
         uIController.ChangeCanUnpause(true);
-    }
-
-    public void ChangeFov(string newFov)
-    {
-        if(int.TryParse(newFov, out int fovInt))
-        {
-            ChangeFov(fovInt);
-        }
-    }
-
-    private void ChangeFov(int newFov)
-    {
-        if(newFov < minFov)
-        {
-            newFov = minFov;
-            fovInputField.SetTextWithoutNotify(newFov.ToString());
-        }
-        else if(newFov > maxFov)
-        {
-            newFov = maxFov;
-            fovInputField.SetTextWithoutNotify(newFov.ToString());
-        }
-
-        GameManagerSO.Instance.SavefileManager.GlobalSettings.ChangeFovWithNotify(newFov);
     }
 
     public void ChangeResolutionByInt(int value)

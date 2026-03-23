@@ -160,7 +160,10 @@ public class InGameUIController : MonoBehaviour, IUIController
                 newScreen.SetActive(true);
 
                 currentScreen = newScreen;
-                OnChangeScreenAction?.Invoke();
+                if(OnChangeScreenAction != null)
+                {
+                    OnChangeScreenAction();
+                }
             }
         }
     }

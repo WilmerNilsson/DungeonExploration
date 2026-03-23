@@ -17,7 +17,6 @@ public class Sanity : MonoBehaviour
     [SerializeField] private bool ResetOnAwake = true;
     [SerializeField] private int damageToSanityMod = 10;
     [SerializeField] private SanityLightProbe sanityLightProbe;
-    [SerializeField, Tooltip("brightness level"), Min(0.01f)] private float lightThreshold;
 
     Coroutine sanityTick;
 
@@ -40,15 +39,11 @@ public class Sanity : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        ResetSanityTick();
         if (ResetOnAwake)
         {
             ResetSanity();
         }
-    }
-
-    private void Start()
-    {
-        ResetSanityTick();
     }
 
     /// <summary>
@@ -56,7 +51,7 @@ public class Sanity : MonoBehaviour
     /// </summary>
     private bool IsInLightCheck()
     {
-        return sanityLightProbe.Sample() > lightThreshold;
+        return sanityLightProbe.Sample() > 0f;
     }
 
     private void ResetSanityTick()

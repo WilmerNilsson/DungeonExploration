@@ -11,16 +11,13 @@ public class ItemPickup : MonoBehaviour
     }
 
 #if DEBUG && UNITY_EDITOR
-
-    private const string SkipPrefabWarninName = "BaseWorldBook";
-
     private void OnValidate()
     {
         if (itemLibrary == null)
         {
             Debug.LogWarning("inventory library is null", this);
         }
-        else if(gameObject.name != SkipPrefabWarninName && !itemLibrary.TryGetItemPairByName(prefabID, out _))
+        else if(!itemLibrary.TryGetItemPairByName(prefabID, out _))
         {
             Debug.LogWarning("item library had no item by name: " + prefabID, this);
         }
