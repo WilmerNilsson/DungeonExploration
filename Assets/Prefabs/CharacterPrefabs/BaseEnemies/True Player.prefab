@@ -293,6 +293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe29fd6fdb86bf94784e00448707c5ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAlive: 1
   movement: {fileID: 6844093797709260482}
   rotator: {fileID: 4104227061447592378}
   interact: {fileID: 7891534330549021677}
@@ -441,6 +442,7 @@ MonoBehaviour:
   lastGroundedPosition: {x: 0, y: 0, z: 0}
   doJump: 0
   grounded: 0
+  crouching: 0
 --- !u!114 &4104227061447592378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,7 +507,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87c75916acf9ef24e8dd65d9ef0c0bbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
 --- !u!114 &646823766397640639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -537,7 +538,7 @@ MonoBehaviour:
   _currentHealth: 0
   _maxHealth: 1
   minimumFallDamageHeight: 3
-  fallDamageMultiplier: 1
+  fallDamageMultiplier: 3
   DurabilityDamage: 0
   OnChangeHealths:
     m_PersistentCalls:
