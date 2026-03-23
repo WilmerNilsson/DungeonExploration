@@ -12,8 +12,8 @@ public class Rope : MonoBehaviour, IEnabledHelper
     public UnityEvent<bool> onTryActivateRope;
     
     private Vector3 targetPosition;
-    private Vector3 PlayerPosition => PlayerTrackerSingleton.Instance.player.transform.position;
-    private CharacterController PlayerController => PlayerTrackerSingleton.Instance.player.gameObject.GetComponent<CharacterController>();
+    private Vector3 PlayerPosition => PlayerTrackerSingleton.Instance.playerGameObject.transform.position;
+    private CharacterController PlayerController => PlayerTrackerSingleton.Instance.playerGameObject.gameObject.GetComponent<CharacterController>();
     private bool foundPlayer;
     private bool isEnabled = false;
 
@@ -66,7 +66,7 @@ public class Rope : MonoBehaviour, IEnabledHelper
                 yield return new WaitForSecondsRealtime(1); // 1 second as that is how long it takes for the fade to become black
                 // Teleport the Player
                 PlayerController.enabled = false;
-                PlayerTrackerSingleton.Instance.player.transform.position = targetPosition;
+                PlayerTrackerSingleton.Instance.playerGameObject.transform.position = targetPosition;
                 PlayerController.enabled = true;
             }
         }

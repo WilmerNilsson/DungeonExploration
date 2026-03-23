@@ -41,7 +41,7 @@ public class WeaponSoundLogic : MonoBehaviour
         AudioManager.Instance.PlayOneShot(breakPath, null, null, gameObject);
     }
     
-    public void OnCollision(string collisionTag, Vector3 weaponLocation)
+    public void OnCollision(string collisionTag, Vector3 weaponLocation, Vector3 normal)
     {
         if(!AudioManager.IsValid) return;
         switch (collisionTag)

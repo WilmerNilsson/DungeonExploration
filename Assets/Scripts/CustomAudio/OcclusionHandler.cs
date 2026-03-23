@@ -85,15 +85,25 @@ public class OcclusionHandler : MonoBehaviour
     private int _currentTickTime;
 
     private static Dictionary<GameObject, OcclusionData> OcclusionObjects = new Dictionary<GameObject, OcclusionData>();
-    private Dictionary<GameObject, float> _distances = new Dictionary<GameObject, float>();
 
     private struct ObjectAndDistance
     {
         public GameObject Obj;
         public float Distance;
-    } 
+    }
+
+    private ObjectAndDistance _tempObjAndDistance;
     
     private List<ObjectAndDistance> _objectsAndDistances = new List<ObjectAndDistance>();
+
+    private bool ContainsObject(GameObject go)
+    {
+        foreach (var obj in _objectsAndDistances)
+        {
+            if(obj.Obj == go) return true;
+        }
+        return false;
+    }
 
     private float _tempDistance;
     
@@ -124,7 +134,7 @@ public class OcclusionHandler : MonoBehaviour
             {
                 Profiler.BeginSample("Initial Tick");
                 CreateDistanceList();
-                SortDistances();
+                InsertSort();
                 InitializeHitDatas();
                 DoWallCheck();
                 InitialOcclusionStep();
@@ -165,21 +175,26 @@ public class OcclusionHandler : MonoBehaviour
     {
         Profiler.BeginSample("Create Distance List");
         _objectsInMinDistance = 0;
-        _objectsAndDistances.Clear();
-        foreach (var kvp in OcclusionObjects)
+        if (_objectsAndDistances.Count != OcclusionObjects.Count)
         {
-            _tempDistance = Vector3.Distance(kvp.Key.transform.position, AudioManager.Listener.transform.position);
-            if (!(_tempDistance > minDistanceForRaycast)) 
+            _objectsAndDistances.Clear();
+            foreach (var kvp in OcclusionObjects)
             {
-                kvp.Value.WithinMinDistance = true;
-                _objectsInMinDistance++;
+                kvp.Value.Distance = Vector3.Distance(kvp.Key.transform.position, Listener.transform.position);
+                _objectsAndDistances.Add(new ObjectAndDistance() { Obj = kvp.Key, Distance = kvp.Value.Distance });
             }
-            else
+        }
+        else
+        {
+            for (int i = 0; i < _objectsAndDistances.Count; i++)
             {
-                kvp.Value.WithinMinDistance = false;
+                _tempObjAndDistance = _objectsAndDistances[i];
+                _tempObjAndDistance.Distance = Vector3.Distance(_objectsAndDistances[i].Obj.transform.position, Listener.transform.position);
+                if (!Mathf.Approximately(_objectsAndDistances[i].Distance, _tempDistance))
+                {
+                    _objectsAndDistances[i] = _tempObjAndDistance;
+                }
             }
-            _objectsAndDistances.Add(new ObjectAndDistance { Obj = kvp.Key, Distance = _tempDistance });
-            if (debugMsg) Debug.Log("Adding " + kvp.Key.name + " to Distance List");
         }
         Profiler.EndSample();
     }
@@ -187,7 +202,7 @@ public class OcclusionHandler : MonoBehaviour
     //Sortera listan 
     private void SortDistances()
     {
-        Profiler.BeginSample("Sorting distances");
+        Profiler.BeginSample("Sorting distances (Select)");
         if (debugMsg) Debug.Log("Sorting " + _objectsAndDistances.Count + " distances");
         for (int i = 0; i < _objectsAndDistances.Count - 1; i++)
         {
@@ -203,6 +218,23 @@ public class OcclusionHandler : MonoBehaviour
             }
             _objectsAndDistances[min] = _objectsAndDistances[i];
             _objectsAndDistances[i] = temp;
+        }
+        Profiler.EndSample();
+    }
+
+    private void InsertSort()
+    {
+        Profiler.BeginSample("Insert");
+
+        for (int i = 1; i < _objectsAndDistances.Count; i++)
+        {
+            for (int j = i; 0 < j && _objectsAndDistances[j].Distance < _objectsAndDistances[j - 1].Distance; j--)
+            {
+                ObjectAndDistance temp = _objectsAndDistances[j - 1];
+                _objectsAndDistances[j - 1] = _objectsAndDistances[j];
+                _objectsAndDistances[j] = temp;
+                //(integers[j - 1], integers[j]) = (integers[j], integers[j - 1]);
+            }
         }
         Profiler.EndSample();
     }
