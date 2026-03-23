@@ -25,10 +25,9 @@ public class HumanoidController : MonoBehaviour
         movement.Jump();
     }
 
-    public void Crouch(bool isCrouching)
+    public void Crouch()
     {
-        this.isCrouching = isCrouching;
-        movement.Crouch(isCrouching);
+        this.isCrouching = movement.Crouch();
     }
 
     public void Rotate(Quaternion rotationQuaternion)

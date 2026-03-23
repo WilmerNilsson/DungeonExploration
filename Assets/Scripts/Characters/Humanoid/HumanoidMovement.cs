@@ -13,6 +13,8 @@ public class HumanoidMovement : MonoBehaviour
     [SerializeField] CharacterController CC;
     [SerializeField] Animator animator;
     private Transform bodyTransform;
+    private float baseHeight;
+    private float crouchHeight = 2;
     
     [Header("Stats")]
     [SerializeField] private float moveSpeed = 1;
@@ -30,6 +32,7 @@ public class HumanoidMovement : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool doJump;
     [SerializeField] private bool grounded;
+    [SerializeField] private bool crouching = false;
     
     private bool supressMoveFrame = false;
 
@@ -53,6 +56,7 @@ public class HumanoidMovement : MonoBehaviour
     {
         bodyTransform = animator.gameObject.transform;
         lastGroundedPosition = bodyTransform.position;
+        baseHeight = CC.height;
     }
 
     private void FixedUpdate()
@@ -161,11 +165,11 @@ public class HumanoidMovement : MonoBehaviour
             }
             if (newAction == moveActions.Sprinting)
             {
-                animator.SetFloat("RunSpeed", 2);
+                animator.SetBool("Running", true);
             }
             else
             {
-                animator.SetFloat("RunSpeed", 1);
+                animator.SetBool("Running", false);
             }
             currentAction = newAction; 
             OnMoveActionChange?.Invoke(currentAction);
@@ -184,21 +188,25 @@ public class HumanoidMovement : MonoBehaviour
         doJump = CC.isGrounded;
     }
 
-    public void Crouch(bool isCrouching)
+    public bool Crouch()
     {
-        if (isCrouching && grounded)
+        if (!crouching && grounded)
         {
-            CC.height = 2f;
+            CC.height = crouchHeight;
             CC.center = new Vector3(0, 2f, 0);
+            crouching = true;
         }
-        else if (!Physics.Raycast(transform.position, Vector3.up, 0.1f, LayerMask.GetMask("Ground", "Walls", "Roof")))
+        else if (!Physics.Raycast(bodyTransform.position, Vector3.up, baseHeight, LayerMask.GetMask("Ground", "Walls", "Roof")))
         {
             CC.center = new Vector3(0, 1.5f, 0);
-            CC.height = 3f;
+            CC.height = baseHeight;
+            crouching = false;
             if (Physics.Raycast(transform.position + CC.center, Vector3.down, 1f, LayerMask.GetMask("Ground", "Walls", "Roof")))
             {
                 CC.Move(new Vector3(0, 1, 0));
             }
         }
+
+        return crouching;
     }
 }
