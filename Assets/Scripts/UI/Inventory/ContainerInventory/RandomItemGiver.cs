@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+[RequireComponent(typeof(InventoryGrid))]
 public class RandomItemGiver : MonoBehaviour
 {
     private InventoryGrid inventoryGrid;
@@ -10,23 +11,47 @@ public class RandomItemGiver : MonoBehaviour
     [SerializeField] private List<string> lootPoolName;
     [SerializeField] private Vector2Int lootAmountRange = new Vector2Int(0, 1);
 
-    private void Awake()
+    private bool selfInitialize = true;
+
+    private void Start()
     {
-        if (TryGetComponent(out inventoryGrid))
+        if (selfInitialize && TryGetComponent(out inventoryGrid))
         {
             GiveRandomLoot(lootPoolName);
         }
-        else
-        {
-            Debug.LogWarning("No InventoryGrid found", gameObject);
-        }
+    }
+
+    public void Initialize(List<string> inLootPoolName, int inMinLoot, int inMaxLoot)
+    {
+        selfInitialize = false;
+
+        inventoryGrid = GetComponent<InventoryGrid>();
+
+        lootPoolName = inLootPoolName;
+        lootAmountRange = new(inMinLoot, inMaxLoot);
+
+        GiveRandomLoot(lootPoolName);
+    }
+
+    /// <summary>
+    /// not a copy, be carefull not to change anything
+    /// </summary>
+    public List<string> GetLootPoolNames()
+    {
+        return lootPoolName;
+    }
+
+    public Vector2Int GetLootAmountRange()
+    {
+        return lootAmountRange;
     }
 
     private void GiveRandomLoot(List<string> lootName)
     {
         if (lootName.Count == 0)
         {
-            Debug.LogWarning("This chest has no loot pool", this);
+            //commenting this out since 
+            //Debug.LogWarning("This chest has no loot pool", this);
             return;
         }
         List<LootPool> currentLootPools = new List<LootPool>();
