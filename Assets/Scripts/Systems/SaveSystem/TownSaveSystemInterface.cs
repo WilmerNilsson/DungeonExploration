@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class TownSaveSystemInterface : MonoBehaviour
 {
+    [SerializeField] private List<string> defaultDonatedWeapons;
     [SerializeField] private PlayerCashSO playerCashSO;
     [SerializeField] private ItemLibrarySO itemLibrary;
     [SerializeField] private BlacksmithUI blacksmithUI;
@@ -15,6 +16,16 @@ public class TownSaveSystemInterface : MonoBehaviour
     {
         if (playerCashSO == null) Debug.LogError("player cash is null", this);
         if (itemLibrary == null) Debug.Log("item library is null", this);
+        else
+        {
+            foreach (string s in defaultDonatedWeapons)
+            {
+                if (!itemLibrary.TryGetItemPairByName(s, out _))
+                {
+                    Debug.LogWarning(s + " is not a item name", this);
+                }
+            }
+        }
         if (blacksmithUI == null) Debug.Log("BlacksmitUI is null", this);
         if (dialogueContainers.Count == 0) Debug.Log("DialogueContainers is null", this);
     }
@@ -25,6 +36,11 @@ public class TownSaveSystemInterface : MonoBehaviour
         if(GameManagerSO.Instance.SavefileManager.TryConsumeSavefileData(out SavefileData? data))
         {
             //if world is null let it throw error
+
+            if(data.DonatedWeapons.Count == 0)
+            {
+                data.DonatedWeapons = defaultDonatedWeapons;
+            }
 
             playerCashSO.SetCash(data.PlayerGold);
             blacksmithUI.GiveSaveData(data.DonatedWeapons);

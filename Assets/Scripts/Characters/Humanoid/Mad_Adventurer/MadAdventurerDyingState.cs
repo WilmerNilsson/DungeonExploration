@@ -15,6 +15,7 @@ public class MadAdventurerDyingState : MadAventurerBaseState
     public override void Enter()
     {
         base.Enter();
+        MyMadAdventurerStateMachine.Controller.SetAlive(false);
         Stop();
     }
 

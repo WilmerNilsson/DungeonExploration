@@ -3,19 +3,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(InventoryGrid))]
 public class RandomItemGiver : MonoBehaviour
 {
-    private InventoryGrid inventoryGrid;
+    [SerializeField] private InventoryGrid inventoryGrid;
     [SerializeField] private LootPoolSO lootPool;
     [SerializeField] private List<string> lootPoolName;
     [SerializeField] private Vector2Int lootAmountRange = new Vector2Int(0, 1);
 
     private bool selfInitialize = true;
 
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        if (inventoryGrid == null) Debug.LogWarning("inventory grid is null", this);
+        if (lootPool == null) Debug.LogWarning("loot pool is null", this);
+
+        if(lootAmountRange.x < 0)
+        {
+            Debug.LogWarning("loot amount range min value is less than 0",this);
+            lootAmountRange.x = 0;
+        }
+        if(lootAmountRange.y < lootAmountRange.x)
+        {
+            Debug.LogWarning("loot amount range max is less than min", this);
+            lootAmountRange.y = lootAmountRange.x;
+        }
+    }
+#endif
+
     private void Start()
     {
-        if (selfInitialize && TryGetComponent(out inventoryGrid))
+        if (selfInitialize)
         {
             GiveRandomLoot(lootPoolName);
         }
@@ -29,8 +47,6 @@ public class RandomItemGiver : MonoBehaviour
     public void Initialize(List<string> inLootPoolName, int inMinLoot, int inMaxLoot)
     {
         selfInitialize = false;
-
-        inventoryGrid = GetComponent<InventoryGrid>();
 
         lootPoolName = inLootPoolName;
         lootAmountRange = new(inMinLoot, inMaxLoot);
