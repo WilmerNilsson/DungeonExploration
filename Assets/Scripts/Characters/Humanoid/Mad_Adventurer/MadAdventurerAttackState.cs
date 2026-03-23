@@ -20,7 +20,6 @@ public class MadAdventurerAttackState : MadAventurerBaseState
     public override void Update()
     {
         target = MyMadAdventurerStateMachine.PlayerTransform.position;
-        MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((target-MyMadAdventurerStateMachine.transform.position)));
         
         distance = Vector3.Distance(MyMadAdventurerStateMachine.transform.position, MyMadAdventurerStateMachine.PlayerTransform.position);
 
@@ -30,16 +29,16 @@ public class MadAdventurerAttackState : MadAventurerBaseState
         }
         else if (distance > maxMeleeRange)
         {
-            MyMadAdventurerStateMachine.Controller.Move(Vector3.forward);
+            Move(Vector3.forward);
         }
         else if (distance > minMeleeRange) // just smack :)
         {
             TryAttack();
-            Stop();
+            Move(Vector3.zero);
         }
         else
         {
-            MyMadAdventurerStateMachine.Controller.Move(Vector3.back);
+            Move(Vector3.back);
         }
     }
 

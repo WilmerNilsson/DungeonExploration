@@ -17,7 +17,7 @@ public class HumanoidController : MonoBehaviour
     public void Move(Vector3 direction)
     {
         direction.y = 0;
-        movement.Move(direction.normalized);
+        movement.Move(direction);
     }
 
     public void Jump()
