@@ -5,7 +5,8 @@ using UnityEngine;
 public class MadAdventurerAttackState : MadAventurerBaseState
 {
     [SerializeField, Tooltip("How long it should wait hold attacks"), Min(0f)] public float holdTime;
-    [SerializeField, Tooltip("max distance to target before Chasing"), Min(1f)] public float maxMeleeRange = 2.5f;
+    [SerializeField, Tooltip("max distance to target before Chasing"), Min(1f)] public float chaseRange = 4f;
+    [SerializeField, Tooltip("max distance to target before moving closer"), Min(1f)] public float maxMeleeRange = 2.5f;
     [SerializeField, Tooltip("minimum distance to target"), Min(0f)] private float minMeleeRange = 0.5f;
 
     private float distance;
@@ -22,15 +23,36 @@ public class MadAdventurerAttackState : MadAventurerBaseState
         MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((target-MyMadAdventurerStateMachine.transform.position)));
         
         distance = Vector3.Distance(MyMadAdventurerStateMachine.transform.position, MyMadAdventurerStateMachine.PlayerTransform.position);
-        
-        if (distance > maxMeleeRange)
+
+        if (distance > chaseRange)
         {
             MyMadAdventurerStateMachine.Transit(MyMadAdventurerStateMachine.ChasingState);
         }
-        else if (distance > minMeleeRange && !MyMadAdventurerStateMachine.isAttacking) // just smack :)
+        else if (distance > maxMeleeRange)
+        {
+            MyMadAdventurerStateMachine.Controller.Move(Vector3.forward);
+        }
+        else if (distance > minMeleeRange) // just smack :)
+        {
+            TryAttack();
+            Stop();
+        }
+        else
+        {
+            MyMadAdventurerStateMachine.Controller.Move(Vector3.back);
+        }
+    }
+
+    private bool TryAttack()
+    {
+        if (MyMadAdventurerStateMachine.isAttacking)
+        {
+            return false;
+        }
+        else
         {
             MyMadAdventurerStateMachine.Attack();
+            return true;
         }
-        Stop();
     }
 }

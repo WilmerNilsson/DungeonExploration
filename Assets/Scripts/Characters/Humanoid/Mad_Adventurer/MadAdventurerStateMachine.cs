@@ -134,10 +134,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
 
     public void Attack()
     {
-        if (!isAttacking)
-        {
-            currentAttack = StartCoroutine(AttackRoutine());
-        }
+        currentAttack = StartCoroutine(AttackRoutine());
     }
 
     public void Die()
