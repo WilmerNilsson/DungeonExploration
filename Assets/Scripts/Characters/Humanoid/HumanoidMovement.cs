@@ -74,6 +74,10 @@ public class HumanoidMovement : MonoBehaviour
 
         if (doJump)
         {
+            if (crouching)
+            {
+                Crouch();
+            }
             OnJump.Invoke();
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
             doJump = false;
