@@ -92,6 +92,8 @@ public class UIWeapon : MonoBehaviour
     {
         if(worldWeapon != null)
         {
+            worldWeapon.OnBreak.RemoveListener(Unequip);
+
             _durability = worldWeapon.Durability;
             worldWeapon = null;
         }
@@ -105,6 +107,7 @@ public class UIWeapon : MonoBehaviour
     public void ConnectToWeapon(Weapon weaponScript)
     {
         worldWeapon = weaponScript;
+        worldWeapon.OnBreak.AddListener(Unequip);
         worldWeapon.Durability = _durability;
         UpdateDurabilityText();
         worldWeapon.OnDamage.AddListener(UpdateDurabilityText);
