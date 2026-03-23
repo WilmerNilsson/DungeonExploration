@@ -16,7 +16,7 @@ public class SaveFileManager
     private const string GlobalSettingsName = "GlobalSettings.txt";
 
     // global settings is for things like audio and languige
-    public GlobalSettings GlobalSettings { get; private set; }
+    public readonly GlobalSettings GlobalSettings;
     // Save file settings are stuff like accesability options and cheats
     public SavefileSettings? SavefileSettings;
     public int CurrentSavefileNr = testSaveFileNr;

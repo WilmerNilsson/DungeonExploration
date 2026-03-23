@@ -2,6 +2,7 @@
 
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(HumanoidController),typeof(HumanoidMovement),typeof(HumanoidRotator))]
@@ -9,6 +10,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerUIController),typeof(OneShotPlayer))]
 public class PlayerController : MonoBehaviour
 {
+    public UnityEvent onLightTorch;
+    public UnityEvent onSnuffTorch;
     [SerializeField] private HumanoidController controller;
     
     [SerializeField] private float mouseSensitivity = 0.1f;
@@ -17,6 +20,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 lookVector;
     private Vector2 lookInput;
     private Vector3 moveVector;
+
+    private bool torchIsLit = true;
 
     [SerializeField]private bool lockedMovement = false;
     [SerializeField]private bool lockedCamera = false;
@@ -76,7 +81,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         GameManagerSO.Instance.OnLockMouse -= LockMovement;
         GameManagerSO.Instance.OnLockCamera -= LockCamera;
@@ -155,7 +160,6 @@ public class PlayerController : MonoBehaviour
                 if (controller.TryParry())
                 {
                     startedBlock = false;
-                    controller.HoldBlock(false);
                     GameManagerSO.Instance.LockCamera(false);
                 }
             }
@@ -195,6 +199,24 @@ public class PlayerController : MonoBehaviour
             mouseEnd = Mouse.current.position.ReadValue();
             startedBlock = false;
             GameManagerSO.Instance.LockCamera(false);
+        }
+    }
+
+    public void OnTorch(InputAction.CallbackContext context)
+    {
+        if (lockedMovement) return;
+        if (context.performed)
+        {
+            if (torchIsLit)
+            {
+                torchIsLit = false;
+                onSnuffTorch.Invoke();
+            }
+            else
+            {
+                torchIsLit = true;
+                onLightTorch.Invoke();
+            }
         }
     }
 

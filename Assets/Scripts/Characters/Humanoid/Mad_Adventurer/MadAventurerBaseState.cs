@@ -31,7 +31,7 @@ public abstract class MadAventurerBaseState
 
     public virtual void Update()
     {
-        Move();
+        Move(Vector3.forward);
     }
     
     protected virtual void OnHit(){}
@@ -47,12 +47,18 @@ public abstract class MadAventurerBaseState
         MyMadAdventurerStateMachine.Controller.Move(Vector3.zero);
     }
 
-    protected virtual void Move()
+    /// <summary>
+    /// Rotates to look at the target and then moves forward
+    /// </summary>
+    protected virtual void Move(Vector3 direction)
     {
         MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((target-MyMadAdventurerStateMachine.transform.position)));
-        MyMadAdventurerStateMachine.Controller.Move(Vector3.forward);
+        MyMadAdventurerStateMachine.Controller.Move(direction);
     }
     
+    /// <summary>
+    /// Calculates a new path to the target position
+    /// </summary>
     protected void FindPath(Vector3 pos)
     {
         pathIndex = 1;

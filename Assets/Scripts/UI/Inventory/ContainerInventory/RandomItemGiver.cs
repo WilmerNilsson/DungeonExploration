@@ -5,28 +5,74 @@ using Random = UnityEngine.Random;
 
 public class RandomItemGiver : MonoBehaviour
 {
-    private InventoryGrid inventoryGrid;
+    [SerializeField] private InventoryGrid inventoryGrid;
     [SerializeField] private LootPoolSO lootPool;
     [SerializeField] private List<string> lootPoolName;
     [SerializeField] private Vector2Int lootAmountRange = new Vector2Int(0, 1);
 
-    private void Awake()
+    private bool selfInitialize = true;
+
+#if UNITY_EDITOR
+    private void OnValidate()
     {
-        if (TryGetComponent(out inventoryGrid))
+        if (inventoryGrid == null) Debug.LogWarning("inventory grid is null", this);
+        if (lootPool == null) Debug.LogWarning("loot pool is null", this);
+
+        if(lootAmountRange.x < 0)
+        {
+            Debug.LogWarning("loot amount range min value is less than 0",this);
+            lootAmountRange.x = 0;
+        }
+        if(lootAmountRange.y < lootAmountRange.x)
+        {
+            Debug.LogWarning("loot amount range max is less than min", this);
+            lootAmountRange.y = lootAmountRange.x;
+        }
+    }
+#endif
+
+    private void Start()
+    {
+        if (selfInitialize)
         {
             GiveRandomLoot(lootPoolName);
         }
-        else
-        {
-            Debug.LogWarning("No InventoryGrid found", gameObject);
-        }
+    }
+
+    public void StopSelfIntialize()
+    {
+        selfInitialize = false;
+    }
+
+    public void Initialize(List<string> inLootPoolName, int inMinLoot, int inMaxLoot)
+    {
+        selfInitialize = false;
+
+        lootPoolName = inLootPoolName;
+        lootAmountRange = new(inMinLoot, inMaxLoot);
+
+        GiveRandomLoot(lootPoolName);
+    }
+
+    /// <summary>
+    /// not a copy, be carefull not to change anything
+    /// </summary>
+    public List<string> GetLootPoolNames()
+    {
+        return lootPoolName;
+    }
+
+    public Vector2Int GetLootAmountRange()
+    {
+        return lootAmountRange;
     }
 
     private void GiveRandomLoot(List<string> lootName)
     {
         if (lootName.Count == 0)
         {
-            Debug.LogWarning("This chest has no loot pool", this);
+            //commenting this out since 
+            //Debug.LogWarning("This chest has no loot pool", this);
             return;
         }
         List<LootPool> currentLootPools = new List<LootPool>();

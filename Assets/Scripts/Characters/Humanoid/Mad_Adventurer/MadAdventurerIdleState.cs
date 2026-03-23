@@ -55,7 +55,7 @@ public class MadAdventurerIdleState : MadAventurerBaseState
             {
                 walkTime -= Time.deltaTime;
                 target = GetNextCorner();
-                Move();
+                Move(Vector3.forward);
             }
         }
         else

@@ -15,8 +15,6 @@ public class MadAdventurerStateMachine : MonoBehaviour
     [SerializeField] public DetectPlayer Vision;
     
     [Header("Player detection")] 
-    [SerializeField] private float maxSightRange;
-    [SerializeField] private float maxSoundRange;
     [SerializeField] private float sightThreshold;
     [SerializeField] private float soundThreshold;
     
@@ -60,7 +58,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
         {
             try
             {
-                PlayerTransform = PlayerTrackerSingleton.Instance.player.transform;
+                PlayerTransform = PlayerTrackerSingleton.Instance.playerGameObject.transform;
             }
             catch
             {
@@ -109,7 +107,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
     
     public bool DetectPlayer()
     {
-        return Vision.Detect(sightThreshold, soundThreshold, maxSoundRange, maxSightRange);
+        return Vision.Detect(sightThreshold, soundThreshold);
     }
     
     private IEnumerator AttackRoutine()
@@ -134,15 +132,15 @@ public class MadAdventurerStateMachine : MonoBehaviour
 
     public void Attack()
     {
-        if (!isAttacking)
-        {
-            currentAttack = StartCoroutine(AttackRoutine());
-        }
+        currentAttack = StartCoroutine(AttackRoutine());
     }
 
     public void Die()
     {
-        StopCoroutine(currentAttack);
+        if(currentAttack != null)
+        {
+            StopCoroutine(currentAttack);
+        }
         Transit(DyingState);
     }
 
