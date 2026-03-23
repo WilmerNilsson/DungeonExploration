@@ -50,6 +50,15 @@ public class EventList : ScriptableObject
         eventInstance = new EventInstance();
         return false;
     }
+
+    public bool IsEventOcclusion(string eventName)
+    {
+        if (TryGetEvent(eventName, out var eventData))
+        {
+            if (eventData.isOcclusion) return true;
+        }
+        return false;
+    }
     
     #if UNITY_EDITOR
     [ContextMenu("Fill eventData")]
@@ -392,7 +401,7 @@ public class EventList : ScriptableObject
         AudioDebug.Print("Unloading samples for" + eventName);
     }
     
-    public void StartEvent(string eventName, GameObject gameObject = null, bool followObject = true) //Som CreateInstance fast startar instansen istället OM instansen inte redan spelar
+    public void StartEvent(string eventName, GameObject gameObject = null, bool followObject = true, bool allowRestart = false) //Som CreateInstance fast startar instansen istället OM instansen inte redan spelar
     {
         if (TryGetEvent(eventName, out var eventData))
         {
@@ -405,7 +414,8 @@ public class EventList : ScriptableObject
                     return;
                 }
                 instance.getPlaybackState(out var playbackState);
-                if (playbackState != PLAYBACK_STATE.PLAYING)
+                
+                if (playbackState != PLAYBACK_STATE.PLAYING || allowRestart)
                 {
                     if (!eventData.is3D) return; //Om event är 3D och attachToObject, fäser vi eventet på gameObject,
                                                  //om followObject är false följer eventet inte med gameObject utan
