@@ -9,7 +9,7 @@ public class Weapon : MonoBehaviour
 {
     [Header("Events")]
     [FormerlySerializedAs("onDamage")] public UnityEvent OnDamage;
-    [FormerlySerializedAs("onDeflectCollision")] public UnityEvent<string, Vector3> OnDeflectCollision;
+    [FormerlySerializedAs("onDeflectCollision")] public UnityEvent<string, Vector3, Vector3> OnDeflectCollision;
     public UnityEvent OnBreak;
     public UnityEvent onParry;
     public UnityEvent onBlock;
@@ -38,8 +38,8 @@ public class Weapon : MonoBehaviour
     [Header("Attack")]
     [SerializeField, FormerlySerializedAs("angle")] public float Angle;
     [SerializeField] private float curveHeight = 1.5f;
-    [SerializeField, Tooltip("distance from middle toward start"), Range(0,1)] private float startBend;
-    [SerializeField, Tooltip("distance from middle toward end"), Range(0,1)] private float endBend;
+    [SerializeField, Tooltip("distance from middle toward start"), Min(0)] private float startBend;
+    [SerializeField, Tooltip("distance from middle toward end"), Min(0)] private float endBend;
     [SerializeField, Min(0)] private float attackChargeTime = 0.5f;
     [SerializeField, Min(0)] private float attackSwingTime = 1f;
     [SerializeField, Min(0)] private float attackResetTime = 1f;
@@ -72,11 +72,7 @@ public class Weapon : MonoBehaviour
     private Vector3 P1 => Vector3.Lerp(P0,P3,startBend/2) + Vector3.forward * curveHeight;
     private Vector3 P2 => Vector3.Lerp(P0,P3,1-endBend/2) + Vector3.forward * curveHeight;
     private Vector3 P3 => new (-P0.x, -P0.y, P0.z);
-
-    private void Start()
-    {
-        transform.rotation = Quaternion.LookRotation(SwordArm.data.tip.right, -SwordArm.data.tip.forward);
-    }
+    
 
     #region Attack
 
@@ -245,14 +241,14 @@ public class Weapon : MonoBehaviour
     {
         isParrying = value;
     }
-    
-    private void OnTriggerEnter(Collider other)
+
+    private void OnCollisionEnter(Collision other)
     {
         if (dealDamage)
         {
             if (!transform.IsChildOf(other.transform))
             {
-                if (other.TryGetComponent(out Health health))
+                if (other.gameObject.TryGetComponent(out Health health))
                 {
                     health.TakeDamage(damage);
                     LoseDurability(health.DurabilityDamage);
@@ -276,31 +272,37 @@ public class Weapon : MonoBehaviour
                         Debug.Log($"The target {other.gameObject.name} health is NULL, or it was self harm");
                     }
                 }
-                switch (other.tag) // Handle Audio Visual Feedback
+                
+                Vector3 point = other.GetContact(0).point;
+                Vector3 normal = other.GetContact(0).normal;
+                
+                switch (other.gameObject.tag) // Handle Audio Visual Feedback
                 {
                     case "Wood":
                         Debug.Log("Wood");
-                        OnDeflectCollision.Invoke("Wood", transform.position);
+                        OnDeflectCollision.Invoke("Wood", point, normal);
                         Companion.OnGetBlocked();
                         break;
                     case "Stone":
                         Debug.Log("Stone");
-                        OnDeflectCollision.Invoke("Stone", transform.position);
+                        OnDeflectCollision.Invoke("Stone", point, normal);
                         Companion.OnGetBlocked();
                         break;
                     case "Metal":
                         Debug.Log("Metal");
-                        if (other.TryGetComponent(out Weapon weapon))
+                        if (other.gameObject.TryGetComponent(out Weapon weapon))
                         {
                             if (weapon.isParrying)
                             {
                                 onParry.Invoke();
                                 Companion.OnGetParried();
+                                OnDeflectCollision.Invoke("Metal", point, normal);
                             }
                             else if(weapon.isBlocking)
                             {
                                 onBlock.Invoke();
                                 Companion.OnGetBlocked();
+                                OnDeflectCollision.Invoke("Metal", point, normal);
                             }
                             else
                             {
@@ -308,13 +310,13 @@ public class Weapon : MonoBehaviour
                             }
                             break;
                         }
-                        OnDeflectCollision.Invoke("Metal", transform.position);
+                        OnDeflectCollision.Invoke("Metal", point, normal);
                         Companion.OnGetBlocked();
                         break;
                     case "Player":
                     case "Flesh":
                         Debug.Log("Flesh");
-                        OnDeflectCollision.Invoke("Flesh", transform.position);
+                        OnDeflectCollision.Invoke("Flesh", point, normal);
                         Companion.OnHitFlesh();
                         break;
                 }
@@ -362,7 +364,7 @@ public class Weapon : MonoBehaviour
         
         HandIK.rotation = Quaternion.LookRotation(forward, up);
         
-        HandIK.position = Head.position + Vector3.ClampMagnitude(position + HandIK.right * blockHandOffset, P0.magnitude);
+        HandIK.position = Head.position + Vector3.ClampMagnitude(position + (HandIK.forward) * blockHandOffset, P0.magnitude);
     }
 
     private void ParryPositionRotation(float time)

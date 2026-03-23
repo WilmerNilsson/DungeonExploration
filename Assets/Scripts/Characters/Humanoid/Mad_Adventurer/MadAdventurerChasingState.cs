@@ -24,20 +24,20 @@ public class MadAdventurerChasingState : MadAventurerBaseState
     {
         if (isChasing)
         {
-            if (!DetectPlayer())
+            if (!DetectPlayer()) // If it cant detect the player, move back to Idle TODO move to Searching when it exists
             {
                 MyMadAdventurerStateMachine.Transit(MyMadAdventurerStateMachine.IdleState);
             }
         
-            if (Vector3.Distance(MyMadAdventurerStateMachine.PlayerTransform.position, MyMadAdventurerStateMachine.transform.position) <= minDistanceToPlayer)
+            if (Vector3.Distance(MyMadAdventurerStateMachine.PlayerTransform.position, MyMadAdventurerStateMachine.transform.position) <= minDistanceToPlayer) // If its close enough move to Attacking
             {
                 MyMadAdventurerStateMachine.Transit(MyMadAdventurerStateMachine.AttackState);
             }
-            else
+            else // Find a path to get closer
             {
                 FindPath(MyMadAdventurerStateMachine.PlayerTransform.position);
                 target = GetNextCorner();
-                Move();
+                Move(Vector3.forward);
             }
         }
         else if (chasingDelay > 0)

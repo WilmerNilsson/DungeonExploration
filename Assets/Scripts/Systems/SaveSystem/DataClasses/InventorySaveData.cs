@@ -7,6 +7,11 @@ public class InventorySaveData
 {
     public List<InventoryItem> Items;
 
+    public bool IsEmpty()
+    {
+        return Items == null || Items.Count == 0;
+    }
+
     public override string ToString()
     {
         string str = string.Empty;

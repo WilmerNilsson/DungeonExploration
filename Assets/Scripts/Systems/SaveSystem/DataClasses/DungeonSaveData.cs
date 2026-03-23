@@ -55,18 +55,37 @@ public class DungeonSaveData
         public Quaternion Rotation;
         public InventorySaveData Inventory;
         public string PrefabID;
+        public float RefillChance;
+        public int MinItemSpawn;
+        public int MaxItemSpawn;
+        public List<string> LootPoolNames;
 
-        public Container(Vector3 pos, Quaternion rotation, InventorySaveData inventory, string prefabID)
+        public Container(Vector3 pos, Quaternion rotation, InventorySaveData inventory, string prefabID,
+            float refillChance, int minItemSpawn, int maxItemSpawn, List<string> lootPoolNames, bool clone = false)
         {
             Position = pos;
             Rotation = rotation;
-            Inventory = inventory;
             PrefabID = prefabID;
+            RefillChance = refillChance;
+            MinItemSpawn = minItemSpawn;
+            MaxItemSpawn = maxItemSpawn;
+
+            if(clone)
+            {
+                LootPoolNames = new(lootPoolNames);
+                Inventory = inventory.Clone();
+            }
+            else
+            {
+                LootPoolNames = lootPoolNames;
+                Inventory = inventory;
+            }
         }
 
         public Container Clone()
         {
-            return new Container(Position, Rotation, Inventory.Clone(), PrefabID);
+            return new Container(Position, Rotation, Inventory.Clone(), PrefabID,
+                RefillChance, MinItemSpawn, MaxItemSpawn, LootPoolNames, true);
         }
     }
 

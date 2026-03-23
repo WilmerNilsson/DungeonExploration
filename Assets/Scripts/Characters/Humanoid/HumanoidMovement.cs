@@ -61,84 +61,96 @@ public class HumanoidMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        grounded = CC.isGrounded;
-        rotatedVector = Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * moveVector;
-        
-        if(supressMoveFrame)
+        if (controller.isAlive)
         {
-            supressMoveFrame = false;
-            return;
-        }
+            grounded = CC.isGrounded;
+            rotatedVector = Quaternion.AngleAxis(transform.eulerAngles.y, Vector3.up) * moveVector;
 
-        if (grounded && playerVelocity.y < -2f) playerVelocity.y = -2f; // stays to the ground
-
-        if (doJump)
-        {
-            OnJump.Invoke();
-            playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
-            doJump = false;
-        }
-
-        float deltaSpeed = moveSpeed;
-
-        Vector3 finalMove = Vector3.zero;
-        if (!grounded)
-        {
-            Profiler.BeginSample("Airborne");
-            deltaSpeed = (controller.isSprinting && Vector3.Dot(transform.forward, rotatedVector) >= 0) ? sprintSpeed : moveSpeed;
-            
-            float speedX = playerVelocity.x + rotatedVector.x * airMoveMod * Time.fixedDeltaTime;
-            float speedZ = playerVelocity.z + rotatedVector.z * airMoveMod * Time.fixedDeltaTime;
-            Vector3 newVelocity = new Vector3(speedX, 0, speedZ);
-
-            if (!currentAction.Equals(moveActions.Airborne))
+            if (supressMoveFrame)
             {
-                SetMoveAction(moveActions.Airborne);
+                supressMoveFrame = false;
+                return;
             }
 
-            rotatedVector = Vector3.ClampMagnitude(newVelocity, deltaSpeed);
-            
+            if (grounded && playerVelocity.y < -2f) playerVelocity.y = -2f; // stays to the ground
+
+            if (doJump)
+            {
+                if (crouching)
+                {
+                    Crouch();
+                }
+
+                OnJump.Invoke();
+                playerVelocity.y = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
+                doJump = false;
+            }
+
+            float deltaSpeed = moveSpeed;
+
+            Vector3 finalMove = Vector3.zero;
+            if (!grounded)
+            {
+                Profiler.BeginSample("Airborne");
+                deltaSpeed = (controller.isSprinting && Vector3.Dot(transform.forward, rotatedVector) >= 0)
+                    ? sprintSpeed
+                    : moveSpeed;
+
+                float speedX = playerVelocity.x + rotatedVector.x * airMoveMod * Time.fixedDeltaTime;
+                float speedZ = playerVelocity.z + rotatedVector.z * airMoveMod * Time.fixedDeltaTime;
+                Vector3 newVelocity = new Vector3(speedX, 0, speedZ);
+
+                if (!currentAction.Equals(moveActions.Airborne))
+                {
+                    SetMoveAction(moveActions.Airborne);
+                }
+
+                rotatedVector = Vector3.ClampMagnitude(newVelocity, deltaSpeed);
+
+                playerVelocity = new Vector3(0, playerVelocity.y + (Physics.gravity.y * Time.fixedDeltaTime), 0);
+                //playerVelocity.y += Physics.gravity.y * Time.fixedDeltaTime;
+
+                finalMove = rotatedVector + playerVelocity;
+                playerVelocity = finalMove;
+                CC.Move(finalMove * Time.fixedDeltaTime);
+                Profiler.EndSample();
+                return;
+            }
+
+            Profiler.BeginSample("Movement Actions");
+            if (moveVector == Vector3.zero)
+            {
+                SetMoveAction(moveActions.None);
+            }
+            else if (controller.isCrouching)
+            {
+                deltaSpeed = crouchSpeed;
+                SetMoveAction(moveActions.CrouchWalk);
+            }
+            else if (controller.isSprinting && Vector3.Dot(transform.forward, rotatedVector) >= 0)
+            {
+                deltaSpeed = sprintSpeed;
+                SetMoveAction(moveActions.Sprinting);
+            }
+            else
+            {
+                deltaSpeed = moveSpeed;
+                SetMoveAction(moveActions.Walking);
+            }
+
+            Profiler.EndSample();
+
+            Profiler.BeginSample("Apply movement");
             playerVelocity = new Vector3(0, playerVelocity.y + (Physics.gravity.y * Time.fixedDeltaTime), 0);
             //playerVelocity.y += Physics.gravity.y * Time.fixedDeltaTime;
-    
-            finalMove = rotatedVector + playerVelocity;
+
+            finalMove = rotatedVector * deltaSpeed + playerVelocity;
             playerVelocity = finalMove;
+            lastGroundedPosition = transform.position;
+
             CC.Move(finalMove * Time.fixedDeltaTime);
             Profiler.EndSample();
-            return;
         }
-        Profiler.BeginSample("Movement Actions");
-        if (moveVector == Vector3.zero)
-        {
-            SetMoveAction(moveActions.None);
-        }
-        else if (controller.isCrouching)
-        {
-            deltaSpeed = crouchSpeed;
-            SetMoveAction(moveActions.CrouchWalk);
-        }
-        else if (controller.isSprinting && Vector3.Dot(transform.forward, rotatedVector) >= 0)
-        {
-            deltaSpeed = sprintSpeed;
-            SetMoveAction(moveActions.Sprinting);
-        }
-        else
-        {
-            deltaSpeed = moveSpeed;
-            SetMoveAction(moveActions.Walking);
-        }
-        Profiler.EndSample();
-        
-        Profiler.BeginSample("Apply movement");
-        playerVelocity = new Vector3(0, playerVelocity.y + (Physics.gravity.y * Time.fixedDeltaTime), 0);
-        //playerVelocity.y += Physics.gravity.y * Time.fixedDeltaTime;
-    
-        finalMove = rotatedVector * deltaSpeed + playerVelocity;
-        playerVelocity = finalMove;
-        lastGroundedPosition = transform.position;
-
-        CC.Move(finalMove * Time.fixedDeltaTime);
-        Profiler.EndSample();
     }
 
     /// <summary>
@@ -165,11 +177,11 @@ public class HumanoidMovement : MonoBehaviour
             }
             if (newAction == moveActions.Sprinting)
             {
-                animator.SetFloat("RunSpeed", 2);
+                animator.SetBool("Running", true);
             }
             else
             {
-                animator.SetFloat("RunSpeed", 1);
+                animator.SetBool("Running", false);
             }
             currentAction = newAction; 
             OnMoveActionChange?.Invoke(currentAction);
