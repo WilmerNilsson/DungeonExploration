@@ -21,14 +21,16 @@ public class TrapSoundLogic : MonoBehaviour
                 {
                     emitterObjects[i] = gameObject;
                     AudioManager.Instance.CreateInstance(trapPath, emitterObjects[i]);
+                    OcclusionHandler.AddToOcclusionList(emitterObjects[i]);
                     addedSelfToList = true;
                 }
-            
+           
 
          }
             else
             {
                 AudioManager.Instance.CreateInstance(trapPath, emitterObjects[i]);
+                OcclusionHandler.AddToOcclusionList(emitterObjects[i]);
             }
       }
    }
@@ -38,8 +40,7 @@ public class TrapSoundLogic : MonoBehaviour
 
       foreach (GameObject emitter in emitterObjects)
         {
-         OcclusionHandler.AddToOcclusionList(emitter);
-         AudioManager.Instance.StartEvent(trapPath, emitter);
+         AudioManager.Instance.StartEvent(trapPath, emitter, true, true);
         }
     }
 
