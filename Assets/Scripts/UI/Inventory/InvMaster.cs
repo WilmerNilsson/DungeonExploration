@@ -27,7 +27,7 @@ public class InvMaster : InvMasterBase
         base.Start();
     }
 
-#if DEBUG && UNITY_EDITOR
+#if UNITY_EDITOR
     protected override void OnValidate()
     {
         base.OnValidate();
@@ -140,6 +140,7 @@ public class InvMaster : InvMasterBase
             container.Close();
         }
 
+        quickLootInventory = null;
         openContainers.Clear();
     }
 
