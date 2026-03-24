@@ -39,7 +39,7 @@ public class SaveFileHelperContainer : MonoBehaviour
 
         if(data.Inventory.IsEmpty() && data.RefillChance != 0f && ShouldRespawn(data.RefillChance))
         {
-            randomItemGiver.Initialize(data.LootPoolNames, data.MinItemSpawn, data.MaxItemSpawn);
+            randomItemGiver.Initialize(data.LootPoolDatas);
         }
         else
         {
@@ -80,10 +80,8 @@ public class SaveFileHelperContainer : MonoBehaviour
         Vector3 pos = spawnTransform.position;
         Quaternion rot = spawnTransform.rotation;
         InventorySaveData inv = new(grid.GetInventoryData());
-
-        Vector2Int range = randomItemGiver.GetLootAmountRange();
-
-        DungeonSaveData.Container data = new(pos, rot, inv, prefabID, refillChance, range.x, range.y, randomItemGiver.GetLootPoolNames());
+        
+        DungeonSaveData.Container data = new(pos, rot, inv, prefabID, refillChance, randomItemGiver.GetLootPoolDatas());
 
         return data;
     }
