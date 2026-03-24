@@ -80,10 +80,12 @@ public class Weapon : MonoBehaviour
     ///  Go from neutral to P0 <br/>
     /// returns true when time is more than attack time and state machine can continue
     /// </summary>
-    public bool ChargeAttack(float time)
+    public bool ChargeAttack(float time, float percentage)
     {
         SwordArm.data.targetPositionWeight = time / attackChargeTime;
         SwordArm.data.targetRotationWeight = time / attackChargeTime;
+        
+        splinePosition = percentage;
         
         AttackPositionRotation(0);
         
@@ -376,7 +378,7 @@ public class Weapon : MonoBehaviour
         
         HandIK.rotation = Quaternion.LookRotation(forward, up) * Quaternion.AngleAxis(time * parryAngle, Vector3.down);
         
-        HandIK.position = Head.position + Vector3.ClampMagnitude(position + HandIK.right * blockHandOffset, P0.magnitude);
+        HandIK.position = Head.position + Vector3.ClampMagnitude(position + (HandIK.forward) * blockHandOffset, P0.magnitude);
     }
     private Vector3 RelativeRotation(Vector3 rotation)
     {
@@ -408,25 +410,4 @@ public class Weapon : MonoBehaviour
         return rotation * (vector - point) + point;
     }
     #endregion
-
-#if UNITY_EDITOR
-    private void OnDrawGizmos()
-    {
-        // if (startSpline != null)
-        // {
-        //     Gizmos.color = Color.blue;
-        //     for (float i = 0; i < 1; i+=.01f)
-        //     {
-        //         Vector3 position = Head.transform.TransformPoint(startSpline.EvaluatePosition(i));
-        //         Vector3 direction = startSpline.EvaluateTangent(i);
-        //         Gizmos.DrawRay(position, direction.normalized * 0.1f);
-        //     }
-        // }
-        // Gizmos.color = Color.green;
-        // Gizmos.DrawSphere(P0,.1f);
-        // Gizmos.color = Color.red;
-        // Gizmos.DrawSphere(P3,.1f);
-    }
-#endif
-
 }

@@ -16,6 +16,7 @@ public class InventoryGrid : MonoBehaviour
 
     [SerializeField, Min(1)] private int collumns = 1;
     [SerializeField, Min(1)] private int rows = 1;
+    [SerializeField] private bool onlyAcceptWeapons = false;
 
     private bool hasBeenEnabled = false;
 #nullable enable
@@ -419,6 +420,12 @@ public class InventoryGrid : MonoBehaviour
 
     public bool TryInsertItem(SimpleItem item, bool instantiate = false)
     {
+        //not nessesary but saves performance
+        if (onlyAcceptWeapons && !item.TryGetComponent<UIWeapon>(out _))
+        {
+            return false;
+        }
+
         for (int collum = 0; collum < InvData.GetLength(0); collum++)
         {
             for (int row = 0; row < InvData.GetLength(1); row++)
@@ -436,8 +443,14 @@ public class InventoryGrid : MonoBehaviour
 
     private bool TryPutItemInSlot(SimpleItem item, int collum, int row, out SimpleItem? instanciateItem, bool instantiate = false)
     {
-        bool[,] itemSlots = item.GetSizeMatrix();
         instanciateItem = null;
+
+        if (onlyAcceptWeapons && !item.TryGetComponent<UIWeapon>(out _))
+        {
+            return false;
+        }
+
+        bool[,] itemSlots = item.GetSizeMatrix();
 
         for (int x = 0; x < itemSlots.GetLength(0); x++)
         {

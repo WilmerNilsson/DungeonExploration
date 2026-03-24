@@ -101,20 +101,29 @@ public class Sanity : MonoBehaviour
     /// </summary>
     public void LoseSanity(int amount)
     {
-        playerSanitySO.ChangeSanity(-amount);
-        OnLoseSanity?.Invoke((float)playerSanitySO.CurrentSanity / playerSanitySO.MaxSanity);
+        if (amount > 0)
+        {
+            playerSanitySO.ChangeSanity(-amount);
+            OnLoseSanity?.Invoke((float)playerSanitySO.CurrentSanity / playerSanitySO.MaxSanity);
+        }
     }
 
     public void DamageSanity(int amount)
     {
-        playerSanitySO.ChangeSanity(-amount/damageToSanityMod);
-        OnLoseSanity?.Invoke((float)playerSanitySO.CurrentSanity / playerSanitySO.MaxSanity);
+        if (amount > 0)
+        {
+            playerSanitySO.ChangeSanity(-amount/damageToSanityMod);
+            OnLoseSanity?.Invoke((float)playerSanitySO.CurrentSanity / playerSanitySO.MaxSanity);
+        }
     }
 
     public void GainSanity(int amount)
     {
-        playerSanitySO.ChangeSanity(amount);
-        OnGainSanity?.Invoke();
+        if (amount > 0)
+        {
+            playerSanitySO.ChangeSanity(amount);
+            OnGainSanity?.Invoke();
+        }
     }
 
     public void SetSanity(int newValue)
