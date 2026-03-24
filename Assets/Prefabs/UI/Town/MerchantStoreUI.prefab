@@ -693,6 +693,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collumns: 5
   rows: 5
+  onlyAcceptWeapons: 0
   OnGetNewItem:
     m_PersistentCalls:
       m_Calls: []
@@ -1404,6 +1405,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collumns: 5
   rows: 5
+  onlyAcceptWeapons: 0
   OnGetNewItem:
     m_PersistentCalls:
       m_Calls: []
@@ -1480,6 +1482,36 @@ MonoBehaviour:
   - HealthPotion
   itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
   playerCashSO: {fileID: 11400000, guid: ffae8245bc035e74c8db57a6b9da2ca3, type: 2}
+  OnBuyEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
+        m_MethodName: PlayBuySound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnSellEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
+        m_MethodName: PlaySellSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8582224814892460142
 GameObject:
   m_ObjectHideFlags: 0
