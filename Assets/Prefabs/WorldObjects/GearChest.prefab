@@ -181,6 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collumns: 7
   rows: 4
+  onlyAcceptWeapons: 0
   OnGetNewItem:
     m_PersistentCalls:
       m_Calls: []
@@ -257,10 +258,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventoryGrid: {fileID: 8767876181034157955}
   lootPool: {fileID: 11400000, guid: 77268e70a1126f64aac4244a379e9556, type: 2}
-  lootPoolName:
-  - GearChest
-  - Standard
-  lootAmountRange: {x: 4, y: 4}
+  lootPoolData:
+  - lootPoolName: GearChest
+    itemAmountRange: {x: 1, y: 1}
+  - lootPoolName: Standard
+    itemAmountRange: {x: 2, y: 4}
 --- !u!1 &2067215900535007154
 GameObject:
   m_ObjectHideFlags: 0
