@@ -5,6 +5,7 @@ using UnityEngine.Events;
 public class Sanity : MonoBehaviour
 {
     [SerializeField] private PlayerSanitySO playerSanitySO;
+    [SerializeField] private SanityLightProbe sanityLightProbe;
     //[SerializeField] private Health health;
     
     //[Tooltip("The amount of time between hunger ticks in seconds")]
@@ -15,19 +16,18 @@ public class Sanity : MonoBehaviour
 
     public static Sanity Instance;
     [SerializeField] private bool ResetOnAwake = true;
-    [SerializeField] private int damageToSanityMod = 10;
-    [SerializeField] private SanityLightProbe sanityLightProbe;
-    [SerializeField, Tooltip("brightness level"), Min(0.01f)] private float lightThreshold;
 
+    [SerializeField, Min(0), Tooltip("How much sanity is lost over time in Light")] private int inLightSanityDamage;
+    [SerializeField, Min(0), Tooltip("How much sanity is lost over time in Dark")] private int inDarkSanityDamage;
+    [SerializeField, Tooltip("How much the damage to health is divided by before being applied to sanity")] private int damageToSanityMod = 10;
+    [SerializeField, Tooltip("brightness level, if its lower its considered dark"), Min(0.01f)] private float lightThreshold;
+    [SerializeField, Tooltip("How long between sanity ticks, in seconds"), Min(0)] private float sanityTickSpeed;
+    private int damage;
+    
+    
     Coroutine sanityTick;
 
-    public int CurrentSanity
-    {
-        get
-        {
-            return playerSanitySO.CurrentSanity;
-        }
-    }
+    public int CurrentSanity => playerSanitySO.CurrentSanity;
 
 #if UNITY_EDITOR
     private void OnValidate()
@@ -48,7 +48,7 @@ public class Sanity : MonoBehaviour
 
     private void Start()
     {
-        ResetSanityTick();
+        StartSanity();
     }
 
     /// <summary>
@@ -59,21 +59,26 @@ public class Sanity : MonoBehaviour
         return sanityLightProbe.Sample() > lightThreshold;
     }
 
-    private void ResetSanityTick()
+    private void StartSanity()
     {
-        if(sanityTick != null)
+        if (sanityTick != null)
         {
             StopCoroutine(sanityTick);
         }
-        sanityTick = StartCoroutine(SanityTickCoroutine());
 
+        StartCoroutine(SanityTickCoroutine());
+        
         IEnumerator SanityTickCoroutine()
         {
-            yield return new WaitForSeconds(playerSanitySO.GetCurrentCooldown(IsInLightCheck()));
-            LoseSanity(1);
+            while (CurrentSanity > 0)
+            {
+                yield return new WaitForSeconds(sanityTickSpeed);
+                damage = IsInLightCheck() ? inLightSanityDamage : inDarkSanityDamage;
+                LoseSanity(damage);
+            }
         }
-
     }
+    
     public void ResetSanity()
     {
         playerSanitySO.ResetValues();
@@ -98,24 +103,18 @@ public class Sanity : MonoBehaviour
     {
         playerSanitySO.ChangeSanity(-amount);
         OnLoseSanity?.Invoke((float)playerSanitySO.CurrentSanity / playerSanitySO.MaxSanity);
-
-        ResetSanityTick();
     }
 
     public void DamageSanity(int amount)
     {
         playerSanitySO.ChangeSanity(-amount/damageToSanityMod);
         OnLoseSanity?.Invoke((float)playerSanitySO.CurrentSanity / playerSanitySO.MaxSanity);
-
-        ResetSanityTick();
     }
 
     public void GainSanity(int amount)
     {
         playerSanitySO.ChangeSanity(amount);
         OnGainSanity?.Invoke();
-
-        ResetSanityTick();
     }
 
     public void SetSanity(int newValue)
