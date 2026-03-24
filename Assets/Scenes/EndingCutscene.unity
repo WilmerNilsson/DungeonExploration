@@ -130,7 +130,6 @@ GameObject:
   - component: {fileID: 250260938}
   - component: {fileID: 250260940}
   - component: {fileID: 250260939}
-  - component: {fileID: 250260941}
   m_Layer: 5
   m_Name: Name
   m_TagString: Untagged
@@ -256,28 +255,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 250260937}
   m_CullTransparentMesh: 1
---- !u!95 &250260941
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 250260937}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &269922644
 GameObject:
   m_ObjectHideFlags: 0
@@ -998,10 +975,10 @@ MonoBehaviour:
           m_StringArgument: EndCreditsCool
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 250260937}
-        m_TargetAssemblyTypeName: GameManagerSO, GameAssembly
-        m_MethodName: 
-        m_Mode: 5
+      - m_Target: {fileID: 1382935569}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1295,6 +1272,7 @@ GameObject:
   - component: {fileID: 1382935570}
   - component: {fileID: 1382935572}
   - component: {fileID: 1382935571}
+  - component: {fileID: 1382935573}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -1360,6 +1338,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1382935569}
   m_CullTransparentMesh: 1
+--- !u!95 &1382935573
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1382935569}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1bac4c08c3e956242a3b440ee315c151, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1719503414
 GameObject:
   m_ObjectHideFlags: 0

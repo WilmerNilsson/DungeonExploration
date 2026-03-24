@@ -11,7 +11,7 @@ public class Interactable : MonoBehaviour
     
     private int defaultLayer;
 
-    private void Start()
+    private void Awake()
     {
         defaultLayer = graphicModel.layer;
     }
