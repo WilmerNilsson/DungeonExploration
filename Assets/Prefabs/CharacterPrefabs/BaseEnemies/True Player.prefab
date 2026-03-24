@@ -472,6 +472,7 @@ MonoBehaviour:
   debug: 0
   head: {fileID: 7929286171431266012}
   interactDistance: 2
+  health: {fileID: 1354050652585229241}
   layerMask:
     serializedVersion: 2
     m_Bits: 816385
@@ -604,6 +605,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 20
           m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: Play
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 20
+          m_StringArgument: BobbingHeart
           m_BoolArgument: 0
         m_CallState: 2
   OnDeath:
@@ -1052,6 +1065,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSanitySO: {fileID: 11400000, guid: 5c9490a2940ba974e80dc37a66354202, type: 2}
+  sanityLightProbe: {fileID: 7592676639121055526}
   OnLoseSanity:
     m_PersistentCalls:
       m_Calls:
@@ -1067,13 +1081,39 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: Play
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Bounce
+          m_BoolArgument: 0
+        m_CallState: 2
   OnGainSanity:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: Play
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Bounce
+          m_BoolArgument: 0
+        m_CallState: 2
   ResetOnAwake: 1
+  inLightSanityDamage: 0
+  inDarkSanityDamage: 1
   damageToSanityMod: 5
-  sanityLightProbe: {fileID: 7592676639121055526}
-  lightThreshold: 0
+  lightThreshold: 10
+  sanityTickSpeed: 1
 --- !u!114 &1608432785845023580
 MonoBehaviour:
   m_ObjectHideFlags: 0
