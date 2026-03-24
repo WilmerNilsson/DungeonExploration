@@ -244,6 +244,24 @@ public class SaveFileManager
     }
 
     /// <summary>
+    /// tries to read save file, without setting settings aswell
+    /// </summary>
+    /// <returns>Data in save file, or null if fail</returns>
+    public SavefileData? ReadSaveFileNoCreate(int saveFileNr)
+    {
+        if (!File.Exists(Application.dataPath + SaveFileFolderName + saveFileNr + SaveFileName))
+        {
+            return null;
+        }
+
+        string json = File.ReadAllText(Application.dataPath + SaveFileFolderName + saveFileNr + SaveFileName);
+
+        SavefileData? data = JsonUtility.FromJson<SavefileData>(json);
+
+        return data;
+    }
+
+    /// <summary>
     /// If save file does not exists it creates a new one
     /// </summary>
     private SavefileData ReadSavefile(int saveFileNr)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 
@@ -80,6 +81,7 @@ public class AudioDebug : MonoBehaviour
                         lines = 1;
                         var objectList = new List<GameObject>();
                         var attributeList = new List<FMOD.ATTRIBUTES_3D>();   
+                        var stateList = new List<PLAYBACK_STATE>();
                         foreach (var instance in instanceList)
                         {
                             foreach (var kvp in eventList.InstanceList)
@@ -89,6 +91,8 @@ public class AudioDebug : MonoBehaviour
                                     objectList.Add(kvp.Key);
                                     kvp.Value.get3DAttributes(out var attributes);
                                     attributeList.Add(attributes);
+                                    kvp.Value.getPlaybackState(out var state);
+                                    stateList.Add(state);
                                 }
                             }
                         }
@@ -101,7 +105,7 @@ public class AudioDebug : MonoBehaviour
                                 lines++;
                                 if (objectList[i])
                                 {
-                                    text += objectList[i].name + " at: " + attributeList[i].position.x + " " + attributeList[i].position.y + " " + attributeList[i].position.z + "\n";
+                                    text += objectList[i].name + " at: " + attributeList[i].position.x + " " + attributeList[i].position.y + " " + attributeList[i].position.z + " state: " + stateList[i] + "\n";
                                 }
                                 else
                                 {

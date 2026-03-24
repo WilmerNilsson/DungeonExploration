@@ -6292,6 +6292,7 @@ GameObject:
   - component: {fileID: 668796321735093486}
   - component: {fileID: 3286665406877380152}
   - component: {fileID: 1123557741255667475}
+  - component: {fileID: 2618876524005920455}
   m_Layer: 10
   m_Name: BreakableWall
   m_TagString: Stone
@@ -6355,18 +6356,6 @@ MonoBehaviour:
   OnPhase2:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1005692370641798383}
-        m_TargetAssemblyTypeName: TrapSoundLogic, GameAssembly
-        m_MethodName: ActivateTrap
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1632364418029306300}
         m_TargetAssemblyTypeName: OneShotPlayer, GameAssembly
         m_MethodName: Play
@@ -6393,6 +6382,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <UniqueID>k__BackingField: -1
   fetchIDButton: 0
+--- !u!114 &2618876524005920455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6469047669006082208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc293c0446b8972448fbee1677af522d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emitterIsThisObject: 1
+  instructions:
+  - path: Interactables/Pickaxe
+    gameObject: {fileID: 2139520516587937160}
+    followObject: 1
+    parametersToSet: []
 --- !u!1 &6489704074602976517
 GameObject:
   m_ObjectHideFlags: 0

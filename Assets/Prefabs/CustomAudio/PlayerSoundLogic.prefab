@@ -57,7 +57,7 @@ MonoBehaviour:
     sprint: Player/Run
   crouchPath: Player/Crouch
   jumpPath: Player/Jump
-  minDistanceForLandSound: 1
+  minDistanceForLandSound: 2
   landPath: Player/Land
   damagePath: Player/Take_Damage
   deathPath: Player/Death
@@ -123,9 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sanityPath: Ambiance/Sanity
-  playerHealthSO: {fileID: 11400000, guid: 8d1752d3d4465884c80e0304113f59c8, type: 2}
   hungerPath: Player/Hunger
-  healthPotPath: Interactables/DrinkPotion
   exhaustionPath: Player/Exertion
   exhaustionParameter: Exertion
   exhaustionMax: 100
@@ -154,6 +152,8 @@ MonoBehaviour:
   linesOnEitherSide: 3
   objectsToOcclusionCheck: 8
   minDistanceForRaycast: 1.5
+  _objectsInMinDistance: 0
+  occlusionObjectAmount: 0
   wallLayers:
     serializedVersion: 2
     m_Bits: 1024

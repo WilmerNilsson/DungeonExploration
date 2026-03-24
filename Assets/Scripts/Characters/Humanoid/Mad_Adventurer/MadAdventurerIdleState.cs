@@ -25,9 +25,16 @@ public class MadAdventurerIdleState : MadAventurerBaseState
 
     public override void Enter()
     {
-        FindPath(GetRandomPosition());
+        TryFindPath(GetRandomPosition());
         target = GetNextCorner();
+        MyMadAdventurerStateMachine.Controller.isCrouching = true;
         Reset();
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        MyMadAdventurerStateMachine.Controller.isCrouching = false;
     }
 
     public override void Update()
@@ -41,7 +48,7 @@ public class MadAdventurerIdleState : MadAventurerBaseState
         
         if (NavMeshPath.status == NavMeshPathStatus.PathInvalid || NavMeshPath.corners.Length < 1 || Vector2.Distance(position, new Vector2(NavMeshPath.corners[^1].x, NavMeshPath.corners[^1].z)) < minDistanceToCorner)
         {
-            FindPath(GetRandomPosition());
+            TryFindPath(GetRandomPosition());
         }
         
         if (walking)
