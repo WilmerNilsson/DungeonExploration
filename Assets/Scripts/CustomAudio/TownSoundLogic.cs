@@ -10,6 +10,8 @@ public class TownSoundLogic : MonoBehaviour
     //[SerializeField] private string townAmbiencePath;
     [SerializeField] private string buyPath;
     [SerializeField] private string sellPath;
+    [SerializeField] private string donatePath;
+    [SerializeField] private string repairPath;
     //[SerializeField] private string bigPurchasePath;
     [SerializeField] private string doorbellPath;
     [SerializeField] private string ambiancePath;
@@ -68,6 +70,18 @@ public class TownSoundLogic : MonoBehaviour
     {
         if (!AudioManager.IsValid) return;
         AudioManager.Instance.PlayOneShot(sellPath);
+    }
+
+    public void PlayDonateSound()
+    {
+        if (!AudioManager.IsValid) return;
+        AudioManager.Instance.PlayOneShot(donatePath);
+    }
+
+    public void PlayRepairSound()
+    {
+        if (AudioManager.IsValid) return;
+        AudioManager.Instance.PlayOneShot(repairPath);
     }
     
     public void PlayDoorbellSound()

@@ -3006,10 +3006,46 @@ MonoBehaviour:
     for that grams. "
   OnDonateEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: bdf29b42815530643a21db08d0f5608d, type: 2}
+        m_TargetAssemblyTypeName: DialogueContainer, GameAssembly
+        m_MethodName: SetFriendshipLevel
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4180977678112525054}
+        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
+        m_MethodName: PlayDonateSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnRepairEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4180977678112525054}
+        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
+        m_MethodName: PlayRepairSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2495740166984162305
 GameObject:
   m_ObjectHideFlags: 0
