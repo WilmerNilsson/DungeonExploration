@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using TMPro;
@@ -113,16 +114,16 @@ public class InvMaster : InvMasterBase
     public void OpenPlayerInventory()
     {
         if (playerInventory.activeSelf) return;
-        
-        if (MinimapMaster.Instance)
-        {
-            MinimapMaster.Instance.CloseMinimap();
-        }
 
         contextMenu.Deselect();
         playerInventory.SetActive(true);
 
         GameManagerSO.Instance.LockMouse(true);
+
+        if (MinimapMaster.Instance)
+        {
+            MinimapMaster.Instance.CloseMinimap();
+        }
     }
 
     public void ClosePlayerInventory()
