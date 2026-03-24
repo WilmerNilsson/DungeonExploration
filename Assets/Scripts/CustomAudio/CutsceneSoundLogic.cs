@@ -19,10 +19,6 @@ public class CutsceneSoundLogic : MonoBehaviour
                 AudioManager.Instance.CreateInstance(ambiancePath);
                 AudioManager.Instance.StartEvent(ambiancePath);
             }
-            if (vaPath != "" || vaPath != null)
-            {
-                AudioManager.Instance.InitializeDialogue(vaPath);
-            }
         }
     }
 
@@ -39,6 +35,14 @@ public class CutsceneSoundLogic : MonoBehaviour
         if (AudioManager.IsValid)
         {
             AudioManager.Instance.SetParameter(ambiancePath, "Progress", progress);
+        }
+    }
+
+    public void InitializeDialogue()
+    {
+        if (AudioManager.IsValid)
+        {
+            AudioManager.Instance.InitializeDialogue(vaPath);
         }
     }
 
@@ -59,6 +63,14 @@ public class CutsceneSoundLogic : MonoBehaviour
         }
     }
 
+    public void EndDialogue()
+    {
+        if (AudioManager.IsValid)
+        {
+            AudioManager.Instance.EndDialogue(vaPath);
+        }
+    }
+
     private void OnDestroy()
     {
         if (AudioManager.IsValid)
@@ -69,10 +81,6 @@ public class CutsceneSoundLogic : MonoBehaviour
             {
                 AudioManager.Instance.StopEvent(ambiancePath, STOP_MODE.ALLOWFADEOUT);
                 AudioManager.Instance.ReleaseInstance(ambiancePath);
-            }
-            if (vaPath != "" || vaPath != null)
-            {
-                AudioManager.Instance.EndDialogue(vaPath);
             }
         }
     }
