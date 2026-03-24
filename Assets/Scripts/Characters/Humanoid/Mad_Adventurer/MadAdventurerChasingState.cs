@@ -27,8 +27,7 @@ public class MadAdventurerChasingState : MadAventurerBaseState
         if (isChasing)
         {
             TryTransit();
-
-            Debug.Log($"index = {pathIndex}, Lenght = {NavMeshPath.corners.Length}, Status = {NavMeshPath.status}");
+            
             if (TryFindPath(MyMadAdventurerStateMachine.PlayerTransform.position))
             {
                 if (Vector3.Distance(MyPosition, NavMeshPath.corners[^1]) < 1f)

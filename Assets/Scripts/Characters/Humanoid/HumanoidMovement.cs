@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Profiling;
@@ -56,6 +57,7 @@ public class HumanoidMovement : MonoBehaviour
     {
         bodyTransform = animator.gameObject.transform;
         lastGroundedPosition = bodyTransform.position;
+        StartCoroutine(UpdateLastGrounded());
         baseHeight = CC.height;
     }
 
@@ -146,10 +148,22 @@ public class HumanoidMovement : MonoBehaviour
 
             finalMove = rotatedVector * deltaSpeed + playerVelocity;
             playerVelocity = finalMove;
-            lastGroundedPosition = transform.position;
+            //lastGroundedPosition = transform.position;
 
             CC.Move(finalMove * Time.fixedDeltaTime);
             Profiler.EndSample();
+        }
+    }
+
+    private IEnumerator UpdateLastGrounded()
+    {
+        while (controller.isAlive)
+        {
+            yield return new WaitForSeconds(1);
+            if (grounded)
+            {
+                lastGroundedPosition = transform.position;
+            }
         }
     }
 

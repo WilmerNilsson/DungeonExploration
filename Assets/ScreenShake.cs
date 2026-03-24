@@ -21,26 +21,28 @@ public class ScreenShake : MonoBehaviour
 
     private void Update()
     {
-        if (shakeTime > 0) {
-            transform.localPosition = defaultPosition + Random.insideUnitSphere * shakeIntensity;
-            shakeTime -= Time.deltaTime * decreaseFactor;
-
-        } else {
-            shakeTime = 0.0f;
-            transform.localPosition = defaultPosition;
-        }
-
-        if (isDead)
+        if (!GameManagerSO.Instance.IsGameFrozen)
         {
-            transform.position = head.position;
-            transform.rotation = head.rotation;
+            if (shakeTime > 0) {
+                transform.localPosition = defaultPosition + Random.insideUnitSphere * shakeIntensity;
+                shakeTime -= Time.deltaTime * decreaseFactor;
+
+            } else {
+                shakeTime = 0.0f;
+                transform.localPosition = defaultPosition;
+            }
+
+            if (isDead)
+            {
+                transform.position = head.position;
+                transform.rotation = head.rotation;
+            }
         }
     }
 
     public void ShakeScreen(int intensity)
     {
         float amount = intensity/shakeMod;
-        Debug.Log(amount);
         shakeTime = maxShakeTime;
         shakeIntensity = amount;
     }
