@@ -16,7 +16,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     [SerializeField] private float staggerTime;
     
     [SerializeField] private bool hasWeapon = false;
-    [SerializeField] private GameObject weapon;
+    [SerializeField, Tooltip("don't change if you don't know what you are doing")] private GameObject weapon;
     [SerializeField] private TwoBoneIKConstraint swordArm; 
     [SerializeField] private Transform core;
     [SerializeField] private Transform head;
