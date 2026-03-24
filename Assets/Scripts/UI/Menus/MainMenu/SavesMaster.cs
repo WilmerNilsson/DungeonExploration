@@ -13,11 +13,11 @@ public class SavesMaster : MonoBehaviour
     [SerializeField] private Button deleteButton;
     private TMP_Text deleteButtonText;
     [SerializeField] private GameObject warningWindow;
+    [SerializeField] private TMP_Text[] orderedSaveTexts;
+    [SerializeField] private string emptySaveString = string.Empty;
 
     private int selectedSaveFileInt = 0;
-    private TMP_Text selectedSaveFileButtonText;
-
-    private GameManagerSO gameManager;
+    //private TMP_Text selectedSaveFileButtonText;
 
     private void Awake()
     {
@@ -27,7 +27,26 @@ public class SavesMaster : MonoBehaviour
 
     private void Start()
     {
-        gameManager = GameManagerSO.Instance;
+        for (int i = 0; i < orderedSaveTexts.Length; i++)
+        {
+            SavefileData savefileData = GameManagerSO.Instance.SavefileManager.ReadSaveFileNoCreate(i);
+
+            if (savefileData != null)
+            {
+                if(savefileData.PlayerSaveData != null)
+                {
+                    orderedSaveTexts[i].text = savefileData.PlayerSaveData.RunCount.ToString() + " runs";
+                }
+                else
+                {
+                    orderedSaveTexts[i].text = "0 runs";
+                }
+            }
+            else
+            {
+                orderedSaveTexts[i].text = emptySaveString;
+            }
+        }
     }
 
     public void SelectSavefile(int newSaveFileNr)
@@ -51,7 +70,7 @@ public class SavesMaster : MonoBehaviour
 
     public void PlaySelectedSaveFile()
     {
-        gameManager.SavefileManager.PlaySavefile(selectedSaveFileInt, defaultSceneName);
+        GameManagerSO.Instance.SavefileManager.PlaySavefile(selectedSaveFileInt, defaultSceneName);
     }
 
     public void ShowDeleteWarningWindow()
@@ -63,7 +82,10 @@ public class SavesMaster : MonoBehaviour
     {
         if(wantToDelete)
         {
-            gameManager.SavefileManager.DeleteSavefile(selectedSaveFileInt);
+            GameManagerSO.Instance.SavefileManager.DeleteSavefile(selectedSaveFileInt);
+
+            orderedSaveTexts[0].text = emptySaveString;
+
             DeselectButton();
         }
 
