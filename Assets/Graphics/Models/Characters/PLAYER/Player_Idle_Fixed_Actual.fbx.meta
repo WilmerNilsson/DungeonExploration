@@ -33,7 +33,36 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Idle Player
+      takeName: Take 001
+      internalID: 1827226128182048838
+      firstFrame: 0
+      lastFrame: 120
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 0
   meshes:
     lODScreenPercentages: []
@@ -353,197 +382,197 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:Root_Jnt1
       parentName: ManequinModel:Maneqquin_Rigg_Grp
-      position: {x: -0, y: 0.00001581562, z: 0}
+      position: {x: -0, y: 0.001581562, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:Pelvis_Jnt
       parentName: ManequinModel:Root_Jnt1
-      position: {x: -0.000033853095, y: 0.010406197, z: 0.00022483818}
+      position: {x: -0.0033853096, y: 1.0406197, z: 0.022483818}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:L_Leg_Jnt
       parentName: ManequinModel:Pelvis_Jnt
-      position: {x: -0.0010406459, y: -0.00056045706, z: -1.6031852e-22}
+      position: {x: -0.104064584, y: -0.056045707, z: -1.6031852e-20}
       rotation: {x: 0.014454318, y: -0.014589062, z: 0.71023035, w: 0.7036697}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:L_knee_Jnt
       parentName: ManequinModel:L_Leg_Jnt
-      position: {x: -0.004143361, y: -6.012833e-19, z: 4.8572265e-20}
+      position: {x: -0.4143361, y: -6.0128334e-17, z: 4.8572265e-18}
       rotation: {x: 0.0006918986, y: -0.07718916, z: -0.018188039, w: 0.9968504}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:L_Ankle_Jnt
       parentName: ManequinModel:L_knee_Jnt
-      position: {x: -0.004715832, y: -1.001803e-19, z: 1.9428906e-19}
+      position: {x: -0.4715832, y: -1.001803e-17, z: 1.9428906e-17}
       rotation: {x: -0.0066549964, y: 0.48918343, z: 0.011863966, w: 0.87207484}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:L_FootBall_Jnt
       parentName: ManequinModel:L_Ankle_Jnt
-      position: {x: -0.0014622136, y: 3.8857812e-19, z: 4.857227e-19}
+      position: {x: -0.14622135, y: 3.8857812e-17, z: 4.8572267e-17}
       rotation: {x: -0.0000000052475433, y: 0.36347988, z: -0.0000000134495, w: 0.93160206}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:L_FrontFoot_Jnt
       parentName: ManequinModel:L_FootBall_Jnt
-      position: {x: -0.0010362254, y: 1.1504412e-19, z: -1.7256619e-19}
+      position: {x: -0.10362253, y: 1.1504412e-17, z: -1.7256619e-17}
       rotation: {x: 0.5, y: -0.5, z: -0.5, w: 0.5}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:R_Leg_Jnt
       parentName: ManequinModel:Pelvis_Jnt
-      position: {x: 0.0010406459, y: -0.00056044565, z: 1.557643e-10}
+      position: {x: 0.104064584, y: -0.056044564, z: 0.00000001557643}
       rotation: {x: -0.7036697, y: 0.71023035, z: 0.014589021, w: 0.014454286}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:R_knee_Jnt
       parentName: ManequinModel:R_Leg_Jnt
-      position: {x: 0.0041433694, y: 9.0245655e-10, z: -1.2710853e-10}
+      position: {x: 0.41433695, y: 0.000000090245656, z: -0.000000012710853}
       rotation: {x: 0.0006918986, y: -0.07718916, z: -0.018188039, w: 0.9968504}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:R_Ankle_Jnt
       parentName: ManequinModel:R_knee_Jnt
-      position: {x: 0.0047158343, y: -0.0000000015397235, z: 8.2757756e-10}
+      position: {x: 0.47158343, y: -0.00000015397235, z: 0.00000008275776}
       rotation: {x: -0.0066549964, y: 0.48918343, z: 0.011863966, w: 0.87207484}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:R_FootBall_Jnt
       parentName: ManequinModel:R_Ankle_Jnt
-      position: {x: 0.0014622147, y: 4.216073e-17, z: -8.247881e-10}
+      position: {x: 0.14622147, y: 4.216073e-15, z: -0.00000008247881}
       rotation: {x: -0.00000002017608, y: 0.36347988, z: -0.000000051711467, w: 0.93160206}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:R_FrontFoot_Jnt
       parentName: ManequinModel:R_FootBall_Jnt
-      position: {x: 0.0010362251, y: -1.9137476e-16, z: 3.0357668e-19}
+      position: {x: 0.10362251, y: -1.9137476e-14, z: 3.0357667e-17}
       rotation: {x: 0.5, y: -0.5, z: -0.5, w: 0.5}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:Spine_01_Jnt
       parentName: ManequinModel:Pelvis_Jnt
-      position: {x: -8.2107124e-13, y: 0.0006803399, z: 6.1380163e-12}
+      position: {x: -8.210713e-11, y: 0.068033986, z: 6.138016e-10}
       rotation: {x: -0.7070727, y: 0.7070727, z: -0.0069440585, w: -0.0069440585}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:Spine_02_Jnt
       parentName: ManequinModel:Spine_01_Jnt
-      position: {x: -0.0008030979, y: 1.7832356e-19, z: 0}
+      position: {x: -0.08030979, y: 1.7832356e-17, z: 0}
       rotation: {x: -7.930561e-18, y: 0.021385586, z: -3.096764e-16, w: 0.9997713}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:Spine_03_Jnt
       parentName: ManequinModel:Spine_02_Jnt
-      position: {x: -0.0012659037, y: -1.5009529e-35, z: 9.835886e-19}
+      position: {x: -0.12659037, y: -1.5009529e-33, z: 9.8358855e-17}
       rotation: {x: -8.254226e-18, y: 0.023343029, z: -4.0387942e-16, w: 0.99972755}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:Spine_04_Jnt
       parentName: ManequinModel:Spine_03_Jnt
-      position: {x: -0.001391213, y: -4.9095727e-35, z: 1.8700326e-18}
+      position: {x: -0.13912131, y: -4.9095726e-33, z: 1.8700326e-16}
       rotation: {x: 1.2699797e-16, y: 0.037729, z: 1.1775702e-16, w: 0.999288}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:L_Shoulder_Jnt
       parentName: ManequinModel:Spine_04_Jnt
-      position: {x: -0.00096995477, y: 0.0016995053, z: 0.000047620353}
+      position: {x: -0.09699547, y: 0.16995053, z: 0.0047620353}
       rotation: {x: -0.41761947, y: 0.59053934, z: -0.5697406, w: -0.39019608}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:L_Elbow_Jnt
       parentName: ManequinModel:L_Shoulder_Jnt
-      position: {x: -0.0041253623, y: 3.1052572e-19, z: -3.1571977e-19}
+      position: {x: -0.41253623, y: 3.1052572e-17, z: -3.157198e-17}
       rotation: {x: -0.00014702188, y: 0.08287941, z: -0.0110543035, w: 0.9964983}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:L_Wrist_Jnt
       parentName: ManequinModel:L_Elbow_Jnt
-      position: {x: -0.0014196994, y: -0.0002453454, z: -0.0003540921}
+      position: {x: -0.14196993, y: -0.02453454, z: -0.035409212}
       rotation: {x: -0.625644, y: 0.07562186, z: 0.11940942, w: 0.76719767}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:L_Hand_Jnt
       parentName: ManequinModel:L_Wrist_Jnt
-      position: {x: -0.000776863, y: 1.3791934e-18, z: -6.830476e-20}
+      position: {x: -0.0776863, y: 1.3791934e-16, z: -6.830476e-18}
       rotation: {x: -0.18127696, y: 0.80557835, z: 0.22706965, w: 0.5163541}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:L_Fingers01_Jnt
       parentName: ManequinModel:L_Hand_Jnt
-      position: {x: 0.0001488016, y: -0.00007990659, z: -0.0004062458}
+      position: {x: 0.01488016, y: -0.007990659, z: -0.040624578}
       rotation: {x: 0.6124978, y: 0.55706704, z: -0.3332149, w: -0.45109946}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:L_Fingers02_Jnt
       parentName: ManequinModel:L_Fingers01_Jnt
-      position: {x: -0.00048878335, y: -3.570062e-18, z: 1.1139763e-19}
+      position: {x: -0.048878334, y: -3.5700618e-16, z: 1.1139763e-17}
       rotation: {x: -0.00030365115, y: -0.0010403977, z: 0.75185907, w: 0.659323}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:L_Fingers03_Jnt
       parentName: ManequinModel:L_Fingers02_Jnt
-      position: {x: -0.00055487215, y: -2.938622e-18, z: 1.2143066e-20}
+      position: {x: -0.055487216, y: -2.938622e-16, z: 1.2143066e-18}
       rotation: {x: 0, y: -0, z: -0.1717225, w: 0.9851454}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:L_Thumb01_Jnt
       parentName: ManequinModel:L_Hand_Jnt
-      position: {x: -0.0006140862, y: -1.82146e-18, z: -1.797174e-18}
+      position: {x: -0.061408624, y: -1.8214599e-16, z: -1.7971739e-16}
       rotation: {x: -0.09291384, y: -0.71923655, z: -0.04761706, w: 0.68687594}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:L_Thumb02_Jnt
       parentName: ManequinModel:L_Thumb01_Jnt
-      position: {x: -0.0003666113, y: 1.9580694e-19, z: 8.98587e-19}
+      position: {x: -0.03666113, y: 1.9580694e-17, z: 8.9858695e-17}
       rotation: {x: -0.0048743896, y: -0.08235812, z: -0.0000717101, w: 0.9965909}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:L_Thumb03_Jnt
       parentName: ManequinModel:L_Thumb02_Jnt
-      position: {x: -0.00033367862, y: -6.114556e-18, z: -2.4286134e-19}
+      position: {x: -0.03336786, y: -6.114556e-16, z: -2.4286134e-17}
       rotation: {x: -0.0016535511, y: -0.055994183, z: -0.029471548, w: 0.99799466}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:Neck_Jnt
       parentName: ManequinModel:Spine_04_Jnt
-      position: {x: -0.0021179526, y: 3.4520006e-34, z: 8.74301e-19}
+      position: {x: -0.21179526, y: 3.4520005e-32, z: 8.743009e-17}
       rotation: {x: 0.6985641, y: -0.6985641, z: 0.10958209, w: -0.10958209}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:Head_Jnt
       parentName: ManequinModel:Neck_Jnt
-      position: {x: 9.833071e-19, y: 0.00088568445, z: 7.528702e-19}
+      position: {x: 9.833071e-17, y: 0.08856844, z: 7.528702e-17}
       rotation: {x: 0.064613365, y: -0, z: -0, w: 0.9979104}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:Usables_Head_Jnt
       parentName: ManequinModel:Head_Jnt
-      position: {x: 4.8579187e-34, y: 0.0013597113, z: -3.8857812e-19}
+      position: {x: 4.8579188e-32, y: 0.13597113, z: -3.8857812e-17}
       rotation: {x: -0.12837501, y: 0, z: -0, w: 0.9917257}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:R_Shoulder_Jnt
       parentName: ManequinModel:Spine_04_Jnt
-      position: {x: -0.00096997054, y: -0.0016995035, z: 0.00004761738}
+      position: {x: -0.09699705, y: -0.16995035, z: 0.0047617382}
       rotation: {x: 0.56897014, y: 0.39128357, z: -0.41866866, w: 0.58981925}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:R_Elbow_Jnt
       parentName: ManequinModel:R_Shoulder_Jnt
-      position: {x: 0.004125368, y: 0.000000022213133, z: 0.000000001190515}
+      position: {x: 0.4125368, y: 0.0000022213133, z: 0.0000001190515}
       rotation: {x: -0.00014702188, y: 0.08287941, z: -0.0110543035, w: 0.9964983}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:R_Wrist_Jnt
       parentName: ManequinModel:R_Elbow_Jnt
-      position: {x: 0.0013521134, y: 0.0002854218, z: 0.0006137678}
+      position: {x: 0.13521135, y: 0.02854218, z: 0.061376784}
       rotation: {x: -0.08741975, y: 0.2479183, z: -0.0007029597, w: 0.96482843}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:R_Hand_Jnt
       parentName: ManequinModel:R_Wrist_Jnt
-      position: {x: 0.00077687844, y: -3.108625e-18, z: 8.2251976e-11}
+      position: {x: 0.077687845, y: -3.108625e-16, z: 0.000000008225197}
       rotation: {x: 0.056231473, y: 0.8236603, z: 0.07261776, w: 0.5595967}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:R_Fingers01_Jnt
       parentName: ManequinModel:R_Hand_Jnt
-      position: {x: -0.00014879195, y: 0.000079915706, z: 0.00040622652}
+      position: {x: -0.014879195, y: 0.007991571, z: 0.04062265}
       rotation: {x: -0.213106, y: -0.799664, z: 0.03522262, w: 0.5602524}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:R_Fingers02_Jnt
       parentName: ManequinModel:R_Fingers01_Jnt
-      position: {x: 0.00048878335, y: 0.000000012874792, z: -1.8700326e-18}
+      position: {x: 0.048878334, y: 0.0000012874792, z: -1.8700326e-16}
       rotation: {x: -0.000022582635, y: -0.000077440825, z: 0.11381574, w: 0.9935019}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:R_Fingers03_Jnt
       parentName: ManequinModel:R_Fingers02_Jnt
-      position: {x: 0.00055488985, y: -0.0000000033882654, z: 1.3205586e-16}
+      position: {x: 0.055488985, y: -0.00000033882654, z: 1.3205587e-14}
       rotation: {x: 0.000000023165025, y: -0.0000000040379384, z: -0.1717225, w: 0.9851454}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:R_Thumb01_Jnt
       parentName: ManequinModel:R_Hand_Jnt
-      position: {x: 0.0006140948, y: 0.00000001510568, z: -0.000000010311751}
+      position: {x: 0.061409477, y: 0.000001510568, z: -0.0000010311751}
       rotation: {x: -0.14384563, y: -0.7285096, z: -0.022064857, w: 0.6693992}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:R_Thumb02_Jnt
       parentName: ManequinModel:R_Thumb01_Jnt
-      position: {x: 0.0003666174, y: 0.000000013246275, z: 9.419147e-10}
+      position: {x: 0.03666174, y: 0.0000013246275, z: 0.00000009419146}
       rotation: {x: 0.00057381514, y: 0.010158191, z: 0.0000667596, w: 0.99994826}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:R_Thumb03_Jnt
       parentName: ManequinModel:R_Thumb02_Jnt
-      position: {x: 0.00033366572, y: -0.000000019663247, z: 0.0000000018497861}
+      position: {x: 0.033366572, y: -0.0000019663248, z: 0.0000001849786}
       rotation: {x: -0.0016535511, y: -0.055994183, z: -0.029471548, w: 0.99799466}
       scale: {x: 1, y: 1, z: 1}
     - name: ManequinModel:Manequin_Tpose
@@ -558,7 +587,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.35
+    globalScale: 35
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 1
