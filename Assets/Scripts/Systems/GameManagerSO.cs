@@ -199,7 +199,7 @@ public class GameManagerSO : ScriptableObject
             thingsLockingMouse--;
         }
 
-        if(!wasLocked && thingsLockingMouse != 0)
+        if (!wasLocked && thingsLockingMouse != 0)
         {
             LockCamera(true);
             OnLockMouse?.Invoke(true);
@@ -223,17 +223,17 @@ public class GameManagerSO : ScriptableObject
         {
             thingsLockingCamera--;
         }
-        
+
         if(!wasLocked && thingsLockingCamera != 0)
         {
-            Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined; //we need to controll curson with a pause menu once implimented
+            Cursor.visible = true;
             OnLockCamera?.Invoke(true);
         }
         else if (wasLocked && thingsLockingCamera == 0)
         {
-            Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             OnLockCamera?.Invoke(false);
         }
     }
