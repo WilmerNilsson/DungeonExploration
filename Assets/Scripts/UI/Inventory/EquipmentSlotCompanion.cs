@@ -21,7 +21,7 @@ public class EquipmentSlotCompanion : MonoBehaviour
     //this can be called before start
     public void OnEquip(SimpleItem item)
     {
-        if(item.TryGetComponent(out UIWeapon uIWeapon))
+        if(item.TryGetComponent(out UIWeapon uIWeapon) && uIWeapon.Durability > 0)
         {
             GameObject prefab = uIWeapon.GetEquipPrefab();
 

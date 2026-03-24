@@ -47,6 +47,15 @@ public class UiItemHighlighter : MonoBehaviour, IPointerEnterHandler, IPointerEx
     }
 #endif
 
+    private void Start()
+    {
+        if (_colorFetched == false)
+        {
+            _defaultCollor = targetGraphic.color;
+            _colorFetched = true;
+        }
+    }
+
     private void OnDisable()
     {
         targetGraphic.color = defaultCollor;

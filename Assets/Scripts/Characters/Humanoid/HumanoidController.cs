@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(HumanoidInteract))]
 public class HumanoidController : MonoBehaviour
 {
+    public bool isAlive = true;
+    
     [Header("Sub Scripts")]
     [SerializeField] private HumanoidMovement movement;
     [SerializeField] private HumanoidRotator rotator;
@@ -17,7 +19,7 @@ public class HumanoidController : MonoBehaviour
     public void Move(Vector3 direction)
     {
         direction.y = 0;
-        movement.Move(direction.normalized);
+        movement.Move(direction);
     }
 
     public void Jump()
@@ -78,5 +80,10 @@ public class HumanoidController : MonoBehaviour
     public bool TryParry()
     {
         return animateAttack.TryParry();
+    }
+
+    public void SetAlive(bool value)
+    {
+        isAlive = value;
     }
 }
