@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -102,13 +103,14 @@ public class MinimapMaster : MonoBehaviour
         {
             return;
         }
+
+        minimap.SetActive(true);
+        GameManagerSO.Instance.LockMouse(true);
+
         if (InvMasterBase.Instance is InvMaster invMaster)
         {
             invMaster.ClosePlayerInventory();
         }
-        minimap.SetActive(true);
-        Cursor.visible = true;
-        GameManagerSO.Instance.LockMouse(true);
     }
 
     public void CloseMinimap()
@@ -118,7 +120,6 @@ public class MinimapMaster : MonoBehaviour
             return;
         }
         minimap.SetActive(false);
-        Cursor.visible = false;
         GameManagerSO.Instance.LockMouse(false);
     }
 
