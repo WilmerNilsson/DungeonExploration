@@ -22,6 +22,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     [SerializeField] private Transform head;
     private Transform Hand => swordArm.data.tip;
     [SerializeField] private bool isBlocking = false;
+    [SerializeField] private bool isAttacking = false;
 
     [SerializeField] private SplineContainer swordSplineContainer;
     private float angleLimit;
@@ -84,6 +85,12 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     {
         isInAnimation = true;
         startTime = Time.time;
+        
+        yield return new WaitUntil(ChargePart);
+        startTime = Time.time;
+        
+        yield return new WaitUntil(HoldPart);
+        startTime = Time.time;
 
         weaponScript.onSwing.Invoke();
         OnAttackStateChange?.Invoke(AttackState.Swing);
@@ -96,8 +103,20 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
         yield return new WaitUntil(ReturnPart);
 
+        isAttacking = false;
         isInAnimation = false;
 
+        bool ChargePart()
+        {
+            return weaponScript.ChargeAttack(TimeFromStartOfAnimation, Percentage);
+        }
+        
+        bool HoldPart()
+        {
+            weaponScript.HoldAttack(Percentage);
+            return isAttacking;
+        }
+        
         bool ReturnPart()
         {
             return weaponScript.ReturnAttack(TimeFromStartOfAnimation, returnTime);
@@ -120,6 +139,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         yield return new WaitUntil(ReturnPart);
 
         isInAnimation = false;
+        isAttacking = false;
 
 
         bool ReturnPart()
@@ -151,6 +171,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         yield return new WaitUntil(ReturnPart);
 
         isInAnimation = false;
+        isAttacking = false;
 
         bool RecoilPart()
         {
@@ -264,27 +285,31 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
 
     #region AttackInput
 
-    public void HoldAttackUpdate(float angle)
+    public void HoldAttackUpdate(float newAngle)
     {
-        if (hasWeapon && !isInAnimation)
+        if (hasWeapon)
         {
-            angle = FixAngle(angle);
-            this.angle = angle;
-            weaponScript.Angle = angle;
-            
-            weaponScript.HoldAttack(Percentage);
+            if (!isInAnimation)
+            {
+                angle = FixAngle(newAngle);
+                weaponScript.Angle = angle;
+                currentAnimation = StartCoroutine(AttackAnimation());
+            }
+            if (!isAttacking)
+            {
+                angle = FixAngle(newAngle);
+                weaponScript.Angle = angle;
+            }
         }
     }
 
-    public bool TryAttack(float angle)
+    public bool TryAttack(float newAngle)
     {
-        if (hasWeapon && !isInAnimation)
+        if (hasWeapon && !isAttacking && !isBlocking)
         {
-            angle = FixAngle(angle);
-            this.angle = angle;
+            angle = FixAngle(newAngle);
             weaponScript.Angle = angle;
-            weaponScript.HoldAttack(Percentage);
-            currentAnimation = StartCoroutine(AttackAnimation());
+            isAttacking = true;
             return true;
         }
         return false;
@@ -315,7 +340,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
         }
     }
 
-    public void HoldBlockUpdate(float newAngle) //TODO make it only run while blocking
+    public void HoldBlockUpdate(float newAngle)
     {
         if (hasWeapon && isBlocking)
         {
@@ -328,6 +353,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
     {
         if (isBlocking)
         {
+            isBlocking = false;
             StopCoroutine(currentAnimation);
             currentAnimation = StartCoroutine(ParryAnimation());
             return true;
