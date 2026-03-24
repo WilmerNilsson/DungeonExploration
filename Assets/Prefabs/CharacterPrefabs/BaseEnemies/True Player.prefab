@@ -235,6 +235,30 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 8992074457306076680}
+        m_TargetAssemblyTypeName: PlayerSoundLogic, GameAssembly
+        m_MethodName: OnLightTorch
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 7672797641627855348}
+        m_TargetAssemblyTypeName: AudioTrigger, GameAssembly
+        m_MethodName: Activate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   onSnuffTorch:
     m_PersistentCalls:
       m_Calls:
@@ -254,6 +278,30 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.Light, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8992074457306076680}
+        m_TargetAssemblyTypeName: PlayerSoundLogic, GameAssembly
+        m_MethodName: OnSnuffTorch
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2061064546830835116}
+        m_TargetAssemblyTypeName: AudioTrigger, GameAssembly
+        m_MethodName: Activate
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1981,16 +2029,117 @@ PrefabInstance:
       propertyPath: m_Name
       value: Torch
       objectReference: {fileID: 0}
+    - target: {fileID: 6391200482126748205, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+      propertyPath: activatedBy
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6391200482126748205, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+      propertyPath: instructions.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6391200482126748205, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+      propertyPath: instructions.Array.data[2].path
+      value: Ambiance/Torch
+      objectReference: {fileID: 0}
+    - target: {fileID: 6391200482126748205, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+      propertyPath: instructions.Array.data[2].command
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6391200482126748205, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+      propertyPath: instructions.Array.data[2].gameObj
+      value: 
+      objectReference: {fileID: 1783542284007240067}
+    - target: {fileID: 8904543747784288233, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+      propertyPath: instructions.Array.data[1].followObject
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2850094704517228023, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7672797641627855348}
+    - targetCorrespondingSourceObject: {fileID: 2850094704517228023, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2061064546830835116}
   m_SourcePrefab: {fileID: 100100000, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
 --- !u!198 &1725965202738370731 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 2935824123919371487, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
   m_PrefabInstance: {fileID: 4561574992140784756}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1783542284007240067 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2850094704517228023, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+  m_PrefabInstance: {fileID: 4561574992140784756}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7672797641627855348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1783542284007240067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a814d164a17170438a13d63660122b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activatedBy: 3
+  tagToActivate: 
+  activateOnce: 0
+  activationDelay: 0
+  instructions:
+  - command: 0
+    path: Ambiance/Torch
+    gameObj: {fileID: 1783542284007240067}
+    followObject: 1
+    stopMode: 0
+    parametersToSet: []
+    bankName: 
+    loadSampleData: 0
+  - command: 2
+    path: Ambiance/Torch
+    gameObj: {fileID: 1783542284007240067}
+    followObject: 1
+    stopMode: 0
+    parametersToSet: []
+    bankName: 
+    loadSampleData: 0
+--- !u!114 &2061064546830835116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1783542284007240067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a814d164a17170438a13d63660122b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activatedBy: 3
+  tagToActivate: 
+  activateOnce: 0
+  activationDelay: 0
+  instructions:
+  - command: 3
+    path: Ambiance/Torch
+    gameObj: {fileID: 1783542284007240067}
+    followObject: 0
+    stopMode: 0
+    parametersToSet: []
+    bankName: 
+    loadSampleData: 0
+  - command: 4
+    path: Ambiance/Torch
+    gameObj: {fileID: 1783542284007240067}
+    followObject: 0
+    stopMode: 0
+    parametersToSet: []
+    bankName: 
+    loadSampleData: 0
 --- !u!4 &4229444106205551951 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 432338180996008251, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
