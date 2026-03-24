@@ -8,6 +8,8 @@ using Random = UnityEngine.Random;
 
 public class MadAdventurerStateMachine : MonoBehaviour
 {
+    [SerializeField] private string stateName;
+    
     [Header("Required parts")]
     [SerializeField] public NavMeshAgent NavMeshAgent;
     [SerializeField] public HumanoidController Controller;
@@ -88,6 +90,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
         {
             CurrentState = IdleState;
         }
+        stateName = CurrentState.GetType().Name;
         CurrentState.Enter();
     }
 
@@ -102,6 +105,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
         CurrentState.Exit();
         CurrentState = targetState;
         OnMadState.Invoke(CurrentState);
+        stateName = CurrentState.GetType().Name;
         CurrentState.Enter();
     }
     

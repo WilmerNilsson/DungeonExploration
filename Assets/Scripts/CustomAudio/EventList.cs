@@ -417,27 +417,31 @@ public class EventList : ScriptableObject
                 
                 if (playbackState != PLAYBACK_STATE.PLAYING || allowRestart)
                 {
-                    if (!eventData.is3D) return; //Om event är 3D och attachToObject, fäser vi eventet på gameObject,
-                                                 //om followObject är false följer eventet inte med gameObject utan
-                                                 //stannar kvar på samma position där objektet var när instansen skapades
-                    if (followObject)
+                    if (eventData.is3D)
                     {
-                        if (gameObject.TryGetComponent<Rigidbody>(out var rb))
+                        if (followObject)
                         {
-                            RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+                            if (gameObject.TryGetComponent<Rigidbody>(out var rb))
+                            {
+                                RuntimeManager.AttachInstanceToGameObject(instance, gameObject);
+                            }
+                            else
+                            {
+                                RuntimeManager.AttachInstanceToGameObject(instance, gameObject, true);
+                            }
+
+                            AudioDebug.Print("Attached " + eventName + " to " + gameObject.name);
                         }
                         else
                         {
-                            RuntimeManager.AttachInstanceToGameObject(instance, gameObject, true);
+                            instance.set3DAttributes(gameObject.transform.To3DAttributes());
+                            AudioDebug.Print("Set 3D attributes of " + eventName + " to those of " + gameObject.name);
                         }
-
-                        AudioDebug.Print("Attached " + eventName + " to " + gameObject.name);
-                    }
-                    else
-                    {
-                        instance.set3DAttributes(gameObject.transform.To3DAttributes());
-                        AudioDebug.Print("Set 3D attributes of " + eventName + " to those of " + gameObject.name);
-                    }
+                    } //Om event är 3D och attachToObject, fäser vi eventet på gameObject,
+                                                 //om followObject är false följer eventet inte med gameObject utan
+                                                 //stannar kvar på samma position där objektet var när instansen skapades
+                    
+                    
 
 
                     instance.start();

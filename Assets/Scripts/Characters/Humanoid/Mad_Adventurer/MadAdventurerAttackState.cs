@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 [System.Serializable]
 public class MadAdventurerAttackState : MadAventurerBaseState
@@ -14,14 +15,31 @@ public class MadAdventurerAttackState : MadAventurerBaseState
 
     public override void Enter()
     {
-        target = MyMadAdventurerStateMachine.PlayerTransform.position;
+        TryFindPath(MyMadAdventurerStateMachine.PlayerTransform.position);
+        target = GetNextCorner();
     }
     
     public override void Update()
     {
-        target = MyMadAdventurerStateMachine.PlayerTransform.position;
+        if (TryFindPath(MyMadAdventurerStateMachine.PlayerTransform.position))
+        {
+            if (Vector3.Distance(MyPosition, NavMeshPath.corners[^1]) < 1f)
+            {
+                MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((PlayerPosition-MyPosition)));
+                Stop();
+            }
+            else
+            {
+                target = GetNextCorner();
+            }
+        }
+        else // Stand and stare at player if you cant reach them
+        {
+            MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((PlayerPosition-MyPosition)));
+            Stop();
+        }
         
-        distance = Vector3.Distance(MyMadAdventurerStateMachine.transform.position, MyMadAdventurerStateMachine.PlayerTransform.position);
+        distance = Vector3.Distance(MyPosition, PlayerPosition);
 
         if (distance > chaseRange)
         {
@@ -33,8 +51,9 @@ public class MadAdventurerAttackState : MadAventurerBaseState
         }
         else if (distance > minMeleeRange) // just smack :)
         {
+            Stop();
+            MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((PlayerPosition-MyPosition)));
             TryAttack();
-            Move(Vector3.zero);
         }
         else
         {

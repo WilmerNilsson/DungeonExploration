@@ -4,7 +4,9 @@ using UnityEngine;
 public class CutsceneSoundLogic : MonoBehaviour
 {
     [SerializeField] private string musicPath;
+    [SerializeField] private string ambiancePath;
     [SerializeField] private string vaPath;
+    [SerializeField] private string lineParameter;
 
     private void Start()
     {
@@ -12,7 +14,15 @@ public class CutsceneSoundLogic : MonoBehaviour
         {
             AudioManager.Instance.CreateInstance(musicPath);
             AudioManager.Instance.StartEvent(musicPath);
-            AudioManager.Instance.InitializeDialogue(vaPath);
+            if (ambiancePath != "" || ambiancePath != null)
+            {
+                AudioManager.Instance.CreateInstance(ambiancePath);
+                AudioManager.Instance.StartEvent(ambiancePath);
+            }
+            if (vaPath != "" || vaPath != null)
+            {
+                AudioManager.Instance.InitializeDialogue(vaPath);
+            }
         }
     }
 
@@ -24,11 +34,19 @@ public class CutsceneSoundLogic : MonoBehaviour
         }
     }
 
+    public void ProgressAmbiance(int progress)
+    {
+        if (AudioManager.IsValid)
+        {
+            AudioManager.Instance.SetParameter(ambiancePath, "Progress", progress);
+        }
+    }
+
     public void NextLine(int lineIndex)
     {
         if (AudioManager.IsValid)
         {
-            AudioManager.Instance.SetParameter(vaPath, "IntroVO", lineIndex);
+            AudioManager.Instance.SetParameter(vaPath, lineParameter, lineIndex);
             AudioManager.Instance.StartEvent(vaPath);
         }
     }
@@ -47,7 +65,15 @@ public class CutsceneSoundLogic : MonoBehaviour
         {
             AudioManager.Instance.StopEvent(musicPath, STOP_MODE.ALLOWFADEOUT);
             AudioManager.Instance.ReleaseInstance(musicPath);
-            AudioManager.Instance.EndDialogue(vaPath);
+            if (ambiancePath != "" || ambiancePath != null)
+            {
+                AudioManager.Instance.StopEvent(ambiancePath, STOP_MODE.ALLOWFADEOUT);
+                AudioManager.Instance.ReleaseInstance(ambiancePath);
+            }
+            if (vaPath != "" || vaPath != null)
+            {
+                AudioManager.Instance.EndDialogue(vaPath);
+            }
         }
     }
 }

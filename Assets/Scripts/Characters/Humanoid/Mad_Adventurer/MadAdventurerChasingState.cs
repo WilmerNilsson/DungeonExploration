@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 [System.Serializable]
 public class MadAdventurerChasingState : MadAventurerBaseState
@@ -11,6 +12,7 @@ public class MadAdventurerChasingState : MadAventurerBaseState
     {
         MyMadAdventurerStateMachine.Controller.isSprinting = true;
         target = MyMadAdventurerStateMachine.PlayerTransform.position;
+        isChasing = false;
     }
 
     public override void Exit()
@@ -24,33 +26,49 @@ public class MadAdventurerChasingState : MadAventurerBaseState
     {
         if (isChasing)
         {
-            if (!DetectPlayer()) // If it cant detect the player, move back to Idle TODO move to Searching when it exists
+            TryTransit();
+
+            Debug.Log($"index = {pathIndex}, Lenght = {NavMeshPath.corners.Length}, Status = {NavMeshPath.status}");
+            if (TryFindPath(MyMadAdventurerStateMachine.PlayerTransform.position))
             {
-                MyMadAdventurerStateMachine.Transit(MyMadAdventurerStateMachine.IdleState);
+                if (Vector3.Distance(MyPosition, NavMeshPath.corners[^1]) < 1f)
+                {
+                    MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((PlayerPosition-MyPosition)));
+                    Stop();
+                }
+                else
+                {
+                    target = GetNextCorner();
+                    Move(Vector3.forward);
+                }
             }
-        
-            if (Vector3.Distance(MyMadAdventurerStateMachine.PlayerTransform.position, MyMadAdventurerStateMachine.transform.position) <= minDistanceToPlayer) // If its close enough move to Attacking
+            else // Stand and stare at player if you cant reach them
             {
-                MyMadAdventurerStateMachine.Transit(MyMadAdventurerStateMachine.AttackState);
-            }
-            else // Find a path to get closer
-            {
-                FindPath(MyMadAdventurerStateMachine.PlayerTransform.position);
-                target = GetNextCorner();
-                Move(Vector3.forward);
+                MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((PlayerPosition-MyPosition)));
+                Stop();
             }
         }
         else if (chasingDelay > 0)
         {
             chasingDelay -= Time.deltaTime;
             Stop();
-            MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((target-MyMadAdventurerStateMachine.transform.position)));
+            MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((target-MyPosition)));
         }
         else
         {
             isChasing = true;
-            FindPath(MyMadAdventurerStateMachine.PlayerTransform.position);
-            target = GetNextCorner();
+        }
+    }
+
+    private void TryTransit()
+    {
+        if (!DetectPlayer()) // If it cant detect the player, move back to Searching
+        {
+            MyMadAdventurerStateMachine.Transit(MyMadAdventurerStateMachine.SearchingState);
+        }
+        if (Vector3.Distance(MyMadAdventurerStateMachine.PlayerTransform.position, MyMadAdventurerStateMachine.transform.position) <= minDistanceToPlayer) // If its close enough move to Attacking
+        {
+            MyMadAdventurerStateMachine.Transit(MyMadAdventurerStateMachine.AttackState);
         }
     }
 }

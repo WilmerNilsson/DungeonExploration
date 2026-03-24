@@ -13,7 +13,8 @@ public abstract class MadAventurerBaseState
     protected Vector2 position;
     protected int pathIndex;
 
-
+    protected Vector3 PlayerPosition => MyMadAdventurerStateMachine.PlayerTransform.position;
+    protected Vector3 MyPosition => MyMadAdventurerStateMachine.transform.position;
     public virtual void OnValidate(MadAdventurerStateMachine madAdventurer) { }
     
     public virtual void Intialize(MadAdventurerStateMachine madAdventurer)
@@ -52,18 +53,22 @@ public abstract class MadAventurerBaseState
     /// </summary>
     protected virtual void Move(Vector3 direction)
     {
-        MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((target-MyMadAdventurerStateMachine.transform.position)));
+        MyMadAdventurerStateMachine.Controller.Rotate(Quaternion.LookRotation((target-MyPosition)));
         MyMadAdventurerStateMachine.Controller.Move(direction);
     }
     
     /// <summary>
     /// Calculates a new path to the target position
     /// </summary>
-    protected void FindPath(Vector3 pos)
+    protected bool TryFindPath(Vector3 pos)
     {
         pathIndex = 1;
-
-        MyMadAdventurerStateMachine.NavMeshAgent.CalculatePath(pos, NavMeshPath);
+        if (NavMesh.SamplePosition(pos, out NavMeshHit hit, 5, NavMesh.AllAreas))
+        {
+            MyMadAdventurerStateMachine.NavMeshAgent.CalculatePath(hit.position, NavMeshPath);
+            return true;
+        }
+        return false;
     }
     
     protected Vector3 GetNextCorner()
