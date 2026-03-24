@@ -27,7 +27,14 @@ public class MadAdventurerIdleState : MadAventurerBaseState
     {
         TryFindPath(GetRandomPosition());
         target = GetNextCorner();
+        MyMadAdventurerStateMachine.Controller.isCrouching = true;
         Reset();
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        MyMadAdventurerStateMachine.Controller.isCrouching = false;
     }
 
     public override void Update()
