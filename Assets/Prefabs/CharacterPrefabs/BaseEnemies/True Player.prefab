@@ -223,17 +223,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5100284084958003180}
-        m_TargetAssemblyTypeName: UnityEngine.Light, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
+      - m_Target: {fileID: 4536341754167614733}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: Play
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
+          m_StringArgument: Torch turn on
+          m_BoolArgument: 0
         m_CallState: 2
   onSnuffTorch:
     m_PersistentCalls:
@@ -250,16 +250,16 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5100284084958003180}
-        m_TargetAssemblyTypeName: UnityEngine.Light, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
+      - m_Target: {fileID: 4536341754167614733}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: Play
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: turn of torch
           m_BoolArgument: 0
         m_CallState: 2
   controller: {fileID: 460348200128992605}
@@ -1925,6 +1925,18 @@ PrefabInstance:
       propertyPath: m_Color.g
       value: 0.667822
       objectReference: {fileID: 0}
+    - target: {fileID: -465523245192008808, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -465523245192008808, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -465523245192008808, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+      propertyPath: m_BounceIntensity
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 432338180996008251, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.01
@@ -1984,20 +1996,45 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1059517873441690497, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4536341754167614733}
   m_SourcePrefab: {fileID: 100100000, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
 --- !u!198 &1725965202738370731 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 2935824123919371487, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
   m_PrefabInstance: {fileID: 4561574992140784756}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &3601139918311524341 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1059517873441690497, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+  m_PrefabInstance: {fileID: 4561574992140784756}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4536341754167614733
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3601139918311524341}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 632c347c1d50e0e46a220780214d5c52, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &4229444106205551951 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 432338180996008251, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
-  m_PrefabInstance: {fileID: 4561574992140784756}
-  m_PrefabAsset: {fileID: 0}
---- !u!108 &5100284084958003180 stripped
-Light:
-  m_CorrespondingSourceObject: {fileID: -465523245192008808, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
   m_PrefabInstance: {fileID: 4561574992140784756}
   m_PrefabAsset: {fileID: 0}
