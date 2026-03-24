@@ -36,7 +36,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
 
     private float lastAngle;
     
-    internal bool isAttacking;
+    [SerializeField] internal bool isAttacking;
     private float startTime;
     
     internal Coroutine currentAttack;

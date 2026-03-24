@@ -8,6 +8,9 @@ public class PlayerSoundLogic : MonoBehaviour
     [SerializeField] private string sanityPath;
     [SerializeField] private string hungerPath;
 
+    [SerializeField] private string lightTorchPath;
+    [SerializeField] private string snuffTorchPath;
+
     [SerializeField] private string exhaustionPath;
     [SerializeField] private string exhaustionParameter;
     [SerializeField] private float exhaustionMax;
@@ -29,6 +32,18 @@ public class PlayerSoundLogic : MonoBehaviour
         AudioManager.Instance.StartEvent(exhaustionPath);
     }
     
+    public void OnLightTorch()
+    {
+        if (!AudioManager.IsValid) return;
+        AudioManager.Instance.PlayOneShot(lightTorchPath);
+    }
+
+        public void OnSnuffTorch()
+        {
+            if (!AudioManager.IsValid) return;
+            AudioManager.Instance.PlayOneShot(snuffTorchPath);
+    }
+
     public void OnLoseSanity(float sanity)
     {
         if (!AudioManager.IsValid) return;
