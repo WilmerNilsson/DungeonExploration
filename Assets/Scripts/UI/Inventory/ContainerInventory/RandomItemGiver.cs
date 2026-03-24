@@ -7,8 +7,10 @@ public class RandomItemGiver : MonoBehaviour
 {
     [SerializeField] private InventoryGrid inventoryGrid;
     [SerializeField] private LootPoolSO lootPool;
-    [SerializeField] private List<string> lootPoolName;
-    [SerializeField] private Vector2Int lootAmountRange = new Vector2Int(0, 1);
+    //[SerializeField] private List<string> lootPoolName;
+    //[SerializeField] private Vector2Int lootAmountRange = new Vector2Int(0, 1);
+    
+    [SerializeField] private List<LootPoolData> lootPoolData;
 
     private bool selfInitialize = true;
 
@@ -18,7 +20,7 @@ public class RandomItemGiver : MonoBehaviour
         if (inventoryGrid == null) Debug.LogWarning("inventory grid is null", this);
         if (lootPool == null) Debug.LogWarning("loot pool is null", this);
 
-        if(lootAmountRange.x < 0)
+        /*if(lootAmountRange.x < 0)
         {
             Debug.LogWarning("loot amount range min value is less than 0",this);
             lootAmountRange.x = 0;
@@ -27,7 +29,7 @@ public class RandomItemGiver : MonoBehaviour
         {
             Debug.LogWarning("loot amount range max is less than min", this);
             lootAmountRange.y = lootAmountRange.x;
-        }
+        }*/
     }
 #endif
 
@@ -35,7 +37,7 @@ public class RandomItemGiver : MonoBehaviour
     {
         if (selfInitialize)
         {
-            GiveRandomLoot(lootPoolName);
+            LootThing();
         }
     }
 
@@ -44,85 +46,57 @@ public class RandomItemGiver : MonoBehaviour
         selfInitialize = false;
     }
 
-    public void Initialize(List<string> inLootPoolName, int inMinLoot, int inMaxLoot)
+    public void Initialize(List<LootPoolData> lootPoolDatas)
     {
         selfInitialize = false;
 
-        lootPoolName = inLootPoolName;
-        lootAmountRange = new(inMinLoot, inMaxLoot);
-
-        GiveRandomLoot(lootPoolName);
+        lootPoolData = new List<LootPoolData>(lootPoolDatas);
+        
+        LootThing();
     }
 
     /// <summary>
     /// not a copy, be carefull not to change anything
     /// </summary>
-    public List<string> GetLootPoolNames()
+    /*public List<string> GetLootPoolNames()
     {
         return lootPoolName;
+    }*/
+
+    public List<LootPoolData> GetLootPoolDatas()
+    {
+        return lootPoolData;
     }
 
-    public Vector2Int GetLootAmountRange()
+    /*public Vector2Int GetLootAmountRange()
     {
         return lootAmountRange;
+    }*/
+
+    private void LootThing()
+    {
+        for (int i = 0; i < lootPoolData.Count; i++)
+        {
+            int lootAmount = Random.Range(lootPoolData[i].itemAmountRange.x, lootPoolData[i].itemAmountRange.y);
+            LootPool currentPool = lootPool.lootPools.Find(x => x.name == lootPoolData[i].lootPoolName);
+            if (currentPool != null) GiveRandomLoot(currentPool, lootAmount);
+        }
     }
 
-    private void GiveRandomLoot(List<string> lootName)
+    private void GiveRandomLoot(LootPool currentPool, int itemAmount)
     {
-        if (lootName.Count == 0)
-        {
-            //commenting this out since 
-            //Debug.LogWarning("This chest has no loot pool", this);
-            return;
-        }
-        List<LootPool> currentLootPools = new List<LootPool>();
-        LootPool currentPool = null;
-        for (int i = 0; i < lootName.Count; i++)
-        {
-            currentLootPools.Add(lootPool.lootPools.Find(x => x.name == lootName[i]));
-        }
-        
         int totalWeight = 0;
-        for (int i = 0; i < currentLootPools.Count; i++)
-        {
-            totalWeight += currentLootPools[i].weight;
-        }
-        
-        int itemAmount = Random.Range(lootAmountRange.x, lootAmountRange.y);
-        for (int i = 0; i < itemAmount; i++)
-        {
-            int randomIndex = Random.Range(1, totalWeight + 1);
-            int currentWeight = 0;
-
-            for (int j = 0; currentWeight <= totalWeight; j++)
-            {
-                if (currentWeight <= randomIndex && randomIndex <= currentWeight + currentLootPools[j].weight) //check if index is in range
-                {
-                    currentPool = currentLootPools[j];
-                }
-                currentWeight += currentPool.items[j].weight;
-            }
-        }
-        
-        if (currentPool == null)
-        {
-            Debug.LogWarning("No LootPool found", gameObject);
-            return;
-        }
-        
-        totalWeight = 0;
         for (int i = 0; i < currentPool.items.Count; i++)
         {
             totalWeight += currentPool.items[i].weight;
         }
         
-        itemAmount = Random.Range(lootAmountRange.x, lootAmountRange.y);
         for (int i = 0; i < itemAmount; i++)
         {
             int randomIndex = Random.Range(1, totalWeight + 1);
             int currentWeight = 0;
 
-            for (int j = 0; currentWeight <= totalWeight; j++)
+            for (int j = 0; currentWeight < totalWeight; j++)
             {
                 if (currentWeight <= randomIndex && randomIndex <= currentWeight + currentPool.items[j].weight) //check if index is in range
                 {
@@ -135,7 +109,5 @@ public class RandomItemGiver : MonoBehaviour
                 currentWeight += currentPool.items[j].weight;
             }
         }
-        
-        
     }
 }

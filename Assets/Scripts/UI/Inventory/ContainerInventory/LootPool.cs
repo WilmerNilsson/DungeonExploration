@@ -5,7 +5,6 @@ using UnityEngine;
 public class LootPool
 {
     public string name;
-    public int weight = 1;
     public List<Loot> items;
 }
 

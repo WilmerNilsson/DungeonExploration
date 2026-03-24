@@ -27,7 +27,8 @@ public class HumanoidMovement : MonoBehaviour
     private Vector3 rotatedVector;
     private Vector3 initialAirVector;
     private float initialMagnitude;
-    public Vector3 lastGroundedPosition;
+    private Vector3 lastGroundedPosition;
+    public Vector2 lastSafeGroundedPosition;
     private Vector3 playerVelocity;
     
     [Header("Debug")]
@@ -148,7 +149,7 @@ public class HumanoidMovement : MonoBehaviour
 
             finalMove = rotatedVector * deltaSpeed + playerVelocity;
             playerVelocity = finalMove;
-            //lastGroundedPosition = transform.position;
+            lastGroundedPosition = transform.position;
 
             CC.Move(finalMove * Time.fixedDeltaTime);
             Profiler.EndSample();
@@ -162,7 +163,7 @@ public class HumanoidMovement : MonoBehaviour
             yield return new WaitForSeconds(1);
             if (grounded)
             {
-                lastGroundedPosition = transform.position;
+                lastSafeGroundedPosition = lastGroundedPosition;
             }
         }
     }
