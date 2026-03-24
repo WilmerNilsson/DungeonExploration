@@ -188,6 +188,12 @@ public class OcclusionHandler : MonoBehaviour
         {
             for (int i = 0; i < _objectsAndDistances.Count; i++)
             {
+                if (!_objectsAndDistances[i].Obj)
+                {
+                    _objectsAndDistances.RemoveAt(i);
+                    OcclusionObjects.Remove(_objectsAndDistances[i].Obj);
+                    continue;
+                } 
                 _tempObjAndDistance = _objectsAndDistances[i];
                 _tempObjAndDistance.Distance = Vector3.Distance(_objectsAndDistances[i].Obj.transform.position, Listener.transform.position);
                 if (!Mathf.Approximately(_objectsAndDistances[i].Distance, _tempDistance))
