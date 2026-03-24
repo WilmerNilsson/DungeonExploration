@@ -29,7 +29,7 @@ public class SavesMaster : MonoBehaviour
     {
         for (int i = 0; i < orderedSaveTexts.Length; i++)
         {
-            SavefileData savefileData = GameManagerSO.Instance.SavefileManager.ReadSaveFileNoCreate(i);
+            SavefileData savefileData = GameManagerSO.Instance.SavefileManager.ReadSaveFileNoCreate(i+1);
 
             if (savefileData != null)
             {
@@ -84,7 +84,7 @@ public class SavesMaster : MonoBehaviour
         {
             GameManagerSO.Instance.SavefileManager.DeleteSavefile(selectedSaveFileInt);
 
-            orderedSaveTexts[0].text = emptySaveString;
+            orderedSaveTexts[selectedSaveFileInt-1].text = emptySaveString;
 
             DeselectButton();
         }
