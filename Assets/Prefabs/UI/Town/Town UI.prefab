@@ -2968,10 +2968,34 @@ MonoBehaviour:
   playerCashSO: {fileID: 11400000, guid: ffae8245bc035e74c8db57a6b9da2ca3, type: 2}
   OnBuyEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4180977678112525054}
+        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
+        m_MethodName: PlayBuySound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnSellEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4180977678112525054}
+        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
+        m_MethodName: PlaySellSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   deliverWeaponPanel: {fileID: 1884521984008488567}
   weaponAlreadyDonatedText: 'Don''t really need more of those.  '
   couldDonateText: "I\u2019ll gladly take that of your hands. "
@@ -2982,10 +3006,46 @@ MonoBehaviour:
     for that grams. "
   OnDonateEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: bdf29b42815530643a21db08d0f5608d, type: 2}
+        m_TargetAssemblyTypeName: DialogueContainer, GameAssembly
+        m_MethodName: SetFriendshipLevel
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4180977678112525054}
+        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
+        m_MethodName: PlayDonateSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnRepairEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4180977678112525054}
+        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
+        m_MethodName: PlayRepairSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2495740166984162305
 GameObject:
   m_ObjectHideFlags: 0
@@ -3079,34 +3139,10 @@ MonoBehaviour:
   onlyAcceptWeapons: 0
   OnGetNewItem:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4180977678112525054}
-        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
-        m_MethodName: PlaySellSound
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnRemoveItem:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4180977678112525054}
-        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
-        m_MethodName: PlayBuySound
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   drawCenter: 0
   drawGrid: 0
   drawOccupied: 0
@@ -8731,18 +8767,6 @@ MonoBehaviour:
   OnGetNewItem:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4180977678112525054}
-        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
-        m_MethodName: PlaySellSound
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 2802758978755215620}
         m_TargetAssemblyTypeName: BlacksmithUI, GameAssembly
         m_MethodName: OnGetNewItemInDonationGrid
@@ -8758,18 +8782,6 @@ MonoBehaviour:
   OnRemoveItem:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4180977678112525054}
-        m_TargetAssemblyTypeName: TownSoundLogic, GameAssembly
-        m_MethodName: PlayBuySound
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 2802758978755215620}
         m_TargetAssemblyTypeName: BlacksmithUI, GameAssembly
         m_MethodName: OnRemoveItemFromDonationGrid
@@ -11396,11 +11408,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3377220526939929423, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
       propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3377220526939929423, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
       propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3377220526939929423, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
       propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -11452,11 +11464,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4864247598894987594, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
       propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4864247598894987594, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
       propertyPath: OnRemoveItem.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4864247598894987594, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
       propertyPath: OnGetNewItem.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -11586,6 +11598,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6873610629622713757, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: SpawnItems.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6873610629622713757, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: 'SpawnItems.Array.data[0]'
+      value: Rep
+      objectReference: {fileID: 0}
+    - target: {fileID: 6873610629622713757, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: 'SpawnItems.Array.data[2]'
+      value: HealthPotion
+      objectReference: {fileID: 0}
+    - target: {fileID: 6873610629622713757, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnBuyEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4180977678112525054}
+    - target: {fileID: 6873610629622713757, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
+      propertyPath: OnSellEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 4180977678112525054}
     - target: {fileID: 6949127146452751405, guid: a2bcee0906a410b4f8ff09f0c78952f7, type: 3}
       propertyPath: m_fontColor.b
       value: 1
