@@ -27,7 +27,8 @@ public class SavesMaster : MonoBehaviour
 
     private void Start()
     {
-        for (int i = 0; i < orderedSaveTexts.Length; i++)
+        //+1 cause it starts counting from 1
+        for (int i = 1; i <= orderedSaveTexts.Length; i++)
         {
             SavefileData savefileData = GameManagerSO.Instance.SavefileManager.ReadSaveFileNoCreate(i);
 
@@ -84,7 +85,7 @@ public class SavesMaster : MonoBehaviour
         {
             GameManagerSO.Instance.SavefileManager.DeleteSavefile(selectedSaveFileInt);
 
-            orderedSaveTexts[0].text = emptySaveString;
+            orderedSaveTexts[selectedSaveFileInt].text = emptySaveString;
 
             DeselectButton();
         }
