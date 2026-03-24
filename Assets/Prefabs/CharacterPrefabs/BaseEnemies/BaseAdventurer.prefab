@@ -55,6 +55,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea107c8abef7ba94da20fef4aa14aa0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stateName: 
   NavMeshAgent: {fileID: 2816012508878380198}
   Controller: {fileID: 7389383127273717716}
   Animator: {fileID: 3825515126003977139}
@@ -84,8 +85,14 @@ MonoBehaviour:
     minDistanceToCorner: 0.1
     target: {x: 0, y: 0, z: 0}
     holdTime: 2
+    chaseRange: 4
     maxMeleeRange: 2
     minMeleeRange: 0.5
+  SearchingState:
+    MyMadAdventurerStateMachine: {fileID: 0}
+    minDistanceToCorner: 0.1
+    target: {x: 0, y: 0, z: 0}
+    searchDuration: 0
   DyingState:
     MyMadAdventurerStateMachine: {fileID: 0}
     minDistanceToCorner: 0.1
@@ -182,6 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe29fd6fdb86bf94784e00448707c5ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAlive: 1
   movement: {fileID: 538933198194063175}
   rotator: {fileID: 6611102069042242784}
   interact: {fileID: 3266044679475263286}
@@ -246,6 +254,7 @@ MonoBehaviour:
   lastGroundedPosition: {x: 0, y: 0, z: 0}
   doJump: 0
   grounded: 0
+  crouching: 0
 --- !u!114 &6611102069042242784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,6 +284,7 @@ MonoBehaviour:
   debug: 0
   head: {fileID: 7819616435158120133}
   interactDistance: 5
+  health: {fileID: 1693646842145338136}
   layerMask:
     serializedVersion: 2
     m_Bits: 0
