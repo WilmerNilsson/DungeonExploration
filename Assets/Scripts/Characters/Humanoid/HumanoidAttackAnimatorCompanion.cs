@@ -336,7 +336,7 @@ public class HumanoidAttackAnimatorCompanion : MonoBehaviour
             swordArm.data.targetPositionWeight = 0;
             swordArm.data.targetRotationWeight = 0;
 
-            weaponScript.SetBlockActive(false);
+            if (hasWeapon) weaponScript.SetBlockActive(false);
         }
     }
 
