@@ -83,7 +83,8 @@ public class AudioDebug : MonoBehaviour
                         {
                             eventData.EventInstance.getPlaybackState(out var state);
                             eventData.EventInstance.isVirtual(out var virutalState);
-                            text += "Instance in eventData | state: " + state + " virtual: " + virutalState;
+                            eventData.EventInstance.getTimelinePosition(out var timelinePosition);
+                            text += "Instance in eventData | state: " + state + " virtual: " + virutalState + " pos: " + timelinePosition + "\n";
                             lines++;
 
                         }
