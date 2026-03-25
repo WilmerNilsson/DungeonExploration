@@ -1,5 +1,4 @@
 #speed:0.2
-#animation:Alva&SynPlaceholder
 #name:Alva
 Oh it's wonderful, fast and strong like a fire going through our shop.
 #name:Syn

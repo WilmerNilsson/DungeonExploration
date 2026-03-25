@@ -1,5 +1,4 @@
 #speed:0.2
-#animation:AlvaPlaceholder
 #name:Avla
 Welcome back dearie. Me and Syn have been eagerly awaiting you.
 #name:Syn

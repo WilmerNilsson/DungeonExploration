@@ -1,5 +1,4 @@
 #speed:0.025
-#animation:SagaPlaceholder
 #name:Saga 
 Huh? This.. This is from Agathol isn’t it? It’s been awhile since anyone brought me something from there.
 

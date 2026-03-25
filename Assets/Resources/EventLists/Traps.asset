@@ -156,32 +156,7 @@ MonoBehaviour:
     maxDistance: 20
     debug: 0
     parameters: []
-  - eventName: ArrowTrap
-    eventReference:
-      Guid:
-        Data1: -1966784160
-        Data2: 1265893609
-        Data3: -1339067203
-        Data4: 2090908658
-      Path: event:/Sound/Traps/ArrowTrap
-    banks:
-    - SFX
-    isOneShot: 0
-    is3D: 1
-    isOcclusion: 1
-    minDistance: 1
-    maxDistance: 20
-    debug: 0
-    parameters:
-    - paramName: Walls
-      isGlobal: 0
-      data1: 3996502556
-      data2: 1746408966
-    - paramName: Occluded
-      isGlobal: 0
-      data1: 2996130905
-      data2: 1527690840
-  - eventName: ' BigSpearTrap'
+  - eventName: BigSpearTrap
     eventReference:
       Guid:
         Data1: -1525220280
@@ -198,6 +173,31 @@ MonoBehaviour:
     maxDistance: 20
     debug: 0
     parameters:
+    - paramName: Occluded
+      isGlobal: 0
+      data1: 2996130905
+      data2: 1527690840
+  - eventName: ArrowTrap
+    eventReference:
+      Guid:
+        Data1: -1966784160
+        Data2: 1265893609
+        Data3: -1339067203
+        Data4: 2090908658
+      Path: event:/Sound/Traps/ArrowTrap
+    banks:
+    - SFX
+    isOneShot: 0
+    is3D: 0
+    isOcclusion: 1
+    minDistance: 1
+    maxDistance: 60
+    debug: 0
+    parameters:
+    - paramName: Walls
+      isGlobal: 0
+      data1: 3996502556
+      data2: 1746408966
     - paramName: Occluded
       isGlobal: 0
       data1: 2996130905

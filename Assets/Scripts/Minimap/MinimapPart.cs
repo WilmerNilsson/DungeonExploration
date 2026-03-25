@@ -18,8 +18,8 @@ public class MinimapPart : MonoBehaviour
     {
         if (!Renderer)
         {
-            Debug.LogWarning("No renderer", this);
-            return Vector3.zero;
+            Debug.LogWarning("No renderer, using scale instead", this);
+            return transform.localScale;
         }
 
         //gameObject.isStatic = false;

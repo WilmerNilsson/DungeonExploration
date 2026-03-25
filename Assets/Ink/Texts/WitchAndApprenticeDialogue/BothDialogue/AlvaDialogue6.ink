@@ -1,5 +1,4 @@
 #speed:0.2
-#animation:Alva&SynPlaceholder
 #name:Alva
 Oh, to be young and rich again.
 #name:Ingrid
