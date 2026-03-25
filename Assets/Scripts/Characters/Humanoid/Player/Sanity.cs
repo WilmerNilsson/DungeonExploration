@@ -17,12 +17,12 @@ public class Sanity : MonoBehaviour
     public static Sanity Instance;
     [SerializeField] private bool ResetOnAwake = true;
 
-    [SerializeField, Min(0), Tooltip("How much sanity is lost over time in Light")] private int inLightSanityDamage;
-    [SerializeField, Min(0), Tooltip("How much sanity is lost over time in Dark")] private int inDarkSanityDamage;
+    [SerializeField, Min(0), Tooltip("How much sanity is lost over time in Light")] private float inLightSanityDamage;
+    [SerializeField, Min(0), Tooltip("How much sanity is lost over time in Dark")] private float inDarkSanityDamage;
     [SerializeField, Tooltip("How much the damage to health is divided by before being applied to sanity")] private float damageToSanityMod = 10;
     [SerializeField, Tooltip("brightness level, if its lower its considered dark"), Min(0.01f)] private float lightThreshold;
     [SerializeField, Tooltip("How long between sanity ticks, in seconds"), Min(0)] private float sanityTickSpeed;
-    private int damage;
+    private float damage;
     
     Coroutine sanityTick;
 
