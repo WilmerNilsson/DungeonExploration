@@ -3704,89 +3704,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!1 &8400664523339782884
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6961144644474212266}
-  - component: {fileID: 9117544123456016605}
-  m_Layer: 11
-  m_Name: Floor 7
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6961144644474212266
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8400664523339782884}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: -87.5, y: 30, z: 56.6}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8029697739113261019}
-  m_LocalEulerAnglesHint: {x: 90, y: -90, z: -90}
---- !u!20 &9117544123456016605
-Camera:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8400664523339782884}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.5254902, g: 0.01527869, b: 0, a: 0}
-  m_projectionMatrixMode: 1
-  m_GateFitMode: 2
-  m_FOVAxisMode: 0
-  m_Iso: 200
-  m_ShutterSpeed: 0.005
-  m_Aperture: 16
-  m_FocusDistance: 10
-  m_FocalLength: 50
-  m_BladeCount: 5
-  m_Curvature: {x: 2, y: 11}
-  m_BarrelClipping: 0.25
-  m_Anamorphism: 0
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 1
-  far clip plane: 4
-  field of view: 53.080025
-  orthographic: 1
-  orthographic size: 162
-  m_Depth: 1
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 2048
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: 79acb53edb3714743960654ecc7f3617, type: 2}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
 --- !u!1 &8697711877863350521
 GameObject:
   m_ObjectHideFlags: 0
@@ -3881,7 +3798,7 @@ GameObject:
   - component: {fileID: 1755294097549113408}
   - component: {fileID: 5382326205317580193}
   m_Layer: 11
-  m_Name: Floor 8
+  m_Name: Floor 7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3911,8 +3828,8 @@ Camera:
   m_GameObject: {fileID: 8721052129497330913}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.5254902, g: 0.01527869, b: 0, a: 0}
+  m_ClearFlags: 3
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -3934,7 +3851,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 1
-  far clip plane: 4
+  far clip plane: 9.5
   field of view: 53.080025
   orthographic: 1
   orthographic size: 162
@@ -4404,10 +4321,6 @@ PrefabInstance:
       value: 162
       objectReference: {fileID: 0}
     - target: {fileID: 8108962612734272676, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
-      propertyPath: cameras.Array.size
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8108962612734272676, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
       propertyPath: 'cameras.Array.data[0]'
       value: 
       objectReference: {fileID: 77755455715211862}
@@ -4434,7 +4347,7 @@ PrefabInstance:
     - target: {fileID: 8108962612734272676, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
       propertyPath: 'cameras.Array.data[6]'
       value: 
-      objectReference: {fileID: 8400664523339782884}
+      objectReference: {fileID: 8721052129497330913}
     - target: {fileID: 8108962612734272676, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
       propertyPath: 'cameras.Array.data[7]'
       value: 
@@ -4453,9 +4366,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5381282698610219523, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8588486736522268790}
-    - targetCorrespondingSourceObject: {fileID: 5381282698610219523, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6961144644474212266}
     - targetCorrespondingSourceObject: {fileID: 5381282698610219523, guid: 10fb15345405d8a44852485dc4f5ab49, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1755294097549113408}
