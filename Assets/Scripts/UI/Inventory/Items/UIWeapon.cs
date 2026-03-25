@@ -83,6 +83,20 @@ public class UIWeapon : MonoBehaviour
         }
     }
 
+    public int GetRepairCost()
+    {
+        if (Durability >= MaxDurability) return 0;
+
+        if (BlacksmithHelper.CostIsPerDurability)
+        {
+            return (MaxDurability - Durability) * BlacksmithHelper.Cost;
+        }
+        else
+        {
+            return BlacksmithHelper.Cost;
+        }
+    }
+
     public void StopSelfIntialize()
     {
         stopSelfIntialize = true;
