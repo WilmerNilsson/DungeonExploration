@@ -19,7 +19,7 @@ public static class CombatChecker
     //efter det checka combatState
     public static void RemoveFromChaseList(GameObject gameObject)
     {
-        if (gameObject == null) return;
+        if (!gameObject) return;
         if (_enemiesChasing.Contains(gameObject)) _enemiesChasing.Remove(gameObject);
         CheckCombatState();
     }
