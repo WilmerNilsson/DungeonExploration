@@ -126,12 +126,29 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - text: Drop
+    OnUse:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: -8854653704836512832}
+          m_TargetAssemblyTypeName: ItemDrop, GameAssembly
+          m_MethodName: Drop
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   descriptionText: Description(NoteHallucination)
   descriptionTextIsLibraryName: 1
   textLibrary: {fileID: 11400000, guid: 1b1f8771b2a7c1940b19f8003b6ca232, type: 2}
   prefabID: Hallucination
   <CashValueBuy>k__BackingField: 0
   <CashValueSell>k__BackingField: 0
+  <QuickLootToEquip>k__BackingField: 0
   OnStopDrag:
     m_PersistentCalls:
       m_Calls:
@@ -228,6 +245,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animationNameClick: UIItemJiggleAnimation
   animationNameRelease: UIItemJiggleAnimation
+  mySimpleItem: {fileID: 8340747355471346599}
+  blockAutoConnect: 0
 --- !u!95 &-6900571820529787825
 Animator:
   serializedVersion: 7
