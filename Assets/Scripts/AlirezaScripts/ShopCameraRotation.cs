@@ -1,5 +1,4 @@
 using System;
-using Ink.Runtime;
 using UnityEngine;
 
 public class ShopCameraRotation : MonoBehaviour
@@ -19,15 +18,21 @@ public class ShopCameraRotation : MonoBehaviour
 
    private void Update()
    {
-       Camera.transform.rotation = Quaternion.Lerp(Camera.transform.rotation, Quaternion.Euler( 0, TheAngles[CurrentIndex%TheAngles.Length], 0 ),
-           RotationSpeed * Time.deltaTime);
+       Camera.transform.rotation = Quaternion.Lerp(Camera.transform.rotation, Quaternion.Euler( 0, TheAngles[CurrentIndex%TheAngles.Length], 0 ),RotationSpeed * Time.deltaTime);
    }
 
    public void ButtonLeft()
     {
         if (canRotate)
         {
-            CurrentIndex--;
+            if (CurrentIndex == 0)
+            {
+                CurrentIndex = townButtons.Length-1;
+            }
+            else
+            {
+                CurrentIndex--;
+            }
             
             ActivateButton(CurrentIndex);
         
