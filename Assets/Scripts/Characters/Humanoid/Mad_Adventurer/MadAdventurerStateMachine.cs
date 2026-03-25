@@ -130,7 +130,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
         bool HoldPart()
         {
             Controller.HoldAttackUpdate(angle);
-            return Time.time - startTime > AttackState.holdTime;
+            return Time.time - startTime > 0;
         }
     }
 

@@ -4,11 +4,14 @@ using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 
 public class InvMaster : InvMasterBase
 {
+    public UnityEvent onPlayerInventory;
+    
     [SerializeField] private ItemContextMenu contextMenu;
     [SerializeField] private Transform worldContainerParent;
     [SerializeField] private GameObject playerInventory;
@@ -116,6 +119,7 @@ public class InvMaster : InvMasterBase
         if (playerInventory.activeSelf) return;
 
         contextMenu.Deselect();
+        onPlayerInventory.Invoke();
         playerInventory.SetActive(true);
 
         GameManagerSO.Instance.LockMouse(true);
@@ -132,7 +136,7 @@ public class InvMaster : InvMasterBase
 
         contextMenu.Deselect();
         CloseText();
-
+        onPlayerInventory.Invoke();
         playerInventory.SetActive(false);
         GameManagerSO.Instance.LockMouse(false);
 
