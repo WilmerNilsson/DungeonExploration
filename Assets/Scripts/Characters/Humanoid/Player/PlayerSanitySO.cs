@@ -6,7 +6,7 @@ public class PlayerSanitySO : ScriptableObject
 {
     [Tooltip("The maximum amount of hunger")]
     [SerializeField] public int MaxSanity = 100;
-    public int CurrentSanity = 0;
+    public float CurrentSanity = 0;
     [Tooltip("The amount of time between hunger ticks in seconds")]
     public float DarkSanityCooldown = 5f;
     public float LightSanityCooldown = 10f;
@@ -18,7 +18,7 @@ public class PlayerSanitySO : ScriptableObject
         CurrentSanity = MaxSanity;
     }
     
-    public bool ChangeSanity(int amount)
+    public bool ChangeSanity(float amount)
     {
         CurrentSanity += amount;
         OnChangeSanity?.Invoke();
