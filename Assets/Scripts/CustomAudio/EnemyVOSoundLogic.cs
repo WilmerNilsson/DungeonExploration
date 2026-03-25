@@ -49,7 +49,7 @@ public class EnemyVOSoundLogic : MonoBehaviour
             AudioManager.Instance.SetParameter(enemyVoPath, parameters.state, 1, gameObject);
             CombatChecker.AddToChaseList(gameObject);
         }
-        if (_lastState.GetType() == typeof(MadAdventurerChasingState) && newState.GetType() == typeof(MadAdventurerIdleState))
+        if (newState.GetType() == typeof(MadAdventurerSearchingState) || newState.GetType() == typeof(MadAdventurerIdleState))
         {
             AudioManager.Instance.SetParameter(enemyVoPath, parameters.state, 0, gameObject);
             CombatChecker.RemoveFromChaseList(gameObject);
