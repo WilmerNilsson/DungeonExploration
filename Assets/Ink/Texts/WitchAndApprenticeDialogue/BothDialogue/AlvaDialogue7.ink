@@ -1,5 +1,4 @@
 #speed:0.2
-#animation:SynPlaceholder
 #name:Syn
 Hello, how can I be of service today?
 #name:Ingrid

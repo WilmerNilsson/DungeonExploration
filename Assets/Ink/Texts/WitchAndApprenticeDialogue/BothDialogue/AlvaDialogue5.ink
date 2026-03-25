@@ -1,5 +1,4 @@
 #speed:0.2
-#animation:Alva&SynPlaceholder
 #name:Alva
 Ooo, what do you have there? Gathered some of the special material of Agathol.
 #name:Ingrid

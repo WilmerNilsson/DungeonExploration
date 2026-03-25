@@ -1,5 +1,4 @@
 #speed:0.2
-#animation:AidenPlaceholder
 #name:Aiden
 
 You, I could use your help 
