@@ -2883,7 +2883,7 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1402651743}
         m_TargetAssemblyTypeName: GraphicsSettingsMaster, GameAssembly
         m_MethodName: ChangeFov
         m_Mode: 0
@@ -25699,6 +25699,7 @@ GameObject:
   - component: {fileID: 1402651740}
   - component: {fileID: 1402651739}
   - component: {fileID: 1402651742}
+  - component: {fileID: 1402651743}
   m_Layer: 5
   m_Name: Settings Menu
   m_TagString: Untagged
@@ -25809,6 +25810,25 @@ MonoBehaviour:
     gameObject: {fileID: 0}
     followObject: 0
     parametersToSet: []
+--- !u!114 &1402651743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1402651737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e1ea14578372244faed176482a79a0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  warningWindow: {fileID: 0}
+  resolutionDropdown: {fileID: 0}
+  screenmodeDropdown: {fileID: 0}
+  framerateInputField: {fileID: 0}
+  fovInputField: {fileID: 194246533}
+  minFov: 30
+  maxFov: 140
 --- !u!1 &1406070032
 GameObject:
   m_ObjectHideFlags: 0
