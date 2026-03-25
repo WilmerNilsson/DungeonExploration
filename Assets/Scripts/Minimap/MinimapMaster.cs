@@ -17,6 +17,7 @@ public class MinimapMaster : MonoBehaviour
     [SerializeField] private MinimapSO_test minimapSoTest;
     [Tooltip("The scriptable object named MinimapLibrarySO")]
     [SerializeField] private MinimapLibrarySO minimapLibrary;
+    [SerializeField] private RenderTexture renderTexture;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void OnValidate()
@@ -119,6 +120,7 @@ public class MinimapMaster : MonoBehaviour
         {
             return;
         }
+        renderTexture.Release();
         minimap.SetActive(false);
         GameManagerSO.Instance.LockMouse(false);
     }
