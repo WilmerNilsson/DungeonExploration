@@ -1,5 +1,4 @@
 #speed:0.2
-#animation:Alva&SynPlaceholder
 #name:Syn
 Don't. You. Dare.
 #name:Alva

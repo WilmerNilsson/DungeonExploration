@@ -1,5 +1,4 @@
 #speed:0.2
-#animation:AidenPlaceholder
 #name:Aiden
 
 Hey, you’re quite capable aren't you? 

@@ -1,5 +1,4 @@
 #speed:0.025
-#animation:SagaPlaceholder
 #name:Saga 
 If you find any weapons in Agathol then you can just bring them here and I'll be able repair them. 
 

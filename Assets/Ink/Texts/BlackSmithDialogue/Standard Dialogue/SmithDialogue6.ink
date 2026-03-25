@@ -1,5 +1,4 @@
 #speed:0.025
-#animation:SagaPlaceholder
 #name:Saga 
 Oh hey grams. Anyone ever told you that you’re crazy?
 

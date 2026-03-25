@@ -1,5 +1,4 @@
 #speed:0.2
-#animation:Alva&SynPlaceholder
 #name:Alva
 Hello friend! Glad your survived. By the way have I introduced you to my apprentice yet?
 #name:Ingrid
