@@ -79,9 +79,19 @@ public class AudioDebug : MonoBehaviour
                         eventDesc.getInstanceList(out var instanceList);
                         text = eventName + " has " + instanceList.Length + " instance(s) \n";
                         lines = 1;
+                        if (eventData.EventInstance.isValid())
+                        {
+                            eventData.EventInstance.getPlaybackState(out var state);
+                            eventData.EventInstance.isVirtual(out var virutalState);
+                            text += "Instance in eventData | state: " + state + " virtual: " + virutalState;
+                            lines++;
+
+                        }
+
                         var objectList = new List<GameObject>();
                         var attributeList = new List<FMOD.ATTRIBUTES_3D>();   
                         var stateList = new List<PLAYBACK_STATE>();
+                        var virtualList = new List<bool>();
                         foreach (var instance in instanceList)
                         {
                             foreach (var kvp in eventList.InstanceList)
@@ -93,6 +103,8 @@ public class AudioDebug : MonoBehaviour
                                     attributeList.Add(attributes);
                                     kvp.Value.getPlaybackState(out var state);
                                     stateList.Add(state);
+                                    kvp.Value.isVirtual(out var virutalState);
+                                    virtualList.Add(virutalState);
                                 }
                             }
                         }
@@ -105,7 +117,7 @@ public class AudioDebug : MonoBehaviour
                                 lines++;
                                 if (objectList[i])
                                 {
-                                    text += objectList[i].name + " at: " + attributeList[i].position.x + " " + attributeList[i].position.y + " " + attributeList[i].position.z + " state: " + stateList[i] + "\n";
+                                    text += objectList[i].name + " at: " + attributeList[i].position.x + " " + attributeList[i].position.y + " " + attributeList[i].position.z + " state: " + stateList[i] + " virtual: " + virtualList[i] + "\n";
                                 }
                                 else
                                 {
