@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class WeaponSoundLogic : MonoBehaviour
 {
+    [SerializeField] private bool isPlayer;
+    [SerializeField] private string equipPath;
     [SerializeField] private string swingPath;
     [SerializeField] private string blockPath;
     [SerializeField] private string parryPath;
@@ -15,6 +17,13 @@ public class WeaponSoundLogic : MonoBehaviour
     {
         _materialParameters = new string[1] { materialParameter };
         OcclusionHandler.AddToOcclusionList(gameObject);
+        if (isPlayer) PlayEquipSound();
+    }
+
+    public void PlayEquipSound()
+    {
+        if (!AudioManager.IsValid) return;
+        AudioManager.Instance.PlayOneShot(equipPath, null, null, gameObject);
     }
 
     public void PlaySwingSound()

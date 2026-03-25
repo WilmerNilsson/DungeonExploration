@@ -235,6 +235,30 @@ MonoBehaviour:
           m_StringArgument: Torch turn on
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8992074457306076680}
+        m_TargetAssemblyTypeName: PlayerSoundLogic, GameAssembly
+        m_MethodName: OnLightTorch
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Torch turn on
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4962600743312880541}
+        m_TargetAssemblyTypeName: AudioTrigger, GameAssembly
+        m_MethodName: Activate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Torch turn on
+          m_BoolArgument: 0
+        m_CallState: 2
   onSnuffTorch:
     m_PersistentCalls:
       m_Calls:
@@ -254,6 +278,30 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
         m_MethodName: Play
         m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: turn of torch
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8992074457306076680}
+        m_TargetAssemblyTypeName: PlayerSoundLogic, GameAssembly
+        m_MethodName: OnSnuffTorch
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: turn of torch
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7493957552785526361}
+        m_TargetAssemblyTypeName: AudioTrigger, GameAssembly
+        m_MethodName: Activate
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2046,6 +2094,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Torch
       objectReference: {fileID: 0}
+    - target: {fileID: 8904543747784288233, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+      propertyPath: instructions.Array.data[1].followObject
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2091,3 +2143,25 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 432338180996008251, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
   m_PrefabInstance: {fileID: 4561574992140784756}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4962600743312880541 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8904543747784288233, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+  m_PrefabInstance: {fileID: 4561574992140784756}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a814d164a17170438a13d63660122b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7493957552785526361 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6391200482126748205, guid: d6703a6205c7d8e4b98830abb84625e5, type: 3}
+  m_PrefabInstance: {fileID: 4561574992140784756}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a814d164a17170438a13d63660122b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
