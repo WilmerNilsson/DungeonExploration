@@ -15,8 +15,7 @@ public class NewDialogueManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private TextMeshProUGUI dialogueName;
     [SerializeField] private GameObject continueButton;
-
-    [SerializeField] private Animator portraitAnimator;
+    
     private DialogueNodeData currentDialogueNode;
     public int RunCount = 0;
     //[SerializeField] private AudioSource audioSource;
@@ -206,10 +205,6 @@ public class NewDialogueManager : MonoBehaviour
             {
                 case NAME_TAG:
                     dialogueName.text = tagValue;
-                    break;
-                
-                case ANIMATION_TAG:
-                    portraitAnimator.Play(tagValue);
                     break;
                 
                 case COLOR_TAG:
