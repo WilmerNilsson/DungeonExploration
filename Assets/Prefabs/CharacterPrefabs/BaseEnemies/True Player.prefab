@@ -573,6 +573,8 @@ MonoBehaviour:
   visionSpots:
   - {fileID: 7816695229582104833}
   - {fileID: 7993904983317519560}
+  - {fileID: 3789523302510565129}
+  - {fileID: 984364593657258170}
 --- !u!114 &1354050652585229241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1159,9 +1161,9 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   ResetOnAwake: 1
-  inLightSanityDamage: 0
-  inDarkSanityDamage: 1
-  damageToSanityMod: 3
+  inLightSanityDamage: 0.1
+  inDarkSanityDamage: 0.8
+  damageToSanityMod: 2.75
   lightThreshold: 15
   sanityTickSpeed: 1
 --- !u!114 &1608432785845023580
@@ -1937,6 +1939,11 @@ PrefabInstance:
       addedObject: {fileID: 4229444106205551951}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9602fe0ef1aac44faf138e1d38d189f, type: 3}
+--- !u!4 &984364593657258170 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 148881063321657761, guid: d9602fe0ef1aac44faf138e1d38d189f, type: 3}
+  m_PrefabInstance: {fileID: 1133153282566930715}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1439099065237582124 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2036031727137026103, guid: d9602fe0ef1aac44faf138e1d38d189f, type: 3}

@@ -28,6 +28,11 @@ public class DetectPlayer : MonoBehaviour
     [SerializeField] private OcclusionChecker occlusionChecker = new OcclusionChecker();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
+#if UNITY_EDITOR || DEBUG
+    [SerializeField] private bool test;
+    private int lastDetected = 0;
+#endif
+
     public bool Detect(float sightThreshold, float soundThreshold)
     {
         if (!initialized)
@@ -96,36 +101,62 @@ public class DetectPlayer : MonoBehaviour
     private float SightDetection() // returns what percentage of the player that can be seen based on the PlayerVisionData
     {
         if (Vector3.Distance(head.position, player.position) > maxSightDistance) return 0; //return if player too far away
-        if (Vector3.Angle(head.forward, player.position) > sightAngle/2) return 0; // return if player outside line of sight
-        
         // check how much of player is visible
 
         sightHits = new RaycastHit[visionData.visionSpots.Length];
         RaycastHit hit;
-        float hits = 0;
+        int detectedPoints = 0;
 
-        Vector3 source = RelativePosition(head.position);
+        Vector3 source = head.position;
         for (int i = 0; i < visionData.visionSpots.Length; i++)
         {
-            Vector3 target = RelativePosition(visionData.visionSpots[i].position);
-            Vector3 direction = (target-source).normalized;
-            
-            if(!Physics.Raycast(source, direction, out hit, visionMask)) continue;
-            if (hit.collider.gameObject == player.gameObject)
+            Vector3 target = visionData.visionSpots[i].position;
+            Vector3 direction = target-source;
+            if(Vector3.Angle(head.forward, direction) > (sightAngle / 2f))
             {
-                hits++;
+                continue;
+            }
+
+            if (Physics.Raycast(source, direction, out hit, direction.magnitude, visionMask.value))
+            {
                 sightHits[i] = hit;
             }
+            else
+            {
+                detectedPoints++;
+            }
         }
-        
-        if (hits == 0) return 0;
 
-        return hits/visionData.visionSpots.Length;
-    }
-    
-    private Vector3 RelativePosition(Vector3 position)
-    {
-        return transform.TransformDirection(position);
+#if UNITY_EDITOR  || DEBUG
+        if (test && detectedPoints != lastDetected)
+        {
+            string a = string.Empty;
+
+            for (int i = 0; i < sightHits.Length; i++)
+            {
+                RaycastHit aaa = sightHits[i];
+
+                if (aaa.collider == null)
+                {
+                    a += "nothing";
+                }
+                else
+                {
+                    a += aaa.collider.name;
+                }
+
+                a += " & ";
+            }
+
+            Debug.Log(detectedPoints + a);
+        }
+
+        lastDetected = detectedPoints;
+#endif
+
+        if (detectedPoints == 0) return 0;
+
+        return ((float) detectedPoints) / visionData.visionSpots.Length;
     }
 
     private void OnDrawGizmos()
