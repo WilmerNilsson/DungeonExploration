@@ -1,5 +1,4 @@
 #speed:0.025
-#animation:SagaPlaceholder
 #name:Saga 
 
 Oh her? She’s doing fine. Helps out at a local inn last I heard.
