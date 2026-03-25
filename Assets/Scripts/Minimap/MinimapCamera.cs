@@ -9,6 +9,7 @@ public class MinimapCamera : MonoBehaviour
     [SerializeField] private List<GameObject> cameras;
     [SerializeField] private GameObject UpButton;
     [SerializeField] private GameObject DownButton;
+    [SerializeField] private RenderTexture renderTexture;
 
     [SerializeField] private TextMeshProUGUI floorText;
     [SerializeField] private int currentFloor;
@@ -36,6 +37,7 @@ public class MinimapCamera : MonoBehaviour
 
     public void SetFloor(int floor)
     {
+        renderTexture.Release();
         if (floor > cameras.Count)
         {
             Debug.LogWarning("floor is out of range", this);
