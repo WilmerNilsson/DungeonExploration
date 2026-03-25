@@ -1,5 +1,4 @@
 #speed:0.2
-#animation:Alva&SynPlaceholder
 #name:Ingrid
 I think I have something for you.
 #name:Syn
