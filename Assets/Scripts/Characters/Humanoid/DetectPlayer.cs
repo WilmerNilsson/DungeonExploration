@@ -28,7 +28,9 @@ public class DetectPlayer : MonoBehaviour
     [SerializeField] private OcclusionChecker occlusionChecker = new OcclusionChecker();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
+#if UNITY_EDITOR
     [SerializeField] private bool test;
+#endif
 
     public bool Detect(float sightThreshold, float soundThreshold)
     {
@@ -100,21 +102,23 @@ public class DetectPlayer : MonoBehaviour
     private float SightDetection() // returns what percentage of the player that can be seen based on the PlayerVisionData
     {
         if (Vector3.Distance(head.position, player.position) > maxSightDistance) return 0; //return if player too far away
-        if (Vector3.Angle(head.forward, player.position) > sightAngle/2) return 0; // return if player outside line of sight
-        
         // check how much of player is visible
 
         sightHits = new RaycastHit[visionData.visionSpots.Length];
         RaycastHit hit;
         float hits = 0;
 
-        Vector3 source = RelativePosition(head.position);
+        Vector3 source = head.position;
         for (int i = 0; i < visionData.visionSpots.Length; i++)
         {
-            Vector3 target = RelativePosition(visionData.visionSpots[i].position);
+            Vector3 target = visionData.visionSpots[i].position;
             Vector3 direction = (target-source).normalized;
+            if(Vector3.Angle(head.forward, direction) > (sightAngle / 2f))
+            {
+                continue;
+            }
 
-            if(Physics.Raycast(source, direction, out hit, maxSightDistance, visionMask))
+            if (Physics.Raycast(source, direction, out hit, maxSightDistance, visionMask.value))
             {
                 if(test)
                 {
@@ -129,17 +133,7 @@ public class DetectPlayer : MonoBehaviour
             }
         }
 
-        if (test)
-        {
-            Debug.Log(hits);
-        }
-
         if (hits == 0) return 0;
-
-        if (test)
-        {
-            Debug.Log(hits / visionData.visionSpots.Length);
-        }
 
         return hits/visionData.visionSpots.Length;
     }
