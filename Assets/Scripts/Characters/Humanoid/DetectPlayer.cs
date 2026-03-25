@@ -28,6 +28,8 @@ public class DetectPlayer : MonoBehaviour
     [SerializeField] private OcclusionChecker occlusionChecker = new OcclusionChecker();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
+    [SerializeField] private bool test;
+
     public bool Detect(float sightThreshold, float soundThreshold)
     {
         if (!initialized)
@@ -80,6 +82,8 @@ public class DetectPlayer : MonoBehaviour
 
     private float SoundDetection() // returns the percentage of how well the enemy can "hear" the player
     {
+        return 0f;
+
         if(Vector3.Distance(player.position, transform.position) > maxSoundDistance) return 0; // return if the player is too far away
         occlusionChecker.CheckOcclusion(head.gameObject,player.gameObject,out float occlusion); // run sound occlusion in reverse
 
@@ -109,16 +113,33 @@ public class DetectPlayer : MonoBehaviour
         {
             Vector3 target = RelativePosition(visionData.visionSpots[i].position);
             Vector3 direction = (target-source).normalized;
-            
-            if(!Physics.Raycast(source, direction, out hit, visionMask)) continue;
-            if (hit.collider.gameObject == player.gameObject)
+
+            if(Physics.Raycast(source, direction, out hit, maxSightDistance, visionMask))
             {
-                hits++;
-                sightHits[i] = hit;
+                if(test)
+                {
+                    Debug.Log(hit.collider.name);
+                }
+
+                if (hit.collider.gameObject == player.gameObject)
+                {
+                    hits++;
+                    sightHits[i] = hit;
+                }
             }
         }
-        
+
+        if (test)
+        {
+            Debug.Log(hits);
+        }
+
         if (hits == 0) return 0;
+
+        if (test)
+        {
+            Debug.Log(hits / visionData.visionSpots.Length);
+        }
 
         return hits/visionData.visionSpots.Length;
     }
