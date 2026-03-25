@@ -95,7 +95,7 @@ public class InGameUIController : MonoBehaviour, IUIController
 
         void Pause()
         {
-            inGameUI.SetActive(false);
+            if (inGameUI != null) inGameUI.SetActive(false);
             pauseMenu.SetActive(true);
             gameManager.FreezeTime(true);
             gameManager.LockMouse(true);
@@ -105,7 +105,7 @@ public class InGameUIController : MonoBehaviour, IUIController
 
         void Resume()
         {
-            inGameUI.SetActive(true);
+            if (inGameUI != null) inGameUI.SetActive(true);
             pauseMenu.SetActive(false);
 
             gameManager.FreezeTime(false);
