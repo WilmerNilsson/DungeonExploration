@@ -114,6 +114,7 @@ MonoBehaviour:
   startInHallucination: 0
   PlayerTransform: {fileID: 0}
   TargetTransform: {fileID: 0}
+  isAttacking: 0
 --- !u!114 &1693646842145338136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,6 +222,7 @@ MonoBehaviour:
   core: {fileID: 7203183701656867273}
   head: {fileID: 7819616435158120133}
   isBlocking: 0
+  isAttacking: 0
   swordSplineContainer: {fileID: 580678868001648054}
 --- !u!114 &538933198194063175
 MonoBehaviour:
@@ -251,7 +253,7 @@ MonoBehaviour:
   crouchSpeed: 0.5
   airMoveMod: 0.1
   jumpHeight: 5
-  lastGroundedPosition: {x: 0, y: 0, z: 0}
+  lastSafeGroundedPosition: {x: 0, y: 0}
   doJump: 0
   grounded: 0
   crouching: 0
@@ -315,7 +317,7 @@ MonoBehaviour:
   darkSightDistance: 10
   visionMask:
     serializedVersion: 2
-    m_Bits: 21760
+    m_Bits: 17664
   maxSoundDistance: 10
   crouchSoundModifier: 1
   occlusionChecker:
@@ -330,6 +332,7 @@ MonoBehaviour:
     checkIfFirstMiss: 0
     drawDebug: 0
     hitDatas: []
+  test: 0
 --- !u!114 &7112549932890260957
 MonoBehaviour:
   m_ObjectHideFlags: 0

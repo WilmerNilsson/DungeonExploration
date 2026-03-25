@@ -6950,6 +6950,7 @@ GameObject:
   - component: {fileID: 1037654386}
   - component: {fileID: 1037654385}
   - component: {fileID: 1037654384}
+  - component: {fileID: 1037654387}
   m_Layer: 5
   m_Name: Go To Agathol
   m_TagString: Untagged
@@ -7021,10 +7022,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: 279903f06338b05498594439b7a5237a, type: 2}
-        m_TargetAssemblyTypeName: GameManagerSO, GameAssembly
-        m_MethodName: MoveToSceneAndSave
-        m_Mode: 5
+      - m_Target: {fileID: 1037654387}
+        m_TargetAssemblyTypeName: ButtonGoToDungeon, GameAssembly
+        m_MethodName: GoBackToDungeon
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -7071,6 +7072,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1037654382}
   m_CullTransparentMesh: 1
+--- !u!114 &1037654387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1037654382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1758356bda21aa40bde799a2149cad2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SceneName: MainScene
 --- !u!1001 &1049205715
 PrefabInstance:
   m_ObjectHideFlags: 0
