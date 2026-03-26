@@ -100,6 +100,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
     public void DropItems()
     {
         Vector3 spawnPosition = GameObject.FindGameObjectWithTag("Player").GetComponent<HumanoidMovement>().lastSafeGroundedPosition;
+        spawnPosition.y += 1;
         if (InvMasterBase.Instance.PlayerInventory.GetInventoryData().Count <= 0 && InvMasterBase.Instance.EquipmentGrid.GetInventoryData().Count <= 0)
         {
             return;
