@@ -12,7 +12,11 @@ public class PlayerController : MonoBehaviour
 {
     public UnityEvent onLightTorch;
     public UnityEvent onSnuffTorch;
+    
+    [SerializeField] private PlayerSoundLogic playerSound;
     [SerializeField] private HumanoidController controller;
+
+    [SerializeField] private int exhaustionLimit;
     
     [SerializeField] private float mouseSensitivity = 0.1f;
     [SerializeField] private float stickSensitivity = 5f;
@@ -79,6 +83,11 @@ public class PlayerController : MonoBehaviour
                 controller.HoldBlockUpdate(Vector2.SignedAngle(Vector2.up, (mouseEnd - mouseStart)) + 180);
             }
         }
+
+        if (controller.isSprinting && playerSound.exhaustion > exhaustionLimit)
+        {
+            controller.isSprinting = false;
+        }
     }
 
     private void OnDisable()
@@ -114,7 +123,7 @@ public class PlayerController : MonoBehaviour
         {
             controller.isSprinting = false;
         }
-        else if (context.performed)
+        else if (context.performed && playerSound.exhaustion < exhaustionLimit)
         {
             controller.isSprinting = true;
         }
