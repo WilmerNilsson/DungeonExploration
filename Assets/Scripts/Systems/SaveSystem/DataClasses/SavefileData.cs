@@ -30,6 +30,7 @@ public class SavefileData
         DonatedWeapons = new();
         Settings = settings;
         Dungeon = null;
+        PlayerGold = 30;
         DialogueSaves = new();
     }
 
