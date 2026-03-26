@@ -738,7 +738,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.71488464, g: 0.68416107, b: 0.68416107, a: 1}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -761,30 +761,6 @@ MonoBehaviour:
       - m_Target: {fileID: 2802758978755215620}
         m_TargetAssemblyTypeName: BlacksmithUI, GameAssembly
         m_MethodName: SelectGrid
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 6154837286135025797}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
-        m_MethodName: set_interactable
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 8463088897213347042}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
-        m_MethodName: set_interactable
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3004,6 +2980,9 @@ MonoBehaviour:
   weaponAlreadyFullDurabilityText: 'I don''t think I can make that thing any shinier. '
   weaponCostsToMuchToRepairText: "you\u2019re gonna have to cough up a few more crowns
     for that grams. "
+  leaveStoreButton: {fileID: 5815644929932630162}
+  buyButton: {fileID: 6154837286135025797}
+  donateButton: {fileID: 8463088897213347042}
   OnDonateEvent:
     m_PersistentCalls:
       m_Calls:
@@ -9746,7 +9725,6 @@ MonoBehaviour:
   dialogueText: {fileID: 4949786742432613427}
   dialogueName: {fileID: 6486441060312357466}
   continueButton: {fileID: 640448948170146050}
-  portraitAnimator: {fileID: 2840735580665067292}
   RunCount: 0
   onDialogueEnter:
     m_PersistentCalls:
@@ -10636,7 +10614,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.6939204, g: 0.6939204, b: 0.6939204, a: 1}
+    m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -10659,30 +10637,6 @@ MonoBehaviour:
       - m_Target: {fileID: 2802758978755215620}
         m_TargetAssemblyTypeName: BlacksmithUI, GameAssembly
         m_MethodName: SelectGrid
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 6154837286135025797}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
-        m_MethodName: set_interactable
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 8463088897213347042}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
-        m_MethodName: set_interactable
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10788,7 +10742,6 @@ MonoBehaviour:
   dialogueText: {fileID: 409405540661363039}
   dialogueName: {fileID: 8135852833376931271}
   continueButton: {fileID: 5094875904446286907}
-  portraitAnimator: {fileID: 2840735580665067292}
   RunCount: 0
   onDialogueEnter:
     m_PersistentCalls:
