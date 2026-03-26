@@ -10,7 +10,7 @@ public class MinimapSO_test : ScriptableObject
     public void AddToLists(string nameToAdd, Transform transform, Vector3 scale)
     {
         MinimapComponentData newData = new MinimapComponentData(nameToAdd, transform.position, scale, transform.eulerAngles);
-        if (minimapComponentData.Find(x => x.position  == newData.position) == null)
+        if (minimapComponentData.Find(x => x.position == newData.position && x.name == newData.name) == null)
         {
             minimapComponentData.Add(newData);
         }
