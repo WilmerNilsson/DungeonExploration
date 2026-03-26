@@ -2044,10 +2044,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45.75
-  m_fontSizeBase: 24
+  m_fontSize: 45
+  m_fontSizeBase: 45
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -4030,6 +4030,7 @@ GameObject:
   - component: {fileID: 5908528847108938342}
   - component: {fileID: 5272689117089225713}
   - component: {fileID: 3491462376038272134}
+  - component: {fileID: 7453153142521897725}
   m_Layer: 5
   m_Name: RetreatButton
   m_TagString: Untagged
@@ -4165,7 +4166,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnCombat:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7453153142521897725}
+        m_TargetAssemblyTypeName: TimedUI, GameAssembly
+        m_MethodName: Display
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnNoCombat:
     m_PersistentCalls:
       m_Calls:
@@ -4224,6 +4237,24 @@ MonoBehaviour:
     gameObject: {fileID: 0}
     followObject: 0
     parametersToSet: []
+--- !u!114 &7453153142521897725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9152610334052890984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a6333e3a62587d45a2c077ba687482f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: 3
+  textMeshProUGUI: {fileID: 3974442930060694339}
+  newText: <color=red>Can't retreat while in danger</color>
+  newSize: 30
+  defaultText: 'Retreat back to town '
+  defaultSize: 45
 --- !u!1001 &1389397217698127642
 PrefabInstance:
   m_ObjectHideFlags: 0
