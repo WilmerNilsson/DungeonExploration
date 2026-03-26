@@ -21,8 +21,10 @@ public class Sanity : MonoBehaviour
     [SerializeField, Min(0), Tooltip("How much sanity is lost over time in Dark")] private float inDarkSanityDamage;
     [SerializeField, Tooltip("How much the damage to health is divided by before being applied to sanity")] private float damageToSanityMod = 10;
     [SerializeField, Tooltip("brightness level, if its lower its considered dark"), Min(0.01f)] private float lightThreshold;
-    [SerializeField, Tooltip("How long between sanity ticks, in seconds"), Min(0)] private float sanityTickSpeed;
+    [SerializeField, Tooltip("How long between sanity ticks, in seconds"), Min(0)] private float sanityLightTickSpeed;
+    [SerializeField, Tooltip("How long between sanity ticks, in seconds"), Min(0)] private float sanityDarkTickSpeed;
     private float damage;
+    private float tickSpeed;
     
     Coroutine sanityTick;
 
@@ -71,8 +73,17 @@ public class Sanity : MonoBehaviour
         {
             while (CurrentSanity > 0)
             {
-                yield return new WaitForSeconds(sanityTickSpeed);
-                damage = IsInLightCheck() ? inLightSanityDamage : inDarkSanityDamage;
+                if (IsInLightCheck())
+                {
+                    damage = inLightSanityDamage;
+                    tickSpeed = sanityLightTickSpeed;
+                }
+                else
+                {
+                    damage = inDarkSanityDamage;
+                    tickSpeed = sanityDarkTickSpeed;
+                }
+                yield return new WaitForSeconds(tickSpeed);
                 LoseSanity(damage);
             }
         }
