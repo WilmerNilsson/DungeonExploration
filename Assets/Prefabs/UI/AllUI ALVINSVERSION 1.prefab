@@ -254,8 +254,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   childPanel: {fileID: 3837099236582209922}
   GrandChildPanel: {fileID: 7620341187552685184}
-  X: 0
-  Y: 0
 --- !u!1 &1415738598300513654
 GameObject:
   m_ObjectHideFlags: 0
@@ -4029,6 +4027,7 @@ GameObject:
   - component: {fileID: 511923991250616410}
   - component: {fileID: 2892731785310517989}
   - component: {fileID: 3450626513925304254}
+  - component: {fileID: 5908528847108938342}
   - component: {fileID: 5272689117089225713}
   - component: {fileID: 3491462376038272134}
   m_Layer: 5
@@ -4140,6 +4139,36 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 5908528847108938342}
+        m_TargetAssemblyTypeName: CheckIfCombat, GameAssembly
+        m_MethodName: Check
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Town_Scene
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5908528847108938342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9152610334052890984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3515d927a3a31f643a209c0a1298e7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnCombat:
+    m_PersistentCalls:
+      m_Calls: []
+  OnNoCombat:
+    m_PersistentCalls:
+      m_Calls:
       - m_Target: {fileID: 5272689117089225713}
         m_TargetAssemblyTypeName: RetreatButton, GameAssembly
         m_MethodName: GoBackToTown
@@ -4149,7 +4178,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Town_Scene
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 3491462376038272134}
