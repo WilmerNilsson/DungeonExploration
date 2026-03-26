@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ItemDrop : MonoBehaviour
 {
-    [SerializeField] private float cameraDropOffset;
+    [SerializeField] private float floorOffset;
     [SerializeField] private ItemLibrarySO itemLibrary;
     [SerializeField] private SimpleItem myItem;
 
@@ -27,9 +27,10 @@ public class ItemDrop : MonoBehaviour
 
     public void Drop()
     {
-        Vector3 dropPos = Camera.main.transform.position;
+        Physics.Raycast(Camera.main.transform.position, Vector3.down, out RaycastHit hit, Mathf.Infinity, LayerMask.GetMask("Ground", "Object"));
+        Vector3 dropPos = hit.point;
 
-        dropPos.y += cameraDropOffset;
+        dropPos.y += floorOffset;
 
         //since we check this is valid on validate we can assume it will not be null
         itemLibrary.TryGetItemPairByName(myItem.PrefabID, out ItemPairing? pair);
