@@ -34,7 +34,7 @@ public class WorldSaveTest
         bool SecondGo = false;
 
         yield return null;
-        SavefileData.WorldData worldData = WorldDataCreator.CreateWorldData();
+        SaveDataCreator.CreateWorldData(out DungeonSaveData worldData, out PlayerSaveData playerData, out _);
 
         //some of theses are not compared to thier actual data and only trough helper,
         //but the idea is that if the helper is doing something wrong the parity would be lost on the second go
@@ -42,7 +42,7 @@ public class WorldSaveTest
         REDO:
 
         #region Item pickups / dropped items
-        List<DungeonSaveData.DroppedItem> droppedItems = worldData.DungeonSaveData.DroppedItems;
+        List<DungeonSaveData.DroppedItem> droppedItems = worldData.DroppedItems;
 
         ItemPickup[] itemPickups = GameObject.FindObjectsByType<ItemPickup>(FindObjectsSortMode.None);
 
@@ -68,7 +68,7 @@ public class WorldSaveTest
         #endregion
 
         #region Containers
-        List<DungeonSaveData.Container> containers = worldData.DungeonSaveData.Containers;
+        List<DungeonSaveData.Container> containers = worldData.Containers;
 
         SaveFileHelperContainer[] containerHelpers = GameObject.FindObjectsByType<SaveFileHelperContainer>(FindObjectsSortMode.None);
         Assert.AreEqual(containerHelpers.Length, containers.Count, "helpers and containers are different lengths", this);
@@ -93,7 +93,7 @@ public class WorldSaveTest
         #endregion
 
         #region Enemies
-        List<DungeonSaveData.Enemy> enemies = worldData.DungeonSaveData.Enemies;
+        List<DungeonSaveData.Enemy> enemies = worldData.Enemies;
         SaveFileHelperEnemy[] enemyHelpers = GameObject.FindObjectsByType<SaveFileHelperEnemy>(FindObjectsSortMode.None);
         Assert.AreEqual(enemyHelpers.Length, enemies.Count, "helpers and enemies are different lengths", this);
 
@@ -119,14 +119,12 @@ public class WorldSaveTest
         #region Player
         PlayerSaveData playerSaveData = GameObject.FindAnyObjectByType<SaveFileHelperPlayer>(FindObjectsInactive.Exclude).GetData();
 
-        Assert.AreEqual(playerSaveData.Position, worldData.PlayerSaveData.Position, "player possistion are not equal", this);
-        Assert.AreEqual(playerSaveData.Rotation, worldData.PlayerSaveData.Rotation, "player rotation are not equal", this);
-        Assert.AreEqual(playerSaveData.CurrentHP, worldData.PlayerSaveData.CurrentHP, "player CurrentHP are not equal", this);
-        Assert.AreEqual(playerSaveData.MaxHP, worldData.PlayerSaveData.MaxHP, "player MaxHP are not equal", this);
-        Assert.AreEqual(playerSaveData.Sanity, worldData.PlayerSaveData.Sanity, "player Sanity are not equal", this);
-        Assert.AreEqual(playerSaveData.Hunger, worldData.PlayerSaveData.Hunger, "player MaxHP are not equal", this);
+        Assert.AreEqual(playerSaveData.Position, playerData.Position, "player possistion are not equal", this);
+        Assert.AreEqual(playerSaveData.Rotation, playerData.Rotation, "player rotation are not equal", this);
+        Assert.AreEqual(playerSaveData.CurrentHP, playerData.CurrentHP, "player CurrentHP are not equal", this);
+        Assert.AreEqual(playerSaveData.Sanity, playerData.Sanity, "player Sanity are not equal", this);
 
-        Assert.IsTrue(InventoryMatch(playerSaveData.Inventory, worldData.PlayerSaveData.Inventory));
+        Assert.IsTrue(InventoryMatch(playerSaveData.Inventory, playerData.Inventory));
         #endregion
 
         if(SecondGo == false)
@@ -137,7 +135,7 @@ public class WorldSaveTest
             
             yield return null;
 
-            GameObject.FindFirstObjectByType<WorldFromDataCreator>().InitializeWorld(worldData);
+            GameObject.FindFirstObjectByType<WorldFromDataCreator>().InitializeWorld(worldData, playerData);
 
             goto REDO;
         }
@@ -165,7 +163,7 @@ public class WorldSaveTest
 
         bool EnemyMatch(SaveFileHelperEnemy helper, DungeonSaveData.Enemy enemy)
         {
-            DungeonSaveData.Enemy data = helper.GetData();
+            DungeonSaveData.Enemy data = (DungeonSaveData.Enemy) helper.GetData();
 
             if (data.PrefabID != enemy.PrefabID) return false;
             if (data.Position != enemy.Position) return false;
