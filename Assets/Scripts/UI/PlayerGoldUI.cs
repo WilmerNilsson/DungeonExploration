@@ -20,6 +20,6 @@ public class PlayerGoldUI : MonoBehaviour
 
     private void ChangeText(int newValue)
     {
-        goldText.text = $"Gold - {newValue}";
+        goldText.text = $"Crowns - {newValue}";
     }
 }
