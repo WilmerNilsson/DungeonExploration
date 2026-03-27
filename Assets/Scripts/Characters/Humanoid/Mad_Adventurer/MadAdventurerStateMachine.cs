@@ -102,7 +102,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
     
     public void Transit(MadAventurerBaseState targetState)
     {
-        CurrentState.Exit();
+        CurrentState?.Exit();
         CurrentState = targetState;
         OnMadState.Invoke(CurrentState);
         stateName = CurrentState.GetType().Name;
