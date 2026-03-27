@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class WorldFromDataCreator : MonoBehaviour
@@ -33,6 +34,8 @@ public class WorldFromDataCreator : MonoBehaviour
                 newWorldEnemies.Add(enemy);
                 enemy.SetID(currentID);
                 currentID++;
+
+                EditorUtility.SetDirty(enemy);
             }
         }
 
