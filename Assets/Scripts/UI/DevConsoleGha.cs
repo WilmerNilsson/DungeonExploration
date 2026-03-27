@@ -80,7 +80,8 @@ public class DevConsoleGha : MonoBehaviour
             new DebugCommand("teleport_to", "tries to teleport player to object by name", "teleport_to name", TeleportToCommand),
             new DebugCommand("unlock_map", "tries to unlock the full map", "unlock_map", UnlockMap),
             new DebugCommand("kill_all", "kill all enemies", "kill_all", KillAllCommand),
-            new DebugCommand("minus1", "logs all enemis with -1 unique ID", "minus1",    GetMinus1Command)
+            new DebugCommand("minus1", "logs all enemis with -1 unique ID", "minus1", GetMinus1Command),
+            new DebugCommand("set_durability", "sets current weapon durability", "set_durability int", SetDurabilityCommand),
         };
     }
 
@@ -137,6 +138,32 @@ public class DevConsoleGha : MonoBehaviour
     #region command methods 
 
 #nullable enable
+
+    private void SetDurabilityCommand(string input)
+    {
+        if (input == null || input == string.Empty)
+        {
+            AddLine("That command requires paramiters");
+            return;
+        }
+
+        bool couldParse = int.TryParse(input, out int newValue);
+        if (!couldParse)
+        {
+            AddLine($"could not parse {input} as a durability value (should be a int)");
+            return;
+        }
+
+        List<SimpleItem> items = InvMasterBase.Instance.EquipmentGrid.GetInventory();
+
+        foreach (SimpleItem item in items)
+        {
+            if(item.TryGetComponent(out UIWeapon uIWeapon))
+            {
+                uIWeapon.Durability = newValue;
+            }
+        }
+    }
 
     private void GetMinus1Command()
     {
