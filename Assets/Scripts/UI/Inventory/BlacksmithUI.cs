@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class BlacksmithUI : MerchantInventory
 {
@@ -11,6 +12,9 @@ public class BlacksmithUI : MerchantInventory
     [SerializeField] private string weaponTypeCantBeDonatedText = "That knife too cool for my school bro.";
     [SerializeField] private string weaponAlreadyFullDurabilityText = "Looks fine to me.";
     [SerializeField] private string weaponCostsToMuchToRepairText = "Sorry, Ingrid. I can't give credit. Come back when you're a little... mmmmm... richer!";
+    [SerializeField] private Button leaveStoreButton;
+    [SerializeField] private Button buyButton;
+    [SerializeField] private Button donateButton;
 #nullable enable
 
     private UIWeapon? weaponInDonateGrid;
@@ -26,6 +30,9 @@ public class BlacksmithUI : MerchantInventory
     {
         base.OnValidate();
         if (deliverWeaponPanel == null) Debug.LogWarning("deliver weapon panel is null", this);
+        if (leaveStoreButton == null) Debug.LogWarning("leave store button is null", this);
+        if (buyButton == null) Debug.LogWarning("buy button is null", this);
+        if (donateButton == null) Debug.LogWarning("donate button is null", this);
     }
 #endif
 
@@ -84,6 +91,7 @@ public class BlacksmithUI : MerchantInventory
         {
             weaponInDonateGrid = weapon;
             weaponInDonateGridSI = item;
+            leaveStoreButton.interactable = false;
         }
         else
         {
@@ -99,6 +107,7 @@ public class BlacksmithUI : MerchantInventory
             {
                 weaponInDonateGrid = null;
                 weaponInDonateGridSI = null;
+                leaveStoreButton.interactable = true;
             }
             else
             {
@@ -145,25 +154,36 @@ public class BlacksmithUI : MerchantInventory
 
     public override void SelectGrid(bool buy)
     {
-        base.SelectGrid(buy);
-
-        if(buyIsActiveGrid)
+        if (!buyIsActiveGrid)
         {
             //return item to player inventory
-            List<SimpleItem> items = sellGrid.EmptyInventory();
-            foreach(SimpleItem item in items)
+            List<SimpleItem> items = sellGrid.GetInventory();
+            foreach (SimpleItem item in items)
             {
                 if(!InvMasterBase.Instance.EquipmentGrid.TryInsertItem(item) && !InvMasterBase.Instance.PlayerInventory.TryInsertItem(item))
                 {
-                    Debug.LogError("failed to return item from donation grid in blacksmith", this);
+                    return;
+                    //Debug.LogError("failed to return item from donation grid in blacksmith", this);
                 }
             }
-
             deliverWeaponPanel.SetActive(false);
         }
         else
         {
             deliverWeaponPanel.SetActive(true);
+        }
+
+        base.SelectGrid(buy);
+
+        if (buyIsActiveGrid)
+        {
+            buyButton.interactable = false;
+            donateButton.interactable = true;
+        }
+        else
+        {
+            buyButton.interactable = true;
+            donateButton.interactable = false;
         }
     }
 
