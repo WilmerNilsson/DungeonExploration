@@ -102,7 +102,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
     
     public void Transit(MadAventurerBaseState targetState)
     {
-        CurrentState.Exit();
+        CurrentState?.Exit();
         CurrentState = targetState;
         OnMadState.Invoke(CurrentState);
         stateName = CurrentState.GetType().Name;
@@ -130,7 +130,7 @@ public class MadAdventurerStateMachine : MonoBehaviour
         bool HoldPart()
         {
             Controller.HoldAttackUpdate(angle);
-            return Time.time - startTime > AttackState.holdTime;
+            return Time.time - startTime > 0;
         }
     }
 

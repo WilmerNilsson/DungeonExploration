@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 6901780664557462197}
   - component: {fileID: -1364796792650954640}
   - component: {fileID: -9195289253770867863}
+  - component: {fileID: 6930060597302697713}
   m_Layer: 5
   m_Name: BagOCoins
   m_TagString: Untagged
@@ -96,13 +97,30 @@ MonoBehaviour:
   pivot: {x: 0, y: 1}
   itemGridSize: 01000000010000000000000000000000
   debugQuickConnectDropItem: 0
-  uses: []
+  uses:
+  - text: Drop
+    OnUse:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6930060597302697713}
+          m_TargetAssemblyTypeName: ItemDrop, GameAssembly
+          m_MethodName: Drop
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   descriptionText: Description(BagOfCoins)
   descriptionTextIsLibraryName: 1
   textLibrary: {fileID: 11400000, guid: 1b1f8771b2a7c1940b19f8003b6ca232, type: 2}
   prefabID: BagOfCoins
   <CashValueBuy>k__BackingField: 0
   <CashValueSell>k__BackingField: 13
+  <QuickLootToEquip>k__BackingField: 0
   OnStopDrag:
     m_PersistentCalls:
       m_Calls:
@@ -184,6 +202,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animationNameClick: UIItemJiggleAnimation
   animationNameRelease: UIItemJiggleAnimation
+  mySimpleItem: {fileID: 6101294717193550440}
+  blockAutoConnect: 0
 --- !u!114 &-9195289253770867863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,3 +219,18 @@ MonoBehaviour:
   targetGraphic: {fileID: 1474761305827880754}
   highlightCollor: {r: 0, g: 1, b: 1, a: 1}
   supressFind: 0
+--- !u!114 &6930060597302697713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659243512019290888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3a2cca0eed13d342944df7071a3f8d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floorOffset: 0
+  itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
+  myItem: {fileID: 6101294717193550440}

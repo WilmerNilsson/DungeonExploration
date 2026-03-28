@@ -31,6 +31,8 @@ public class HumanoidSoundLogic : MonoBehaviour
     [Header("Damage & Death")]
     [SerializeField] private string damagePath;
     [SerializeField] private string deathPath;
+
+    private bool isDead;
     
     //possibly just reference the speed, would work well with speed pots
     //altough once animations are implimented we can just use them, even if we remove the physical rig for the player
@@ -65,6 +67,7 @@ public class HumanoidSoundLogic : MonoBehaviour
     private void Update()
     {
         if (currentDelay == 0f || footstepsActivatedBy == FootstepsActivatedBy.Animation) return;
+        if (isDead) return;
 
         float diff = Time.deltaTime * (1f / currentDelay);
 
@@ -99,6 +102,7 @@ public class HumanoidSoundLogic : MonoBehaviour
     {
         if (!AudioManager.IsValid) return;
         AudioManager.Instance.PlayOneShot(deathPath, null, null, gameObject);
+        isDead = true;
     }
 
     public void HandleMovementChange(HumanoidMovement.moveActions actions)

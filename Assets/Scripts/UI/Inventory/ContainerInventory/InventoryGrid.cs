@@ -290,7 +290,32 @@ public class InventoryGrid : MonoBehaviour
         return false;
     }
 
-#endregion
+    #endregion
+
+    public List<SimpleItem> GetInventory()
+    {
+        List<SimpleItem> items = new();
+
+        for (int x = 0; x < InvData.GetLength(0); x++)
+        {
+            for (int y = 0; y < InvData.GetLength(1); y++)
+            {
+                if (InvData[x, y] == null)
+                {
+                    continue;
+                }
+                else
+                {
+                    if (!items.Contains(InvData[x, y]!.Item))
+                    {
+                        items.Add(InvData[x, y]!.Item);
+                    }
+                }
+            }
+        }
+
+        return items;
+    }
 
     /// <summary>
     /// Empties inventory data, objects themselves are not touched

@@ -8,7 +8,14 @@ public class Ragdoll : MonoBehaviour
         GetComponentInParent<CharacterController>().enabled = !value;
         foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>())
         {
-            rb.isKinematic = !value;
+            if (rb.gameObject.layer == LayerMask.NameToLayer("Armor"))
+            {
+                rb.isKinematic = value;
+            }
+            else
+            {
+                rb.isKinematic = !value;
+            }
         }
     }
 }

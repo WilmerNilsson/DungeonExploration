@@ -40,6 +40,7 @@ public class SaveFileHelperEnemy : MonoBehaviour
     {
         agent.Warp(data.Position);
         spawnTransform.rotation = data.Rotation;
+        UniqueID = data.UniqueID;
 
         movement.SupressMoveFrame();
 

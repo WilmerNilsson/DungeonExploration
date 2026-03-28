@@ -11,7 +11,7 @@ public class Health : MonoBehaviour
     [SerializeField] private int _currentHealth;
     [SerializeField, Min(1)] private int _maxHealth = 1;
     [SerializeField, Min(1)] private float minimumFallDamageHeight;
-    [SerializeField, Min(1), Tooltip("how much to multiply the fall distance with")] private float fallDamageMultiplier;
+    [SerializeField, Tooltip("how much to multiply the fall damage with")] private float fallDamageMultiplier;
     [SerializeField, Min(0)] public int DurabilityDamage;
     private bool selfInitialize = true;
     public static Health PlayerHealthInstance { get; private set;  }
@@ -182,7 +182,9 @@ public class Health : MonoBehaviour
     {
         if (amount <= minimumFallDamageHeight) return;
         
-        TakeDamage(Mathf.RoundToInt((amount - minimumFallDamageHeight) * fallDamageMultiplier));
+        Debug.Log($"distance = {amount - minimumFallDamageHeight}, damage = {Mathf.Pow((amount - minimumFallDamageHeight),2) * fallDamageMultiplier}");
+        
+        TakeDamage(Mathf.RoundToInt(Mathf.Pow((amount - minimumFallDamageHeight),2) * fallDamageMultiplier));
     }
     private void Die()
     {

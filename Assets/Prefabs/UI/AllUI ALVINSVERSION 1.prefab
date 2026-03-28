@@ -252,7 +252,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bba9b288b0daa204b87823404dde3511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  child: {fileID: 7027867476362408043}
+  childPanel: {fileID: 3837099236582209922}
+  GrandChildPanel: {fileID: 7620341187552685184}
 --- !u!1 &1415738598300513654
 GameObject:
   m_ObjectHideFlags: 0
@@ -1491,7 +1492,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 83, y: 387}
+  m_AnchoredPosition: {x: 128.5, y: 387}
   m_SizeDelta: {x: 201, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3709985641874647348
@@ -1523,7 +1524,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "W\n\nA \n\nS\n\nD\n\nShift\n\nCtrl\n\nE\n\nLMB, Drag + Release\n\nRMB,
-    Drag + Hold\n\nRMB, Drag + Hold + LMB\n\nF\n\nTab\n\nM\n"
+    Drag + Hold\n\nLmb While Blocking\n\nF\n\nTab\n\nM\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 56321e81821ad78428942d9943f1e90d, type: 2}
   m_sharedMaterial: {fileID: -4238060652222663036, guid: 56321e81821ad78428942d9943f1e90d, type: 2}
@@ -1588,7 +1589,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: -20.502197, z: -247.72754, w: -973.1218}
+  m_margin: {x: 23.021606, y: -20.502197, z: -247.72754, w: -973.1218}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1604,6 +1605,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6966496717469025921}
   - component: {fileID: 8392368149806448946}
+  - component: {fileID: 5954460016846912427}
   m_Layer: 5
   m_Name: InventoryUI 5x5
   m_TagString: Untagged
@@ -1648,10 +1650,43 @@ MonoBehaviour:
   drawOntopParent: {fileID: 5340484629304313659}
   descriptionText: {fileID: 1274798032711675545}
   <EquipmentGrid>k__BackingField: {fileID: 415840000165690085}
+  onPlayerInventory:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5954460016846912427}
+        m_TargetAssemblyTypeName: OneShotPlayer, GameAssembly
+        m_MethodName: Play
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   contextMenu: {fileID: 4141649185545460554}
   worldContainerParent: {fileID: 826116566284243698}
   playerInventory: {fileID: 1628111738432857123}
   openBookController: {fileID: 7317424816436915775}
+--- !u!114 &5954460016846912427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4039204679675074525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc293c0446b8972448fbee1677af522d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  emitterIsThisObject: 0
+  instructions:
+  - path: Inventory/OpenClose
+    gameObject: {fileID: 0}
+    followObject: 0
+    parametersToSet: []
 --- !u!1 &4213088800589518426
 GameObject:
   m_ObjectHideFlags: 0
@@ -2009,10 +2044,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45.75
-  m_fontSizeBase: 24
+  m_fontSize: 45
+  m_fontSizeBase: 45
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -3155,8 +3190,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
-  m_fontSizeBase: 30
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3992,8 +4027,10 @@ GameObject:
   - component: {fileID: 511923991250616410}
   - component: {fileID: 2892731785310517989}
   - component: {fileID: 3450626513925304254}
+  - component: {fileID: 5908528847108938342}
   - component: {fileID: 5272689117089225713}
   - component: {fileID: 3491462376038272134}
+  - component: {fileID: 7453153142521897725}
   m_Layer: 5
   m_Name: RetreatButton
   m_TagString: Untagged
@@ -4103,6 +4140,48 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 5908528847108938342}
+        m_TargetAssemblyTypeName: CheckIfCombat, GameAssembly
+        m_MethodName: Check
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Town_Scene
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5908528847108938342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9152610334052890984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3515d927a3a31f643a209c0a1298e7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnCombat:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7453153142521897725}
+        m_TargetAssemblyTypeName: TimedUI, GameAssembly
+        m_MethodName: Display
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnNoCombat:
+    m_PersistentCalls:
+      m_Calls:
       - m_Target: {fileID: 5272689117089225713}
         m_TargetAssemblyTypeName: RetreatButton, GameAssembly
         m_MethodName: GoBackToTown
@@ -4112,7 +4191,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Town_Scene
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 3491462376038272134}
@@ -4158,6 +4237,24 @@ MonoBehaviour:
     gameObject: {fileID: 0}
     followObject: 0
     parametersToSet: []
+--- !u!114 &7453153142521897725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9152610334052890984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a6333e3a62587d45a2c077ba687482f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: 3
+  textMeshProUGUI: {fileID: 3974442930060694339}
+  newText: <color=red>Can't retreat while in danger</color>
+  newSize: 30
+  defaultText: 'Retreat back to town '
+  defaultSize: 45
 --- !u!1001 &1389397217698127642
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4461,6 +4558,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1420158164894417635, guid: 45af4b61791ecf044a77b5d5fff5a02b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1596046544932467889, guid: 45af4b61791ecf044a77b5d5fff5a02b, type: 3}
       propertyPath: m_AnchorMax.x
       value: 1
@@ -4728,11 +4829,15 @@ PrefabInstance:
     - target: {fileID: 5221631166909780539, guid: 45af4b61791ecf044a77b5d5fff5a02b, type: 3}
       propertyPath: m_text
       value: "Forward \n\nLeft \n\nBackwards\n\nRight \n\nRun\n\nCrouch \n\nInteract\n\nAttack\n\nBlock
-        \n\nParry\n\nOn/Off Torch for Stealth\n\nInventory\n\nMap\n"
+        \n\nParry\n\nTorch\n\nInventory\n\nMap\n"
       objectReference: {fileID: 0}
     - target: {fileID: 5221631166909780539, guid: 45af4b61791ecf044a77b5d5fff5a02b, type: 3}
       propertyPath: m_fontSize
       value: 38.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5221631166909780539, guid: 45af4b61791ecf044a77b5d5fff5a02b, type: 3}
+      propertyPath: m_margin.z
+      value: -230.9845
       objectReference: {fileID: 0}
     - target: {fileID: 5221631166909780539, guid: 45af4b61791ecf044a77b5d5fff5a02b, type: 3}
       propertyPath: m_fontStyle
@@ -4761,6 +4866,10 @@ PrefabInstance:
     - target: {fileID: 5616040720694814207, guid: 45af4b61791ecf044a77b5d5fff5a02b, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5708192045521781208, guid: 45af4b61791ecf044a77b5d5fff5a02b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5779296368235363977, guid: 45af4b61791ecf044a77b5d5fff5a02b, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4807,8 +4916,16 @@ PrefabInstance:
       value: 260
       objectReference: {fileID: 0}
     - target: {fileID: 6910017422562903393, guid: 45af4b61791ecf044a77b5d5fff5a02b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1235
+      objectReference: {fileID: 0}
+    - target: {fileID: 6910017422562903393, guid: 45af4b61791ecf044a77b5d5fff5a02b, type: 3}
       propertyPath: m_SizeDelta.y
       value: 1663.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6910017422562903393, guid: 45af4b61791ecf044a77b5d5fff5a02b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -638
       objectReference: {fileID: 0}
     - target: {fileID: 7183830128155361685, guid: 45af4b61791ecf044a77b5d5fff5a02b, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4997,6 +5114,10 @@ PrefabInstance:
     - target: {fileID: 8543065588122988985, guid: 45af4b61791ecf044a77b5d5fff5a02b, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8647539083528343363, guid: 45af4b61791ecf044a77b5d5fff5a02b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -301.5
       objectReference: {fileID: 0}
     - target: {fileID: 8743686163994487400, guid: 45af4b61791ecf044a77b5d5fff5a02b, type: 3}
       propertyPath: m_IsActive

@@ -47,6 +47,9 @@ MonoBehaviour:
   - BaseNodeGuid: a166f7be-2e7b-43f5-86be-edc85c7b9b9b
     PortName: Choice 2
     TargetNodeGuid: 4f6b8b83-0488-465c-9c99-f82f3476c84a
+  - BaseNodeGuid: a166f7be-2e7b-43f5-86be-edc85c7b9b9b
+    PortName: Choice 3
+    TargetNodeGuid: 427f3061-387c-42bd-8617-a430ba2db61b
   - BaseNodeGuid: 4f6b8b83-0488-465c-9c99-f82f3476c84a
     PortName: Choice 3
     TargetNodeGuid: da1970f1-b5be-4934-9f47-6be852a57a9d
@@ -144,17 +147,6 @@ MonoBehaviour:
     Position: {x: 1794, y: 1059.3334}
     ReadRun: 0
     RunWaitAmount: 0
-  - Guid: 42442c3b-0f5a-41a5-b974-af013362f955
-    Title: SmithDialogue4
-    ButtonText: i'm back
-    DialogueAsset: {fileID: 4900000, guid: 74663f55889c96a48b7f3dcc98c56f07, type: 3}
-    HasBeenRead: 0
-    IsGreeting: 0
-    ReadOnlyOnce: 0
-    FriendshipRange: {x: 1, y: 1000000}
-    Position: {x: 1794, y: 500}
-    ReadRun: 0
-    RunWaitAmount: 1
   - Guid: b48f2797-71e1-44d2-ac3c-b2b489717907
     Title: SmithDialogue5
     ButtonText: Hello again
@@ -239,31 +231,20 @@ MonoBehaviour:
     HasBeenRead: 0
     IsGreeting: 1
     ReadOnlyOnce: 1
-    FriendshipRange: {x: 0, y: 0}
-    Position: {x: 664, y: 162.66667}
-    ReadRun: 0
-    RunWaitAmount: 0
-  - Guid: 05c672dc-307a-48e6-9881-81284ff18f01
-    Title: SmithDialogue2
-    ButtonText: Button text
-    DialogueAsset: {fileID: 4900000, guid: c493da65ab834e74da5820de4a16bec3, type: 3}
-    HasBeenRead: 0
-    IsGreeting: 1
-    ReadOnlyOnce: 1
-    FriendshipRange: {x: 0, y: 0}
-    Position: {x: 1043.3334, y: 201.33333}
-    ReadRun: 0
+    FriendshipRange: {x: 0, y: 10000000}
+    Position: {x: 664, y: 163.33333}
+    ReadRun: 4
     RunWaitAmount: 0
   - Guid: 4f6b8b83-0488-465c-9c99-f82f3476c84a
     Title: SmithDialogue3
     ButtonText: 'i''ve got something for you '
     DialogueAsset: {fileID: 4900000, guid: 76efca5fc6db25246be26a1de1ced2bf, type: 3}
-    HasBeenRead: 0
+    HasBeenRead: 1
     IsGreeting: 0
     ReadOnlyOnce: 0
     FriendshipRange: {x: 1, y: 100000000}
-    Position: {x: 1378.6666, y: -350}
-    ReadRun: 0
+    Position: {x: 1379.3334, y: -350}
+    ReadRun: 4
     RunWaitAmount: 0
   - Guid: da1970f1-b5be-4934-9f47-6be852a57a9d
     Title: SmithQuestion3
@@ -285,17 +266,6 @@ MonoBehaviour:
     ReadOnlyOnce: 0
     FriendshipRange: {x: 1, y: 100000}
     Position: {x: 1794, y: 798}
-    ReadRun: 0
-    RunWaitAmount: 0
-  - Guid: 0a3d2a99-65b9-494f-9435-b8b9ef72ce58
-    Title: SmithEnter6
-    ButtonText: Button text
-    DialogueAsset: {fileID: 4900000, guid: 2c1030a9a04e7b341bc61515b3a1d246, type: 3}
-    HasBeenRead: 0
-    IsGreeting: 1
-    ReadOnlyOnce: 0
-    FriendshipRange: {x: 1, y: 10000000}
-    Position: {x: 1794.6666, y: 1321.3334}
     ReadRun: 0
     RunWaitAmount: 0
   - Guid: de7590e7-69da-4e7c-874a-a9d8cc148f7d
@@ -320,4 +290,48 @@ MonoBehaviour:
     Position: {x: 3138, y: 200}
     ReadRun: 0
     RunWaitAmount: 0
+  - Guid: 0a3d2a99-65b9-494f-9435-b8b9ef72ce58
+    Title: SmithEnter6
+    ButtonText: Button text
+    DialogueAsset: {fileID: 4900000, guid: 2c1030a9a04e7b341bc61515b3a1d246, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 1
+    ReadOnlyOnce: 0
+    FriendshipRange: {x: 1, y: 10000000}
+    Position: {x: 1795.3334, y: 1321.3334}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: 05c672dc-307a-48e6-9881-81284ff18f01
+    Title: SmithDialogue2
+    ButtonText: Button text
+    DialogueAsset: {fileID: 4900000, guid: c493da65ab834e74da5820de4a16bec3, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 1
+    ReadOnlyOnce: 1
+    FriendshipRange: {x: 0, y: 0}
+    Position: {x: 1029.3334, y: 246}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: 427f3061-387c-42bd-8617-a430ba2db61b
+    Title: smithEnterFailsafe
+    ButtonText: Button text
+    DialogueAsset: {fileID: 4900000, guid: 6bdabcd63c228394080863965d814069, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 1
+    ReadOnlyOnce: 0
+    FriendshipRange: {x: 1, y: 10000}
+    Position: {x: 1014, y: 1019.3334}
+    ReadRun: 0
+    RunWaitAmount: 0
+  - Guid: 42442c3b-0f5a-41a5-b974-af013362f955
+    Title: SmithDialogue4
+    ButtonText: I'm back
+    DialogueAsset: {fileID: 4900000, guid: 74663f55889c96a48b7f3dcc98c56f07, type: 3}
+    HasBeenRead: 0
+    IsGreeting: 0
+    ReadOnlyOnce: 0
+    FriendshipRange: {x: 1, y: 1000000}
+    Position: {x: 1794, y: 500}
+    ReadRun: 0
+    RunWaitAmount: 1
   ExposedProperties: []

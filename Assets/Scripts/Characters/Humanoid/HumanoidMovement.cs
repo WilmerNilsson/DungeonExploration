@@ -28,7 +28,7 @@ public class HumanoidMovement : MonoBehaviour
     private Vector3 initialAirVector;
     private float initialMagnitude;
     private Vector3 lastGroundedPosition;
-    public Vector2 lastSafeGroundedPosition;
+    public Vector3 lastSafeGroundedPosition;
     private Vector3 playerVelocity;
     
     [Header("Debug")]

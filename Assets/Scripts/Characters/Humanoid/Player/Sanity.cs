@@ -17,17 +17,18 @@ public class Sanity : MonoBehaviour
     public static Sanity Instance;
     [SerializeField] private bool ResetOnAwake = true;
 
-    [SerializeField, Min(0), Tooltip("How much sanity is lost over time in Light")] private int inLightSanityDamage;
-    [SerializeField, Min(0), Tooltip("How much sanity is lost over time in Dark")] private int inDarkSanityDamage;
-    [SerializeField, Tooltip("How much the damage to health is divided by before being applied to sanity")] private int damageToSanityMod = 10;
+    [SerializeField, Min(0), Tooltip("How much sanity is lost over time in Light")] private float inLightSanityDamage;
+    [SerializeField, Min(0), Tooltip("How much sanity is lost over time in Dark")] private float inDarkSanityDamage;
+    [SerializeField, Tooltip("How much the damage to health is divided by before being applied to sanity")] private float damageToSanityMod = 10;
     [SerializeField, Tooltip("brightness level, if its lower its considered dark"), Min(0.01f)] private float lightThreshold;
-    [SerializeField, Tooltip("How long between sanity ticks, in seconds"), Min(0)] private float sanityTickSpeed;
-    private int damage;
-    
+    [SerializeField, Tooltip("How long between sanity ticks, in seconds"), Min(0)] private float sanityLightTickSpeed;
+    [SerializeField, Tooltip("How long between sanity ticks, in seconds"), Min(0)] private float sanityDarkTickSpeed;
+    private float damage;
+    private float tickSpeed;
     
     Coroutine sanityTick;
 
-    public int CurrentSanity => playerSanitySO.CurrentSanity;
+    public float CurrentSanity => playerSanitySO.CurrentSanity;
 
 #if UNITY_EDITOR
     private void OnValidate()
@@ -72,8 +73,17 @@ public class Sanity : MonoBehaviour
         {
             while (CurrentSanity > 0)
             {
-                yield return new WaitForSeconds(sanityTickSpeed);
-                damage = IsInLightCheck() ? inLightSanityDamage : inDarkSanityDamage;
+                if (IsInLightCheck())
+                {
+                    damage = inLightSanityDamage;
+                    tickSpeed = sanityLightTickSpeed;
+                }
+                else
+                {
+                    damage = inDarkSanityDamage;
+                    tickSpeed = sanityDarkTickSpeed;
+                }
+                yield return new WaitForSeconds(tickSpeed);
                 LoseSanity(damage);
             }
         }
@@ -91,7 +101,7 @@ public class Sanity : MonoBehaviour
         SetSanity(newCurrentSanity);
     }
 
-    public int GetSanityValue()
+    public float GetSanityValue()
     {
         return playerSanitySO.CurrentSanity;
     }
@@ -99,7 +109,7 @@ public class Sanity : MonoBehaviour
     /// <summary>
     /// takes a positive number
     /// </summary>
-    public void LoseSanity(int amount)
+    public void LoseSanity(float amount)
     {
         if (amount > 0)
         {
@@ -117,7 +127,7 @@ public class Sanity : MonoBehaviour
         }
     }
 
-    public void GainSanity(int amount)
+    public void GainSanity(float amount)
     {
         if (amount > 0)
         {
@@ -126,9 +136,9 @@ public class Sanity : MonoBehaviour
         }
     }
 
-    public void SetSanity(int newValue)
+    public void SetSanity(float newValue)
     {
-        int diff = newValue - CurrentSanity;
+        float diff = newValue - CurrentSanity;
 
         if (diff > 0)
         {

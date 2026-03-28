@@ -91,7 +91,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
         Quaternion rot = spawnTransform.rotation;
         InventorySaveData inventory = new(InvMasterBase.Instance.PlayerInventory.GetInventoryData());
         InventorySaveData equipment = new(InvMasterBase.Instance.EquipmentGrid.GetInventoryData());
-        int sanityInt = sanity.GetSanityValue();
+        int sanityInt = (int)sanity.GetSanityValue();
 
         PlayerSaveData data = new(inventory, equipment, pos, rot, currentHP, sanityInt, runCount);
         return data;
@@ -100,6 +100,7 @@ public class SaveFileHelperPlayer : MonoBehaviour
     public void DropItems()
     {
         Vector3 spawnPosition = GameObject.FindGameObjectWithTag("Player").GetComponent<HumanoidMovement>().lastSafeGroundedPosition;
+        spawnPosition.y += 1;
         if (InvMasterBase.Instance.PlayerInventory.GetInventoryData().Count <= 0 && InvMasterBase.Instance.EquipmentGrid.GetInventoryData().Count <= 0)
         {
             return;

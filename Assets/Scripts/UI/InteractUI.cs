@@ -1,13 +1,19 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class InteractUI : MonoBehaviour
 {
-    [SerializeField] private GameObject child;
+    [SerializeField] private RectTransform childPanel;
+    [SerializeField] private RectTransform GrandChildPanel;
+    private Vector2 defaultSize;
+    private float X;
+    private float Y;
     private void Awake()
     {
-        child.SetActive(false);
+        childPanel.gameObject.SetActive(false);
+        defaultSize = childPanel.sizeDelta;
     }
 
     private void OnEnable()
@@ -19,11 +25,31 @@ public class InteractUI : MonoBehaviour
 
     private void OnSee()
     {
-        child.SetActive(true);
+        childPanel.gameObject.SetActive(true);
     }
 
     private void OnUnSee()
     {
-        child.SetActive(false);
+        childPanel.gameObject.SetActive(false);
+    }
+
+    public void SetImageSizeX(float x)
+    {
+        X = x;
+        childPanel.sizeDelta =  new Vector2(X, Y);
+        GrandChildPanel.sizeDelta =  new Vector2(X, Y);
+    }
+    
+    public void SetImageSizeY(float y)
+    {
+        Y = y;
+        childPanel.sizeDelta = new Vector2(X, Y);
+        GrandChildPanel.sizeDelta =  new Vector2(X, Y);
+    }
+
+    public void ResetImageSize()
+    {
+        childPanel.sizeDelta = defaultSize;
+        GrandChildPanel.sizeDelta = defaultSize;
     }
 }
