@@ -64,11 +64,14 @@ public static class SaveDataCreator
 
             foreach (ItemPickup pickup in itemPickups)
             {
-                DungeonSaveData.DroppedItem data = new();
+                string extraData = default;
 
-                data.ItemID = pickup.ItemID;
-                data.Rotation = pickup.transform.rotation;
-                data.Position = pickup.transform.position;
+                if(pickup.TryGetComponent(out IExtraDataHelper extraDataHelper))
+                {
+                    extraData = extraDataHelper.GetExtraData();
+                }
+
+                DungeonSaveData.DroppedItem data = new(pickup.transform.position, pickup.transform.rotation, pickup.ItemID, extraData);
 
                 dungeonSaveData.DroppedItems.Add(data);
             }

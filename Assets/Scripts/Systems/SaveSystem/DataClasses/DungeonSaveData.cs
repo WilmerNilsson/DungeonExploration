@@ -91,12 +91,14 @@ public class DungeonSaveData
         public Vector3 Position;
         public Quaternion Rotation;
         public string ItemID;
+        public string ExtraJsonSerializeData;
 
-        public DroppedItem(Vector3 pos, Quaternion rotation, string ID)
+        public DroppedItem(Vector3 pos, Quaternion rotation, string ID, string extraJsonSerializeData = default)
         {
             Position = pos;
             Rotation = rotation;
             this.ItemID = ID;
+            ExtraJsonSerializeData = extraJsonSerializeData;
         }
     }
 }

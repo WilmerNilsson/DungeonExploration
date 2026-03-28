@@ -445,9 +445,16 @@ public class InventoryGrid : MonoBehaviour
 
     public bool TryInsertItem(SimpleItem item, bool instantiate = false)
     {
+        return TryInsertItem(item, out _, instantiate);
+    }
+
+    public bool TryInsertItem(SimpleItem item, out SimpleItem? instanciateItem, bool instantiate = false)
+    {
         //not nessesary but saves performance
         if (onlyAcceptWeapons && !item.TryGetComponent<UIWeapon>(out _))
         {
+            instanciateItem = null;
+
             return false;
         }
 
@@ -455,9 +462,11 @@ public class InventoryGrid : MonoBehaviour
         {
             for (int row = 0; row < InvData.GetLength(1); row++)
             {
-                if(TryPutItemInSlot(item, collum, row, instantiate)) return true;
+                if(TryPutItemInSlot(item, collum, row, out instanciateItem, instantiate)) return true;
             }
         }
+
+        instanciateItem = null;
         return false;
     }
 

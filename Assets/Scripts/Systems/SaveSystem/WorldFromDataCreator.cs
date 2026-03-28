@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditorInternal.Profiling.Memory.Experimental;
 using UnityEngine;
 
 public class WorldFromDataCreator : MonoBehaviour
@@ -198,7 +199,12 @@ public class WorldFromDataCreator : MonoBehaviour
             {
                 if(itemLibrary.TryGetItemPairByName(item.ItemID, out ItemPairing? pair))
                 {
-                    Instantiate(pair.WorldPrefab, item.Position, item.Rotation);
+                    GameObject newItem = Instantiate(pair.WorldPrefab, item.Position, item.Rotation);
+
+                    if (newItem.TryGetComponent(out IExtraDataHelper helper))
+                    {
+                        helper.GiveExtraData(item.ExtraJsonSerializeData);
+                    }
                 }
                 else
                 {

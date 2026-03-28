@@ -2,7 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class UIWeapon : MonoBehaviour
+public class UIWeapon : MonoBehaviour, IHaveDurability
 {
     [SerializeField] private GameObject weaponPrefab;
     [SerializeField] private TextMeshProUGUI durabilityText;

@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 5845371479194103975}
   - component: {fileID: 2507644962763731110}
   - component: {fileID: 1882501044998287893}
-  - component: {fileID: 4137522555162847260}
   - component: {fileID: 3138500281842187793}
   - component: {fileID: 5501112357703574219}
+  - component: {fileID: -3590440984802349181}
+  - component: {fileID: -4893047521374383042}
   m_Layer: 13
   m_Name: DroppedDamascusSword
   m_TagString: Untagged
@@ -75,8 +76,8 @@ MonoBehaviour:
   OnInteract:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4137522555162847260}
-        m_TargetAssemblyTypeName: ItemPickup, GameAssembly
+      - m_Target: {fileID: -3590440984802349181}
+        m_TargetAssemblyTypeName: DroppedWeaponHelper, GameAssembly
         m_MethodName: PickUp
         m_Mode: 1
         m_Arguments:
@@ -105,20 +106,6 @@ MonoBehaviour:
   OnUnSeen:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4137522555162847260
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2949275965137294258}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd5db2276d47627408cf622c66b130fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefabID: DamascusSword
-  itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
 --- !u!54 &3138500281842187793
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -164,6 +151,32 @@ MonoBehaviour:
     gameObject: {fileID: 0}
     followObject: 0
     parametersToSet: []
+--- !u!114 &-3590440984802349181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2949275965137294258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fe8d347180ee04428df854086d77044, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabID: DamascusSword
+  itemLibrary: {fileID: 11400000, guid: 587843af6a123de4c975554db10e0b57, type: 2}
+--- !u!114 &-4893047521374383042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2949275965137294258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71cd5a62b6054214da7d813137c9b372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &156309792449112492
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -35,7 +35,18 @@ public class ItemDrop : MonoBehaviour
         //since we check this is valid on validate we can assume it will not be null
         itemLibrary.TryGetItemPairByName(myItem.PrefabID, out ItemPairing? pair);
 
-        Instantiate(pair?.WorldPrefab, dropPos, Quaternion.identity);
+        if(TryGetComponent(out IHaveDurability myDurability))
+        {
+            if(Instantiate(pair?.WorldPrefab, dropPos, Quaternion.identity)!.TryGetComponent(out IHaveDurability droppedDurability))
+            {
+                droppedDurability.StopSelfIntialize();
+                droppedDurability.Durability = myDurability.Durability;
+            }
+        }
+        else
+        {
+            Instantiate(pair?.WorldPrefab, dropPos, Quaternion.identity);
+        }
 
         InvMaster.Instance.DestroyItem(myItem);
     }

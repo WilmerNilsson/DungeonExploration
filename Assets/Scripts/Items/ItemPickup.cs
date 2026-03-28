@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class ItemPickup : MonoBehaviour
 {
-    [SerializeField] private string prefabID;
-    [SerializeField] private ItemLibrarySO itemLibrary;
+    [SerializeField] protected string prefabID;
+    [SerializeField] protected ItemLibrarySO itemLibrary;
 
     public string ItemID
     {
         get { return prefabID; }
     }
 
-#if DEBUG && UNITY_EDITOR
+#if UNITY_EDITOR
 
-    private const string SkipPrefabWarninName = "BaseWorldBook";
+    protected const string SkipPrefabWarninName = "BaseWorldBook";
 
     private void OnValidate()
     {
@@ -30,7 +30,7 @@ public class ItemPickup : MonoBehaviour
     /// <summary>
     /// puts item into player inventory if there is space
     /// </summary>
-    public void PickUp()
+    public virtual void PickUp()
     {
         itemLibrary.TryGetItemPairByName(prefabID, out ItemPairing pair);
 

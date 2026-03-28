@@ -1,33 +1,27 @@
 using UnityEngine;
 
+[RequireComponent(typeof(IHaveDurability))]
 public class ItemDurabilityExtraHelper : MonoBehaviour, IExtraDataHelper
 {
-    [SerializeField] private UIWeapon uIWeapon;
-
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        if (uIWeapon == null) Debug.LogWarning("UIWeapon is null", this);
-    }
-#endif
-
     public string GetExtraData()
     {
-        return uIWeapon.Durability.ToString();
+        return GetComponent<IHaveDurability>().Durability.ToString();
     }
 
     public bool GiveExtraData(string json)
     {
         if (int.TryParse(json, out int result))
         {
-            uIWeapon.StopSelfIntialize();
-            uIWeapon.Durability = result;
+            IHaveDurability script = GetComponent<IHaveDurability>();
+
+            script.StopSelfIntialize();
+            script.Durability = result;
 
             return true;
         }
         else
         {
-            Debug.Log("failed to parse");
+            Debug.Log("failed to parse durability int", this);
             return false;
         }
 
