@@ -2790,6 +2790,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1466433493}
+        m_TargetAssemblyTypeName: AudioTrigger, GameAssembly
+        m_MethodName: Activate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &201220871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10671,6 +10683,18 @@ MonoBehaviour:
       - m_Target: {fileID: 2053326419}
         m_TargetAssemblyTypeName: MainMenuController, GameAssembly
         m_MethodName: ExitToDesktop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1466433493}
+        m_TargetAssemblyTypeName: AudioTrigger, GameAssembly
+        m_MethodName: Activate
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -23136,6 +23160,17 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &1466433493 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5548138156277792010, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+  m_PrefabInstance: {fileID: 2019987993}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a814d164a17170438a13d63660122b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1477129895 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7538188538126592618, guid: 77465902d60f771499822c1d0c482fa9, type: 3}
@@ -31093,6 +31128,10 @@ PrefabInstance:
     - target: {fileID: 3729396877774979792, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
       propertyPath: m_Name
       value: EmitOnStart
+      objectReference: {fileID: 0}
+    - target: {fileID: 5548138156277792010, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
+      propertyPath: activatedBy
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5548138156277792010, guid: a29f8f67bf832c349bd16c08ec485e1a, type: 3}
       propertyPath: instructions.Array.data[0].path
