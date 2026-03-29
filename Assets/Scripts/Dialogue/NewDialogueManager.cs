@@ -105,9 +105,9 @@ public class NewDialogueManager : MonoBehaviour
     public void EnterDialogueMode(string DialogueName)
     {
         currentDialogueNode = dialogueTree.DialogueNodeDatas.Find(x => x.Title == DialogueName);
-        if (!currentDialogueNode.DialogueAsset)
+        if (currentDialogueNode == null)
         {
-            Debug.LogWarning("Dialogue node contains no dialogue asset");
+            Debug.LogWarning("Could not find dialogue node: " + DialogueName, this);
             return;
         }
         onDialogueEnter?.Invoke(DialogueName);

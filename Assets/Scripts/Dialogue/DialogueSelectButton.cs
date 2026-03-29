@@ -5,9 +5,10 @@ public class DialogueSelectButton : MonoBehaviour
 {
     public TextMeshProUGUI buttonText;
     public string DialogueName;
+    [SerializeField] private NewDialogueManager dialogueManager;
 
     public void OnClick()
     {
-        NewDialogueManager.GetInstance().EnterDialogueMode(DialogueName);
+        dialogueManager.EnterDialogueMode(DialogueName);
     }
 }
