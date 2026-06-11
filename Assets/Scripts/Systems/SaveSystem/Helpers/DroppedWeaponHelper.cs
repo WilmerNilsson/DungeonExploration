@@ -15,6 +15,17 @@ public class DroppedWeaponHelper : ItemPickup, IHaveDurability
     {
         if(itemLibrary.TryGetItemPairByName(prefabID, out ItemPairing? pair))
         {
+            if (InvMasterBase.Instance.EquipmentGrid.TryInsertItem(pair.UIPrefab.GetComponent<SimpleItem>(), out SimpleItem? instanciateEquipment, true))
+            {
+                Destroy(gameObject);
+                
+                if (Durability != -1 && instanciateEquipment != null && instanciateEquipment.TryGetComponent(out IHaveDurability durability))
+                {
+                    durability.StopSelfIntialize();
+                    durability.Durability = Durability;
+                }
+                return;
+            }
             if (InvMasterBase.Instance.PlayerInventory.TryInsertItem(pair.UIPrefab.GetComponent<SimpleItem>(), out SimpleItem? instanciateItem, true))
             {
                 Destroy(gameObject);
